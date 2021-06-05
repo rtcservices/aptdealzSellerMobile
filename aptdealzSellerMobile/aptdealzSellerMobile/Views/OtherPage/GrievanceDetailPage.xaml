@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="aptdealzSellerMobile.Views.OtherPage.GrievanceDetailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    iOS:Page.UseSafeArea="True"
+    BackgroundColor="#FFFFFF"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--#region Header(NavigationBar)-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="StartAndExpand"
+                    Source="IconMenu.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image
+                    Grid.Column="1"
+                    Margin="0"
+                    Aspect="AspectFill"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    Source="iconHeaderLogo.png"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="45" />
+
+                <StackLayout
+                    Grid.Column="2"
+                    Margin="0,0,20,0"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconNotification.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconQuestion.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+            </Grid>
+            <BoxView
+                Grid.Row="1"
+                BackgroundColor="#F0F0F0"
+                HeightRequest="1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="EndAndExpand" />
+            <!--#endregion-->
+
+            <Grid Grid.Row="2" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!--  Back Arrow  -->
+                <StackLayout
+                    Grid.Row="0"
+                    Margin="20,0,0,0"
+                    HorizontalOptions="StartAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Margin="0"
+                        Aspect="AspectFit"
+                        HeightRequest="25"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconBackArrow.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="25">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Label
+                        Grid.Row="0"
+                        Margin="5,0,0,0"
+                        FontFamily="Poppins SemiBold"
+                        FontSize="{OnPlatform Android=18,
+                                              iOS=20}"
+                        HorizontalOptions="StartAndExpand"
+                        LineBreakMode="WordWrap"
+                        Text="Grievance Detail"
+                        TextColor="#191818"
+                        VerticalOptions="CenterAndExpand" />
+                </StackLayout>
+
+                <ScrollView
+                    Grid.Row="1"
+                    Margin="0,20,0,0"
+                    HorizontalScrollBarVisibility="Never"
+                    VerticalScrollBarVisibility="Never">
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid
+                            Grid.Row="0"
+                            HorizontalOptions="FillAndExpand"
+                            RowSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--  Greivance ID  -->
+                            <StackLayout Grid.Row="0">
+                                <StackLayout
+                                    Margin="20,5"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Greivance ID"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderRequirementId"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="#GR123"
+                                        TextColor="#006027"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Order ID  -->
+                            <StackLayout Grid.Row="1">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Order ID"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderReferenceNo"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="#OR12"
+                                        TextColor="#006027"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Order Date  -->
+                            <StackLayout Grid.Row="2">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Order Date"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderBuyerName"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="22-12-2021"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Grievance Date  -->
+                            <StackLayout Grid.Row="3">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Grievance Date"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderSellerName"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="5-10-2021"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Buyer Name  -->
+                            <StackLayout Grid.Row="4">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Buyer Name"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderPinCode"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="Han"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Grievance Type  -->
+                            <StackLayout Grid.Row="5">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Grievance Type"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderQuntity"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="Delayed Delivery"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Status  -->
+                            <StackLayout Grid.Row="6">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Status"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblOrderUnitPrice"
+                                        Margin="0"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="Open"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Attached Document  -->
+                            <StackLayout Grid.Row="7">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        Margin="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Attached Document"
+                                        TextColor="#292929"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0" Source="imgActiveRequirements.png" />
+                                        <Image Grid.Column="1" Source="imgActiveRequirements.png" />
+                                        <Image Grid.Column="2" Source="imgActiveRequirements.png" />
+                                    </Grid>
+                                </StackLayout>
+
+                                <BoxView
+                                    BackgroundColor="#F0F0F0"
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="EndAndExpand" />
+                            </StackLayout>
+
+                            <!--  Text Lorem ipsum Frame  -->
+                            <StackLayout
+                                Grid.Row="8"
+                                Margin="30,20,30,0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                                <Frame
+                                    Padding="10,20,10,20"
+                                    BackgroundColor="White"
+                                    BorderColor="#F0F0F0"
+                                    HeightRequest="80"
+                                    Style="{StaticResource frmEntry}">
+                                    <Editor
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        Keyboard="Text"
+                                        Placeholder="Lorem Ipsum is simply dummy text of the &#10; printing and typesetting industry. Lorem Ipsum &#10; has been the industry's standard dummy text "
+                                        PlaceholderColor="#ABABAB"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+
+                            <Grid
+                                Grid.Row="9"
+                                Margin="30,10"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="40">
+
+                                <!--  Admin  -->
+                                <Grid
+                                    Grid.Row="0"
+                                    ColumnDefinitions="Auto,*"
+                                    ColumnSpacing="10">
+
+                                    <StackLayout
+                                        Grid.Column="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Spacing="0"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Image
+                                            Margin="0"
+                                            Aspect="Fill"
+                                            HeightRequest="50"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Source="iconUserGreen.png"
+                                            VerticalOptions="CenterAndExpand"
+                                            WidthRequest="50" />
+
+                                        <Label
+                                            Margin="0"
+                                            FontFamily="Poppins Medium"
+                                            FontSize="16"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Text="Admin"
+                                            TextColor="#191818"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <ext:CustomShadowFrame
+                                        Grid.Column="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        BorderColor="#F0F0F0"
+                                        CornerRadius="5"
+                                        HasShadow="False">
+                                        <Editor
+                                            x:Name="txtAdminResponse"
+                                            Margin="5,10"
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=14,
+                                                                  iOS=16}"
+                                            HorizontalOptions="FillAndExpand"
+                                            Placeholder="Response"
+                                            PlaceholderColor="#535353"
+                                            TextColor="#292929"
+                                            VerticalOptions="FillAndExpand" />
+                                    </ext:CustomShadowFrame>
+
+                                </Grid>
+
+                                <!--  Buyer  -->
+                                <Grid
+                                    Grid.Row="1"
+                                    ColumnDefinitions="Auto,*"
+                                    ColumnSpacing="10">
+
+                                    <StackLayout
+                                        Grid.Column="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Spacing="0"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Image
+                                            Margin="0"
+                                            Aspect="Fill"
+                                            HeightRequest="50"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Source="iconUserGreen.png"
+                                            VerticalOptions="CenterAndExpand"
+                                            WidthRequest="50" />
+
+                                        <Label
+                                            Margin="0"
+                                            FontFamily="Poppins"
+                                            FontSize="16"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Text="Buyer"
+                                            TextColor="#191818"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <ext:CustomShadowFrame
+                                        Grid.Column="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        BorderColor="#F0F0F0"
+                                        CornerRadius="5"
+                                        HasShadow="False">
+                                        <Editor
+                                            x:Name="txtBuyerResponse"
+                                            Margin="5,10"
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=14,
+                                                                  iOS=16}"
+                                            HorizontalOptions="FillAndExpand"
+                                            Placeholder="Response"
+                                            PlaceholderColor="#535353"
+                                            TextColor="#292929"
+                                            VerticalOptions="FillAndExpand" />
+                                    </ext:CustomShadowFrame>
+                                </Grid>
+                            </Grid>
+
+                            <!--  message  -->
+                            <ext:CustomShadowFrame
+                                Grid.Row="10"
+                                Margin="20,30"
+                                Padding="0"
+                                BorderColor="#F0F0F0"
+                                CornerRadius="5"
+                                HasShadow="False"
+                                HeightRequest="140">
+                                <Editor
+                                    x:Name="txtMessage"
+                                    Margin="10,10"
+                                    FontFamily="Poppins"
+                                    FontSize="{OnPlatform Android=14,
+                                                          iOS=16}"
+                                    HorizontalOptions="FillAndExpand"
+                                    Placeholder="Enter your message"
+                                    PlaceholderColor="#535353"
+                                    TextColor="#292929"
+                                    VerticalOptions="FillAndExpand" />
+                            </ext:CustomShadowFrame>
+
+                            <!--  SubmitButton  -->
+                            <ext:CustomShadowFrame
+                                x:Name="frmGrievance"
+                                Grid.Row="11"
+                                Margin="20,0,20,20"
+                                Padding="0"
+                                BackgroundColor="#006027"
+                                CornerRadius="5"
+                                HasShadow="False"
+                                HeightRequest="{OnPlatform Android=50,
+                                                           iOS=50}"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="20,10"
+                                    FontFamily="Poppins Medium"
+                                    FontSize="{OnPlatform Android=16,
+                                                          iOS=18}"
+                                    HorizontalOptions="CenterAndExpand"
+                                    LineBreakMode="WordWrap"
+                                    Text="Submit"
+                                    TextColor="#FFFFFF"
+                                    VerticalOptions="CenterAndExpand" />
+                                <ext:CustomShadowFrame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSubmit_Tapped" />
+                                </ext:CustomShadowFrame.GestureRecognizers>
+                            </ext:CustomShadowFrame>
+                        </Grid>
+                    </Grid>
+                </ScrollView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

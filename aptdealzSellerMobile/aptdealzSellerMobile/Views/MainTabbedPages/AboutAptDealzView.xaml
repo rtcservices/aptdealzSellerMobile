@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="aptdealzSellerMobile.Views.MainTabbedPages.AboutAptDealzView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    BackgroundColor="#FFFFFF"
+    NavigationPage.HasNavigationBar="False">
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="StartAndExpand"
+                    Source="IconMenu.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image
+                    Grid.Column="1"
+                    Margin="0"
+                    Aspect="AspectFill"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    Source="iconHeaderLogo.png"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="45" />
+
+                <StackLayout
+                    Grid.Column="2"
+                    Margin="0,0,20,0"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconNotification.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconQuestion.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+            </Grid>
+
+            <BoxView
+                Grid.Row="1"
+                BackgroundColor="#F0F0F0"
+                HeightRequest="1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="EndAndExpand" />
+
+            <Grid Grid.Row="2" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--#region Back Button-->
+                <Grid
+                    Grid.Row="0"
+                    Margin="20,0"
+                    ColumnDefinitions="Auto,*,Auto"
+                    HorizontalOptions="FillAndExpand">
+                    <Image
+                        Margin="0"
+                        Aspect="AspectFit"
+                        HeightRequest="30"
+                        HorizontalOptions="StartAndExpand"
+                        Source="iconBackArrow.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Label
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontFamily="Poppins SemiBold"
+                        FontSize="20"
+                        HorizontalOptions="StartAndExpand"
+                        Text="About AptDealz"
+                        TextColor="#191818"
+                        VerticalOptions="CenterAndExpand" />
+
+                </Grid>
+                <!--#endregion-->
+
+                <ScrollView Grid.Row="1" Margin="0,15,0,0">
+
+                    <Grid Margin="0" RowDefinitions="*,Auto">
+                        <Label
+                            Grid.Row="0"
+                            FontFamily="Poppins"
+                            FontSize="{OnPlatform Android=14,
+                                                  iOS=18}"
+                            HorizontalOptions="FillAndExpand"
+                            LineBreakMode="WordWrap"
+                            LineHeight="1.2"
+                            Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                            TextColor="#292929"
+                            VerticalOptions="FillAndExpand">
+                            <Label.Margin>
+                                <OnPlatform x:TypeArguments="Thickness">
+                                    <On Platform="Android" Value="20,20" />
+                                    <On Platform="iOS" Value="30,30" />
+                                </OnPlatform>
+                            </Label.Margin>
+                        </Label>
+
+                        <!--  Contact Info  -->
+                        <ext:CustomShadowFrame
+                            Grid.Row="1"
+                            Margin="20"
+                            Padding="0"
+                            BorderColor="#F0F0F0"
+                            CornerRadius="5"
+                            HasShadow="False"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="CenterAndExpand">
+                            <Grid
+                                Margin="5,30"
+                                RowDefinitions="Auto,Auto,Auto"
+                                RowSpacing="20">
+
+
+                                <Label
+                                    Grid.Row="0"
+                                    Margin="5,0,0,0"
+                                    FontFamily="Poppins Medium"
+                                    FontSize="{OnPlatform Android=20,
+                                                          iOS=22}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Contact Info"
+                                    TextColor="#191818"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Margin="5,0,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="{OnPlatform Android=14,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="30, ABC, XYZ Road &#x0a;Kochi, Kerala &#x0a;PIN - 682024"
+                                    TextColor="#191818"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Grid.Row="2"
+                                    Margin="5,0,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="{OnPlatform Android=14,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Phone: +91 012345678"
+                                    TextColor="#191818"
+                                    VerticalOptions="CenterAndExpand" />
+
+                            </Grid>
+                        </ext:CustomShadowFrame>
+
+                    </Grid>
+
+                </ScrollView>
+
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

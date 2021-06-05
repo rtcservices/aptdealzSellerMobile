@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="aptdealzSellerMobile.Views.Accounts.SignupPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    iOS:Page.UseSafeArea="True"
+    BackgroundColor="#FFFFFF"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            HorizontalOptions="FillAndExpand"
+            RowSpacing="0"
+            VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--#region Back Button-->
+            <Grid Grid.Row="0" ColumnDefinitions="60,*,60">
+                <Image
+                    Grid.Column="0"
+                    HeightRequest="25"
+                    HorizontalOptions="CenterAndExpand"
+                    Source="iconBackArrow.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+            <!--#endregion-->
+
+            <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+                <Grid RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--#region Create Seller Account Text-->
+                    <StackLayout
+                        Grid.Row="0"
+                        Margin="0,-15,0,0"
+                        Padding="0"
+                        Spacing="5">
+                        <Image
+                            Margin="0,0,0,0"
+                            Aspect="AspectFill"
+                            HeightRequest="100"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconLogo.png"
+                            VerticalOptions="CenterAndExpand" />
+
+                        <Label
+                            Margin="30,0"
+                            FontAttributes="Bold"
+                            FontFamily="Poppins Medium"
+                            FontSize="24"
+                            HorizontalOptions="CenterAndExpand"
+                            HorizontalTextAlignment="Center"
+                            Text="Create a Seller account &#10; with AptDealz"
+                            TextColor="#292929"
+                            VerticalOptions="CenterAndExpand" />
+                    </StackLayout>
+                    <!--#endregion-->
+
+                    <Grid Grid.Row="1">
+                        <Grid RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--#region FullName-->
+                            <StackLayout
+                                Grid.Row="0"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        BackgroundColor="#F0F0F0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Full Name"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Email Id-->
+                            <StackLayout
+                                Grid.Row="1"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Email id"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Phone Number-->
+                            <StackLayout
+                                Grid.Row="2"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Numeric"
+                                        MaxLength="10"
+                                        Placeholder="Phone Number"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Alternate Phone Number-->
+                            <StackLayout
+                                Grid.Row="3"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Numeric"
+                                        MaxLength="10"
+                                        Placeholder="Alternate Phone Number"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Building Number-->
+                            <StackLayout
+                                Grid.Row="4"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Building Number"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Street-->
+                            <StackLayout
+                                Grid.Row="5"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Street"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region City-->
+                            <StackLayout
+                                Grid.Row="6"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="City"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Landmark-->
+                            <StackLayout
+                                Grid.Row="7"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Landmark"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Nationality-->
+                            <StackLayout
+                                Grid.Row="8"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="30,10"
+                                    BackgroundColor="#F0F0F0"
+                                    BorderColor="Snow"
+                                    Style="{StaticResource frmEntry}">
+                                    <ext:ExtEntry
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="Nationality"
+                                        PlaceholderColor="#ABABAB"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1"
+                                        TextColor="#292929" />
+                                </Frame>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Company Profile-->
+                            <StackLayout
+                                Grid.Row="9"
+                                Margin="0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                                <Frame
+                                    Margin="0"
+                                    BackgroundColor="DarkGray"
+                                    CornerRadius="0"
+                                    HasShadow="False"
+                                    Style="{StaticResource frmEntry}">
+                                    <StackLayout Margin="0,10" Orientation="Horizontal">
+                                        <Label
+                                            Grid.Row="0"
+                                            Margin="10,0,0,0"
+                                            FontFamily="Poppins Medium"
+                                            FontSize="{OnPlatform Android=16,
+                                                                  iOS=18}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Company Profile"
+                                            TextColor="#FFFFFF"
+                                            VerticalOptions="CenterAndExpand" />
+                                        <Image
+                                            x:Name="imgCompanyProfileDown"
+                                            Margin="0,0,15,0"
+                                            HeightRequest="25"
+                                            HorizontalOptions="EndAndExpand"
+                                            Source="iconDownArrow.png"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </StackLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CompnyProfile_Tapped" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+
+                                <Grid
+                                    x:Name="grdShippingAddress"
+                                    Grid.Row="1"
+                                    IsVisible="False"
+                                    RowSpacing="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--#region Description-->
+                                    <StackLayout
+                                        Grid.Row="0"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand">
+                                        <Frame
+                                            Margin="30,10"
+                                            Padding="20,10"
+                                            BackgroundColor="#F0F0F0"
+                                            HasShadow="False"
+                                            HeightRequest="100">
+                                            <Editor
+                                                BackgroundColor="#F0F0F0"
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="Description"
+                                                PlaceholderColor="#ABABAB"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+                                    <!--#endregion-->
+
+                                    <!--#region Catagory-->
+                                    <StackLayout
+                                        Grid.Row="1"
+                                        Margin="30,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Spacing="0"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Grid ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Frame
+                                                Grid.Column="0"
+                                                Padding="20,0,10,0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                HeightRequest="45"
+                                                Style="{StaticResource frmEntry}">
+                                                <Grid
+                                                    Margin="0"
+                                                    Padding="0"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="FillAndExpand">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ext:ExtPicker
+                                                        x:Name="pckCategory"
+                                                        Title="Category"
+                                                        Grid.Column="1"
+                                                        FontSize="{OnPlatform Android=14,
+                                                                              iOS=16}"
+                                                        TextColor="#000000">
+                                                        <Picker.Items>
+                                                            <x:String>Category1</x:String>
+                                                            <x:String>Category2</x:String>
+                                                            <x:String>Category3</x:String>
+
+                                                        </Picker.Items>
+                                                    </ext:ExtPicker>
+                                                    <ImageButton
+                                                        x:Name="ImgCoutryPck"
+                                                        Grid.Column="1"
+                                                        Margin="10,0,0,0"
+                                                        BackgroundColor="Transparent"
+                                                        Clicked="ImgCoutryPck_Clicked"
+                                                        HeightRequest="25"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Source="iconDownArrow.png"
+                                                        VerticalOptions="CenterAndExpand" />
+                                                </Grid>
+                                            </Frame>
+                                            <Frame
+                                                Grid.Column="1"
+                                                Margin="0"
+                                                Padding="20,0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                HeightRequest="45"
+                                                Style="{StaticResource frmEntry}">
+                                                <Label
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Text="If Other, Specify"
+                                                    VerticalOptions="CenterAndExpand" />
+                                            </Frame>
+                                        </Grid>
+                                    </StackLayout>
+                                    <!--#endregion-->
+
+                                    <!--#region Sub Catagory-->
+                                    <StackLayout
+                                        Grid.Row="2"
+                                        Margin="30,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Spacing="0"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Grid ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Frame
+                                                Grid.Column="0"
+                                                Padding="20,0,10,0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                HeightRequest="45"
+                                                Style="{StaticResource frmEntry}">
+                                                <Grid
+                                                    Margin="0"
+                                                    Padding="0"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="FillAndExpand">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ext:ExtPicker
+                                                        x:Name="pckSubCategory"
+                                                        Title="Sub Category"
+                                                        Grid.Column="1"
+                                                        FontSize="{OnPlatform Android=14,
+                                                                              iOS=16}"
+                                                        TextColor="#000000">
+                                                        <Picker.Items>
+                                                            <x:String>SubCategory1</x:String>
+                                                            <x:String>SubCategory2</x:String>
+                                                            <x:String>SubCategory3</x:String>
+                                                        </Picker.Items>
+                                                    </ext:ExtPicker>
+                                                    <Image
+                                                        x:Name="imgSubCatecDown"
+                                                        Grid.Column="1"
+                                                        Margin="10,0,0,0"
+                                                        HeightRequest="25"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Source="iconDownArrow.png"
+                                                        VerticalOptions="CenterAndExpand" />
+                                                </Grid>
+                                            </Frame>
+                                            <Frame
+                                                Grid.Column="1"
+                                                Margin="0"
+                                                Padding="20,0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                HeightRequest="45"
+                                                Style="{StaticResource frmEntry}">
+                                                <Label
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Text="If Other, Specify"
+                                                    VerticalOptions="CenterAndExpand" />
+                                            </Frame>
+                                        </Grid>
+                                    </StackLayout>
+                                    <StackLayout />
+                                    <!--#endregion-->
+
+                                    <StackLayout
+                                        Grid.Row="3"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+
+                                        <Grid Margin="30,10" ColumnSpacing="20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Frame
+                                                Grid.Column="0"
+                                                Margin="0,0,0,0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                Style="{StaticResource frmEntry}">
+                                                <Label
+                                                    FontFamily="Poppins"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="1"
+                                                    Text="Electronics X"
+                                                    TextColor="#292929"
+                                                    VerticalOptions="CenterAndExpand" />
+                                            </Frame>
+
+                                            <Frame
+                                                Grid.Column="1"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                Style="{StaticResource frmEntry}">
+                                                <Label
+                                                    FontFamily="Poppins"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="1"
+                                                    Text="Tech X"
+                                                    TextColor="#292929"
+                                                    VerticalOptions="CenterAndExpand" />
+                                            </Frame>
+
+                                            <Frame
+                                                Grid.Column="2"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                Style="{StaticResource frmEntry}">
+                                                <Label
+                                                    FontFamily="Poppins"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="1"
+                                                    Text="IT X"
+                                                    TextColor="#292929"
+                                                    VerticalOptions="CenterAndExpand" />
+                                            </Frame>
+                                        </Grid>
+
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="4"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Grid Margin="30,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Frame
+                                                Grid.Column="0"
+                                                BackgroundColor="#F0F0F0"
+                                                BorderColor="Snow"
+                                                Style="{StaticResource frmEntry}">
+                                                <ext:ExtEntry
+                                                    FontFamily="Poppins"
+                                                    Keyboard="Text"
+                                                    Placeholder="Experience"
+                                                    PlaceholderColor="#ABABAB"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="1"
+                                                    TextColor="#292929" />
+                                            </Frame>
+                                            <Label
+                                                Grid.Column="1"
+                                                FontFamily="Poppins SemiBold"
+                                                FontSize="{OnPlatform Android=16,
+                                                                      iOS=18}"
+                                                HorizontalOptions="EndAndExpand"
+                                                Text="Years"
+                                                TextColor="#292929"
+                                                VerticalOptions="CenterAndExpand" />
+                                        </Grid>
+
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="5"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="Area of Supply"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
+                            <!--#endregion-->
+
+
+                            <!--#region Gst Bank Information-->
+                            <StackLayout
+                                Grid.Row="10"
+                                Margin="0,10,0,0"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                                <Frame
+                                    Margin="0"
+                                    BackgroundColor="DarkGray"
+                                    CornerRadius="0"
+                                    HasShadow="False"
+                                    Style="{StaticResource frmEntry}">
+                                    <StackLayout Margin="0,10" Orientation="Horizontal">
+                                        <Label
+                                            Grid.Row="0"
+                                            Margin="10,0,0,0"
+                                            FontFamily="Poppins Medium"
+                                            FontSize="{OnPlatform Android=16,
+                                                                  iOS=18}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="GST Bank Information"
+                                            TextColor="#FFFFFF"
+                                            VerticalOptions="CenterAndExpand" />
+                                        <Image
+                                            x:Name="imgGstDown"
+                                            Margin="0,0,15,0"
+                                            HeightRequest="25"
+                                            HorizontalOptions="EndAndExpand"
+                                            Source="iconDownArrow.png"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </StackLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GstInformation_Tapped" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+
+                                <Grid
+                                    x:Name="grdBankInfo"
+                                    Grid.Row="1"
+                                    IsVisible="False"
+                                    RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <StackLayout
+                                        Grid.Row="0"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="GST Number"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="1"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="PAN"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="2"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="Bank Account Number"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="3"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="Bank Name"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <StackLayout
+                                        Grid.Row="4"
+                                        Margin="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Frame
+                                            Grid.Row="0"
+                                            Margin="30,10"
+                                            BackgroundColor="#F0F0F0"
+                                            BorderColor="Snow"
+                                            Style="{StaticResource frmEntry}">
+                                            <ext:ExtEntry
+                                                FontFamily="Poppins"
+                                                Keyboard="Text"
+                                                Placeholder="IFSC"
+                                                PlaceholderColor="#ABABAB"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                TextColor="#292929" />
+                                        </Frame>
+                                    </StackLayout>
+                                    <StackLayout
+                                        Grid.Row="5"
+                                        Margin="30,10"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Label FontFamily="Poppins SemiBold" Text="Attach Scanned Docs" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image
+                                                Grid.Column="0"
+                                                HorizontalOptions="FillAndExpand"
+                                                Source="imgActiveRequirements.png"
+                                                VerticalOptions="CenterAndExpand" />
+                                            <Image
+                                                Grid.Column="1"
+                                                HorizontalOptions="FillAndExpand"
+                                                Source="imgActiveRequirements.png"
+                                                VerticalOptions="CenterAndExpand" />
+                                            <Image
+                                                Grid.Column="2"
+                                                HorizontalOptions="FillAndExpand"
+                                                Source="imgActiveRequirements.png"
+                                                VerticalOptions="CenterAndExpand" />
+                                            <Image
+                                                Grid.Column="3"
+                                                HeightRequest="30"
+                                                HorizontalOptions="EndAndExpand"
+                                                Source="iconImageUpload.png" />
+                                        </Grid>
+                                    </StackLayout>
+
+                                    <!--#endregion-->
+                                </Grid>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Accept Terms & Condition-->
+                            <StackLayout
+                                Grid.Row="11"
+                                Margin="30,20"
+                                HorizontalOptions="StartAndExpand"
+                                Orientation="Horizontal">
+                                <Image
+                                    x:Name="imgCheck"
+                                    HeightRequest="25"
+                                    HorizontalOptions="StartAndExpand"
+                                    Source="iconCheck.png"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Margin="10,0,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="{OnPlatform Android=14,
+                                                          iOS=16}"
+                                    HorizontalOptions="StartAndExpand"
+                                    HorizontalTextAlignment="Start"
+                                    Text="Accept Terms Condition"
+                                    TextColor="#292929"
+                                    VerticalOptions="CenterAndExpand" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkAcceptTerm_Tapped" />
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Submit Button-->
+                            <StackLayout
+                                Grid.Row="12"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <ext:CustomShadowFrame
+                                    x:Name="frmSubmitTapped"
+                                    Grid.Row="2"
+                                    Margin="20,0"
+                                    Padding="10,5"
+                                    BackgroundColor="#006027"
+                                    CornerRadius="5"
+                                    HasShadow="False"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="CenterAndExpand">
+                                    <Label
+                                        Margin="15,10"
+                                        FontFamily="Poppins Medium"
+                                        FontSize="{OnPlatform Android=16,
+                                                              iOS=18}"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Text="Submit"
+                                        TextColor="#FFFFFF"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:CustomShadowFrame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Submit_Tapped" />
+                                    </ext:CustomShadowFrame.GestureRecognizers>
+                                </ext:CustomShadowFrame>
+
+                            </StackLayout>
+                            <!--#endregion-->
+
+                            <!--#region Already Acccount-->
+                            <StackLayout
+                                x:Name="btnLoginTapped"
+                                Grid.Row="13"
+                                Margin="20"
+                                HorizontalOptions="CenterAndExpand"
+                                Orientation="Horizontal">
+
+                                <Label
+                                    FontFamily="Poppins Medium"
+                                    FontSize="{OnPlatform Android=16,
+                                                          iOS=18}"
+                                    HorizontalOptions="EndAndExpand"
+                                    Text="Already have an Account ?"
+                                    TextColor="#292929"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Margin="10,0,0,0"
+                                    FontFamily="Poppins Medium"
+                                    FontSize="{OnPlatform Android=16,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Login"
+                                    TextColor="#006027"
+                                    VerticalOptions="CenterAndExpand" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Login_Tapped" />
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <!--#endregion-->
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

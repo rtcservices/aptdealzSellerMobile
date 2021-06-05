@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage
+    x:Class="aptdealzSellerMobile.Views.Popup.StatusPopup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+    <Grid BackgroundColor="White" VerticalOptions="EndAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Padding="20,15"
+            FontFamily="Poppins"
+            FontSize="17"
+            HorizontalOptions="StartAndExpand"
+            HorizontalTextAlignment="Start"
+            Text="Status"
+            TextColor="{StaticResource Black}"
+            VerticalOptions="CenterAndExpand" />
+        <BoxView
+            Grid.Row="0"
+            BackgroundColor="{StaticResource LightGray}"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="EndAndExpand" />
+
+        <Grid
+            Grid.Row="1"
+            Padding="20,10"
+            ColumnSpacing="0"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="All"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnAll"
+                Grid.Row="0"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnAll_Clicked"
+                HeightRequest="40"
+                Source="iconRadioSelect.png"
+                WidthRequest="40" />
+
+            <Label
+                x:Name="lblOpen"
+                Grid.Row="1"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="Open"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnOpen"
+                Grid.Row="1"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnOpen_Clicked"
+                HeightRequest="40"
+                Source="iconRadioUnselect.png"
+                WidthRequest="40" />
+
+            <Label
+                x:Name="lblRejected"
+                Grid.Row="2"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="Rejected"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnRejected"
+                Grid.Row="2"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnRejected_Clicked"
+                HeightRequest="40"
+                Source="iconRadioUnselect.png"
+                WidthRequest="40" />
+        </Grid>
+    </Grid>
+</popup:PopupPage>

@@ -1,0 +1,1108 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="aptdealzSellerMobile.Views.MainTabbedPages.AccountView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    xmlns:panCake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+    BackgroundColor="#FFFFFF"
+    NavigationPage.HasNavigationBar="False">
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Header  -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="StartAndExpand"
+                    Source="IconMenu.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image
+                    Grid.Column="1"
+                    Margin="0"
+                    Aspect="AspectFill"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    Source="iconHeaderLogo.png"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="45" />
+
+                <StackLayout
+                    Grid.Column="2"
+                    Margin="0,0,20,0"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconNotification.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconQuestion.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+            </Grid>
+
+            <Grid Grid.Row="1" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <BoxView
+                    Grid.Row="0"
+                    BackgroundColor="#F0F0F0"
+                    HeightRequest="1"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="EndAndExpand" />
+                <!--  Back Arrow  -->
+                <StackLayout
+                    Grid.Row="1"
+                    Margin="20,0,10,0"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    VerticalOptions="CenterAndExpand">
+                    <Image
+                        Margin="0"
+                        Aspect="AspectFit"
+                        HeightRequest="25"
+                        HorizontalOptions="Start"
+                        Source="iconBackArrow.png"
+                        VerticalOptions="Center"
+                        WidthRequest="25">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Label
+                        Margin="0,3,0,0"
+                        FontFamily="Poppins SemiBold"
+                        FontSize="20"
+                        HorizontalOptions="StartAndExpand"
+                        HorizontalTextAlignment="Start"
+                        Text="Account"
+                        TextColor="{StaticResource Black}"
+                        VerticalOptions="CenterAndExpand" />
+
+                </StackLayout>
+
+                <ScrollView Grid.Row="2" Style="{StaticResource scrPrimary}">
+                    <Grid Padding="0,5" RowSpacing="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Profile  -->
+                        <Frame
+                            Grid.Row="0"
+                            Margin="20,0"
+                            Padding="0"
+                            BorderColor="{StaticResource LightGray}"
+                            CornerRadius="10"
+                            HasShadow="False"
+                            IsClippedToBounds="True">
+                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Grid
+                                    Margin="0,40"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="CenterAndExpand">
+                                    <Image
+                                        Margin="0"
+                                        Aspect="Fill"
+                                        HeightRequest="120"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Source="iconUserAccount.png"
+                                        VerticalOptions="CenterAndExpand"
+                                        WidthRequest="120" />
+                                    <Image
+                                        Margin="0"
+                                        Aspect="Fill"
+                                        HeightRequest="30"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="iconCamera.png"
+                                        VerticalOptions="EndAndExpand"
+                                        WidthRequest="30">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgCamera_Tapped" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+
+                                <panCake:PancakeView
+                                    BackgroundColor="#006027"
+                                    CornerRadius="0,10,10,0"
+                                    HorizontalOptions="EndAndExpand"
+                                    VerticalOptions="StartAndExpand">
+                                    <Image
+                                        Margin="10"
+                                        Aspect="Fill"
+                                        HeightRequest="25"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Source="iconEdit.png"
+                                        VerticalOptions="CenterAndExpand"
+                                        WidthRequest="25" />
+                                    <panCake:PancakeView.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgEdit_Tapped" />
+                                    </panCake:PancakeView.GestureRecognizers>
+                                </panCake:PancakeView>
+
+                            </Grid>
+                        </Frame>
+
+                        <!--  Entrys  -->
+                        <Grid Grid.Row="1" RowSpacing="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--  Main Details  -->
+                            <Grid
+                                Grid.Row="0"
+                                Padding="20"
+                                RowSpacing="7">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Full Name"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="1" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Email Id"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Email"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="2" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Phone Number"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Numeric"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="3" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Alternate Phone Number"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Numeric"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="4" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+                            </Grid>
+
+                            <!--  Billing Address Header  -->
+                            <Grid
+                                Grid.Row="1"
+                                Padding="15,0"
+                                BackgroundColor="{StaticResource DarkGray}"
+                                HeightRequest="50">
+                                <Label
+                                    FontFamily="Poppins SemiBold"
+                                    FontSize="{OnPlatform Android=17,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Billing Address"
+                                    TextColor="White"
+                                    VerticalOptions="CenterAndExpand" />
+                                <Image
+                                    x:Name="ImgDropDownBilling"
+                                    HeightRequest="20"
+                                    HorizontalOptions="EndAndExpand"
+                                    Source="iconDownArrow.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdBilling_Tapped" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+
+                            <!--  Billing Address Form  -->
+                            <Grid
+                                x:Name="GrdBilling"
+                                Grid.Row="2"
+                                Padding="20"
+                                IsVisible="false">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Building Number"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="5" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Street"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="6" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="City"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="7" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Nationality"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="8" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Landmark"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="9" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Button
+                                    x:Name="BtnAddMore"
+                                    Grid.Row="5"
+                                    Margin="0,20,0,10"
+                                    Padding="10"
+                                    BackgroundColor="Transparent"
+                                    BorderColor="{StaticResource Green}"
+                                    BorderWidth="2"
+                                    CornerRadius="5"
+                                    FontFamily="Poppins SemiBold"
+                                    FontSize="{OnPlatform Android=15,
+                                                          iOS=16}"
+                                    HeightRequest="40"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Text="Add More Address"
+                                    TextColor="{StaticResource Green}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+
+                            <!--  Company Porfile Header  -->
+                            <Grid
+                                Grid.Row="3"
+                                Padding="15,0"
+                                BackgroundColor="{StaticResource DarkGray}"
+                                HeightRequest="50">
+                                <Label
+                                    FontFamily="Poppins SemiBold"
+                                    FontSize="{OnPlatform Android=17,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Company Porfile"
+                                    TextColor="White"
+                                    VerticalOptions="CenterAndExpand" />
+                                <Image
+                                    x:Name="ImgDownDownCompanyProfile"
+                                    HeightRequest="20"
+                                    HorizontalOptions="EndAndExpand"
+                                    Source="iconDownArrow.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdCompanyProfile_Tapped" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+
+                            <!--  Company Porfile Form  -->
+                            <Grid
+                                x:Name="GrdCompanyProfile"
+                                Grid.Row="4"
+                                Padding="20,10"
+                                IsVisible="false"
+                                RowSpacing="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Description"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <Editor
+                                        x:Name="edtrDescription"
+                                        BackgroundColor="Transparent"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HeightRequest="100"
+                                        Placeholder="Description"
+                                        PlaceholderColor="{StaticResource Gray}"
+                                        TabIndex="10"
+                                        TextColor="{StaticResource Black}" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label
+                                            Grid.Row="0"
+                                            Margin="5,0,0,0"
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=11,
+                                                                  iOS=13}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Category"
+                                            TextColor="{StaticResource Gray}"
+                                            VerticalOptions="CenterAndExpand" />
+                                        <ext:ExtEntry
+                                            Grid.Row="1"
+                                            Margin="5,0,0,0"
+                                            FontFamily="Poppins"
+                                            Keyboard="Text"
+                                            Style="{StaticResource entrPrimary}"
+                                            TabIndex="11" />
+                                        <BoxView
+                                            Grid.Row="1"
+                                            BackgroundColor="{StaticResource LightGray}"
+                                            HeightRequest="1"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="EndAndExpand" />
+                                    </Grid>
+
+                                    <Frame
+                                        Grid.Column="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        BorderColor="{StaticResource LightGray}"
+                                        Style="{StaticResource frmEntry}">
+                                        <ext:ExtEntry
+                                            Keyboard="Text"
+                                            Placeholder="If Other, specify"
+                                            Style="{StaticResource entrDark}"
+                                            TabIndex="12" />
+                                    </Frame>
+                                </Grid>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label
+                                            Grid.Row="0"
+                                            Margin="5,0,0,0"
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=11,
+                                                                  iOS=13}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Sub Category"
+                                            TextColor="{StaticResource Gray}"
+                                            VerticalOptions="CenterAndExpand" />
+                                        <ext:ExtEntry
+                                            Grid.Row="1"
+                                            Margin="5,0,0,0"
+                                            FontFamily="Poppins"
+                                            Keyboard="Text"
+                                            Style="{StaticResource entrPrimary}"
+                                            TabIndex="13" />
+                                        <BoxView
+                                            Grid.Row="1"
+                                            BackgroundColor="{StaticResource LightGray}"
+                                            HeightRequest="1"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="EndAndExpand" />
+                                    </Grid>
+
+                                    <Frame
+                                        Grid.Column="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        BorderColor="{StaticResource LightGray}"
+                                        Style="{StaticResource frmEntry}">
+                                        <ext:ExtEntry
+                                            Keyboard="Text"
+                                            Placeholder="If Other, specify"
+                                            Style="{StaticResource entrDark}"
+                                            TabIndex="14" />
+                                    </Frame>
+                                </Grid>
+
+                                <Grid Grid.Row="3" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Frame
+                                        Grid.Column="0"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        BorderColor="{StaticResource LightGray}"
+                                        Style="{StaticResource frmEntry}">
+                                        <Label
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=15,
+                                                                  iOS=16}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Electronics X"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </Frame>
+                                    <Frame
+                                        Grid.Column="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        BorderColor="{StaticResource LightGray}"
+                                        Style="{StaticResource frmEntry}">
+                                        <Label
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=15,
+                                                                  iOS=16}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Tech X"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </Frame>
+                                    <Frame
+                                        Grid.Column="2"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        BorderColor="{StaticResource LightGray}"
+                                        Style="{StaticResource frmEntry}">
+                                        <Label
+                                            FontFamily="Poppins"
+                                            FontSize="{OnPlatform Android=15,
+                                                                  iOS=16}"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="IT X"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </Frame>
+                                </Grid>
+
+                                <Grid Grid.Row="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Experience"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Placeholder="8"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="15" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=15,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Years"
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="EndAndExpand" />
+
+                                    <BoxView
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Area of Supply"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="16" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Label
+                                    Grid.Row="6"
+                                    Margin="5,0,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="{OnPlatform Android=15,
+                                                          iOS=16}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Seller Commission : 3%"
+                                    TextColor="{StaticResource Black}"
+                                    VerticalOptions="CenterAndExpand" />
+                            </Grid>
+
+                            <!--  Bank Information Header  -->
+                            <Grid
+                                Grid.Row="5"
+                                Padding="15,0"
+                                BackgroundColor="{StaticResource DarkGray}"
+                                HeightRequest="50">
+                                <Label
+                                    FontFamily="Poppins SemiBold"
+                                    FontSize="{OnPlatform Android=17,
+                                                          iOS=18}"
+                                    HorizontalOptions="StartAndExpand"
+                                    Text="Bank Information"
+                                    TextColor="White"
+                                    VerticalOptions="CenterAndExpand" />
+                                <Image
+                                    x:Name="ImgDropDownBankInfo"
+                                    HeightRequest="20"
+                                    HorizontalOptions="EndAndExpand"
+                                    Source="iconDownArrow.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdBankInfo_Tapped" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+
+                            <!--  Bank Information Form  -->
+                            <Grid
+                                x:Name="GrdBankInfo"
+                                Grid.Row="6"
+                                Padding="20,10"
+                                IsVisible="false"
+                                RowSpacing="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="GST Number"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="17" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="PAN"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="18" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Bank Account Number"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="19" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=11,
+                                                              iOS=13}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Bank Name"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="20" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+
+                                <Grid Grid.Row="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        FontSize="11"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="IFSC"
+                                        TextColor="{StaticResource Gray}"
+                                        VerticalOptions="CenterAndExpand" />
+                                    <ext:ExtEntry
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0"
+                                        FontFamily="Poppins"
+                                        Keyboard="Text"
+                                        Style="{StaticResource entrPrimary}"
+                                        TabIndex="21" />
+                                    <BoxView
+                                        Grid.Row="1"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="EndAndExpand" />
+                                </Grid>
+                                <Grid Grid.Row="5" RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        FontFamily="Poppins"
+                                        FontSize="{OnPlatform Android=15,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Attach Scanned Docs"
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="EndAndExpand" />
+
+                                    <Grid Grid.Row="1" VerticalOptions="StartAndExpand">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0" Orientation="Horizontal">
+                                            <Image
+                                                Aspect="AspectFit"
+                                                HeightRequest="30"
+                                                Source="imgActiveRequirements.png"
+                                                WidthRequest="30" />
+                                            <Image
+                                                HeightRequest="30"
+                                                Source="imgActiveRequirements.png"
+                                                WidthRequest="30" />
+                                            <Image
+                                                HeightRequest="30"
+                                                Source="imgActiveRequirements.png"
+                                                WidthRequest="30" />
+                                        </StackLayout>
+
+                                        <ImageButton
+                                            x:Name="BtnUplodeDocs"
+                                            Grid.Column="1"
+                                            Clicked="BtnUplodeDocs_Clicked"
+                                            Source="iconImageUpload.png"
+                                            Style="{StaticResource imgMenu}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+                </ScrollView>
+
+                <!--  Update Button  -->
+                <Button
+                    x:Name="BtnUpdate"
+                    Grid.Row="3"
+                    Margin="20"
+                    Clicked="BtnUpdate_Clicked"
+                    Style="{StaticResource btnPrimary}"
+                    Text="Update" />
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

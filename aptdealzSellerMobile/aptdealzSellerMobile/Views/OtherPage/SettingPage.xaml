@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="aptdealzSellerMobile.Views.OtherPage.SettingPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    iOS:Page.UseSafeArea="True"
+    BackgroundColor="#FFFFFF"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Header  -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="StartAndExpand"
+                    Source="IconMenu.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image
+                    Grid.Column="1"
+                    Margin="0"
+                    Aspect="AspectFill"
+                    HeightRequest="45"
+                    HorizontalOptions="CenterAndExpand"
+                    Source="iconHeaderLogo.png"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="45" />
+
+                <StackLayout
+                    Grid.Column="2"
+                    Margin="0,0,20,0"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconNotification.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconQuestion.png"
+                        VerticalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+            </Grid>
+
+            <BoxView
+                Grid.Row="1"
+                BackgroundColor="#F0F0F0"
+                HeightRequest="1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="EndAndExpand" />
+
+            <Grid Grid.Row="2" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--  BackArrow  -->
+                <Grid
+                    Grid.Row="0"
+                    Margin="20,0"
+                    ColumnDefinitions="Auto,*,Auto"
+                    HorizontalOptions="FillAndExpand">
+                    <Image
+                        Margin="0"
+                        Aspect="AspectFit"
+                        HeightRequest="30"
+                        HorizontalOptions="StartAndExpand"
+                        Source="iconBackArrow.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Label
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontFamily="Poppins SemiBold"
+                        FontSize="20"
+                        HorizontalOptions="StartAndExpand"
+                        Text="Settings"
+                        TextColor="#191818"
+                        VerticalOptions="CenterAndExpand" />
+
+                </Grid>
+
+                <ScrollView Grid.Row="1" Margin="0,15,0,0">
+
+                    <Grid Margin="0" RowDefinitions="Auto,Auto,Auto,Auto">
+
+                        <Grid
+                            Grid.Row="0"
+                            Margin="30,10"
+                            ColumnDefinitions="*,*">
+
+                            <!--  Language  -->
+                            <Label
+                                Grid.Column="0"
+                                Margin="0"
+                                FontFamily="Poppins"
+                                FontSize="16"
+                                HorizontalOptions="StartAndExpand"
+                                LineBreakMode="WordWrap"
+                                Text="Language"
+                                TextColor="#191818"
+                                VerticalOptions="CenterAndExpand" />
+
+                            <!--  English Picker  -->
+                            <ext:CustomShadowFrame
+                                Grid.Column="1"
+                                Margin="0"
+                                Padding="0"
+                                BorderColor="#F0F0F0"
+                                CornerRadius="5"
+                                HasShadow="False">
+                                <StackLayout Orientation="Horizontal">
+                                    <Picker
+                                        x:Name="pkLanguage"
+                                        Title="English"
+                                        Margin="15,15,0,15"
+                                        FontFamily="Poppins"
+                                        FontSize="16"
+                                        HorizontalOptions="FillAndExpand"
+                                        TextColor="#292929"
+                                        TitleColor="#535353"
+                                        VerticalOptions="FillAndExpand" />
+
+                                    <Image
+                                        Margin="0,15,15,15"
+                                        HeightRequest="25"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="iconDownArrow.png"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgLanguage_Tapped" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                            </ext:CustomShadowFrame>
+
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="1"
+                            Margin="30,10"
+                            ColumnDefinitions="*,*">
+
+                            <!--  Display Mode  -->
+                            <Label
+                                Grid.Column="0"
+                                Margin="0"
+                                FontFamily="Poppins"
+                                FontSize="16"
+                                HorizontalOptions="StartAndExpand"
+                                LineBreakMode="WordWrap"
+                                Text="Display Mode"
+                                TextColor="#191818"
+                                VerticalOptions="CenterAndExpand" />
+
+                            <Grid
+                                Grid.Column="1"
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="20">
+
+                                <!--  Light  -->
+                                <ext:CustomShadowFrame
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    Padding="0"
+                                    BackgroundColor="#CAF3DB"
+                                    CornerRadius="5"
+                                    HasShadow="False">
+                                    <Label
+                                        Margin="0,10"
+                                        FontFamily="Poppins"
+                                        FontSize="16"
+                                        HorizontalOptions="CenterAndExpand"
+                                        LineBreakMode="WordWrap"
+                                        Text="Light"
+                                        TextColor="#191818"
+                                        VerticalOptions="CenterAndExpand" />
+                                </ext:CustomShadowFrame>
+
+                                <!--  Dark  -->
+                                <ext:CustomShadowFrame
+                                    Grid.Column="1"
+                                    Margin="0"
+                                    Padding="0"
+                                    BackgroundColor="#006027"
+                                    CornerRadius="5"
+                                    HasShadow="False">
+                                    <Label
+                                        Margin="0,10"
+                                        FontFamily="Poppins"
+                                        FontSize="16"
+                                        HorizontalOptions="CenterAndExpand"
+                                        LineBreakMode="WordWrap"
+                                        Text="Dark"
+                                        TextColor="#FFFFFF"
+                                        VerticalOptions="CenterAndExpand" />
+                                </ext:CustomShadowFrame>
+                            </Grid>
+
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="2"
+                            Margin="30,10"
+                            ColumnDefinitions="*,*">
+
+                            <!--  Alert Tone  -->
+                            <Label
+                                Grid.Column="0"
+                                Margin="0"
+                                FontFamily="Poppins"
+                                FontSize="16"
+                                HorizontalOptions="StartAndExpand"
+                                LineBreakMode="WordWrap"
+                                Text="Alert Tone"
+                                TextColor="#191818"
+                                VerticalOptions="CenterAndExpand" />
+
+                            <!--  Tone Picker  -->
+                            <ext:CustomShadowFrame
+                                Grid.Column="1"
+                                Margin="0"
+                                Padding="0"
+                                BorderColor="#F0F0F0"
+                                CornerRadius="5"
+                                HasShadow="False">
+                                <StackLayout Orientation="Horizontal">
+                                    <Picker
+                                        x:Name="pkAlertTone"
+                                        Title="Tone"
+                                        Margin="15,15,0,15"
+                                        FontFamily="Poppins"
+                                        FontSize="16"
+                                        HorizontalOptions="FillAndExpand"
+                                        TextColor="#292929"
+                                        TitleColor="#535353"
+                                        VerticalOptions="FillAndExpand" />
+
+                                    <Image
+                                        Margin="0,15,15,15"
+                                        HeightRequest="25"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="iconDownArrow.png"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgAlertTone_Tapped" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                            </ext:CustomShadowFrame>
+
+                        </Grid>
+
+                        <!--  Mute Notifications  -->
+                        <Grid
+                            Grid.Row="3"
+                            Margin="30,10"
+                            ColumnDefinitions="*,*">
+
+                            <Label
+                                Grid.Column="0"
+                                Margin="0"
+                                FontFamily="Poppins"
+                                FontSize="16"
+                                HorizontalOptions="StartAndExpand"
+                                LineBreakMode="WordWrap"
+                                Text="Mute Notifications"
+                                TextColor="#191818"
+                                VerticalOptions="CenterAndExpand" />
+
+                            <Image
+                                x:Name="imgSwitch"
+                                Grid.Column="1"
+                                Margin="0"
+                                Aspect="AspectFill"
+                                HeightRequest="30"
+                                HorizontalOptions="EndAndExpand"
+                                Source="iconSwitchOff.png"
+                                VerticalOptions="CenterAndExpand">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgSwitch_Tapped" />
+                                </Image.GestureRecognizers>
+                            </Image>
+
+                        </Grid>
+
+                    </Grid>
+
+                </ScrollView>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

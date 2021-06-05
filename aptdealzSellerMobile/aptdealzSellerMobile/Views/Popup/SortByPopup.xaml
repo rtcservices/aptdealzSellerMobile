@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage
+    x:Class="aptdealzSellerMobile.Views.Popup.SortByPopup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+    <Grid BackgroundColor="White" VerticalOptions="EndAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Padding="20,15"
+            FontFamily="Poppins"
+            FontSize="17"
+            HorizontalOptions="StartAndExpand"
+            HorizontalTextAlignment="Start"
+            Text="Sort by"
+            TextColor="{StaticResource Black}"
+            VerticalOptions="CenterAndExpand" />
+        <BoxView
+            Grid.Row="0"
+            BackgroundColor="{StaticResource LightGray}"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="EndAndExpand" />
+
+        <Grid
+            Grid.Row="1"
+            Padding="20,10"
+            ColumnSpacing="0"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="ID"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnID"
+                Grid.Row="0"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnID_Clicked"
+                HeightRequest="40"
+                Source="iconRadioSelect.png"
+                WidthRequest="40" />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="Status"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnStatus"
+                Grid.Row="1"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnStatus_Clicked"
+                HeightRequest="40"
+                Source="iconRadioUnselect.png"
+                WidthRequest="40" />
+
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                FontFamily="Poppins"
+                FontSize="17"
+                HorizontalOptions="StartAndExpand"
+                HorizontalTextAlignment="Start"
+                Text="Amount"
+                TextColor="{StaticResource Black}"
+                VerticalOptions="CenterAndExpand" />
+            <ImageButton
+                x:Name="BtnAmount"
+                Grid.Row="2"
+                Grid.Column="1"
+                Padding="10"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="BtnAmount_Clicked"
+                HeightRequest="40"
+                Source="iconRadioUnselect.png"
+                WidthRequest="40" />
+        </Grid>
+    </Grid>
+</popup:PopupPage>
