@@ -99,16 +99,16 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 viewCell.ForceUpdateSize();
             }
             var shippingModel = imgExp.BindingContext as ReportDetail;
-            if (shippingModel != null && shippingModel.ArrowImage == Constraints.Right_Arrow)
+            if (shippingModel != null && shippingModel.ArrowImage == Constraints.Arrow_Right)
             {
-                shippingModel.ArrowImage = Constraints.Down_Arrow;
+                shippingModel.ArrowImage = Constraints.Arrow_Down;
                 shippingModel.Layout = LayoutOptions.StartAndExpand;
                 shippingModel.ShowDelete = false;
                 shippingModel.ShowCategory = true;
             }
             else
             {
-                shippingModel.ArrowImage = Constraints.Right_Arrow;
+                shippingModel.ArrowImage = Constraints.Arrow_Right;
                 shippingModel.Layout = LayoutOptions.CenterAndExpand;
                 shippingModel.ShowDelete = true;
                 shippingModel.ShowCategory = false;
@@ -143,7 +143,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -163,7 +163,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 statusPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -173,7 +173,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             catch (Exception ex)
             {
             }
-        } 
+        }
         #endregion
     }
 }

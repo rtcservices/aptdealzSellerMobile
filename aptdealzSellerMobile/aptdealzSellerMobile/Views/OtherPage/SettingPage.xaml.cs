@@ -19,13 +19,13 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #region Events
         private void ImgSwitch_Tapped(object sender, EventArgs e)
         {
-            if (imgSwitch.Source.ToString().Replace("File: ", "") == Constraints.Switch_Off_Img)
+            if (imgSwitch.Source.ToString().Replace("File: ", "") == Constraints.Switch_Off)
             {
-                imgSwitch.Source = Constraints.Switch_On_Img;
+                imgSwitch.Source = Constraints.Switch_On;
             }
             else
             {
-                imgSwitch.Source = Constraints.Switch_Off_Img;
+                imgSwitch.Source = Constraints.Switch_Off;
             }
         }
 
@@ -57,7 +57,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
-        } 
+        }
         #endregion
     }
 }

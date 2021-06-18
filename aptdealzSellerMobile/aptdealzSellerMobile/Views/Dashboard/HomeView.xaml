@@ -7,7 +7,7 @@
     xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -77,7 +77,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -98,7 +98,7 @@
                                           iOS=20}"
                     HorizontalOptions="StartAndExpand"
                     Text="Dashboard"
-                    TextColor="#191818"
+                    TextColor="{StaticResource Black}"
                     VerticalOptions="EndAndExpand" />
 
                 <flv:FlowListView
@@ -115,8 +115,8 @@
                             <ext:CustomShadowFrame
                                 Margin="10"
                                 Padding="0"
-                                BackgroundColor="#F3F3F3"
-                                BorderColor="#BCBCBC"
+                                BackgroundColor="{StaticResource LightGray}"
+                                BorderColor="{StaticResource Gray}"
                                 BorderWidth="1"
                                 CornerRadius="10"
                                 HasShadow="False"
@@ -151,7 +151,7 @@
                                         HorizontalOptions="CenterAndExpand"
                                         HorizontalTextAlignment="Center"
                                         Text="{Binding UiName}"
-                                        TextColor="#1A1818"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
                                 </Grid>
                                 <ext:CustomShadowFrame.GestureRecognizers>

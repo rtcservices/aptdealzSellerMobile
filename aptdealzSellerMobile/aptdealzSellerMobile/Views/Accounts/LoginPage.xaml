@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
@@ -63,7 +63,7 @@
                             FontSize="24"
                             HorizontalOptions="CenterAndExpand"
                             Text="Welcome Back"
-                            TextColor="#292929"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="CenterAndExpand">
                             <Label.Margin>
                                 <OnPlatform x:TypeArguments="Thickness">
@@ -80,7 +80,7 @@
                                                   iOS=18}"
                             HorizontalOptions="CenterAndExpand"
                             Text="Login to your AptDealz Account"
-                            TextColor="#292929"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="CenterAndExpand" />
                     </StackLayout>
                     <!--#endregion-->
@@ -94,21 +94,15 @@
                         <ext:CustomShadowFrame
                             Margin="30,10"
                             Padding="20,0"
-                            BackgroundColor="#F0F0F0"
+                            BackgroundColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
                             HeightRequest="{OnPlatform Android=50,
                                                        iOS=50}">
                             <ext:ExtEntry
-                                Margin="0"
-                                FontFamily="Poppins"
-                                FontSize="{OnPlatform Android=16,
-                                                      iOS=18}"
-                                HorizontalOptions="FillAndExpand"
+                                x:Name="txtUsername"
                                 Placeholder="Email / Phone Number"
-                                PlaceholderColor="#ABABAB"
-                                TextColor="#292929"
-                                VerticalOptions="CenterAndExpand" />
+                                Style="{StaticResource entrPrimary}" />
                         </ext:CustomShadowFrame>
                         <!--#endregion-->
 
@@ -116,7 +110,7 @@
                         <ext:CustomShadowFrame
                             Margin="30,10"
                             Padding="20,0,0,0"
-                            BackgroundColor="#F0F0F0"
+                            BackgroundColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
                             HeightRequest="{OnPlatform Android=50,
@@ -127,26 +121,24 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ext:ExtEntry
+                                    x:Name="txtPassword"
                                     Grid.Column="0"
-                                    Margin="0"
-                                    BackgroundColor="Transparent"
-                                    FontFamily="Poppins"
-                                    FontSize="{OnPlatform Android=16,
-                                                          iOS=18}"
-                                    HorizontalOptions="FillAndExpand"
                                     IsPassword="True"
                                     Placeholder="Password"
-                                    PlaceholderColor="#ABABAB"
-                                    TextColor="#292929"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource entrPrimary}" />
 
                                 <Image
-                                    Grid.Column="0"
-                                    Margin="0,0,5,0"
+                                    x:Name="imgEye"
+                                    Grid.Column="1"
+                                    Margin="0,0,15,0"
                                     Aspect="AspectFit"
                                     HeightRequest="25"
                                     HorizontalOptions="EndAndExpand"
-                                    Source="iconShowGray.png" />
+                                    Source="iconHide.png">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgPassword_Tapped" />
+                                    </Image.GestureRecognizers>
+                                </Image>
                             </Grid>
                         </ext:CustomShadowFrame>
                         <!--#endregion-->
@@ -163,7 +155,7 @@
                                                       iOS=16}"
                                 HorizontalOptions="EndAndExpand"
                                 Text="Forgot Password"
-                                TextColor="#292929" />
+                                TextColor="{StaticResource Black}" />
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ForgotPassword_Click" />
                             </StackLayout.GestureRecognizers>
@@ -179,7 +171,7 @@
                                 x:Name="imgCheck"
                                 HeightRequest="25"
                                 HorizontalOptions="StartAndExpand"
-                                Source="iconCheck.png"
+                                Source="iconUncheck.png"
                                 VerticalOptions="CenterAndExpand" />
 
                             <Label
@@ -190,7 +182,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 HorizontalTextAlignment="Start"
                                 Text="Keep me logged in"
-                                TextColor="#292929"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkRemember_Tapped" />
@@ -200,14 +192,13 @@
 
                     </StackLayout>
 
-
                     <!--#region Login Button-->
                     <ext:CustomShadowFrame
                         x:Name="frmBtnLogin"
                         Grid.Row="2"
                         Margin="20,0"
                         Padding="10,5"
-                        BackgroundColor="#006027"
+                        BackgroundColor="{StaticResource Green}"
                         CornerRadius="5"
                         HasShadow="False"
                         HorizontalOptions="FillAndExpand"
@@ -219,10 +210,10 @@
                                                   iOS=18}"
                             HorizontalOptions="CenterAndExpand"
                             Text="Login"
-                            TextColor="#FFFFFF"
+                            TextColor="{StaticResource White}"
                             VerticalOptions="CenterAndExpand" />
                         <ext:CustomShadowFrame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="btnLogin_Tapped" />
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="BtnLogin_Tapped" />
                         </ext:CustomShadowFrame.GestureRecognizers>
                     </ext:CustomShadowFrame>
                     <!--#endregion-->
@@ -240,7 +231,7 @@
                                                   iOS=18}"
                             HorizontalOptions="EndAndExpand"
                             Text="Don't have an Account ?"
-                            TextColor="#292929"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="CenterAndExpand" />
 
                         <Label
@@ -250,7 +241,7 @@
                                                   iOS=18}"
                             HorizontalOptions="StartAndExpand"
                             Text="Sign Up"
-                            TextColor="#006027"
+                            TextColor="{StaticResource Green}"
                             VerticalOptions="CenterAndExpand" />
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkSignup_Tapped" />

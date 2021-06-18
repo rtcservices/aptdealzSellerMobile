@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Utility;
+using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -8,28 +11,91 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForgotPasswordPage : ContentPage
     {
+        #region Objects
+
+        #endregion
+
+        #region Constructor
         public ForgotPasswordPage()
         {
             InitializeComponent();
         }
+        #endregion
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        #region Methods
+        public bool Validation()
         {
-            Navigation.PopAsync();
+            bool isValid = false;
+            if (Common.EmptyFiels(txtEmail.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Email);
+            }
+            else if (!txtEmail.Text.IsValidEmail())
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_Email);
+            }
+            else
+            {
+                isValid = true;
+            }
+            return isValid;
         }
 
-        private async void ResetPassword_Tapped(object sender, EventArgs e)
+        async void SendOtpByEmail()
         {
             try
             {
-                await btnResetPassword.ScaleTo(0.9, 100, Easing.Linear);
-                await btnResetPassword.ScaleTo(1.0, 100, Easing.Linear);
+                if (Validation())
+                {
+                    AuthenticationAPI authenticationAPI = new AuthenticationAPI();
+
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
+
+                    var mResponse = await authenticationAPI.SendOtpByEmail(txtEmail.Text);
+                    if (mResponse != null && mResponse.Succeeded)
+                    {
+                        Common.DisplaySuccessMessage(mResponse.Message);
+                        await Navigation.PushAsync(new EnterOtpPage(txtEmail.Text));
+                    }
+                    else
+                    {
+                        if (mResponse != null)
+                            Common.DisplayErrorMessage(mResponse.Message);
+                        else
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                    }
+                }
             }
             catch (Exception ex)
             {
-
-
+                Common.DisplayErrorMessage("ForgotPasswordPage/SendOtpByEmail: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
             }
         }
+        #endregion
+
+        #region Events
+        private void ImgBack_Tapped(object sender, EventArgs e)
+        {
+            Common.BindAnimation(image: ImgBack);
+            Navigation.PopAsync();
+        }
+
+        private void ResetPassword_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                Common.BindAnimation(frame: btnResetPassword);
+                SendOtpByEmail();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ForgotPasswordPage/ResetPassword_Tapped: " + ex.Message);
+            }
+        }
+        #endregion
     }
 }

@@ -72,7 +72,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -112,7 +112,7 @@
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Quote Details"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                     <Label
@@ -122,7 +122,7 @@
                         FontSize="18"
                         HorizontalOptions="EndAndExpand"
                         Text="REQ#123"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
                 </StackLayout>
 
@@ -164,10 +164,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Unit Price"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -189,10 +189,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Handling Charge"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -214,10 +214,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Shiping Charge"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -239,10 +239,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="QuoteValidity Date"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -264,10 +264,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Shiping PIN Code"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -289,10 +289,10 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Quote Validty Date"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     Style="{StaticResource entrPrimary}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -323,7 +323,7 @@
                                         Grid.Column="1"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
-                                        TextColor="#000000">
+                                        TextColor="{StaticResource Black}">
                                         <Picker.Items>
                                             <x:String>Product1</x:String>
                                             <x:String>Product2</x:String>
@@ -362,7 +362,7 @@
                                                           iOS=18}"
                                     HorizontalOptions="FillAndExpand"
                                     Text="Total Quote Amount"
-                                    TextColor="#292929"
+                                    TextColor="{StaticResource Black}"
                                     VerticalOptions="CenterAndExpand" />
                                 <Label
                                     Grid.Column="1"
@@ -371,7 +371,7 @@
                                                           iOS=18}"
                                     HorizontalOptions="EndAndExpand"
                                     Text="RS 3500"
-                                    TextColor="#292929"
+                                    TextColor="{StaticResource Black}"
                                     VerticalOptions="CenterAndExpand" />
                             </Grid>
                         </StackLayout>
@@ -394,9 +394,9 @@
                                                           iOS=16}"
                                     Keyboard="Text"
                                     Placeholder="Comments:"
-                                    PlaceholderColor="#ABABAB"
+                                    PlaceholderColor="{StaticResource Gray}"
                                     TabIndex="1"
-                                    TextColor="#292929" />
+                                    TextColor="{StaticResource Black}" />
                             </Frame>
                         </StackLayout>
 
@@ -411,7 +411,7 @@
                                 Grid.Row="2"
                                 Margin="20,0"
                                 Padding="10,5"
-                                BackgroundColor="#006027"
+                                BackgroundColor="{StaticResource Green}"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="CenterAndExpand">
@@ -422,7 +422,7 @@
                                                           iOS=18}"
                                     HorizontalOptions="CenterAndExpand"
                                     Text="Submit Quote"
-                                    TextColor="#FFFFFF"
+                                    TextColor="{StaticResource White}"
                                     VerticalOptions="CenterAndExpand" />
                                 <ext:CustomShadowFrame.GestureRecognizers>
                                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Submit_QuoteTapped" />

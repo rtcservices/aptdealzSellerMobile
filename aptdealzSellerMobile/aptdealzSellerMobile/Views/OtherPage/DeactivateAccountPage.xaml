@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid>
@@ -75,7 +75,7 @@
             <!--#endregion-->
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -111,7 +111,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Deactivate Account"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </Grid>
@@ -128,14 +128,14 @@
                             LineBreakMode="WordWrap"
                             LineHeight="1.2"
                             Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-                            TextColor="#292929"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="FillAndExpand" />
 
                         <ext:CustomShadowFrame
                             Grid.Row="1"
                             Margin="30,0"
                             Padding="0"
-                            BorderColor="#F0F0F0"
+                            BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
                             HeightRequest="150"
@@ -148,8 +148,8 @@
                                 FontSize="16"
                                 HorizontalOptions="FillAndExpand"
                                 Placeholder="Reason for Deactivation:"
-                                PlaceholderColor="#535353"
-                                TextColor="#292929"
+                                PlaceholderColor="{StaticResource Black}"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="FillAndExpand" />
                         </ext:CustomShadowFrame>
 
@@ -157,7 +157,7 @@
                             Grid.Row="2"
                             Margin="20,20,20,40"
                             Padding="0"
-                            BackgroundColor="#006027"
+                            BackgroundColor="{StaticResource Green}"
                             CornerRadius="5"
                             HasShadow="False"
                             HorizontalOptions="FillAndExpand"
@@ -170,7 +170,7 @@
                                 HorizontalOptions="CenterAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Confirm Account Deactivation"
-                                TextColor="#FFFFFF"
+                                TextColor="{StaticResource White}"
                                 VerticalOptions="CenterAndExpand" />
                             <ext:CustomShadowFrame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmDeactivation_Tapped" />

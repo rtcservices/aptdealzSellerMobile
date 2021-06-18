@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid>
@@ -76,7 +76,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -113,7 +113,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Settings"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </Grid>
@@ -136,7 +136,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Language"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <!--  English Picker  -->
@@ -144,7 +144,7 @@
                                 Grid.Column="1"
                                 Margin="0"
                                 Padding="0"
-                                BorderColor="#F0F0F0"
+                                BorderColor="{StaticResource LightGray}"
                                 CornerRadius="5"
                                 HasShadow="False">
                                 <StackLayout Orientation="Horizontal">
@@ -155,8 +155,8 @@
                                         FontFamily="Poppins"
                                         FontSize="16"
                                         HorizontalOptions="FillAndExpand"
-                                        TextColor="#292929"
-                                        TitleColor="#535353"
+                                        TextColor="{StaticResource Black}"
+                                        TitleColor="{StaticResource Black}"
                                         VerticalOptions="FillAndExpand" />
 
                                     <Image
@@ -188,7 +188,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Display Mode"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <Grid
@@ -211,7 +211,7 @@
                                         HorizontalOptions="CenterAndExpand"
                                         LineBreakMode="WordWrap"
                                         Text="Light"
-                                        TextColor="#191818"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
                                 </ext:CustomShadowFrame>
 
@@ -220,7 +220,7 @@
                                     Grid.Column="1"
                                     Margin="0"
                                     Padding="0"
-                                    BackgroundColor="#006027"
+                                    BackgroundColor="{StaticResource Green}"
                                     CornerRadius="5"
                                     HasShadow="False">
                                     <Label
@@ -230,7 +230,7 @@
                                         HorizontalOptions="CenterAndExpand"
                                         LineBreakMode="WordWrap"
                                         Text="Dark"
-                                        TextColor="#FFFFFF"
+                                        TextColor="{StaticResource White}"
                                         VerticalOptions="CenterAndExpand" />
                                 </ext:CustomShadowFrame>
                             </Grid>
@@ -251,7 +251,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Alert Tone"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <!--  Tone Picker  -->
@@ -259,7 +259,7 @@
                                 Grid.Column="1"
                                 Margin="0"
                                 Padding="0"
-                                BorderColor="#F0F0F0"
+                                BorderColor="{StaticResource LightGray}"
                                 CornerRadius="5"
                                 HasShadow="False">
                                 <StackLayout Orientation="Horizontal">
@@ -270,8 +270,8 @@
                                         FontFamily="Poppins"
                                         FontSize="16"
                                         HorizontalOptions="FillAndExpand"
-                                        TextColor="#292929"
-                                        TitleColor="#535353"
+                                        TextColor="{StaticResource Black}"
+                                        TitleColor="{StaticResource Black}"
                                         VerticalOptions="FillAndExpand" />
 
                                     <Image
@@ -303,7 +303,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Mute Notifications"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <Image

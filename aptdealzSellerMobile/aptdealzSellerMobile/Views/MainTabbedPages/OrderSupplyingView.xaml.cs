@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using aptdealzSellerMobile.Views.Popup;
 using Rg.Plugins.Popup.Services;
@@ -131,7 +132,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -151,7 +152,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 statusPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -181,8 +182,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     var frmScanQrCode = (OrderSupplying)frm.BindingContext;
                     if (frmScanQrCode != null && frmScanQrCode.IsVisible == true)
                     {
-                        if (isRefreshScanQR != null)
-                            isRefreshScanQR(true, EventArgs.Empty);
+                        isRefreshScanQR?.Invoke(true, EventArgs.Empty);
                     }
                 }
             }

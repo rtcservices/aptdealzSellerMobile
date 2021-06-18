@@ -1,39 +1,58 @@
-﻿using aptdealzSellerMobile.Views;
-using aptdealzSellerMobile.Views.Dashboard;
-using aptdealzSellerMobile.Views.MainTabbedPages;
-using aptdealzSellerMobile.Views.OtherPage;
+﻿using aptdealzSellerMobile.Repository;
+using aptdealzSellerMobile.Services;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
+using Plugin.Geolocator;
 using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace aptdealzSellerMobile
 {
     public partial class App : Application
     {
+        #region Objects
+        public static int latitude = 0;
+        public static int longitude = 0;
+        #endregion
+
         public App()
         {
+            Device.SetFlags(new string[]
+            {
+                "MediaElement_Experimental",
+                "AppTheme_Experimental"
+            });
+
             InitializeComponent();
+            Application.Current.UserAppTheme = OSAppTheme.Light;
 
+            RegisterDependencies();
+            GetCurrentLocation();
             MainPage = new SplashScreen();
+        }
 
-            #region Other Pages
-            //MainPage = new MainTabbedPage();
-            //MainPage = new RequirementDetailPage();
-            //MainPage = new QuoteDetailPage();
-            //MainPage = new QuoteEditPage();
-            // MainPage = new UpdateOrderDetailPage();
-            //MainPage = new GrievancesPage();
-            //MainPage = new GrievanceDetailPage();
-            //MainPage = new  NotificationPage();
-            //MainPage = new  SettingPage();
-            //MainPage = new  DeactivateAccountPage();
-            //MainPage = new  ContactSupportPage();
-            //MainPage = new  WeSupportPage();
-            //MainPage = new  CurrentlyShippingPage();
-            // MainPage = new  ReportPage();
-            //MainPage = new  ReportDetailPage(); 
-            #endregion
+        public static void RegisterDependencies()
+        {
+            Xamarin.Forms.DependencyService.Register<IFileUploadRepository, FileUploadRepository>();
+            Xamarin.Forms.DependencyService.Register<ICategoryRepository, CategoryRepository>();
+        }
+
+        public async void GetCurrentLocation()
+        {
+            try
+            {
+                var location = await Geolocation.GetLastKnownLocationAsync();
+                if (location != null)
+                {
+                    latitude = (int)location.Latitude;
+                    longitude = (int)location.Longitude;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("App/GetCurrentLocation: " + ex.Message);
+            }
         }
 
         protected override void OnStart()

@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -73,7 +73,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -110,7 +110,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="About AptDealz"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </Grid>
@@ -128,7 +128,7 @@
                             LineBreakMode="WordWrap"
                             LineHeight="1.2"
                             Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                            TextColor="#292929"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="FillAndExpand">
                             <Label.Margin>
                                 <OnPlatform x:TypeArguments="Thickness">
@@ -143,7 +143,7 @@
                             Grid.Row="1"
                             Margin="20"
                             Padding="0"
-                            BorderColor="#F0F0F0"
+                            BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
                             HorizontalOptions="FillAndExpand"
@@ -162,7 +162,7 @@
                                                           iOS=22}"
                                     HorizontalOptions="StartAndExpand"
                                     Text="Contact Info"
-                                    TextColor="#191818"
+                                    TextColor="{StaticResource Black}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
@@ -173,7 +173,7 @@
                                                           iOS=18}"
                                     HorizontalOptions="StartAndExpand"
                                     Text="30, ABC, XYZ Road &#x0a;Kochi, Kerala &#x0a;PIN - 682024"
-                                    TextColor="#191818"
+                                    TextColor="{StaticResource Black}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
@@ -184,7 +184,7 @@
                                                           iOS=18}"
                                     HorizontalOptions="StartAndExpand"
                                     Text="Phone: +91 012345678"
-                                    TextColor="#191818"
+                                    TextColor="{StaticResource Black}"
                                     VerticalOptions="CenterAndExpand" />
 
                             </Grid>

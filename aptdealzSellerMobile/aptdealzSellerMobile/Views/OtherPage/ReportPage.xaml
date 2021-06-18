@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid>
@@ -76,7 +76,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -114,7 +114,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Reports"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </Grid>
@@ -151,7 +151,7 @@
                                                 FontSize="{OnPlatform Android=16,
                                                                       iOS=16}"
                                                 Text="{Binding Title}"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <!--  Amount  -->
                                             <Label
@@ -160,7 +160,7 @@
                                                 FontSize="{OnPlatform Android=16,
                                                                       iOS=16}"
                                                 Text="{Binding Amount, StringFormat='Rs {0:00,000}'}"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                         </Grid>
                                     </Frame>

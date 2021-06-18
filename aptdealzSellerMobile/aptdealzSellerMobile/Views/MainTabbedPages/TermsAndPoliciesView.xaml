@@ -3,7 +3,7 @@
     x:Class="aptdealzSellerMobile.Views.MainTabbedPages.TermsAndPoliciesView"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -72,7 +72,7 @@
             <!--#endregion-->
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -108,7 +108,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Terms &amp; Policies"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </Grid>
@@ -126,7 +126,7 @@
                                                       iOS=20}"
                                 HorizontalOptions="StartAndExpand"
                                 Text="Terms &amp; Conditions"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <Label
@@ -138,7 +138,7 @@
                                 HorizontalOptions="FillAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                                TextColor="#292929"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="FillAndExpand" />
                         </StackLayout>
 
@@ -151,7 +151,7 @@
                                                       iOS=20}"
                                 HorizontalOptions="StartAndExpand"
                                 Text="Privacy Policy"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
 
                             <Label
@@ -164,7 +164,7 @@
                                 LineBreakMode="WordWrap"
                                 LineHeight="1.2"
                                 Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                                TextColor="#292929"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="FillAndExpand" />
                         </StackLayout>
 

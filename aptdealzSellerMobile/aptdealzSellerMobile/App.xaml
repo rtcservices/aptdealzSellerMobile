@@ -6,18 +6,29 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention">
     <Application.Resources>
 
+        <!--#region [ BaseURL / Version / Page ]-->
+        <x:String x:Key="BaseURL">https://aptdealzapidev.azurewebsites.net/</x:String>
+        <x:Int32 x:Key="Version">1</x:Int32>
+        <x:Int32 x:Key="PageNumber">1</x:Int32>
+        <x:Int32 x:Key="PageSize">300</x:Int32>
+        <!--#endregion-->
+
+        <!--#region [ Colors ]-->
+        <Color x:Key="White">#ffffff</Color>
+        <Color x:Key="ErrorBackground">#ff4d4f</Color>
+        <Color x:Key="SuccessBackground">#52c41a</Color>
+        <Color x:Key="WarningBackground">#1890ff</Color>
+
         <Color x:Key="Green">#006027</Color>
-        <Color x:Key="DarkRedColor">#E50019</Color>
+        <Color x:Key="Red">#E50019</Color>
         <Color x:Key="Black">#1A1818</Color>
         <Color x:Key="Gray">#bbbbbb</Color>
         <Color x:Key="LightGray">#F0F0F0</Color>
         <Color x:Key="DarkGray">#8C8B8B</Color>
-        <Color x:Key="DarkGrayColor">#515151</Color>
-        <Color x:Key="SilverColor">#F5F4F3</Color>
-        <Color x:Key="BlackColor">#000000</Color>
-        <Color x:Key="DarkOrangeColor">#FC9200</Color>
-        <Color x:Key="DarkBlackColor">#191818</Color>
+        <Color x:Key="Orange">#FC9200</Color>
+        <!--#endregion-->
 
+        <!--#region [ Button / ImageButton ]-->
         <Style x:Key="btnPrimary" TargetType="Button">
             <Setter Property="HeightRequest" Value="50" />
             <Setter Property="CornerRadius" Value="5" />
@@ -28,7 +39,7 @@
             <Setter Property="BackgroundColor" Value="{StaticResource Green}" />
             <Setter Property="FontSize" Value="17" />
             <Setter Property="FontFamily" Value="Poppins SemiBold" />
-            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="TextColor" Value="{StaticResource White}" />
         </Style>
 
         <Style x:Key="imgMenu" TargetType="ImageButton">
@@ -40,27 +51,31 @@
             <Setter Property="Padding" Value="15" />
             <Setter Property="BackgroundColor" Value="Transparent" />
         </Style>
+        <!--#endregion-->
 
+        <!--#region [ Frame ]-->
         <Style x:Key="frmEntry" TargetType="Frame">
             <Setter Property="Padding" Value="15,0" />
             <Setter Property="Margin" Value="0" />
-            <Setter Property="BackgroundColor" Value="{StaticResource Gray}" />
-            <Setter Property="BorderColor" Value="{StaticResource Gray}" />
+            <Setter Property="BackgroundColor" Value="{StaticResource LightGray}" />
+            <Setter Property="BorderColor" Value="{StaticResource LightGray}" />
             <Setter Property="CornerRadius" Value="5" />
             <Setter Property="HasShadow" Value="False" />
             <Setter Property="HeightRequest" Value="50" />
             <Setter Property="IsClippedToBounds" Value="True" />
             <Setter Property="VerticalOptions" Value="CenterAndExpand" />
         </Style>
+        <!--#endregion-->
 
+        <!--#region [ Extentions ]-->
         <Style x:Key="entrPrimary" TargetType="ext:ExtEntry">
-            <Setter Property="TextColor" Value="{StaticResource DarkGray}" />
-            <Setter Property="PlaceholderColor" Value="{StaticResource DarkGray}" />
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="PlaceholderColor" Value="{StaticResource Gray}" />
             <Setter Property="VerticalOptions" Value="FillAndExpand" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
             <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             <Setter Property="FontSize" Value="15" />
-            <Setter Property="FontFamily" Value="Poppins Medium" />
+            <Setter Property="FontFamily" Value="Poppins" />
         </Style>
 
         <Style x:Key="entrDark" TargetType="ext:ExtEntry">
@@ -72,7 +87,9 @@
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontFamily" Value="Poppins" />
         </Style>
+        <!--#endregion-->
 
+        <!--#region [ Views ]-->
         <Style x:Key="scrPrimary" TargetType="ScrollView">
             <Setter Property="HorizontalScrollBarVisibility" Value="Never" />
             <Setter Property="VerticalScrollBarVisibility" Value="Never" />
@@ -86,5 +103,7 @@
             <Setter Property="VerticalOptions" Value="FillAndExpand" />
             <Setter Property="SeparatorVisibility" Value="None" />
         </Style>
+        <!--#endregion-->
+
     </Application.Resources>
 </Application>

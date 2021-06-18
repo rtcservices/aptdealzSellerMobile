@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -27,7 +28,7 @@ namespace aptdealzSellerMobile.Views.Popup
         #region Method
         private void BindList()
         {
-            if (!string.IsNullOrEmpty(entrSearch.Text) || !string.IsNullOrWhiteSpace(entrSearch.Text))
+            if (Common.EmptyFiels(entrSearch.Text))
                 mRequirements.SearchCriteria.RequirementNo = entrSearch.Text;
 
             isRefresh?.Invoke(mRequirements, null);

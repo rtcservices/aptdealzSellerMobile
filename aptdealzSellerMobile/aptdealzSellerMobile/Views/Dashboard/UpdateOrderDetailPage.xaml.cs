@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aptdealzSellerMobile.Utility;
+using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,7 +13,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         public UpdateOrderDetailPage()
         {
             InitializeComponent();
-        } 
+        }
         #endregion
 
         #region Events
@@ -61,20 +62,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private async void frmUpdateTapped_Tapped(object sender, EventArgs e)
+        private void frmUpdateTapped_Tapped(object sender, EventArgs e)
         {
             try
             {
-                await frmUpdateTapped.ScaleTo(0.9, 100, Easing.Linear);
-                await frmUpdateTapped.ScaleTo(1.0, 100, Easing.Linear);
-                await Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage(false));
+                Common.BindAnimation(frame: frmUpdateTapped);
+                Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage("Supplying"));
             }
             catch (Exception ex)
             {
-
-
+                Common.DisplayErrorMessage("UpdateOrderDetailPage/frmUpdateTapped_Tapped: " + ex.Message);
             }
-        } 
+        }
         #endregion
     }
 }

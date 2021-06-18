@@ -7,7 +7,7 @@
         <Grid
             Margin="0"
             Padding="0"
-            BackgroundColor="#FFFFFFFF"
+            BackgroundColor="{StaticResource White}"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand">
 

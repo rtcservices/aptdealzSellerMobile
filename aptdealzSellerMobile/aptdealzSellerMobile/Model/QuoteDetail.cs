@@ -34,7 +34,7 @@ namespace aptdealzSellerMobile.Model
             set { _OldDetail = value; PropertyChangedEventArgs("OldDetail"); }
         }
 
-        private string _ArrowImage { get; set; } = Constraints.Right_Arrow;
+        private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
         public string ArrowImage
         {
             get { return _ArrowImage; }

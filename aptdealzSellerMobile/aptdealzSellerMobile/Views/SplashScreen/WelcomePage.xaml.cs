@@ -1,9 +1,11 @@
-﻿using aptdealzSellerMobile.Model;
+﻿using aptdealzSellerMobile.Interfaces;
+using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,16 +18,48 @@ namespace aptdealzSellerMobile.Views.SplashScreen
         private List<CarousellImage> mCarousellImages = new List<CarousellImage>();
         #endregion
 
+        #region Ctor
         public WelcomePage()
         {
             InitializeComponent();
         }
+
+        public WelcomePage(bool IsLogin)
+        {
+            InitializeComponent();
+            Navigation.PushAsync(new LoginPage());
+        }
+        #endregion
 
         #region Methods
         protected override void OnAppearing()
         {
             base.OnAppearing();
             BindCarousallData();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            base.OnBackButtonPressed();
+            try
+            {
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        var result = await DisplayAlert(Constraints.Alert, Constraints.DoYouWantToExit, Constraints.Yes, Constraints.No);
+                        if (result)
+                        {
+                            Xamarin.Forms.DependencyService.Get<ICloseAppOnBackButton>().CloseApp();
+                        }
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WelcomePage/OnBackButtonPressed: " + ex.Message);
+            }
+            return true;
         }
 
         private void BindCarousallData()
@@ -36,20 +70,21 @@ namespace aptdealzSellerMobile.Views.SplashScreen
                 new CarousellImage{ImageName="imgWelcomeTwo.png"},
                 new CarousellImage{ImageName="imgWelcomeThree.png"},
             };
-            indicaters.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+            Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
         }
         #endregion
 
-        private async void Loginbtn_Click(object sender, EventArgs e)
-        {
-            await btnLoginTapped.ScaleTo(0.9, 100, Easing.Linear);
-            await btnLoginTapped.ScaleTo(1.0, 100, Easing.Linear);
-            await Navigation.PushAsync(new LoginPage());
-        }
-
+        #region Events
         private void SkipTapped_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new LoginPage());
+            App.Current.MainPage = new NavigationPage(new LoginPage());
         }
+
+        private void BtnLogin_Clicked(object sender, EventArgs e)
+        {
+            Common.BindAnimation(button: BtnLogin);
+            App.Current.MainPage = new NavigationPage(new LoginPage());
+        }
+        #endregion
     }
 }

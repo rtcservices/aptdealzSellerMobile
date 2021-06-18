@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -74,7 +74,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -114,7 +114,7 @@
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Need 5 Canon A210 All In one &#10;Printers"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </StackLayout>
@@ -138,7 +138,7 @@
                             Grid.Row="0"
                             Margin="10"
                             Padding="0"
-                            BorderColor="#F0F0F0"
+                            BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
                             HorizontalOptions="CenterAndExpand">
@@ -182,7 +182,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Requirement ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -193,13 +193,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="REQ#123"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -219,7 +219,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Buyer ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -230,13 +230,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="B951"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -256,7 +256,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Category"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -267,13 +267,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="IT Product"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -293,7 +293,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Sub Category"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -304,13 +304,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Laptop"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -330,7 +330,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Quantity"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -341,13 +341,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="5 Pieces"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -367,7 +367,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Total Price Estimation"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -378,13 +378,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 2500"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -404,7 +404,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Prererreg Source"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -415,13 +415,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text=""
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -441,7 +441,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Expected Delivery Date"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -452,13 +452,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="12.02.2021"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -478,7 +478,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Need Insurance"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Image
@@ -492,7 +492,7 @@
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -512,7 +512,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Prefer Make In India Products"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Image
@@ -526,7 +526,7 @@
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -547,14 +547,14 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Buyer Contact Detail"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
                                     <ext:CustomShadowFrame
                                         x:Name="frmRevealContact"
                                         Grid.Column="1"
                                         Margin="0,20,0,20"
                                         Padding="0"
-                                        BorderColor="#006027"
+                                        BorderColor="{StaticResource Green}"
                                         BorderWidth="2"
                                         CornerRadius="5"
                                         HasShadow="False"
@@ -569,7 +569,7 @@
                                                                   iOS=16}"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Reveal Contact"
-                                            TextColor="#006027"
+                                            TextColor="{StaticResource Green}"
                                             VerticalOptions="CenterAndExpand" />
                                         <ext:CustomShadowFrame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="frmRevealContact_Tapped" />
@@ -577,7 +577,7 @@
                                     </ext:CustomShadowFrame>
                                 </Grid>
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -598,7 +598,7 @@
                                         Grid.Column="0"
                                         Margin="0,20,0,20"
                                         Padding="0"
-                                        BorderColor="#006027"
+                                        BorderColor="{StaticResource Green}"
                                         BorderWidth="2"
                                         CornerRadius="5"
                                         HasShadow="False"
@@ -613,7 +613,7 @@
                                                                   iOS=16}"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Provide Quote"
-                                            TextColor="#006027"
+                                            TextColor="{StaticResource Green}"
                                             VerticalOptions="CenterAndExpand" />
                                         <ext:CustomShadowFrame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="frmProvideQoute_Tapped" />
@@ -624,7 +624,7 @@
                                         Grid.Column="1"
                                         Margin="0,20,0,20"
                                         Padding="0"
-                                        BorderColor="#006027"
+                                        BorderColor="{StaticResource Green}"
                                         BorderWidth="2"
                                         CornerRadius="5"
                                         HasShadow="False"
@@ -639,7 +639,7 @@
                                                                   iOS=16}"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Reject(42)"
-                                            TextColor="#006027"
+                                            TextColor="{StaticResource Green}"
                                             VerticalOptions="CenterAndExpand" />
                                         <ext:CustomShadowFrame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="frmReject_Tapped" />

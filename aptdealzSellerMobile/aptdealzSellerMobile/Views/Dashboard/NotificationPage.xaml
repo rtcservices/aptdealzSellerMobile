@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid>
@@ -74,7 +74,7 @@
             <!--#endregion-->
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -110,7 +110,7 @@
                         FontSize="18"
                         HorizontalOptions="StartAndExpand"
                         Text="Notifications"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
                 </StackLayout>
 
@@ -135,7 +135,7 @@
 
                                         <BoxView
                                             Grid.Column="0"
-                                            BackgroundColor="#006027"
+                                            BackgroundColor="{StaticResource Green}"
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="FillAndExpand"
                                             WidthRequest="1" />
@@ -149,7 +149,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             LineBreakMode="WordWrap"
                                             Text="{Binding NotificationTitle}"
-                                            TextColor="#292929"
+                                            TextColor="{StaticResource Black}"
                                             VerticalOptions="CenterAndExpand" />
 
                                         <Image
@@ -167,7 +167,7 @@
 
                                     <BoxView
                                         Grid.Row="1"
-                                        BackgroundColor="#F0F0F0"
+                                        BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
                                         HorizontalOptions="FillAndExpand"
                                         VerticalOptions="EndAndExpand" />

@@ -1,7 +1,9 @@
-﻿using aptdealzSellerMobile.Utility;
+﻿using aptdealzSellerMobile.Interfaces;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
+using aptdealzSellerMobile.Views.OtherPage;
 using System;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,315 +13,147 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     public partial class MainTabbedPage : ContentPage
     {
         #region Objects
-        Views.Dashboard.HomeView homeView;
-        bool isQoute = false;
+        private string selectedView;
         #endregion
 
         #region Constuctor
-        public MainTabbedPage(bool isQoute)
+        public MainTabbedPage(string OpenView)
         {
             InitializeComponent();
-            this.isQoute = isQoute;
-            InitializeObject();
+            selectedView = OpenView;
+            BindViews(selectedView);
         }
         #endregion
 
-        #region Methods
-        private void InitializeObject()
+        #region Methods  
+        protected override bool OnBackButtonPressed()
         {
-            grdMain.Children.Clear();
-            imgHome.Source = Constraints.Home_Active_Img;
-            lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            ReirectHomeView();
-            if (this.isQoute)
-            {
-                UnselectTab();
-                grdMain.Children.Clear();
-                imgRequirements.Source = Constraints.Quote_Active_Img;
-                lblRequirements.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                grdMain.Children.Add(new QuoteView());
-            }
-        }
-
-        private void ReirectHomeView()
-        {
+            base.OnBackButtonPressed();
             try
             {
-                grdMain.Children.Clear();
-                homeView = new HomeView();
-                homeView.isRefresh += (s, e1) =>
+                if (DeviceInfo.Platform == DevicePlatform.Android)
                 {
-                    var viewToOpen = (string)s;
-                    if (!string.IsNullOrEmpty(viewToOpen))
+                    Device.BeginInvokeOnMainThread(async () =>
                     {
-                        grdMain.Children.Clear();
-                        if (viewToOpen == "Requirements")
+                        var result = await DisplayAlert(Constraints.Alert, Constraints.DoYouWantToExit, Constraints.Yes, Constraints.No);
+                        if (result)
                         {
-                            OpenViewRequirements();
+                            Xamarin.Forms.DependencyService.Get<ICloseAppOnBackButton>().CloseApp();
                         }
-
-                        else if (viewToOpen == "Submitted")
-                        {
-                            OpenQuoteSubmit();
-                        }
-
-                        else if (viewToOpen == "Supplying")
-                        {
-                            OpenOrderSupplying();
-                        }
-
-                        else if (viewToOpen == "AccountProfile")
-                        {
-                            OpenAccountProfile();
-
-                        }
-
-                        else if (viewToOpen == "AptDealz")
-                        {
-                            NavigatetoAboutaptzDealz();
-                        }
-
-                        else if (viewToOpen == "Policies")
-                        {
-                            NavigatePolicieView();
-                        }
-                    }
-                };
-                grdMain.Children.Add(homeView);
+                    });
+                }
             }
             catch (Exception ex)
             {
-                //DisplayInfo.ErrorMessage(ex.Message);
+                Common.DisplayErrorMessage("MainTabbedPage/OnBackButtonPressed: " + ex.Message);
             }
+            return true;
         }
 
-        private void OpenViewRequirements()
+        public void BindViews(string view)
         {
-            UnselectTab();
-            imgHome.Source = Constraints.Home_Active_Img;
-            lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            RequirementsView requirmentview = new RequirementsView();
-            requirmentview.isRefresh += (s1, e2) =>
+            try
             {
-                var isBack = (bool)s1;
-                if (isBack)
-                {
-                    ReirectHomeView();
-                }
-            };
-            grdMain.Children.Add(requirmentview);
-        }
-
-        private void OpenQuoteSubmit()
-        {
-            UnselectTab();
-            imgRequirements.Source = Constraints.Quote_Active_Img;
-            lblRequirements.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            QuoteView quoteView = new QuoteView();
-            quoteView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
+                if (view == "Home")
                 {
                     UnselectTab();
-                    imgHome.Source = Constraints.Quote_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
+                    imgHome.Source = Constraints.Img_Home_Activ;
+                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new HomeView());
                 }
-            };
-            grdMain.Children.Add(quoteView);
-        }
-
-        private void OpenOrderSupplying()
-        {
-            UnselectTab();
-            imgOrders.Source = Constraints.Order_Active_Img;
-            lblOrders.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            OrderSupplyingView ordersuppliyView = new OrderSupplyingView();
-            ordersuppliyView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
+                else if (view == "Requirements")
                 {
                     UnselectTab();
-                    imgHome.Source = Constraints.Home_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
+                    imgHome.Source = Constraints.Img_Home_Activ;
+                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new RequirementsView());
                 }
-            };
-            ordersuppliyView.isRefreshScanQR += (s2, e4) =>
-            {
-                var isQRShow = (bool)s2;
-                if (isQRShow)
+                else if (view == "Submitted")
                 {
                     UnselectTab();
-                    imgOrders.Source = Constraints.Order_Active_Img;
-                    lblOrders.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    QrCodeScanView qrCodeScanView = new QrCodeScanView();
-                    qrCodeScanView.isRefresh += (sq, eq) =>
-                    {
-                        grdMain.Children.Clear();
-                        grdMain.Children.Add(ordersuppliyView);
-                    };
-                    grdMain.Children.Add(qrCodeScanView);
+                    imgRequirements.Source = Constraints.Img_Quote_Active;
+                    lblRequirements.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new QuoteView());
                 }
-            };
-            grdMain.Children.Add(ordersuppliyView);
-        }
-
-        private void OpenAccountProfile()
-        {
-            UnselectTab();
-            imgAccount.Source = Constraints.Account_Active_Img;
-            lblAccount.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            AccountView accountView = new AccountView();
-            accountView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
+                else if (view == "Supplying")
                 {
                     UnselectTab();
-                    imgHome.Source = Constraints.Home_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
+                    imgOrders.Source = Constraints.Img_Order_Active;
+                    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new OrderSupplyingView());
                 }
-            };
-            grdMain.Children.Add(accountView);
-        }
-
-        private void NavigatetoAboutaptzDealz()
-        {
-            AboutAptDealzView aptdealzView = new AboutAptDealzView();
-            aptdealzView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
+                else if (view == "AccountProfile")
                 {
-                    ReirectHomeView();
+                    UnselectTab();
+                    imgAccount.Source = Constraints.Img_Account_Active;
+                    lblAccount.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new AccountView());
                 }
-            };
-            grdMain.Children.Add(aptdealzView);
-        }
-
-        private void NavigatePolicieView()
-        {
-            TermsAndPoliciesView policieView = new TermsAndPoliciesView();
-            policieView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
+                else if (view == "QrCodeScan")
                 {
-                    ReirectHomeView();
+                    UnselectTab();
+                    imgOrders.Source = Constraints.Img_Order_Active;
+                    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new QrCodeScanView());
                 }
-            };
-            grdMain.Children.Add(policieView);
+                else if (view == "AptDealz")
+                {
+                    UnselectTab();
+                    grdMain.Children.Add(new AboutAptDealzView());
+                }
+                else if (view == "Policies")
+                {
+                    UnselectTab();
+                    grdMain.Children.Add(new TermsAndPoliciesView());
+                }
+                else
+                {
+                    UnselectTab();
+                    imgHome.Source = Constraints.Img_Home_Activ;
+                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    grdMain.Children.Add(new HomeView());
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("MainTabbedPage/BindViews" + ex.Message);
+            }
         }
 
         private void UnselectTab()
         {
-            imgHome.Source = Constraints.Home_Img;
-            imgRequirements.Source = Constraints.Quote_Img;
-            imgOrders.Source = Constraints.Order_Img;
-            imgAccount.Source = Constraints.Account_Img;
-            lblHome.TextColor = (Color)App.Current.Resources["DarkBlackColor"]; 
-            lblRequirements.TextColor = (Color)App.Current.Resources["DarkBlackColor"]; 
-            lblOrders.TextColor = (Color)App.Current.Resources["DarkBlackColor"]; 
-            lblAccount.TextColor = (Color)App.Current.Resources["DarkBlackColor"]; 
+            grdMain.Children.Clear();
+            imgHome.Source = Constraints.Img_Home;
+            imgRequirements.Source = Constraints.Img_Quote;
+            imgOrders.Source = Constraints.Img_Order;
+            imgAccount.Source = Constraints.Img_Account;
+            lblHome.TextColor = (Color)App.Current.Resources["Black"];
+            lblRequirements.TextColor = (Color)App.Current.Resources["Black"];
+            lblOrders.TextColor = (Color)App.Current.Resources["Black"];
+            lblAccount.TextColor = (Color)App.Current.Resources["Black"];
         }
         #endregion
 
         #region Events
         private void Home_Tapped(object sender, EventArgs e)
         {
-            UnselectTab();
-            grdMain.Children.Clear();
-            imgHome.Source = Constraints.Home_Active_Img;
-            lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            grdMain.Children.Add(new HomeView());
-            ReirectHomeView();
+            BindViews("Home");
         }
 
         private void Quotes_Tapped(object sender, EventArgs e)
         {
-            UnselectTab();
-            grdMain.Children.Clear();
-            imgRequirements.Source = Constraints.Quote_Active_Img;
-            lblRequirements.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            QuoteView quoteView = new QuoteView();
-            quoteView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
-                {
-                    UnselectTab();
-                    imgHome.Source = Constraints.Home_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
-                }
-            };
-            grdMain.Children.Add(quoteView);
+            BindViews("Submitted");
         }
 
         private void Orders_Tapped(object sender, EventArgs e)
         {
-            UnselectTab();
-            grdMain.Children.Clear();
-            imgOrders.Source = Constraints.Order_Active_Img;
-            lblOrders.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            OrderSupplyingView ordersuppliyView = new OrderSupplyingView();
-            ordersuppliyView.isRefreshScanQR += (s1, e2) =>
-            {
-                var isQRShow = (bool)s1;
-                if (isQRShow)
-                {
-                    UnselectTab();
-                    imgOrders.Source = Constraints.Order_Active_Img;
-                    lblOrders.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    QrCodeScanView qrCodeScanView = new QrCodeScanView();
-                    qrCodeScanView.isRefresh += (sq, eq) =>
-                    {
-                        grdMain.Children.Clear();
-                        grdMain.Children.Add(ordersuppliyView);
-                    };
-                    grdMain.Children.Add(qrCodeScanView);
-
-                }
-            };
-            ordersuppliyView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
-                {
-                    UnselectTab();
-                    imgHome.Source = Constraints.Home_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
-                }
-            };
-            grdMain.Children.Add(ordersuppliyView);
+            BindViews("Supplying");
         }
 
         private void Account_Tapped(object sender, EventArgs e)
         {
-            UnselectTab();
-            grdMain.Children.Clear();
-            imgAccount.Source = Constraints.Account_Active_Img;
-            lblAccount.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-            AccountView accountView = new AccountView();
-            accountView.isRefresh += (s1, e2) =>
-            {
-                var isBack = (bool)s1;
-                if (isBack)
-                {
-                    UnselectTab();
-                    imgHome.Source = Constraints.Home_Active_Img;
-                    lblHome.TextColor = (Color)App.Current.Resources["DarkOrangeColor"];
-                    ReirectHomeView();
-                }
-            };
-            grdMain.Children.Add(accountView);
+            BindViews("AccountProfile");
         }
-
         #endregion
     }
 }

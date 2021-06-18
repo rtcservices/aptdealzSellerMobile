@@ -1,11 +1,10 @@
 ﻿using aptdealzSellerMobile.Extention;
 using aptdealzSellerMobile.iOS.CustomRenderers;
 using CoreGraphics;
+using dotMorten.Xamarin.Forms;
+using dotMorten.Xamarin.Forms.Platform.iOS;
 using Foundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -15,6 +14,7 @@ using Xamarin.Forms.Platform.iOS;
 [assembly: ExportRenderer(typeof(Picker), typeof(PickerCustomRenderer))]
 [assembly: ExportRenderer(typeof(Editor), typeof(EditorCustomRenderer))]
 [assembly: ExportRenderer(typeof(ExtKeyboard), typeof(KeyboardViewRenderer))]
+[assembly: ExportRenderer(typeof(CustomAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
 
 namespace aptdealzSellerMobile.iOS.CustomRenderers
 {
@@ -113,7 +113,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
         }
     }
 
-   public class KeyboardViewRenderer : ViewRenderer
+    public class KeyboardViewRenderer : ViewRenderer
     {
         NSObject _keyboardShowObserver;
         NSObject _keyboardHideObserver;
@@ -174,6 +174,29 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             {
                 _keyboardHideObserver.Dispose();
                 _keyboardHideObserver = null;
+            }
+        }
+    }
+
+    public class AutoSuggestBoxCustomRenderer : AutoSuggestBoxRenderer
+    {
+        protected override void OnElementChanged(ElementChangedEventArgs<AutoSuggestBox> e)
+        {
+            base.OnElementChanged(e);
+            try
+            {
+                if (Control != null)
+                {
+                    Control.Layer.BackgroundColor = Color.Transparent.ToCGColor();
+                    Control.Layer.BorderColor = Color.Transparent.ToCGColor();
+                    Control.Layer.CornerRadius = (nfloat)0.0;
+                    Control.IsSuggestionListOpen = false;
+                    Control.ShowBottomBorder = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                var _ = ex.Message;
             }
         }
     }

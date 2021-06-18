@@ -7,7 +7,7 @@
     xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <ext:ExtKeyboard>
@@ -78,7 +78,7 @@
 
                 <BoxView
                     Grid.Row="1"
-                    BackgroundColor="#F0F0F0"
+                    BackgroundColor="{StaticResource LightGray}"
                     HeightRequest="1"
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="EndAndExpand" />
@@ -116,7 +116,7 @@
                             FontSize="20"
                             HorizontalOptions="StartAndExpand"
                             Text="Contact Support"
-                            TextColor="#191818"
+                            TextColor="{StaticResource Black}"
                             VerticalOptions="CenterAndExpand" />
 
                     </Grid>
@@ -201,7 +201,7 @@
                                                                                   iOS=15}"
                                                             HorizontalOptions="StartAndExpand"
                                                             Text="{Binding UserName}"
-                                                            TextColor="#292929"
+                                                            TextColor="{StaticResource Black}"
                                                             VerticalOptions="FillAndExpand" />
                                                         <Label
                                                             Margin="0"

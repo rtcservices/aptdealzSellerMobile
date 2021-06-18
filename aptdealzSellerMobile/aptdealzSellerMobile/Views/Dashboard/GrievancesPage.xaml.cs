@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.OtherPage;
 using aptdealzSellerMobile.Views.Popup;
 using Rg.Plugins.Popup.Services;
@@ -87,7 +88,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -96,7 +97,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                //Common.DisplayErrorMessage("AppointmentsPage/imgAdd_Clicked: " + ex.Message);
+                Common.DisplayErrorMessage("GrievancesPage/FrmStatus_Tapped: " + ex.Message);
             }
         }
 
@@ -108,7 +109,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -117,7 +118,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                //Common.DisplayErrorMessage("AppointmentsPage/imgAdd_Clicked: " + ex.Message);
+                Common.DisplayErrorMessage("GrievancesPage/FrmSortBy_Tapped: " + ex.Message);
             }
         }
 
@@ -163,7 +164,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             lstGrievances.SelectedItem = null;
             Navigation.PushAsync(new GrievanceDetailPage());
-        } 
+        }
         #endregion
     }
 }

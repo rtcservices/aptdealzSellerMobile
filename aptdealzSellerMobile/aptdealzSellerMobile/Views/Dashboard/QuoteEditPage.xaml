@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
@@ -76,7 +76,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -113,7 +113,7 @@
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Quote Detail"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
                 </StackLayout>
 
@@ -163,7 +163,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Requirement ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -174,13 +174,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="REQ#123"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -201,7 +201,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Quote Reference No"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -212,13 +212,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="QUO#987"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -239,7 +239,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Buyer ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -250,13 +250,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="B951"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -277,7 +277,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Seller ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -288,13 +288,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="S753"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -315,7 +315,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Shipping PIN Code"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -326,13 +326,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="682017"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -353,7 +353,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Requuest Quantity"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -364,13 +364,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="100 Pieces"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -391,7 +391,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Unit Price"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -402,13 +402,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="RS 25"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -429,7 +429,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Net Amount"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -440,13 +440,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 2500"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -467,7 +467,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Handling Charge"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -478,13 +478,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 250"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -505,7 +505,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Shipping Charge"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -516,13 +516,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 250"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -543,7 +543,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Insurance Charges"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -554,13 +554,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 250"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -581,7 +581,7 @@
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Country of origin"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -592,13 +592,13 @@
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
                                         Text="India"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -636,14 +636,14 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Insurance Charge"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="1"
                                                 FontFamily="Poppins SemiBold"
                                                 HorizontalOptions="CenterAndExpand"
                                                 Text="RS 3500"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <Label
                                                 Grid.Row="1"
@@ -654,7 +654,7 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Quote Validity Date"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
                                             <Label
                                                 Grid.Row="1"
                                                 Grid.Column="1"
@@ -663,7 +663,7 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="CenterAndExpand"
                                                 Text="20-10-2021"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <Label
                                                 Grid.Row="2"
@@ -674,7 +674,7 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Contact Seller"
-                                                TextColor="#292929"
+                                                TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
                                             <ext:CustomShadowFrame
                                                 x:Name="frmRevalContact"
@@ -682,7 +682,7 @@
                                                 Grid.Column="1"
                                                 Margin="0"
                                                 Padding="0"
-                                                BorderColor="#006027"
+                                                BorderColor="{StaticResource Green}"
                                                 BorderWidth="2"
                                                 CornerRadius="5"
                                                 HasShadow="False"
@@ -697,7 +697,7 @@
                                                                           iOS=16}"
                                                     HorizontalOptions="CenterAndExpand"
                                                     Text="Reveal Contact"
-                                                    TextColor="#006027"
+                                                    TextColor="{StaticResource Green}"
                                                     VerticalOptions="CenterAndExpand" />
                                                 <ext:CustomShadowFrame.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="frmQuoteDetailRevealContact_Tapped" />
@@ -733,7 +733,7 @@
                                             FontFamily="Poppins SemiBold"
                                             HorizontalOptions="StartAndExpand"
                                             Text="Status:"
-                                            TextColor="#006027" />
+                                            TextColor="{StaticResource Green}" />
                                         <Label
                                             Grid.Row="1"
                                             Grid.Column="0"
@@ -741,7 +741,7 @@
                                             FontFamily="Poppins SemiBold"
                                             HorizontalOptions="StartAndExpand"
                                             Text="Buyer Accepted Another Quote"
-                                            TextColor="#006027" />
+                                            TextColor="{StaticResource Green}" />
                                     </Grid>
                                 </Frame>
                             </StackLayout>
@@ -763,7 +763,7 @@
                                         x:Name="frmEditSubmit"
                                         Grid.Column="0"
                                         BackgroundColor="White"
-                                        BorderColor="#006027"
+                                        BorderColor="{StaticResource Green}"
                                         HasShadow="False"
                                         HeightRequest="45"
                                         Style="{StaticResource frmEntry}">
@@ -773,7 +773,7 @@
                                                                   iOS=18}"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Edit &amp; Resubmit"
-                                            TextColor="#006027"
+                                            TextColor="{StaticResource Green}"
                                             VerticalOptions="CenterAndExpand" />
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="EditSubmit_Tapped" />
@@ -783,7 +783,7 @@
                                         x:Name="frmBackQuote"
                                         Grid.Column="1"
                                         BackgroundColor="White"
-                                        BorderColor="#006027"
+                                        BorderColor="{StaticResource Green}"
                                         HasShadow="False"
                                         HeightRequest="45"
                                         Style="{StaticResource frmEntry}">
@@ -793,7 +793,7 @@
                                                                   iOS=18}"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Back to Quotes"
-                                            TextColor="#006027"
+                                            TextColor="{StaticResource Green}"
                                             VerticalOptions="CenterAndExpand" />
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="BackQoute_Tapped" />

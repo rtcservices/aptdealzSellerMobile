@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -74,7 +74,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -114,7 +114,7 @@
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Submitted Quotes"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                     <Image
@@ -142,7 +142,7 @@
                         Grid.Column="1"
                         Margin="0,10,10,10"
                         Padding="0"
-                        BorderColor="#F0F0F0"
+                        BorderColor="{StaticResource LightGray}"
                         CornerRadius="5"
                         HasShadow="False"
                         HorizontalOptions="EndAndExpand">
@@ -167,7 +167,7 @@
                                 FontSize="13"
                                 HorizontalOptions="CenterAndExpand"
                                 Text="Sort by"
-                                TextColor="#191818"
+                                TextColor="{StaticResource Black}"
                                 VerticalOptions="CenterAndExpand" />
                         </Grid>
                         <ext:CustomShadowFrame.GestureRecognizers>

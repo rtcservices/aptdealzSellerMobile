@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -76,7 +76,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -131,14 +131,14 @@
                     FontSize="{OnPlatform Android=14,
                                           iOS=14}"
                     Text="Warning"
-                    TextColor="#292929" />
+                    TextColor="{StaticResource Black}" />
                 <Label
                     Grid.Row="1"
                     FontFamily="Poppins Medium"
                     FontSize="{OnPlatform Android=14,
                                           iOS=14}"
                     Text="Scan the buyer's QR code only after &#10; providing them the product."
-                    TextColor="#292929" />
+                    TextColor="{StaticResource Black}" />
 
             </Grid>
         </Grid>

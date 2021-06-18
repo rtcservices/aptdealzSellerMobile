@@ -47,10 +47,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     zxing.IsAnalyzing = false;
-                    if (isRefresh != null)
-                    {
-                        isRefresh(result.Text, EventArgs.Empty);
-                    }
+                    isRefresh?.Invoke(result.Text, EventArgs.Empty);
                 });
 
                 overlay = new ZXingDefaultOverlay
@@ -90,7 +87,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     BackgroundColor = Color.Transparent,
                     Padding = new Thickness(0, 10),
                     Margin = new Thickness(10, 10, 0, 0),
-                    Source = Constraints.Back_White_Arrow,
+                    Source = Constraints.Arrow_Back_Left,
                 };
                 image.Clicked += delegate
                 {
@@ -132,7 +129,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
 
-        } 
+        }
         #endregion
 
     }

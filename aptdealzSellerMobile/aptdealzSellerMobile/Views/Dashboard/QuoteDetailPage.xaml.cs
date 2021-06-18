@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.Views.MainTabbedPages;
+﻿using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.MainTabbedPages;
 using System;
 
 using Xamarin.Forms;
@@ -9,10 +10,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class QuoteDetailPage : ContentPage
     {
-        #region Objects
-        public event EventHandler isRefreshSubmitQute;
-        #endregion
-
         #region Constructor
         public QuoteDetailPage()
         {
@@ -51,18 +48,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             Navigation.PopAsync();
         }
 
-        private async void Submit_QuoteTapped(object sender, EventArgs e)
+        private void Submit_QuoteTapped(object sender, EventArgs e)
         {
             try
             {
-                await btnSubmitQuoteTapped.ScaleTo(0.9, 100, Easing.Linear);
-                await btnSubmitQuoteTapped.ScaleTo(1.0, 100, Easing.Linear);
-                await Navigation.PushAsync(new MainTabbedPage(true));
+                Common.BindAnimation(stackLayout: btnSubmitQuoteTapped);
+                Navigation.PushAsync(new MainTabbedPage("QrCodeScan"));
             }
             catch (Exception ex)
             {
+                Common.DisplayErrorMessage("QuoteDetailPage/Submit_QuoteTapped: " + ex.Message);
             }
-        } 
+        }
         #endregion
     }
 }

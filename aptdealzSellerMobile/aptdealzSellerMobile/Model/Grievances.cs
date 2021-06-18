@@ -1,6 +1,4 @@
-﻿using aptdealzSellerMobile.Utility;
-using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.Model
 {
@@ -21,11 +19,11 @@ namespace aptdealzSellerMobile.Model
                 }
                 else if (GrievanceStatus == "Closed")
                 {
-                    return (Color)App.Current.Resources["DarkRedColor"];
+                    return (Color)App.Current.Resources["Red"];
                 }
                 else
                 {
-                    return (Color)App.Current.Resources["BlackColor"];
+                    return (Color)App.Current.Resources["Black"];
                 }
             }
         }

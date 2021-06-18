@@ -11,7 +11,7 @@ namespace aptdealzSellerMobile.Model
         public string ShippingDate { get; set; }
         public double Amount { get; set; }
         public string ShippingStatus { get; set; }
-        private string _ArrowImage { get; set; } = Constraints.Right_Arrow;
+        private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
         public string ArrowImage
         {
             get { return _ArrowImage; }

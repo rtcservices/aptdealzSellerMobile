@@ -22,15 +22,15 @@ namespace aptdealzSellerMobile.Model
                 }
                 else if (Status == "Pending")
                 {
-                    return (Color)App.Current.Resources["DarkRedColor"];
+                    return (Color)App.Current.Resources["Red"];
                 }
                 else
                 {
-                    return (Color)App.Current.Resources["BlackColor"];
+                    return (Color)App.Current.Resources["Black"];
                 }
             }
         }
-        private string _ArrowImage { get; set; } = Constraints.Right_Arrow;
+        private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
         public string ArrowImage
         {
             get { return _ArrowImage; }

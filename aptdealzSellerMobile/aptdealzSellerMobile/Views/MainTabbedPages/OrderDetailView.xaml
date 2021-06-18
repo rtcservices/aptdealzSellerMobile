@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="#FFFFFF"
+    BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -74,7 +74,7 @@
 
             <BoxView
                 Grid.Row="1"
-                BackgroundColor="#F0F0F0"
+                BackgroundColor="{StaticResource LightGray}"
                 HeightRequest="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand" />
@@ -114,7 +114,7 @@
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Quote Detail"
-                        TextColor="#191818"
+                        TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
 
                 </StackLayout>
@@ -161,7 +161,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Requirement ID"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -171,13 +171,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="REQ#123"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -196,7 +196,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Quote Reference No"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -206,13 +206,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="QUO#987"
-                                        TextColor="#006027"
+                                        TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -231,7 +231,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Buyer Name"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -241,13 +241,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Benjamin"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -266,7 +266,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Seller Name"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -276,13 +276,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="ABC Export"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -301,7 +301,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Seller's PIN Code"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -311,13 +311,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="682017"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -336,7 +336,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Quantity"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -346,13 +346,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="100 Pieces"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -371,7 +371,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Unit Price"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -381,13 +381,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="RS 25"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -406,7 +406,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Net Amount"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -416,13 +416,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 2500"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -441,7 +441,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Handling Charge"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -451,13 +451,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="Rs 500"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -476,7 +476,7 @@
                                         FontSize="16"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Origin of Product"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                     <Label
@@ -486,13 +486,13 @@
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
                                         Text="India"
-                                        TextColor="#292929"
+                                        TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
                                 <BoxView
-                                    BackgroundColor="#F0F0F0"
+                                    BackgroundColor="{StaticResource LightGray}"
                                     HeightRequest="1"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
@@ -535,7 +535,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Invoice Number"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <Label
                                                 Grid.Row="0"
@@ -544,7 +544,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="#INV67"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <!--  Tatal Amount  -->
                                             <Label
@@ -555,7 +555,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Tatal Amount"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <Label
                                                 Grid.Row="1"
@@ -564,7 +564,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Rs 3500"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <!--  Expected Delivery  -->
                                             <Label
@@ -575,7 +575,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Expected Delivery"
-                                                TextColor="#292929"
+                                                TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 
                                             <Label
@@ -585,7 +585,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="20-10-2021"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <!--  Contact Seller  -->
                                             <Label
@@ -596,7 +596,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="Contact Seller"
-                                                TextColor="#292929"
+                                                TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 
                                             <Label
@@ -606,7 +606,7 @@
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
                                                 Text="0484-32165498"
-                                                TextColor="#292929" />
+                                                TextColor="{StaticResource Black}" />
 
                                             <!--  Accepted  -->
                                             <StackLayout
@@ -625,7 +625,7 @@
                                                     FontSize="16"
                                                     HorizontalOptions="StartAndExpand"
                                                     Text="Accepted"
-                                                    TextColor="#006027"
+                                                    TextColor="{StaticResource Green}"
                                                     VerticalOptions="CenterAndExpand"
                                                     VerticalTextAlignment="Center" />
                                             </StackLayout>
@@ -645,8 +645,8 @@
                                 <Frame
                                     x:Name="frmScanQRCode"
                                     Margin="0,40,0,40"
-                                    BackgroundColor="#006027"
-                                    BorderColor="#006027"
+                                    BackgroundColor="{StaticResource Green}"
+                                    BorderColor="{StaticResource Green}"
                                     Style="{StaticResource frmEntry}">
                                     <Label
                                         FontFamily="Poppins Medium"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aptdealzSellerMobile.Utility;
+using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -40,14 +41,14 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
-                await frmGrievance.ScaleTo(0.9, 100, Easing.Linear);
-                await frmGrievance.ScaleTo(1.0, 100, Easing.Linear);
-                await Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage(false)); ;
+                Common.BindAnimation(frame: frmGrievance);
+                await Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage("Home")); ;
             }
             catch (Exception ex)
             {
+                Common.DisplayErrorMessage("GrievanceDetailPage/FrmSubmit_Tapped: " + ex.Message);
             }
-        } 
+        }
         #endregion
     }
 }

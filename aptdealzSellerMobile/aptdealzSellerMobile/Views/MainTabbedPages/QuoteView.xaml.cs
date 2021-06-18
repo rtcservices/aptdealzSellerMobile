@@ -115,7 +115,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
-                    if (!string.IsNullOrEmpty(result))
+                    if (!Common.EmptyFiels(result))
                     {
                         //Bind list as per result
                     }
@@ -153,31 +153,31 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     foreach (var selectedImage in mQuoteDetails)
                     {
-                        if (selectedImage.ArrowImage == Constraints.Right_Arrow)
+                        if (selectedImage.ArrowImage == Constraints.Arrow_Right)
                         {
-                            selectedImage.ArrowImage = Constraints.Right_Arrow;
+                            selectedImage.ArrowImage = Constraints.Arrow_Right;
                             selectedImage.GridBg = Color.Transparent;
                             selectedImage.MoreDetail = false;
                             selectedImage.OldDetail = true;
                         }
                         else
                         {
-                            selectedImage.ArrowImage = Constraints.Down_Arrow;
+                            selectedImage.ArrowImage = Constraints.Arrow_Down;
                             selectedImage.GridBg = (Color)App.Current.Resources["LightGray"];
                             selectedImage.MoreDetail = true;
                             selectedImage.OldDetail = false;
                         }
                     }
-                    if (response.ArrowImage == Constraints.Right_Arrow)
+                    if (response.ArrowImage == Constraints.Arrow_Right)
                     {
-                        response.ArrowImage = Constraints.Down_Arrow;
+                        response.ArrowImage = Constraints.Arrow_Down;
                         response.GridBg = (Color)App.Current.Resources["LightGray"];
                         response.MoreDetail = true;
                         response.OldDetail = false;
                     }
                     else
                     {
-                        response.ArrowImage = Constraints.Right_Arrow;
+                        response.ArrowImage = Constraints.Arrow_Right;
                         response.GridBg = Color.Transparent;
                         response.MoreDetail = false;
                         response.OldDetail = true;

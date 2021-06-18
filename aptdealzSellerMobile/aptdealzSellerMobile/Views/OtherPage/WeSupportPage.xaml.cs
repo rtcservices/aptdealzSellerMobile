@@ -11,7 +11,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WeSupportPage : ContentPage
     {
-        #region create objects here
+        #region Objects
         private List<CarousellImage> mCarousellImages = new List<CarousellImage>();
         #endregion
 

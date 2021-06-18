@@ -47,7 +47,7 @@ namespace aptdealzSellerMobile.Views.Popup
 
         private void BindSource(string viewSource)
         {
-            if (!string.IsNullOrEmpty(viewSource))
+            if (!Common.EmptyFiels(viewSource))
             {
                 if (viewSource == "All")
                 {
