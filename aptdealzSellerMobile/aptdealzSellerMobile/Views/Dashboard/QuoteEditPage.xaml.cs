@@ -23,7 +23,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PopAsync();
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             {
 
             }
-        } 
+        }
         #endregion
     }
 }

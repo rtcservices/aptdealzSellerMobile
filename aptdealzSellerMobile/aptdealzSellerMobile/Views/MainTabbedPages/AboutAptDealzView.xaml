@@ -10,7 +10,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -32,15 +31,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -69,16 +60,10 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
-
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -87,38 +72,28 @@
                 <!--#region Back Button-->
                 <Grid
                     Grid.Row="0"
-                    Margin="20,0"
-                    ColumnDefinitions="Auto,*,Auto"
-                    HorizontalOptions="FillAndExpand">
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="30"
-                        HorizontalOptions="StartAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="30">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="20"
-                        HorizontalOptions="StartAndExpand"
-                        Text="About AptDealz"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-
+                        Style="{StaticResource lblHeader}"
+                        Text=" About AptDealz" />
                 </Grid>
                 <!--#endregion-->
 
-                <ScrollView Grid.Row="1" Margin="0,15,0,0">
+                <ScrollView Grid.Row="1" Margin="0">
 
-                    <Grid Margin="0" RowDefinitions="*,Auto">
+                    <Grid
+                        Margin="0"
+                        RowDefinitions="*,Auto"
+                        RowSpacing="0">
                         <Label
                             Grid.Row="0"
                             FontFamily="Poppins"
@@ -132,7 +107,7 @@
                             VerticalOptions="FillAndExpand">
                             <Label.Margin>
                                 <OnPlatform x:TypeArguments="Thickness">
-                                    <On Platform="Android" Value="20,20" />
+                                    <On Platform="Android" Value="20,0" />
                                     <On Platform="iOS" Value="30,30" />
                                 </OnPlatform>
                             </Label.Margin>

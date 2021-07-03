@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
 
             <!--  Header  -->
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" RowSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="*" />
@@ -36,15 +36,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -73,6 +65,7 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
             <Grid Grid.Row="1" RowSpacing="0">
@@ -82,48 +75,27 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <BoxView
-                    Grid.Row="0"
-                    BackgroundColor="{StaticResource LightGray}"
-                    HeightRequest="1"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="EndAndExpand" />
+
                 <!--  Back Arrow  -->
-                <StackLayout
-                    Grid.Row="1"
-                    Margin="20,0,10,0"
-                    HeightRequest="50"
-                    HorizontalOptions="FillAndExpand"
-                    Orientation="Horizontal"
-                    VerticalOptions="CenterAndExpand">
-                    <Image
+                <Grid
+                    Grid.Row="0"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
                         x:Name="ImgBack"
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="25"
-                        HorizontalOptions="Start"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="Center"
-                        WidthRequest="25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
-                        Margin="0,3,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="20"
-                        HorizontalOptions="StartAndExpand"
-                        HorizontalTextAlignment="Start"
-                        Text="Account"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-
-                </StackLayout>
+                        Grid.Column="1"
+                        Style="{StaticResource lblHeader}"
+                        Text="Account" />
+                </Grid>
 
                 <ScrollView Grid.Row="2" Style="{StaticResource scrPrimary}">
-                    <Grid Padding="0,5" RowSpacing="15">
+                    <Grid RowSpacing="15">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -132,7 +104,7 @@
                         <!--  Profile  -->
                         <Frame
                             Grid.Row="0"
-                            Margin="20"
+                            Margin="20,0"
                             Padding="0"
                             BackgroundColor="Transparent"
                             BorderColor="{StaticResource LightGray}"
@@ -143,7 +115,10 @@
                                 HeightRequest="150"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand">
-                                <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                <Grid
+                                    HorizontalOptions="CenterAndExpand"
+                                    RowSpacing="0"
+                                    VerticalOptions="CenterAndExpand">
                                     <Frame
                                         Margin="0"
                                         Padding="0"
@@ -225,30 +200,25 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Full Name"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Full Name" />
                                     <ext:ExtEntry
                                         x:Name="txtFullName"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="FullName"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="1" />
+                                        TabIndex="1"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxFullName"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -256,30 +226,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="1">
+                                <Grid Grid.Row="1" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Email Id"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Email Id" />
                                     <ext:ExtEntry
                                         x:Name="txtEmail"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="Email"
                                         Keyboard="Email"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="2" />
+                                        TabIndex="2"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxEmail"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -287,30 +252,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="2">
+                                <Grid Grid.Row="2" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Phone Number"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Phone Number" />
                                     <ext:ExtEntry
                                         x:Name="txtPhoneNumber"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="PhoneNumber"
                                         Keyboard="Numeric"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="3" />
+                                        TabIndex="3"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxPhoneNumber"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -318,30 +278,23 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="3">
+                                <Grid Grid.Row="3" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Alternate Phone Number"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Alternate Phone Number" />
                                     <ext:ExtEntry
                                         x:Name="txtAltPhoneNumber"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
                                         Keyboard="Numeric"
                                         Style="{StaticResource entrPrimary}"
                                         TabIndex="4" />
                                     <BoxView
+                                        x:Name="BoxAltPhoneNumber"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -358,8 +311,7 @@
                                 HeightRequest="50">
                                 <Label
                                     FontFamily="Poppins SemiBold"
-                                    FontSize="{OnPlatform Android=17,
-                                                          iOS=18}"
+                                    FontSize="17"
                                     HorizontalOptions="StartAndExpand"
                                     Text="Billing Address"
                                     TextColor="White"
@@ -392,30 +344,25 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Building Number"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Building Number" />
                                     <ext:ExtEntry
                                         x:Name="txtBuildingNumber"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="BuildingNumber"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="5" />
+                                        TabIndex="5"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxBuildingNumber"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -423,30 +370,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="1">
+                                <Grid Grid.Row="1" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Street"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Street" />
                                     <ext:ExtEntry
                                         x:Name="txtStreet"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="Street"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="6" />
+                                        TabIndex="6"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxStreet"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -454,30 +396,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="2">
+                                <Grid Grid.Row="2" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="City"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="City" />
                                     <ext:ExtEntry
                                         x:Name="txtCity"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="City"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="7" />
+                                        TabIndex="7"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxCity"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -485,34 +422,32 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="3">
+                                <Grid Grid.Row="3" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Nationality"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
-                                    <ext:CustomAutoSuggestBox
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Nationality" />
+                                    <ext:ExtAutoSuggestBox
                                         x:Name="pkNationality"
                                         Grid.Row="1"
-                                        Margin="0"
+                                        Margin="0,0"
+                                        ClassId="Nationality"
                                         HorizontalOptions="FillAndExpand"
                                         ItemsSource="{Binding mCountriesData, Mode=TwoWay, Source={x:Reference page1}}"
                                         PlaceholderTextColor="{StaticResource Gray}"
                                         QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                                         SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                        TabIndex="8"
                                         Text="{Binding countryText, Source={x:Reference page1}}"
                                         TextChanged="AutoSuggestBox_TextChanged"
-                                        TextColor="{StaticResource Black}" />
+                                        TextColor="{StaticResource Black}"
+                                        Unfocused="AutoSuggestBox_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxNationality"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -520,30 +455,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="4">
+                                <Grid Grid.Row="4" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Landmark"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Landmark" />
                                     <ext:ExtEntry
                                         x:Name="txtLandmark"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="Landmark"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="9" />
+                                        TabIndex="9"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxLandmark"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -554,7 +484,7 @@
                                 <Button
                                     x:Name="BtnAddMore"
                                     Grid.Row="5"
-                                    Margin="0,20,0,10"
+                                    Margin="0,20,0,0"
                                     Padding="10"
                                     BackgroundColor="Transparent"
                                     BorderColor="{StaticResource Green}"
@@ -683,10 +613,9 @@
                                 HeightRequest="50">
                                 <Label
                                     FontFamily="Poppins SemiBold"
-                                    FontSize="{OnPlatform Android=17,
-                                                          iOS=18}"
+                                    FontSize="17"
                                     HorizontalOptions="StartAndExpand"
-                                    Text="Company Porfile"
+                                    Text="Company Profile"
                                     TextColor="White"
                                     VerticalOptions="CenterAndExpand" />
                                 <Image
@@ -718,34 +647,29 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <!--<Label
+                                    <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Description"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />-->
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Description" />
                                     <Editor
                                         x:Name="txtDescription"
-                                        Grid.Row="0"
+                                        Grid.Row="1"
                                         BackgroundColor="Transparent"
+                                        ClassId="Description"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
+                                        FontSize="15"
                                         HeightRequest="100"
-                                        Placeholder="Description"
-                                        PlaceholderColor="{StaticResource Gray}"
                                         TabIndex="10"
-                                        TextColor="{StaticResource Black}" />
+                                        TextColor="{StaticResource Black}"
+                                        Unfocused="Editor_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxDescription"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -754,133 +678,65 @@
                                 </Grid>
 
                                 <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
-                                    <Grid Grid.Column="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label
-                                            Grid.Row="0"
-                                            Margin="0"
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=11,
-                                                                  iOS=13}"
-                                            HorizontalOptions="StartAndExpand"
-                                            Text="Category"
-                                            TextColor="{StaticResource Gray}"
-                                            VerticalOptions="CenterAndExpand" />
+                                    <StackLayout Grid.Row="0">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Category" />
                                         <Picker
                                             x:Name="pkCategory"
                                             Title="Category"
-                                            Grid.Row="1"
-                                            Margin="0,0"
-                                            FontFamily="Poppins"
-                                            FontSize="15"
-                                            HorizontalOptions="FillAndExpand"
+                                            ClassId="Category"
                                             SelectedIndexChanged="pkCategory_SelectedIndexChanged"
+                                            Style="{StaticResource pkPrimary}"
                                             TabIndex="11"
-                                            TextColor="{StaticResource Black}"
-                                            TitleColor="{StaticResource DarkGray}"
-                                            VerticalOptions="CenterAndExpand" />
-                                        <!--<ext:ExtEntry
-                                            x:Name="txtCategory"
-                                            Grid.Row="1"
-                                            Margin="0"
-                                            FontFamily="Poppins"
-                                            Keyboard="Text"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="11" />-->
-                                        <BoxView
-                                            Grid.Row="1"
-                                            BackgroundColor="{StaticResource LightGray}"
-                                            HeightRequest="1"
-                                            HorizontalOptions="FillAndExpand"
-                                            VerticalOptions="EndAndExpand" />
-                                    </Grid>
+                                            Unfocused="Picker_Unfocused" />
+                                        <BoxView x:Name="BoxCategory" Style="{StaticResource boxHorizontal}" />
+                                    </StackLayout>
 
-                                    <Frame
-                                        Grid.Column="1"
-                                        BackgroundColor="{StaticResource LightGray}"
-                                        BorderColor="{StaticResource LightGray}"
-                                        Style="{StaticResource frmEntry}">
-                                        <!--  Unfocused="txtOtherCategory_Unfocused"  -->
+                                    <Frame Grid.Row="1" Style="{StaticResource frmEntry}">
                                         <ext:ExtEntry
                                             x:Name="txtOtherCategory"
+                                            ClassId="OtherCategory"
+                                            HorizontalOptions="StartAndExpand"
                                             Keyboard="Text"
                                             Placeholder="If Other, specify"
-                                            Style="{StaticResource entrDark}"
+                                            Style="{StaticResource entrPrimary}"
                                             TabIndex="12" />
                                     </Frame>
                                 </Grid>
 
                                 <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
-                                    <Grid Grid.Column="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label
-                                            Grid.Row="0"
-                                            Margin="0"
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=11,
-                                                                  iOS=13}"
-                                            HorizontalOptions="StartAndExpand"
-                                            Text="Sub Category"
-                                            TextColor="{StaticResource Gray}"
-                                            VerticalOptions="CenterAndExpand" />
+                                    <StackLayout Grid.Row="0">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Sub Category" />
                                         <Picker
                                             x:Name="pkSubCategory"
                                             Title="Sub Category"
-                                            Grid.Row="1"
-                                            Margin="0,0"
-                                            FontFamily="Poppins"
-                                            FontSize="15"
-                                            HorizontalOptions="FillAndExpand"
+                                            ClassId="SubCategory"
                                             SelectedIndexChanged="pkSubCategory_SelectedIndexChanged"
+                                            Style="{StaticResource pkPrimary}"
                                             TabIndex="13"
-                                            TextColor="{StaticResource Black}"
-                                            TitleColor="{StaticResource DarkGray}"
-                                            VerticalOptions="CenterAndExpand" />
-                                        <!--<ext:ExtEntry
-                                            x:Name="txtSubCategory"
-                                            Grid.Row="1"
-                                            Margin="0"
-                                            FontFamily="Poppins"
-                                            Keyboard="Text"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="13" />-->
-                                        <BoxView
-                                            Grid.Row="1"
-                                            BackgroundColor="{StaticResource LightGray}"
-                                            HeightRequest="1"
-                                            HorizontalOptions="FillAndExpand"
-                                            VerticalOptions="EndAndExpand" />
-                                    </Grid>
+                                            Unfocused="Picker_Unfocused" />
+                                        <BoxView x:Name="BoxSubCategory" Style="{StaticResource boxHorizontal}" />
+                                    </StackLayout>
 
-                                    <Frame
-                                        Grid.Column="1"
-                                        BackgroundColor="{StaticResource LightGray}"
-                                        BorderColor="{StaticResource LightGray}"
-                                        Style="{StaticResource frmEntry}">
-                                        <!--  Unfocused="txtOtherSubCategory_Unfocused"  -->
+                                    <Frame Grid.Row="1" Style="{StaticResource frmEntry}">
                                         <ext:ExtEntry
                                             x:Name="txtOtherSubCategory"
+                                            ClassId="OtherSubCategory"
                                             Completed="txtOtherSubCategory_Completed"
+                                            HorizontalOptions="StartAndExpand"
                                             Keyboard="Text"
                                             Placeholder="If Other, specify"
                                             ReturnType="Done"
-                                            Style="{StaticResource entrDark}"
+                                            Style="{StaticResource entrPrimary}"
                                             TabIndex="14" />
                                     </Frame>
                                 </Grid>
@@ -909,7 +765,7 @@
                                                             HasShadow="False"
                                                             HeightRequest="50"
                                                             IsClippedToBounds="True">
-                                                            <Grid ColumnSpacing="0">
+                                                            <Grid ColumnSpacing="0" RowSpacing="0">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*" />
                                                                     <ColumnDefinition Width="Auto" />
@@ -946,7 +802,7 @@
                                     </ScrollView>
                                 </StackLayout>
 
-                                <Grid Grid.Row="4">
+                                <Grid Grid.Row="4" RowSpacing="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -958,69 +814,54 @@
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Experience"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Experience" />
                                     <ext:ExtEntry
                                         x:Name="txtExperience"
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="Experience"
                                         Keyboard="Text"
-                                        Placeholder="8"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="15" />
+                                        TabIndex="15"
+                                        Unfocused="Entry_Unfocused" />
 
                                     <Label
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=15,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Years"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="EndAndExpand" />
 
                                     <BoxView
+                                        x:Name="BoxExperience"
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        BackgroundColor="{StaticResource LightGray}"
-                                        HeightRequest="1"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="EndAndExpand" />
+                                        Style="{StaticResource boxHorizontal}" />
                                 </Grid>
 
-                                <Grid Grid.Row="5">
+                                <Grid Grid.Row="5" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Area of Supply"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Area of Supply" />
                                     <ext:ExtEntry
                                         x:Name="txtSupplyArea"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="SupplyArea"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="16" />
+                                        TabIndex="16"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxSupplyArea"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1032,8 +873,7 @@
                                     Grid.Row="6"
                                     Margin="0"
                                     FontFamily="Poppins"
-                                    FontSize="{OnPlatform Android=15,
-                                                          iOS=16}"
+                                    FontSize="15"
                                     HorizontalOptions="StartAndExpand"
                                     Text="Seller Commission : 3%"
                                     TextColor="{StaticResource Black}"
@@ -1048,8 +888,7 @@
                                 HeightRequest="50">
                                 <Label
                                     FontFamily="Poppins SemiBold"
-                                    FontSize="{OnPlatform Android=17,
-                                                          iOS=18}"
+                                    FontSize="17"
                                     HorizontalOptions="StartAndExpand"
                                     Text="Bank Information"
                                     TextColor="White"
@@ -1070,7 +909,7 @@
                             <Grid
                                 x:Name="GrdBankInfo"
                                 Grid.Row="6"
-                                Padding="20,10"
+                                Padding="20,10,20,0"
                                 IsVisible="false"
                                 RowSpacing="15">
                                 <Grid.RowDefinitions>
@@ -1082,30 +921,25 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="GST Number"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="GST Number" />
                                     <ext:ExtEntry
                                         x:Name="txtGstNumber"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="GstNumber"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="17" />
+                                        TabIndex="17"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxGstNumber"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1113,30 +947,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="1">
+                                <Grid Grid.Row="1" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="PAN"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="PAN" />
                                     <ext:ExtEntry
                                         x:Name="txtPan"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="Pan"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="18" />
+                                        TabIndex="18"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxPan"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1144,30 +973,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="2">
+                                <Grid Grid.Row="2" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Bank Account Number"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Bank Account Number" />
                                     <ext:ExtEntry
                                         x:Name="txtBankAccount"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="BankAccount"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="19" />
+                                        TabIndex="19"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxBankAccount"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1175,30 +999,25 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="3">
+                                <Grid Grid.Row="3" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=11,
-                                                              iOS=13}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Bank Name"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="Bank Name" />
                                     <ext:ExtEntry
                                         x:Name="txtBankName"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
+                                        ClassId="BankName"
                                         Keyboard="Text"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="20" />
+                                        TabIndex="20"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxBankName"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1206,29 +1025,24 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="4">
+                                <Grid Grid.Row="4" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="11"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="IFSC"
-                                        TextColor="{StaticResource Gray}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblPrimary13}"
+                                        Text="IFSC" />
                                     <ext:ExtEntry
                                         x:Name="txtIfsc"
                                         Grid.Row="1"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        Keyboard="Text"
+                                        ClassId="IFSC"
                                         Style="{StaticResource entrPrimary}"
-                                        TabIndex="21" />
+                                        TabIndex="21"
+                                        Unfocused="Entry_Unfocused" />
                                     <BoxView
+                                        x:Name="BoxIfsc"
                                         Grid.Row="1"
                                         BackgroundColor="{StaticResource LightGray}"
                                         HeightRequest="1"
@@ -1236,61 +1050,69 @@
                                         VerticalOptions="EndAndExpand" />
                                 </Grid>
 
-                                <Grid Grid.Row="5" HeightRequest="50">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Row="5" Spacing="0">
                                     <Label
-                                        x:Name="lblAttachDocument"
-                                        Grid.Column="0"
-                                        FontFamily="Poppins"
+                                        FontFamily="Poppins Medium"
                                         FontSize="15"
                                         Text="Attach Scanned Docs"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
-                                    <CollectionView
-                                        x:Name="lstDocument"
-                                        Grid.Column="0"
-                                        BackgroundColor="Transparent">
-                                        <CollectionView.ItemsLayout>
-                                            <LinearItemsLayout Orientation="Horizontal" />
-                                        </CollectionView.ItemsLayout>
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Image
-                                                    Aspect="AspectFit"
-                                                    HeightRequest="30"
-                                                    HorizontalOptions="StartAndExpand"
-                                                    Source="imgActiveRequirements.png"
-                                                    VerticalOptions="CenterAndExpand"
-                                                    WidthRequest="30" />
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
+                                    <Grid HeightRequest="50">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <ImageButton
-                                        x:Name="ImgUplodeDocument"
-                                        Grid.Column="1"
-                                        Padding="10"
-                                        BackgroundColor="Transparent"
-                                        Clicked="ImgUplodeDocument_Clicked"
-                                        HeightRequest="50"
-                                        HorizontalOptions="EndAndExpand"
-                                        Source="iconImageUpload.png"
-                                        WidthRequest="50" />
-                                </Grid>
+                                        <Label
+                                            x:Name="lblAttachDocument"
+                                            Grid.Column="0"
+                                            FontFamily="Poppins"
+                                            FontSize="15"
+                                            Text="No Docs found"
+                                            TextColor="{StaticResource DarkGray}"
+                                            VerticalOptions="CenterAndExpand" />
+
+
+                                        <CollectionView
+                                            x:Name="lstDocument"
+                                            Grid.Column="0"
+                                            BackgroundColor="Transparent">
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Horizontal" />
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Image
+                                                        Aspect="AspectFit"
+                                                        HeightRequest="30"
+                                                        HorizontalOptions="StartAndExpand"
+                                                        Source="iconFiles.png"
+                                                        VerticalOptions="CenterAndExpand"
+                                                        WidthRequest="30" />
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+
+                                        <ImageButton
+                                            x:Name="ImgUplodeDocument"
+                                            Grid.Column="1"
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            Clicked="ImgUplodeDocument_Clicked"
+                                            Source="iconUplode.png"
+                                            Style="{StaticResource ImgBtnPrimary}" />
+                                    </Grid>
+                                </StackLayout>
                             </Grid>
-
                         </Grid>
                     </Grid>
                 </ScrollView>
 
-                <!--  Update Button  -->
+                <!--  Update/Logout Button  -->
                 <Grid
                     Grid.Row="3"
-                    Padding="20"
+                    Padding="20,20,20,0"
                     RowSpacing="0"
                     VerticalOptions="EndAndExpand">
                     <Grid.RowDefinitions>

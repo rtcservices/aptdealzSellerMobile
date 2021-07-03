@@ -18,6 +18,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         #region Objects
         public event EventHandler isRefresh;
         public event EventHandler isRefreshScanQR;
+        private string filterBy = Utility.RequirementSortBy.ID.ToString();
+        private int pageNo;
         private List<OrderSupplying> mOrderSupplyings = new List<OrderSupplying>();
         #endregion
 
@@ -65,7 +67,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 new OrderSupplying
                 {
                   InvoiceId="INV#123",
-                  DeliveryStatus="Commplited",
+                  DeliveryStatus="Completed",
                   InvAmount=3500,
                   DeliveryDate="12-01-2021",
                   ExpDeliveryDate ="03-10-2021",
@@ -74,7 +76,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 new OrderSupplying
                 {
                   InvoiceId="INV#123",
-                  DeliveryStatus="Read For Pickup",
+                  DeliveryStatus="Ready For Pickup",
                   InvAmount=3500,
                   DeliveryDate="12-01-2021",
                   ExpDeliveryDate ="03-10-2021",
@@ -82,6 +84,36 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 },
             };
             lstOrderSupplyings.ItemsSource = mOrderSupplyings.ToList();
+        }
+
+        void BindList()
+        {
+            try
+            {
+                if (mOrderSupplyings != null && mOrderSupplyings.Count > 0)
+                {
+                    lstOrderSupplyings.IsVisible = true;
+                    FrmSortBy.IsVisible = true;
+                    FrmStatusBy.IsVisible = true;
+                    FrmSearchBy.IsVisible = true;
+                    FrmFilterBy.IsVisible = true;
+                    lblNoRecord.IsVisible = false;
+                    lstOrderSupplyings.ItemsSource = mOrderSupplyings.ToList();
+                }
+                else
+                {
+                    lstOrderSupplyings.IsVisible = false;
+                    FrmStatusBy.IsVisible = false;
+                    FrmSearchBy.IsVisible = false;
+                    FrmSortBy.IsVisible = false;
+                    FrmFilterBy.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementsView/BindList: " + ex.Message);
+            }
         }
         #endregion
 
@@ -103,7 +135,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            isRefresh?.Invoke(true, EventArgs.Empty);
+            Common.BindAnimation(imageButton: ImgBack);
+            App.Current.MainPage = new MasterData.MasterDataPage();
         }
 
         private async void ImgSearch_Tapped(object sender, EventArgs e)
@@ -124,27 +157,27 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private async void FrmSortBy_Tapped(object sender, EventArgs e)
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
-            try
-            {
-                SortByPopup sortByPopup = new SortByPopup();
-                sortByPopup.isRefresh += (s1, e1) =>
-                {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
-                    {
-                        //Bind list as per result
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(sortByPopup);
-            }
-            catch (Exception ex)
-            {
-            }
+            //try
+            //{
+            //    SortByPopup sortByPopup = new SortByPopup("", "");
+            //    sortByPopup.isRefresh += (s1, e1) =>
+            //    {
+            //        string result = s1.ToString();
+            //        if (!Common.EmptyFiels(result))
+            //        {
+            //            //Bind list as per result
+            //        }
+            //    };
+            //    await PopupNavigation.Instance.PushAsync(sortByPopup);
+            //}
+            //catch (Exception ex)
+            //{
+            //}
         }
 
-        private async void FrmStatus_Tapped(object sender, EventArgs e)
+        private async void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
             try
             {
@@ -161,6 +194,29 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
             catch (Exception ex)
             {
+            }
+        }
+
+        private void FrmFilterBy_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var sortby = new SortByPopup(filterBy, "Active");
+                sortby.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        pageNo = 1;
+                        filterBy = result;
+                        // GetActiveRequirements(filterBy, sortBy);
+                    }
+                };
+                PopupNavigation.Instance.PushAsync(sortby);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderSupplyingView/CustomEntry_Unfocused: " + ex.Message);
             }
         }
 
@@ -195,8 +251,60 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void lstOrderDetail_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             lstOrderSupplyings.SelectedItem = null;
-            Navigation.PushAsync(new UpdateOrderDetailPage());
+            Navigation.PushAsync(new UpdateOrderDetailPage(true));
         }
+      
+        private void BtnClose_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                entrSearch.Text = string.Empty;  
+                BindList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(entrSearch.Text))
+                {
+                    var OrderSearch = mOrderSupplyings.Where(x =>
+                                                        x.InvoiceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
+                    if (OrderSearch != null && OrderSearch.Count > 0)
+                    {
+                        lstOrderSupplyings.IsVisible = true;
+                        FrmStatusBy.IsVisible = true;
+                        FrmSortBy.IsVisible = true;
+                        FrmFilterBy.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        lstOrderSupplyings.ItemsSource = OrderSearch.ToList();
+                    }
+                    else
+                    {
+                        lstOrderSupplyings.IsVisible = false;
+                        FrmSortBy.IsVisible = false;
+                        FrmStatusBy.IsVisible = false;
+                        FrmFilterBy.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    BindList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderSupplyingview/entrSearch_TextChanged: " + ex.Message);
+            }
+        }      
+
         #endregion
+
     }
 }

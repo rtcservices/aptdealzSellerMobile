@@ -9,79 +9,136 @@ namespace aptdealzSellerMobile.Views.Popup
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SortByPopup : PopupPage
     {
-        #region Objects
+        #region Objects       
         public event EventHandler isRefresh;
+        private string PageName;
         #endregion
 
-        #region Constructor
-        public SortByPopup()
+        #region Constructor        
+        public SortByPopup(string SortBy, string SortPageName)
         {
             InitializeComponent();
+            PageName = SortPageName;
+            BindSource(SortBy);
         }
-
         #endregion
 
-        #region Methods
+        #region Methos
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            BindLabel();
         }
 
-        private void BindSource(string viewSource)
+        void BindLabel()
         {
-            if (!Common.EmptyFiels(viewSource))
+            if (PageName == "Active")
             {
-                if (viewSource == "ID")
+                StkThirdType.IsVisible = true;
+                lblFirstType.Text = "ID";
+                lblSecondType.Text = "Date";
+                lblThirdType.Text = "No of Quotes";
+            }
+            else if (PageName == "Previous")
+            {
+                StkThirdType.IsVisible = false;
+                lblFirstType.Text = "ID";
+                lblSecondType.Text = "Quotes";
+            }
+            else if (PageName == "ViewReq")
+            {
+                StkThirdType.IsVisible = true;
+                lblFirstType.Text = "ID";
+                lblSecondType.Text = "Amount";
+                lblThirdType.Text = "Validity";
+            }
+            else
+            {
+                StkThirdType.IsVisible = true;
+                lblFirstType.Text = "ID";
+                lblSecondType.Text = "Date";
+                lblThirdType.Text = "No of Quotes";
+            }
+        }
+        void BindSource(string viewSource)
+        {
+            if (!string.IsNullOrEmpty(viewSource))
+            {
+                if (viewSource == RequirementSortBy.ID.ToString())
                 {
                     ClearSource();
-                    BtnID.Source = Constraints.Redio_Selected;
+                    imgFirstType.Source = Constraints.Redio_Selected;
                 }
-                else if (viewSource == "Status")
+                else if (viewSource == RequirementSortBy.Date.ToString())
                 {
                     ClearSource();
-                    BtnStatus.Source = Constraints.Redio_Selected;
+                    imgSecondType.Source = Constraints.Redio_Selected;
                 }
-                else if (viewSource == "Amount")
+                else if (viewSource == RequirementSortBy.Quotes.ToString())
                 {
                     ClearSource();
-                    BtnAmount.Source = Constraints.Redio_Selected;
+                    imgThirdType.Source = Constraints.Redio_Selected;
                 }
                 else
                 {
                     ClearSource();
-                    BtnID.Source = Constraints.Redio_Selected;
+                    imgFirstType.Source = Constraints.Redio_Selected;
                 }
             }
         }
 
-        private void ClearSource()
+        void ClearSource()
         {
-            BtnID.Source = Constraints.Redio_UnSelected;
-            BtnStatus.Source = Constraints.Redio_UnSelected;
-            BtnAmount.Source = Constraints.Redio_UnSelected;
+            imgFirstType.Source = Constraints.Redio_UnSelected;
+            imgSecondType.Source = Constraints.Redio_UnSelected;
+            imgThirdType.Source = Constraints.Redio_UnSelected;
         }
-
         #endregion
 
         #region Events
-        private void BtnID_Clicked(object sender, EventArgs e)
+        private void StkFirstType_Tapped(object sender, EventArgs e)
         {
-            BindSource("ID");
-            isRefresh?.Invoke("ID", null);
+            if (PageName == "ViewReq")
+            {
+                BindSource(RequirementSortBy.quotationId.ToString());
+                isRefresh?.Invoke(RequirementSortBy.quotationId.ToString(), null);
+            }
+            else
+            {
+                BindSource(RequirementSortBy.ID.ToString());
+                isRefresh?.Invoke(RequirementSortBy.ID.ToString(), null);
+            }
             PopupNavigation.Instance.PopAsync();
         }
 
-        private void BtnStatus_Clicked(object sender, EventArgs e)
+        private void StkSecondType_Tapped(object sender, EventArgs e)
         {
-            BindSource("Status");
-            isRefresh?.Invoke("Status", null);
+            if (PageName == "ViewReq")
+            {
+                BindSource(RequirementSortBy.amount.ToString());
+                isRefresh?.Invoke(RequirementSortBy.amount.ToString(), null);
+            }
+            else
+            {
+                BindSource(RequirementSortBy.Date.ToString());
+                isRefresh?.Invoke(RequirementSortBy.Date.ToString(), null);
+            }
             PopupNavigation.Instance.PopAsync();
         }
 
-        private void BtnAmount_Clicked(object sender, EventArgs e)
+        private void StkThirdType_Tapped(object sender, EventArgs e)
         {
-            BindSource("Amount");
-            isRefresh?.Invoke("Amount", null);
+            if (PageName == "ViewReq")
+            {
+                BindSource(RequirementSortBy.validity.ToString());
+                isRefresh?.Invoke(RequirementSortBy.validity.ToString(), null);
+            }
+            else
+            {
+                BindSource(RequirementSortBy.Quotes.ToString());
+                isRefresh?.Invoke(RequirementSortBy.Quotes.ToString(), null);
+            }
             PopupNavigation.Instance.PopAsync();
         }
         #endregion

@@ -15,8 +15,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     public partial class QuoteView : ContentView
     {
         #region Objects
-        public event EventHandler isRefresh;
-        public event EventHandler isRefreshSubmitQute;
+        private string filterBy = Utility.RequirementSortBy.ID.ToString();
+        private bool sortBy = true;
+        private readonly int pageSize = 10;
+        private int pageNo;
         private List<QuoteDetail> mQuoteDetails = new List<QuoteDetail>();
         #endregion
 
@@ -77,6 +79,34 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
             lstQuotesDetails.ItemsSource = mQuoteDetails.ToList();
         }
+
+        void BindList()
+        {
+            try
+            {
+                if (mQuoteDetails != null && mQuoteDetails.Count > 0)
+                {
+                    lstQuotesDetails.IsVisible = true;
+                    FrmSortBy.IsVisible = true;
+                    FrmSearchBy.IsVisible = true;
+                    FrmFilterBy.IsVisible = true;
+                    lblNoRecord.IsVisible = false;
+                    lstQuotesDetails.ItemsSource = mQuoteDetails.ToList();
+                }
+                else
+                {
+                    lstQuotesDetails.IsVisible = false;
+                    FrmSearchBy.IsVisible = false;
+                    FrmSortBy.IsVisible = false;
+                    FrmFilterBy.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/BindList: " + ex.Message);
+            }
+        }
         #endregion
 
         #region Events
@@ -87,43 +117,48 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            isRefresh?.Invoke(true, EventArgs.Empty);
+            Common.BindAnimation(imageButton: ImgBack);
+            App.Current.MainPage = new MasterData.MasterDataPage();
         }
 
-        private async void ImgSearch_Tapped(object sender, EventArgs e)
-        {
-            try
-            {
-                SearchPopup searchPopup = new SearchPopup();
-                searchPopup.isRefresh += (s1, e1) =>
-                {
-                    lstQuotesDetails.ItemsSource = mQuoteDetails.ToList();
-                };
-                await PopupNavigation.Instance.PushAsync(searchPopup);
-            }
-            catch (Exception ex)
-            {
+        //private async void ImgSearch_Tapped(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        SearchPopup searchPopup = new SearchPopup();
+        //        searchPopup.isRefresh += (s1, e1) =>
+        //        {
+        //            lstQuotesDetails.ItemsSource = mQuoteDetails.ToList();
+        //        };
+        //        await PopupNavigation.Instance.PushAsync(searchPopup);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         private async void FrmSortBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                SortByPopup sortByPopup = new SortByPopup();
-                sortByPopup.isRefresh += (s1, e1) =>
+                if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
                 {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
-                    {
-                        //Bind list as per result
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(sortByPopup);
+                    ImgSort.Source = Constraints.Sort_DSC;
+                    sortBy = false;
+                }
+                else
+                {
+                    ImgSort.Source = Constraints.Sort_ASC;
+                    sortBy = true;
+                }
+
+                pageNo = 1;
+                //GetActiveRequirements(filterBy, sortBy);
             }
             catch (Exception ex)
             {
+                Common.DisplayErrorMessage("ActiveRequirementView/FrmSortBy_Tapped: " + ex.Message);
             }
         }
 
@@ -195,6 +230,79 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             lstQuotesDetails.SelectedItem = null;
         }
+
+        private void FrmFilterBy_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var sortby = new SortByPopup(filterBy, "Active");
+                sortby.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        pageNo = 1;
+                        filterBy = result;
+                        //GetActiveRequirements(filterBy, sortBy);
+                    }
+                };
+                PopupNavigation.Instance.PushAsync(sortby);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/CustomEntry_Unfocused: " + ex.Message);
+            }
+        }
+      
+        private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(entrSearch.Text))
+                {
+                    var QueSearch = mQuoteDetails.Where(x =>
+                                                        x.QuoteId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
+                    if (QueSearch != null && QueSearch.Count > 0)
+                    {
+                        lstQuotesDetails.IsVisible = true;
+                        FrmSortBy.IsVisible = true;
+                        FrmFilterBy.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        lstQuotesDetails.ItemsSource = QueSearch.ToList();
+                    }
+                    else
+                    {
+                        lstQuotesDetails.IsVisible = false;
+                        FrmSortBy.IsVisible = false;
+                        FrmFilterBy.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    BindList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/entrSearch_TextChanged: " + ex.Message);
+            }
+        }
+
+        private void BtnClose_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                entrSearch.Text = string.Empty;
+                BindList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         #endregion
+
     }
 }

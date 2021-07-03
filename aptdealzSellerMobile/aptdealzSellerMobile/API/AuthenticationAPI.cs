@@ -1,5 +1,6 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
 using Newtonsoft.Json;
@@ -88,15 +89,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
-                            {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                            }
-                            else
-                            {
-                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                            }
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
                         }
                     }
                 }
@@ -113,6 +106,54 @@ namespace aptdealzSellerMobile.API
                 mResponse.Succeeded = false;
                 mResponse.Errors = ex.Message;
                 Common.DisplayErrorMessage("AuthenticationAPI/ActivateUser: " + ex.Message);
+            }
+            return mResponse;
+        }
+
+        public async Task<Response> CheckPhoneNumber(string phoneNumber)
+        {
+            Response mResponse = new Response();
+            try
+            {
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    string requestJson = "{\"phoneNumber\":\"" + phoneNumber + "\"}";
+                    using (var hcf = new HttpClientFactory())
+                    {
+                        string url = string.Format(EndPointURL.CheckPhoneNumber, (int)App.Current.Resources["Version"], phoneNumber);
+                        var response = await hcf.PostAsync(url, requestJson);
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                        {
+                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
+                            if (errorString == Constraints.Session_Expired)
+                            {
+                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                            }
+                        }
+                        else
+                        {
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                        }
+                    }
+                }
+                else
+                {
+                    if (await Common.InternetConnection())
+                    {
+                        await CheckPhoneNumber(phoneNumber);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mResponse.Succeeded = false;
+                mResponse.Errors = ex.Message;
+                Common.DisplayErrorMessage("AuthenticationAPI/SendOtpByEmail: " + ex.Message);
             }
             return mResponse;
         }
@@ -261,6 +302,7 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
+        int token = 0;
         public async Task<Response> RefreshToken(string refreshToken)
         {
             Response mResponseToken = new Response();
@@ -289,7 +331,24 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            mResponseToken = JsonConvert.DeserializeObject<Response>(responseJson);
+                            if (responseJson.Contains("TokenExpired"))
+                            {
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh && token == 3)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                }
+                                else
+                                {
+                                    await RefreshToken(refreshToken);
+                                }
+                                token++;
+                            }
+                            else
+                            {
+                                mResponseToken = JsonConvert.DeserializeObject<Response>(responseJson);
+                            }
                         }
                     }
                 }
@@ -310,6 +369,7 @@ namespace aptdealzSellerMobile.API
             return mResponseToken;
         }
 
+        int logout = 0;
         public async Task<Response> Logout(string refreshToken, string loginTrackingKey)
         {
             Response mResponse = new Response();
@@ -337,7 +397,24 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                            if (responseJson.Contains("TokenExpired"))
+                            {
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh && logout == 3)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                }
+                                else
+                                {
+                                    await Logout(refreshToken, loginTrackingKey);
+                                }
+                                logout++;
+                            }
+                            else
+                            {
+                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                            }
                         }
                     }
                 }

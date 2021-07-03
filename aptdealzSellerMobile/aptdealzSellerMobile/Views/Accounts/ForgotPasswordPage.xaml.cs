@@ -28,6 +28,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             bool isValid = false;
             if (Common.EmptyFiels(txtEmail.Text))
             {
+                BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 Common.DisplayErrorMessage(Constraints.Required_Email);
             }
             else if (!txtEmail.Text.IsValidEmail())
@@ -47,8 +48,8 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Validation())
                 {
+                    txtEmail.Text = txtEmail.Text.Trim();
                     AuthenticationAPI authenticationAPI = new AuthenticationAPI();
-
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
 
                     var mResponse = await authenticationAPI.SendOtpByEmail(txtEmail.Text);
@@ -88,12 +89,21 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             try
             {
-                Common.BindAnimation(frame: btnResetPassword);
+                Common.BindAnimation(button: btnResetPassword);
                 SendOtpByEmail();
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("ForgotPasswordPage/ResetPassword_Tapped: " + ex.Message);
+            }
+        }
+
+        private void txtEmail_Unfocused(object sender, FocusEventArgs e)
+        {
+            var entry = (Extention.ExtEntry)sender;
+            if (!Common.EmptyFiels(entry.Text))
+            {
+                BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
             }
         }
         #endregion

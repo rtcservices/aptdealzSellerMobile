@@ -1,7 +1,8 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Extention;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.MainTabbedPages;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,7 +13,8 @@ namespace aptdealzSellerMobile.Views.Accounts
     public partial class LoginPage : ContentPage
     {
         #region Objects
-        private bool isChecked = false;
+        //private bool isChecked = false;
+        private bool isEmail = false;
         #endregion
 
         #region Constructor
@@ -26,23 +28,64 @@ namespace aptdealzSellerMobile.Views.Accounts
         public bool Validations()
         {
             bool isValid = false;
-            if (Common.EmptyFiels(txtUsername.Text))
+            if (Common.EmptyFiels(txtUsername.Text) || Common.EmptyFiels(txtPassword.Text))
             {
-                Common.DisplayErrorMessage(Constraints.Required_Email_Phone);
+                Common.DisplayErrorMessage(Constraints.Required_All);
+                RequiredFields();
+                isValid = false;
             }
-            if (Common.EmptyFiels(txtPassword.Text))
+
+            else if (txtUsername.Text.Contains("@") || txtUsername.Text.Contains("."))
+            {
+                if (!txtUsername.Text.IsValidEmail())
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_Email);
+                }
+                else
+                {
+                    isEmail = true;
+                    isValid = true;
+                }
+            }
+            else if (!txtUsername.Text.IsValidPhone())
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
+            }
+            else if (Common.EmptyFiels(txtPassword.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_Password);
             }
-            //else if (!Common.IsValidPassword(txtPassword.Text))
-            //{
-            //    DisplayAlert(Constraints.Alert, String.Format("The {0} must be at least {1} characters long and should have atleast one capital leter, special character ({2}) and digit.", "Password", 8, "#$^+=!*()@%&"), Constraints.Ok);
-            //}
             else
             {
+                isEmail = false;
                 isValid = true;
             }
             return isValid;
+        }
+
+        void RequiredFields()
+        {
+            try
+            {
+                if (Common.EmptyFiels(txtUsername.Text))
+                {
+                    BoxUserName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+                if (Common.EmptyFiels(txtPassword.Text))
+                {
+                    BoxPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/EnableRequiredFields: " + ex.Message);
+            }
+        }
+
+        void FieldsTrim()
+        {
+            txtUsername.Text = txtUsername.Text.Trim();
+            txtPassword.Text = txtPassword.Text.Trim();
         }
 
         async void LoginUser()
@@ -51,52 +94,79 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Validations())
                 {
+                    FieldsTrim();
                     AuthenticationAPI authenticationAPI = new AuthenticationAPI();
                     Model.Request.Authenticate mAuthenticate = new Model.Request.Authenticate();
                     mAuthenticate.Email = txtUsername.Text;
                     mAuthenticate.Password = txtPassword.Text;
 
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    var mResponse = await authenticationAPI.SellerAuth(mAuthenticate);
-                    if (mResponse != null && mResponse.Succeeded)
+                    Response mLocalResponse = new Response();
+                    if (isEmail)
                     {
-                        var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
-                        if (jObject != null)
+                        mLocalResponse.Data = true;
+                    }
+                    else
+                    {
+                        var isValidNumber = await authenticationAPI.CheckPhoneNumber(txtUsername.Text);
+                        if (isValidNumber != null)
                         {
-                            var mSeller = jObject.ToObject<Model.Reponse.Seller>();
-                            if (mSeller != null)
+                            mLocalResponse.Data = isValidNumber.Succeeded;
+                            mLocalResponse.Message = isValidNumber.Message;
+                        }
+                    }
+
+                    if ((bool)mLocalResponse.Data)
+                    {
+                        var mResponse = await authenticationAPI.SellerAuth(mAuthenticate);
+                        mLocalResponse = mResponse;
+                        if (mResponse != null && mResponse.Succeeded)
+                        {
+                            var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
+                            if (jObject != null)
                             {
-                                Settings.UserId = mSeller.Id;
-                                Common.Token = mSeller.JwToken;
-                                Settings.UserToken = mSeller.JwToken;
-                                Settings.RefreshToken = mSeller.RefreshToken;
-                                Settings.LoginTrackingKey = mSeller.LoginTrackingKey == "00000000-0000-0000-0000-000000000000" ? Settings.LoginTrackingKey : mSeller.LoginTrackingKey;
-
-                                if (isChecked)
+                                var mSeller = jObject.ToObject<Model.Reponse.Seller>();
+                                if (mSeller != null)
                                 {
-                                    Settings.EmailAddress = txtUsername.Text;
-                                    Settings.Password = txtPassword.Text;
+                                    Settings.UserId = mSeller.Id;
+                                    Common.Token = mSeller.JwToken;
                                     Settings.UserToken = mSeller.JwToken;
-                                }
-                                else
-                                {
-                                    Settings.EmailAddress = string.Empty;
-                                    Settings.Password = string.Empty;
-                                    Settings.UserToken = string.Empty;
-                                }
-                                App.Current.MainPage = new MainTabbedPage("Home");
+                                    Settings.RefreshToken = mSeller.RefreshToken;
+                                    Settings.LoginTrackingKey = mSeller.LoginTrackingKey == "00000000-0000-0000-0000-000000000000" ? Settings.LoginTrackingKey : mSeller.LoginTrackingKey;
 
-                                txtUsername.Text = string.Empty;
-                                txtPassword.Text = string.Empty;
-                                isChecked = false;
-                                imgCheck.Source = Constraints.CheckBox_UnChecked;
+                                    //if (isChecked)
+                                    //{
+                                    //    Settings.EmailAddress = txtUsername.Text;
+                                    //    Settings.Password = txtPassword.Text;
+                                    //    Settings.UserToken = mSeller.JwToken;
+                                    //}
+                                    //else
+                                    //{
+                                    //    Settings.EmailAddress = string.Empty;
+                                    //    Settings.Password = string.Empty;
+                                    //    Settings.UserToken = string.Empty;
+                                    //}
+                                    App.Current.MainPage = new MasterData.MasterDataPage();
+
+                                    txtUsername.Text = string.Empty;
+                                    txtPassword.Text = string.Empty;
+                                    //isChecked = false;
+                                    //imgCheck.Source = Constraints.CheckBox_UnChecked;
+                                }
                             }
+                        }
+                        else
+                        {
+                            if (mResponse != null)
+                                Common.DisplayErrorMessage(mResponse.Message);
+                            else
+                                Common.DisplayErrorMessage(Constraints.Something_Wrong);
                         }
                     }
                     else
                     {
-                        if (mResponse != null)
-                            Common.DisplayErrorMessage(mResponse.Message);
+                        if (mLocalResponse != null)
+                            Common.DisplayErrorMessage(mLocalResponse.Message);
                         else
                             Common.DisplayErrorMessage(Constraints.Something_Wrong);
                     }
@@ -119,27 +189,27 @@ namespace aptdealzSellerMobile.Views.Accounts
             Navigation.PopAsync();
         }
 
-        private void StkRemember_Tapped(object sender, EventArgs e)
-        {
-            try
-            {
-                if (imgCheck.Source.ToString().Replace("File: ", "") == Constraints.CheckBox_Checked)
-                {
-                    isChecked = false;
-                    imgCheck.Source = Constraints.CheckBox_UnChecked;
-                }
-                else
-                {
-                    isChecked = true;
-                    imgCheck.Source = Constraints.CheckBox_Checked;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("LoginPage/StkRemember_Tapped: " + ex.Message);
+        //private void StkRemember_Tapped(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (imgCheck.Source.ToString().Replace("File: ", "") == Constraints.CheckBox_Checked)
+        //        {
+        //            isChecked = false;
+        //            imgCheck.Source = Constraints.CheckBox_UnChecked;
+        //        }
+        //        else
+        //        {
+        //            isChecked = true;
+        //            imgCheck.Source = Constraints.CheckBox_Checked;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.DisplayErrorMessage("LoginPage/StkRemember_Tapped: " + ex.Message);
 
-            }
-        }
+        //    }
+        //}
 
         private void StkSignup_Tapped(object sender, EventArgs e)
         {
@@ -153,7 +223,7 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private void BtnLogin_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(frame: frmBtnLogin);
+            Common.BindAnimation(button: BtnLogin);
             LoginUser();
         }
 
@@ -176,6 +246,29 @@ namespace aptdealzSellerMobile.Views.Accounts
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("LoginPage/ImgPassword_Tapped: " + ex.Message);
+            }
+        }
+
+        private void Entry_Unfocused(object sender, FocusEventArgs e)
+        {
+            try
+            {
+                var entry = (ExtEntry)sender;
+                if (!Common.EmptyFiels(entry.Text))
+                {
+                    if (entry.ClassId == "Username")
+                    {
+                        BoxUserName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "Password")
+                    {
+                        BoxPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/Entry_Unfocused: " + ex.Message);
             }
         }
         #endregion

@@ -21,6 +21,7 @@
 
         <Color x:Key="Green">#006027</Color>
         <Color x:Key="Red">#E50019</Color>
+        <Color x:Key="LightRed">#90ff0000</Color>
         <Color x:Key="Black">#1A1818</Color>
         <Color x:Key="Gray">#bbbbbb</Color>
         <Color x:Key="LightGray">#F0F0F0</Color>
@@ -42,21 +43,47 @@
             <Setter Property="TextColor" Value="{StaticResource White}" />
         </Style>
 
-        <Style x:Key="imgMenu" TargetType="ImageButton">
-            <Setter Property="HeightRequest" Value="60" />
-            <Setter Property="WidthRequest" Value="60" />
+        <Style x:Key="btnBorder" TargetType="Button">
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderColor" Value="{StaticResource Green}" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontFamily" Value="Poppins SemiBold" />
+            <Setter Property="TextColor" Value="{StaticResource Green}" />
+        </Style>
+
+        <Style x:Key="ImgBtnPrimary" TargetType="ImageButton">
+            <Setter Property="HeightRequest" Value="45" />
+            <Setter Property="WidthRequest" Value="45" />
             <Setter Property="Aspect" Value="AspectFit" />
             <Setter Property="HorizontalOptions" Value="StartAndExpand" />
-            <Setter Property="VerticalOptions" Value="Center" />
-            <Setter Property="Padding" Value="15" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="0" />
             <Setter Property="BackgroundColor" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="btnNormal" TargetType="Button">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BackgroundColor" Value="{StaticResource Green}" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Poppins SemiBold" />
+            <Setter Property="TextColor" Value="{StaticResource White}" />
         </Style>
         <!--#endregion-->
 
         <!--#region [ Frame ]-->
         <Style x:Key="frmEntry" TargetType="Frame">
-            <Setter Property="Padding" Value="15,0" />
             <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="15,0" />
             <Setter Property="BackgroundColor" Value="{StaticResource LightGray}" />
             <Setter Property="BorderColor" Value="{StaticResource LightGray}" />
             <Setter Property="CornerRadius" Value="5" />
@@ -69,6 +96,7 @@
 
         <!--#region [ Extentions ]-->
         <Style x:Key="entrPrimary" TargetType="ext:ExtEntry">
+            <Setter Property="Margin" Value="0" />
             <Setter Property="TextColor" Value="{StaticResource Black}" />
             <Setter Property="PlaceholderColor" Value="{StaticResource Gray}" />
             <Setter Property="VerticalOptions" Value="FillAndExpand" />
@@ -87,6 +115,27 @@
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontFamily" Value="Poppins" />
         </Style>
+
+        <Style x:Key="pkPrimary" TargetType="Picker">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="TitleColor" Value="{StaticResource DarkGray}" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Poppins" />
+        </Style>
+
+        <Style x:Key="edPrimary" TargetType="Editor">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="PlaceholderColor" Value="{StaticResource Gray}" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Poppins" />
+        </Style>
         <!--#endregion-->
 
         <!--#region [ Views ]-->
@@ -100,8 +149,75 @@
             <Setter Property="HorizontalScrollBarVisibility" Value="Never" />
             <Setter Property="VerticalScrollBarVisibility" Value="Never" />
             <Setter Property="VerticalOptions" Value="StartAndExpand" />
-            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             <Setter Property="SeparatorVisibility" Value="None" />
+        </Style>
+
+        <Style x:Key="boxHorizontal" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="{StaticResource LightGray}" />
+            <Setter Property="HeightRequest" Value="1" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="EndAndExpand" />
+        </Style>
+        <!--#endregion-->
+
+        <!--#region [ Labels ]-->
+        <Style x:Key="lblPrimary13" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Gray}" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontFamily" Value="Poppins" />
+        </Style>
+
+        <Style x:Key="lblHeader" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="Poppins SemiBold" />
+        </Style>
+
+        <Style x:Key="lblLight15" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Poppins" />
+        </Style>
+
+        <Style x:Key="lblBoldHeader" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontFamily" Value="Poppins SemiBold" />
+        </Style>
+
+        <Style x:Key="lblMedium" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontFamily" Value="Poppins Medium" />
+        </Style>
+
+        <Style x:Key="lblSemiBold" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="FontFamily" Value="Poppins SemiBold" />
+        </Style>
+        <!--#endregion-->
+
+        <!--#region [ Images ]-->
+        <Style x:Key="imgLogo" TargetType="Image">
+            <Setter Property="HeightRequest" Value="47" />
+            <Setter Property="WidthRequest" Value="47" />
+            <Setter Property="Aspect" Value="AspectFit" />
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="Source" Value="iconHeaderLogo.png" />
         </Style>
         <!--#endregion-->
 

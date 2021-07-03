@@ -35,8 +35,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
-            };
-            indicaters.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+            }; 
+            Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
         }
 
         #endregion

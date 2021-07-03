@@ -1,10 +1,12 @@
 ﻿using aptdealzSellerMobile.Extention;
 using aptdealzSellerMobile.iOS.CustomRenderers;
+using aptdealzSellerMobile.Utility;
 using CoreGraphics;
 using dotMorten.Xamarin.Forms;
 using dotMorten.Xamarin.Forms.Platform.iOS;
 using Foundation;
 using System;
+using System.ComponentModel;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -14,7 +16,8 @@ using Xamarin.Forms.Platform.iOS;
 [assembly: ExportRenderer(typeof(Picker), typeof(PickerCustomRenderer))]
 [assembly: ExportRenderer(typeof(Editor), typeof(EditorCustomRenderer))]
 [assembly: ExportRenderer(typeof(ExtKeyboard), typeof(KeyboardViewRenderer))]
-[assembly: ExportRenderer(typeof(CustomAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
+[assembly: ExportRenderer(typeof(ExtAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
+[assembly: ExportRenderer(typeof(ExtDatePicker), typeof(CustomeDatePickerRenderer))]
 
 namespace aptdealzSellerMobile.iOS.CustomRenderers
 {
@@ -108,7 +111,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                var errorr = ex.Message;
+                Common.DisplayErrorMessage("iOS/EditorCustomRenderer: " + ex.Message);
             }
         }
     }
@@ -197,6 +200,27 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             catch (Exception ex)
             {
                 var _ = ex.Message;
+            }
+        }
+    }
+
+    public class CustomeDatePickerRenderer : DatePickerRenderer
+    {
+        public static void Init() { }
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            try
+            {
+                base.OnElementPropertyChanged(sender, e);
+                if (Control!=null)
+                {
+                    Control.Layer.BorderWidth = 0;
+                    Control.BorderStyle = UITextBorderStyle.None; 
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("iOS/CustomeDatePickerRenderer: " + ex.Message);
             }
         }
     }

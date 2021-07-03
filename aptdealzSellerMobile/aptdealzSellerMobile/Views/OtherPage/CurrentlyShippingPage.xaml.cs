@@ -70,6 +70,36 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
             lstCurrentlyShipping.ItemsSource = mCurrentlyShippings.ToList();
         }
+
+        void BindList()
+        {
+            try
+            {
+                if (mCurrentlyShippings != null && mCurrentlyShippings.Count > 0)
+                {
+                    lstCurrentlyShipping.IsVisible = true;
+                    FrmSortBy.IsVisible = true;
+                   // FrmStatusBy.IsVisible = true;
+                    FrmSearchBy.IsVisible = true;
+                    FrmFilterBy.IsVisible = true;
+                    lblNoRecord.IsVisible = false;
+                    lstCurrentlyShipping.ItemsSource = mCurrentlyShippings.ToList();
+                }
+                else
+                {
+                    lstCurrentlyShipping.IsVisible = false;
+                    //FrmStatusBy.IsVisible = false;
+                    FrmSearchBy.IsVisible = false;
+                    FrmSortBy.IsVisible = false;
+                    FrmFilterBy.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("CurrentlyShipping/BindList: " + ex.Message);
+            }
+        }
         #endregion
 
         #region Events
@@ -147,29 +177,36 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Navigation.PopAsync();
         }
 
-        private async void ImgSearch_Tapped(object sender, EventArgs e)
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
-            try
-            {
-                SearchPopup searchPopup = new SearchPopup();
-                searchPopup.isRefresh += (s1, e1) =>
-                {
-                    lstCurrentlyShipping.ItemsSource = mCurrentlyShippings.ToList();
-
-                };
-                await PopupNavigation.Instance.PushAsync(searchPopup);
-            }
-            catch (Exception ex)
-            {
-
-            }
+           
         }
 
-        private async void FrmSortBy_Tapped(object sender, EventArgs e)
+        //private async void FrmStatusBy_Tapped(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        StatusPopup statusPopup = new StatusPopup();
+        //        statusPopup.isRefresh += (s1, e1) =>
+        //        {
+        //            string result = s1.ToString();
+        //            if (!Common.EmptyFiels(result))
+        //            {
+        //                //Bind list as per result
+        //            }
+        //        };
+        //        await PopupNavigation.Instance.PushAsync(statusPopup);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
+
+        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                SortByPopup sortByPopup = new SortByPopup();
+                SortByPopup sortByPopup = new SortByPopup("", "");
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
@@ -179,26 +216,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     }
                 };
                 await PopupNavigation.Instance.PushAsync(sortByPopup);
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
-        private async void FrmStatus_Tapped(object sender, EventArgs e)
-        {
-            try
-            {
-                StatusPopup statusPopup = new StatusPopup();
-                statusPopup.isRefresh += (s1, e1) =>
-                {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
-                    {
-                        //Bind list as per result
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(statusPopup);
             }
             catch (Exception ex)
             {
@@ -256,5 +273,56 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
         }
         #endregion
+
+        private void BtnClose_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                entrSearch.Text = string.Empty;
+                BindList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(entrSearch.Text))
+                {
+                    var CrnShpSearch = mCurrentlyShippings.Where(x =>
+                                                        x.InvoceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
+                    if (CrnShpSearch != null && CrnShpSearch.Count > 0)
+                    {
+                        lstCurrentlyShipping.IsVisible = true;
+                        FrmSortBy.IsVisible = true;
+                        //FrmStatusBy.IsVisible = true;
+                        FrmFilterBy.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        lstCurrentlyShipping.ItemsSource = CrnShpSearch.ToList();
+                    }
+                    else
+                    {
+                        lstCurrentlyShipping.IsVisible = false;
+                        //FrmStatusBy.IsVisible = false;
+                        FrmSortBy.IsVisible = false;
+                        FrmFilterBy.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    BindList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("CurrentlyShipping/entrSearch_TextChanged: " + ex.Message);
+            }
+        }
+      
     }
 }

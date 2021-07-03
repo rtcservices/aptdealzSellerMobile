@@ -87,6 +87,36 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
             lstReportDetails.ItemsSource = mReportDetails.ToList();
         }
+
+        void BindList()
+        {
+            try
+            {
+                if (mReportDetails != null && mReportDetails.Count > 0)
+                {
+                    lstReportDetails.IsVisible = true;
+                    FrmSortBy.IsVisible = true;
+                   // FrmStatusBy.IsVisible = true;
+                    FrmSearchBy.IsVisible = true;
+                    FrmFilterBy.IsVisible = true;
+                    lblNoRecord.IsVisible = false;
+                    lstReportDetails.ItemsSource = mReportDetails.ToList();
+                }
+                else
+                {
+                    lstReportDetails.IsVisible = false;
+                    //FrmStatusBy.IsVisible = false;
+                    FrmSearchBy.IsVisible = false;
+                    FrmSortBy.IsVisible = false;
+                    FrmFilterBy.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Report/BindList: " + ex.Message);
+            }
+        }
         #endregion
 
         #region Events
@@ -135,11 +165,37 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Navigation.PopAsync();
         }
 
-        private async void FrmSortBy_Tapped(object sender, EventArgs e)
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
+        {
+           
+        }
+
+        //private async void FrmStatusBy_Tapped(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        StatusPopup statusPopup = new StatusPopup("isRequest");
+        //        statusPopup.isRefresh += (s1, e1) =>
+        //        {
+        //            string result = s1.ToString();
+        //            if (!Common.EmptyFiels(result))
+        //            {
+        //                //Bind list as per result
+        //            }
+        //        };
+        //        await PopupNavigation.Instance.PushAsync(statusPopup);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+
+        //}
+
+        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                SortByPopup sortByPopup = new SortByPopup();
+                SortByPopup sortByPopup = new SortByPopup("", "");
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
@@ -155,25 +211,56 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
         }
 
-        private async void FrmStatus_Tapped(object sender, EventArgs e)
+        private void BtnClose_Clicked(object sender, EventArgs e)
         {
             try
             {
-                StatusPopup statusPopup = new StatusPopup("isRequest");
-                statusPopup.isRefresh += (s1, e1) =>
-                {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
-                    {
-                        //Bind list as per result
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(statusPopup);
+                entrSearch.Text = string.Empty;
+                BindList();
             }
             catch (Exception ex)
             {
+
             }
         }
+
+        private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(entrSearch.Text))
+                {
+                    var ReportSearch = mReportDetails.Where(x =>
+                                                        x.InvoiceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
+                    if (ReportSearch != null && ReportSearch.Count > 0)
+                    {
+                        lstReportDetails.IsVisible = true;
+                        FrmSortBy.IsVisible = true;
+                        //FrmStatusBy.IsVisible = true;
+                        FrmFilterBy.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        lstReportDetails.ItemsSource = ReportSearch.ToList();
+                    }
+                    else
+                    {
+                        lstReportDetails.IsVisible = false;
+                        //FrmStatusBy.IsVisible = false;
+                        FrmSortBy.IsVisible = false;
+                        FrmFilterBy.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    BindList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Report/entrSearch_TextChanged: " + ex.Message);
+            }
+        }
+
         #endregion
     }
 }

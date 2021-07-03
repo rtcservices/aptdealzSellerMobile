@@ -108,7 +108,7 @@
                         Grid.Row="0"
                         Margin="5,0,0,0"
                         FontFamily="Poppins SemiBold"
-                        FontSize="18"
+                        FontSize="17"
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Quote Detail"
@@ -322,7 +322,7 @@
                                     VerticalOptions="EndAndExpand" />
                             </StackLayout>
 
-                            <!--  Requuest Quantity  -->
+                            <!--  Requested Quantity  -->
                             <StackLayout Grid.Row="5">
                                 <StackLayout
                                     Margin="20,0"
@@ -334,7 +334,7 @@
                                         FontFamily="Poppins"
                                         FontSize="14"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requuest Quantity"
+                                        Text="Requested Quantity"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -344,7 +344,7 @@
                                         FontFamily="Poppins Medium"
                                         FontSize="14"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="100 Pieces"
+                                        Text="100"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -560,7 +560,7 @@
                                                 Margin="10,0,0,0"
                                                 FontFamily="Poppins SemiBold"
                                                 HorizontalOptions="StartAndExpand"
-                                                Text="Contact Seller"
+                                                Text="Contact Buyer"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 

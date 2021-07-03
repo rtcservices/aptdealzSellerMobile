@@ -12,7 +12,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -34,15 +33,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -71,58 +62,36 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
-
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackLayout
+                <Grid
                     Grid.Row="0"
-                    Margin="20,0,0,0"
-                    HorizontalOptions="StartAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="25"
-                        HorizontalOptions="CenterAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
-                        Grid.Row="0"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="18"
-                        HorizontalOptions="StartAndExpand"
-                        LineBreakMode="WordWrap"
-                        Text="Order Detail"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-                </StackLayout>
+                        Grid.Column="1"
+                        Style="{StaticResource lblHeader}"
+                        Text=" Order Details" />
+                </Grid>
 
-                <ScrollView
-                    Grid.Row="1"
-                    Margin="0,20,0,0"
-                    HorizontalScrollBarVisibility="Never"
-                    VerticalScrollBarVisibility="Never">
-                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
+                    <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
@@ -131,9 +100,6 @@
                             HorizontalOptions="FillAndExpand"
                             RowSpacing="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -338,7 +304,7 @@
                             </StackLayout>
                             <!--#endregion-->
 
-                            <!--#region Requuest Quantity-->
+                            <!--#region Requested Quantity-->
                             <StackLayout Grid.Row="5">
                                 <StackLayout
                                     Margin="20,0"
@@ -351,7 +317,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requuest Quantity"
+                                        Text="Requested Quantity"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -362,7 +328,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="100 Pieces"
+                                        Text="100"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -465,7 +431,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Handling Charge"
+                                        Text="Handling Charges"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -503,7 +469,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Shipping Charge"
+                                        Text="Shipping Charges"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -603,161 +569,30 @@
                                     VerticalOptions="EndAndExpand" />
                             </StackLayout>
                             <!--#endregion-->
+                        </Grid>
 
-                            <!--#region Accepted Frame-->
-                            <StackLayout Grid.Row="12" Margin="20,0">
-                                <Frame
-                                    Margin="0,20,0,0"
-                                    Padding="0"
-                                    BackgroundColor="White"
-                                    HasShadow="False"
-                                    HeightRequest="220"
-                                    HorizontalOptions="FillAndExpand"
-                                    Style="{StaticResource frmEntry}"
-                                    VerticalOptions="CenterAndExpand">
-                                    <Grid Margin="10,5">
-                                        <Grid Margin="0,30,0,0" RowSpacing="10">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <!--  Invoice Number  -->
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="10,0,0,0"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="Invoice Number"
-                                                TextColor="{StaticResource Black}" />
+                        <Grid
+                            Grid.Row="1"
+                            Padding="20"
+                            RowSpacing="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!--  Accepted Frame  -->
+                            <Frame
+                                Grid.Row="0"
+                                Margin="0"
+                                Padding="15"
+                                BackgroundColor="Transparent"
+                                BorderColor="{StaticResource LightGray}"
+                                CornerRadius="5"
+                                HasShadow="False"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
 
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="#INV67"
-                                                TextColor="{StaticResource Black}" />
-
-                                            <!--  Tatal Amount  -->
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="10,0,0,0"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="Tatal Amount"
-                                                TextColor="{StaticResource Black}" />
-
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="Rs 3500"
-                                                TextColor="{StaticResource Black}" />
-
-                                            <!--  Expected Delivery  -->
-                                            <Label
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="10,0,0,0"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="Expected Delivery"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand" />
-
-                                            <Label
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="20-10-2021"
-                                                TextColor="{StaticResource Black}" />
-
-                                            <!--  Contact Seller  -->
-                                            <Label
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="10,0,0,0"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="Contact Seller"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand" />
-
-                                            <Label
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                FontFamily="Poppins SemiBold"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                Text="0484-32165498"
-                                                TextColor="{StaticResource Black}" />
-
-                                            <!--  Accepted  -->
-                                            <StackLayout
-                                                x:Name="StkActivity"
-                                                Grid.Row="4"
-                                                Grid.ColumnSpan="2"
-                                                HorizontalOptions="FillAndExpand"
-                                                Orientation="Horizontal"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Image
-                                                    HorizontalOptions="EndAndExpand"
-                                                    Source="iconTickRound.png"
-                                                    VerticalOptions="CenterAndExpand" />
-                                                <Label
-                                                    x:Name="lblAccepted"
-                                                    FontFamily="Poppins SemiBold"
-                                                    FontSize="{OnPlatform Android=14,
-                                                                          iOS=16}"
-                                                    HorizontalOptions="StartAndExpand"
-                                                    Text="Accepted"
-                                                    TextColor="{StaticResource Green}"
-                                                    VerticalOptions="CenterAndExpand"
-                                                    VerticalTextAlignment="Center" />
-                                                <StackLayout.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkActivity_Tapped" />
-                                                </StackLayout.GestureRecognizers>
-                                            </StackLayout>
-                                        </Grid>
-                                    </Grid>
-                                </Frame>
-
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <StackLayout
-                                x:Name="StkAccept"
-                                Grid.Row="13"
-                                Margin="20,0"
-                                Padding="0"
-                                HorizontalOptions="FillAndExpand">
-                                <Grid Margin="0,20,0,0" RowSpacing="15">
+                                <Grid Margin="0,0,0,0" RowSpacing="10">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -765,34 +600,147 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <!--  Invoice Number  -->
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Invoice Number"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="#INV67"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <!--  Tatal Amount  -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Tatal Amount"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Rs 3500"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <!--  Expected Delivery  -->
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Expected Delivery"
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="20-10-2021"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <!--  Contact Seller  -->
+                                    <Label
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="Contact Buyer"
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        FontFamily="Poppins SemiBold"
+                                        FontSize="{OnPlatform Android=14,
+                                                              iOS=16}"
+                                        HorizontalOptions="StartAndExpand"
+                                        Text="0484-32165498"
+                                        TextColor="{StaticResource Black}" />
+
+                                    <!--  Accepted  -->
+                                    <StackLayout
+                                        x:Name="StkActivity"
+                                        Grid.Row="4"
+                                        Grid.ColumnSpan="2"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal"
+                                        VerticalOptions="CenterAndExpand">
+                                        <Image
+                                            HorizontalOptions="EndAndExpand"
+                                            Source="iconTickRound.png"
+                                            VerticalOptions="CenterAndExpand" />
+                                        <Label
+                                            x:Name="lblAccepted"
+                                            FontFamily="Poppins SemiBold"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="Accepted"
+                                            TextColor="{StaticResource Green}"
+                                            VerticalOptions="CenterAndExpand"
+                                            VerticalTextAlignment="Center" />
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkActivity_Tapped" />
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+
+                            <!--  Accepted Grid  -->
+                            <StackLayout x:Name="StkAccept" Grid.Row="1">
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
                                     <!--  Order Status  -->
-                                    <Frame
-                                        Grid.Row="0"
-                                        Padding="10,0"
-                                        BackgroundColor="White"
-                                        HasShadow="False"
-                                        HeightRequest="50"
-                                        Style="{StaticResource frmEntry}">
-                                        <Grid
-                                            Margin="0"
-                                            Padding="0"
-                                            HorizontalOptions="FillAndExpand"
-                                            VerticalOptions="FillAndExpand">
+                                    <StackLayout Grid.Row="0">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <ext:ExtPicker
                                                 x:Name="pckOrderStatus"
-                                                Title="Order Status"
                                                 Grid.Column="1"
-                                                FontFamily="Poppins"
-                                                FontSize="{OnPlatform Android=16,
-                                                                      iOS=16}"
-                                                TextColor="{StaticResource Black}">
+                                                Style="{StaticResource pkPrimary}"
+                                                TabIndex="1">
                                                 <Picker.Items>
-                                                    <x:String>Complite</x:String>
+                                                    <x:String>Complete</x:String>
                                                     <x:String>Panding</x:String>
                                                     <x:String>Reject</x:String>
                                                 </Picker.Items>
@@ -803,100 +751,84 @@
                                                 Margin="10,0,0,0"
                                                 BackgroundColor="Transparent"
                                                 Clicked="ImgOrderStatusPck_Clicked"
-                                                HeightRequest="25"
+                                                HeightRequest="20"
                                                 HorizontalOptions="EndAndExpand"
                                                 Source="iconDownArrow.png"
-                                                VerticalOptions="CenterAndExpand">
+                                                VerticalOptions="CenterAndExpand"
+                                                WidthRequest="20">
                                                 <ImageButton.GestureRecognizers>
                                                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgOrderStatusPck_Clicked" />
                                                 </ImageButton.GestureRecognizers>
                                             </ImageButton>
                                         </Grid>
-                                    </Frame>
+                                        <BoxView x:Name="BoxOrderStatus" Style="{StaticResource boxHorizontal}" />
+                                    </StackLayout>
 
-                                    <!--  Shipping Number  -->
-                                    <Frame
+                                    <Grid
+                                        x:Name="GrdOtherData"
                                         Grid.Row="1"
-                                        BackgroundColor="White"
-                                        HasShadow="False"
-                                        Style="{StaticResource frmEntry}">
-                                        <ext:ExtEntry
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
-                                            Keyboard="Text"
-                                            Placeholder="Shipping Number"
-                                            PlaceholderColor="{StaticResource Gray}"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="1"
-                                            TextColor="{StaticResource Black}" />
-                                    </Frame>
+                                        Margin="0,15,0,0"
+                                        RowSpacing="15">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
 
-                                    <!--  LR Number  -->
-                                    <Frame
-                                        Grid.Row="2"
-                                        BackgroundColor="White"
-                                        HasShadow="False"
-                                        Style="{StaticResource frmEntry}">
-                                        <ext:ExtEntry
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=16,
-                                                                  iOS=16}"
-                                            Keyboard="Text"
-                                            Placeholder="LR Number"
-                                            PlaceholderColor="{StaticResource Gray}"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="1"
-                                            TextColor="{StaticResource Black}" />
-                                    </Frame>
+                                        <!--  Shipping Number  -->
+                                        <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
+                                            <ext:ExtEntry
+                                                Keyboard="Text"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="2" />
+                                            <BoxView x:Name="BoxShippingNumber" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
 
-                                    <!--  EWay Bill Number  -->
-                                    <Frame
-                                        Grid.Row="3"
-                                        BackgroundColor="White"
-                                        HasShadow="False"
-                                        Style="{StaticResource frmEntry}">
-                                        <ext:ExtEntry
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
-                                            Keyboard="Text"
-                                            Placeholder="EWay Bill Number"
-                                            PlaceholderColor="{StaticResource Gray}"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="1"
-                                            TextColor="{StaticResource Black}" />
-                                    </Frame>
+                                        <!--  LR Number  -->
+                                        <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
+                                            <ext:ExtEntry
+                                                Keyboard="Text"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="3" />
+                                            <BoxView x:Name="BoxLRNumber" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
 
-                                    <!--  Tracking Link  -->
-                                    <Frame
-                                        Grid.Row="4"
-                                        BackgroundColor="Transparent"
-                                        HasShadow="False"
-                                        Style="{StaticResource frmEntry}">
-                                        <ext:ExtEntry
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
-                                            Keyboard="Text"
-                                            Placeholder="Tracking Link"
-                                            PlaceholderColor="{StaticResource Gray}"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="1"
-                                            TextColor="{StaticResource Black}" />
-                                    </Frame>
+                                        <!--  EWay Bill Number  -->
+                                        <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
+                                            <ext:ExtEntry
+                                                Keyboard="Text"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="4" />
+                                            <BoxView x:Name="BoxEWayBillNumber" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
 
+                                        <!--  Tracking Link  -->
+                                        <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Tracking Link" />
+                                            <ext:ExtEntry
+                                                Keyboard="Text"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="5" />
+                                            <BoxView x:Name="BoxTrackingLink" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+                                    </Grid>
                                 </Grid>
                             </StackLayout>
 
-                            <!--#region Delivere Grid-->
+                            <!--  Delivere Grid  -->
                             <StackLayout
                                 x:Name="StkDelivered"
-                                Grid.Row="13"
-                                Margin="20,20,0,20"
-                                HorizontalOptions="FillAndExpand"
+                                Grid.Row="1"
                                 IsVisible="false">
-                                <Grid Margin="20,0,20,0">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -906,8 +838,7 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Platform Charges"
                                         TextColor="{StaticResource Black}" />
@@ -916,8 +847,7 @@
                                         Grid.Row="0"
                                         Grid.Column="1"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Rs 500"
                                         TextColor="{StaticResource Black}" />
@@ -927,8 +857,7 @@
                                         Grid.Row="1"
                                         Grid.Column="0"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Seller Earnings"
                                         TextColor="{StaticResource Black}" />
@@ -937,23 +866,22 @@
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
                                         Text="Rs 3000"
                                         TextColor="{StaticResource Black}" />
                                 </Grid>
 
                                 <Frame
-                                    Margin="0,20,20,0"
-                                    Padding="0"
+                                    Margin="0"
+                                    Padding="15"
                                     BackgroundColor="Transparent"
+                                    BorderColor="{StaticResource LightGray}"
+                                    CornerRadius="5"
                                     HasShadow="False"
-                                    HeightRequest="100"
                                     HorizontalOptions="FillAndExpand"
-                                    Style="{StaticResource frmEntry}"
-                                    VerticalOptions="CenterAndExpand">
-                                    <Grid Margin="10,30,0,0">
+                                    VerticalOptions="FillAndExpand">
+                                    <Grid Margin="0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -962,7 +890,6 @@
                                         <Label
                                             Grid.Row="0"
                                             Grid.Column="0"
-                                            Margin="10,0,0,0"
                                             FontFamily="Poppins Medium"
                                             FontSize="{OnPlatform Android=14,
                                                                   iOS=16}"
@@ -974,7 +901,6 @@
                                         <Label
                                             Grid.Row="1"
                                             Grid.Column="0"
-                                            Margin="10,0,0,0"
                                             FontFamily="Poppins Medium"
                                             FontSize="{OnPlatform Android=14,
                                                                   iOS=16}"
@@ -984,40 +910,18 @@
 
                                     </Grid>
                                 </Frame>
-
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Update Button-->
-                            <StackLayout
+                            <!--  Update Button  -->
+                            <Button
                                 x:Name="BtnUpdate"
-                                Grid.Row="14"
-                                Margin="20,0"
-                                Padding="0"
-                                HorizontalOptions="FillAndExpand">
-                                <Frame
-                                    x:Name="frmUpdateTapped"
-                                    Margin="0,40,0,20"
-                                    BackgroundColor="{StaticResource Green}"
-                                    BorderColor="{StaticResource Green}"
-                                    HasShadow="False"
-                                    Style="{StaticResource frmEntry}">
-                                    <Label
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=18}"
-                                        HorizontalOptions="CenterAndExpand"
-                                        Text="Update"
-                                        TextColor="White"
-                                        VerticalOptions="CenterAndExpand" />
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="frmUpdateTapped_Tapped" />
-                                    </Frame.GestureRecognizers>
-                                </Frame>
-                            </StackLayout>
+                                Grid.Row="2"
+                                Clicked="frmUpdateTapped_Tapped"
+                                Style="{StaticResource btnPrimary}"
+                                Text="Update" />
                             <!--#endregion-->
-
                         </Grid>
+
                     </Grid>
                 </ScrollView>
             </Grid>

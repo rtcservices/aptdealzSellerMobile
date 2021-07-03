@@ -37,12 +37,13 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Navigation.PopAsync();
         }
 
-        private async void FrmSubmit_Tapped(object sender, EventArgs e)
+        private void FrmSubmit_Tapped(object sender, EventArgs e)
         {
             try
             {
-                Common.BindAnimation(frame: frmGrievance);
-                await Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage("Home")); ;
+                Common.BindAnimation(button: frmGrievance);
+                //App.Current.MainPage = new MasterData.MasterDataPage();
+                Navigation.PopAsync();
             }
             catch (Exception ex)
             {

@@ -10,7 +10,7 @@
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <Grid>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="Auto" />
@@ -109,7 +109,7 @@
                         Grid.Row="0"
                         Margin="5,0,0,0"
                         FontFamily="Poppins SemiBold"
-                        FontSize="18"
+                        FontSize="17"
                         HorizontalOptions="StartAndExpand"
                         LineBreakMode="WordWrap"
                         Text="Quote Detail"
@@ -339,7 +339,7 @@
                             </StackLayout>
                             <!--#endregion-->
 
-                            <!--#region Request Quantity-->
+                            <!--#region Requested Quantity-->
                             <StackLayout Grid.Row="5">
                                 <StackLayout
                                     Margin="20,0"
@@ -352,7 +352,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requuest Quantity"
+                                        Text="Requested Quantity"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -363,7 +363,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="100 Pieces"
+                                        Text="100"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -673,7 +673,7 @@
                                                 FontSize="{OnPlatform Android=14,
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
-                                                Text="Contact Seller"
+                                                Text="Contact Buyer"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
                                             <ext:CustomShadowFrame

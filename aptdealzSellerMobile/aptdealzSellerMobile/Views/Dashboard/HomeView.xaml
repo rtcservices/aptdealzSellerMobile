@@ -10,10 +10,9 @@
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
-        <Grid>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -36,15 +35,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -73,33 +64,21 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
             <!--#endregion-->
 
             <!--#region Flow List-->
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Label
-                    Grid.Row="0"
-                    Margin="20,0,0,5"
-                    FontFamily="Poppins SemiBold"
-                    FontSize="{OnPlatform Android=18,
-                                          iOS=20}"
-                    HorizontalOptions="StartAndExpand"
-                    Text="Dashboard"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="EndAndExpand" />
+                <StackLayout Grid.Row="0" Padding="20,15">
+                    <Label Style="{StaticResource lblHeader}" Text="Dashboard" />
+                </StackLayout>
 
                 <flv:FlowListView
                     x:Name="flvMenus"
@@ -112,16 +91,14 @@
                     VerticalScrollBarVisibility="Never">
                     <flv:FlowListView.FlowColumnTemplate>
                         <DataTemplate>
-                            <ext:CustomShadowFrame
-                                Margin="10"
+                            <Frame
+                                Margin="6,0,6,12"
                                 Padding="0"
                                 BackgroundColor="{StaticResource LightGray}"
                                 BorderColor="{StaticResource Gray}"
-                                BorderWidth="1"
                                 CornerRadius="10"
                                 HasShadow="False"
-                                HeightRequest="{OnPlatform Android=100,
-                                                           iOS=120}"
+                                HeightRequest="100"
                                 IsClippedToBounds="True"
                                 VerticalOptions="CenterAndExpand">
 
@@ -144,23 +121,23 @@
 
                                     <Label
                                         Grid.Row="1"
-                                        Margin="0,0,0,0"
+                                        Margin="4,0"
                                         FontFamily="Poppins Medium"
                                         FontSize="{OnPlatform Android=13,
-                                                              iOS=16}"
+                                                              iOS=15}"
                                         HorizontalOptions="CenterAndExpand"
                                         HorizontalTextAlignment="Center"
                                         Text="{Binding UiName}"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
                                 </Grid>
-                                <ext:CustomShadowFrame.GestureRecognizers>
+                                <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
                                         x:Name="btnDivision"
                                         NumberOfTapsRequired="1"
                                         Tapped="BtnMenu_Tapped" />
-                                </ext:CustomShadowFrame.GestureRecognizers>
-                            </ext:CustomShadowFrame>
+                                </Frame.GestureRecognizers>
+                            </Frame>
                         </DataTemplate>
                     </flv:FlowListView.FlowColumnTemplate>
                 </flv:FlowListView>

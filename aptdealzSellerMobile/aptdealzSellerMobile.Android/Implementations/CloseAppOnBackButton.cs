@@ -1,6 +1,9 @@
 ﻿using Android.App;
+using aptdealzSellerMobile.Droid.Implementations;
 using aptdealzSellerMobile.Interfaces;
 using System;
+
+[assembly: Xamarin.Forms.Dependency(typeof(CloseAppOnBackButton))]
 
 namespace aptdealzSellerMobile.Droid.Implementations
 {

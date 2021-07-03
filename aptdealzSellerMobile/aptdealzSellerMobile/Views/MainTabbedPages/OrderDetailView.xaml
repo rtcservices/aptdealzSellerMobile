@@ -10,7 +10,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -33,15 +32,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -70,54 +61,33 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
             <!--#endregion-->
 
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackLayout
+                <Grid
                     Grid.Row="0"
-                    Margin="20,0,0,0"
-                    HorizontalOptions="StartAndExpand"
-                    Orientation="Horizontal">
-                    <!--  Back Arrow  -->
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="25"
-                        HorizontalOptions="CenterAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                    <!--  Quote Detail  -->
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
-                        Grid.Row="0"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="18"
-                        HorizontalOptions="StartAndExpand"
-                        LineBreakMode="WordWrap"
-                        Text="Quote Detail"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-
-                </StackLayout>
+                        Grid.Column="1"
+                        Style="{StaticResource lblHeader}"
+                        Text=" Quote Details" />
+                </Grid>
 
                 <ScrollView
                     Grid.Row="1"
@@ -345,7 +315,7 @@
                                         FontFamily="Poppins Medium"
                                         FontSize="16"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="100 Pieces"
+                                        Text="100"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
@@ -595,7 +565,7 @@
                                                 FontFamily="Poppins SemiBold"
                                                 FontSize="16"
                                                 HorizontalOptions="StartAndExpand"
-                                                Text="Contact Seller"
+                                                Text="Contact Buyer"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 

@@ -9,10 +9,13 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UpdateOrderDetailPage : ContentPage
     {
+        private bool isSellerPickup = false;
+
         #region Constructor
-        public UpdateOrderDetailPage()
+        public UpdateOrderDetailPage(bool isSeller)
         {
             InitializeComponent();
+            isSellerPickup = isSeller;
         }
         #endregion
 
@@ -66,7 +69,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
-                Common.BindAnimation(frame: frmUpdateTapped);
+                Common.BindAnimation(button: BtnUpdate);
                 Navigation.PushAsync(new Views.MainTabbedPages.MainTabbedPage("Supplying"));
             }
             catch (Exception ex)

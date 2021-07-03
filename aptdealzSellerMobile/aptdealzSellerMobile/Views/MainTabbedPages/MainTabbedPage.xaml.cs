@@ -1,7 +1,6 @@
 ﻿using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
-using aptdealzSellerMobile.Views.OtherPage;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;

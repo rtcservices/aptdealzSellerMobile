@@ -39,7 +39,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            mCategory = JsonConvert.DeserializeObject<List<Category>>(responseJson);
+                            mCategory = null;
                         }
                     }
                 }
@@ -84,7 +84,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            mSubCategory = JsonConvert.DeserializeObject<List<SubCategory>>(responseJson);
+                            mSubCategory = null;
                         }
                     }
                 }
@@ -133,15 +133,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
-                            {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                            }
-                            else
-                            {
-                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                            }
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
                         }
                     }
                 }
@@ -190,15 +182,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
-                            {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                            }
-                            else
-                            {
-                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                            }
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
                         }
                     }
                 }

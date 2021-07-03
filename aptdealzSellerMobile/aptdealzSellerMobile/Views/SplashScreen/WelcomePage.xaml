@@ -96,21 +96,15 @@
                     Spacing="10"
                     VerticalOptions="CenterAndExpand">
                     <Label
-                        FontFamily="Poppins SemiBold"
-                        FontSize="17"
-                        HorizontalOptions="CenterAndExpand"
+                        FontSize="21"
                         HorizontalTextAlignment="Center"
-                        Text="What is Lorem Ipsum"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
+                        Style="{StaticResource lblBoldHeader}"
+                        Text="What is Lorem Ipsum" />
 
                     <Label
-                        FontFamily="Poppins"
-                        HorizontalOptions="CenterAndExpand"
                         HorizontalTextAlignment="Center"
-                        Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
+                        Style="{StaticResource lblLight15}"
+                        Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
                 </StackLayout>
 
                 <IndicatorView

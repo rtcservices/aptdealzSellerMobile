@@ -32,18 +32,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             List<HomeMenu> HomeMenus;
             HomeMenus = new List<HomeMenu>()
             {
-                new HomeMenu() { MenuImage = "imgActiveRequirements.png",UiName = "View \nRequirements",MenuName = "Requirements"},
-                new HomeMenu() { MenuImage = "imgPostRequirements.png",UiName = "Quotes \nSubmitted",MenuName = "Submitted"},
-                new HomeMenu() { MenuImage = "imgPreviousRequirements.png",UiName = "Order For \nSupplying",MenuName = "Supplying"},
-                new HomeMenu() { MenuImage = "imgOrderHistory.png",UiName = "Account \nProfile",MenuName = "AccountProfile"},
-                new HomeMenu() { MenuImage = "imgShippingDetails.png", UiName = "Notifications",MenuName = "Notifications"},
-                new HomeMenu() { MenuImage = "imgProfile.png", UiName = "Grievances",MenuName = "Grievances"},
-                new HomeMenu() { MenuImage = "imgContactSupport.png", UiName = "About \nAptDealz",MenuName = "AptDealz"},
-                new HomeMenu() { MenuImage = "imgAboutAptDealz.png", UiName = "Term & Policies",MenuName = "Policies"},
-                new HomeMenu() { MenuImage = "imgTermsPolicies.png", UiName = "Contact & Support",MenuName = "Support"},
-                new HomeMenu() { MenuImage = "imgFAQHelp.png", UiName = "Currently \nShipping",MenuName = "Shipping"},
-                new HomeMenu() { MenuImage = "imgWeSupport.png", UiName = "Reports",MenuName = "Reports"},
-                new HomeMenu() { MenuImage = "imgGrievances.png", UiName = "We Support",MenuName = "WeSupport"},
+                new HomeMenu() { MenuImage = "iconViewReq.png",UiName = "View \nRequirements",MenuName = "Requirements"},
+                new HomeMenu() { MenuImage = "iconSubmitedQuotes.png",UiName = "Quotes \nSubmitted",MenuName = "Submitted"},
+                new HomeMenu() { MenuImage = "iconSupplying.png",UiName = "Orders For \nSupplying",MenuName = "Supplying"},
+                new HomeMenu() { MenuImage = "imgProfile.png",UiName = "Account / \nProfile",MenuName = "AccountProfile"},
+                new HomeMenu() { MenuImage = "imgNotifications.png", UiName = "Notifications",MenuName = "Notifications"},
+                new HomeMenu() { MenuImage = "imgGrievances.png", UiName = "Grievances",MenuName = "Grievances"},
+                new HomeMenu() { MenuImage = "imgAboutAptDealz.png", UiName = "About \nAptDealz",MenuName = "AptDealz"},
+                new HomeMenu() { MenuImage = "iconTandP.png", UiName = "Terms & Policies",MenuName = "Policies"},
+                new HomeMenu() { MenuImage = "imgContactSupport.png", UiName = "Contact \nSupport",MenuName = "Support"},
+                new HomeMenu() { MenuImage = "iconCurrentlyShip.png", UiName = "Currently \nShipping",MenuName = "Shipping"},
+                new HomeMenu() { MenuImage = "iconReports.png", UiName = "Reports",MenuName = "Reports"},
+                new HomeMenu() { MenuImage = "imgWeSupport.png", UiName = "We Support",MenuName = "WeSupport"},
             };
 
             flvMenus.FlowItemsSource = HomeMenus.ToList();
@@ -99,7 +99,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 }
                 else if (menuName != null && menuName.MenuName != null)
                 {
-                    App.Current.MainPage = new NavigationPage(new MainTabbedPage(menuName.MenuName));
+                    Navigation.PushAsync(new MainTabbedPage(menuName.MenuName));
                 }
             }
             catch (Exception ex)

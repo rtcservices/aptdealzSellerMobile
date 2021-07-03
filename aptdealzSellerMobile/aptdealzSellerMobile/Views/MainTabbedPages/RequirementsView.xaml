@@ -7,7 +7,7 @@
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
-        <Grid>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="Auto" />
@@ -87,20 +87,21 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!--#region Back Arrow(Title)-->
+                <!--#region Title-->
                 <Grid
                     Grid.Row="0"
-                    Margin="20,0"
+                    Margin="15,15,0,0"
                     ColumnDefinitions="Auto,*,Auto"
                     HorizontalOptions="FillAndExpand">
                     <Image
+                        x:Name="ImgBack"
                         Margin="0"
                         Aspect="AspectFit"
-                        HeightRequest="30"
+                        HeightRequest="25"
                         HorizontalOptions="StartAndExpand"
                         Source="iconBackArrow.png"
                         VerticalOptions="CenterAndExpand"
-                        WidthRequest="30">
+                        WidthRequest="25">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
                         </Image.GestureRecognizers>
@@ -111,114 +112,219 @@
                         Grid.Column="1"
                         Margin="5,0,0,0"
                         FontFamily="Poppins SemiBold"
-                        FontSize="20"
+                        FontSize="17"
                         HorizontalOptions="StartAndExpand"
                         Text="View Requirements"
                         TextColor="{StaticResource Black}"
                         VerticalOptions="CenterAndExpand" />
-
-                    <Image
-                        Grid.Column="2"
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="30"
-                        HorizontalOptions="EndAndExpand"
-                        Source="iconSearch.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="30">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgSearch_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
                 </Grid>
                 <!--#endregion-->
 
-                <!--#region Filter SortBy/Status-->
-                <Grid Grid.Row="1" Margin="20,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ext:CustomShadowFrame
-                        Grid.Column="1"
-                        Margin="0,10,10,10"
+                <!--#region Search/SortBy/Status-->
+                <Grid
+                    Grid.Row="1"
+                    Padding="15,0"
+                    RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Frame
+                        x:Name="FrmSearchBy"
+                        Grid.Row="0"
+                        Margin="0"
                         Padding="0"
-                        BorderColor="{StaticResource LightGray}"
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
                         CornerRadius="5"
                         HasShadow="False"
-                        HorizontalOptions="EndAndExpand">
-                        <Grid
-                            Margin="5"
-                            ColumnDefinitions="Auto,*"
-                            ColumnSpacing="0"
-                            VerticalOptions="CenterAndExpand">
+                        IsClippedToBounds="True">
+
+                        <Grid BackgroundColor="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
                             <Image
                                 Grid.Column="0"
-                                Margin="0"
                                 Aspect="AspectFit"
-                                HeightRequest="20"
-                                HorizontalOptions="CenterAndExpand"
-                                Source="iconSort.png"
-                                VerticalOptions="CenterAndExpand" />
-
-                            <Label
+                                BackgroundColor="Transparent"
+                                HeightRequest="{OnPlatform Android=20,
+                                                           iOS=25}"
+                                HorizontalOptions="Center"
+                                Source="iconSearch.png"
+                                VerticalOptions="Center"
+                                WidthRequest="{OnPlatform Android=20,
+                                                          iOS=25}" />
+                            <ext:ExtEntry
+                                x:Name="entrSearch"
                                 Grid.Column="1"
-                                Margin="5,0,0,0"
                                 FontFamily="Poppins"
-                                FontSize="13"
-                                HorizontalOptions="CenterAndExpand"
-                                Text="Sort by"
-                                TextColor="{StaticResource Black}"
-                                VerticalOptions="CenterAndExpand" />
-                        </Grid>
-                        <ext:CustomShadowFrame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSortBy_Tapped" />
-                        </ext:CustomShadowFrame.GestureRecognizers>
-                    </ext:CustomShadowFrame>
+                                FontSize="15"
+                                Placeholder="Search"
+                                TextChanged="entrSearch_TextChanged"
+                                VerticalOptions="{OnPlatform Android=EndAndExpand,
+                                                             iOS=CenterAndExpand}" />
 
-                    <ext:CustomShadowFrame
-                        Grid.Column="2"
-                        Margin="0,10"
-                        Padding="0"
-                        BorderColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
+
+                            <ImageButton
+                                x:Name="BtnClose"
+                                Grid.Column="2"
+                                Margin="0"
+                                Padding="13"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                Clicked="BtnClose_Clicked"
+                                HeightRequest="40"
+                                HorizontalOptions="EndAndExpand"
+                                Source="iconClose.png"
+                                VerticalOptions="Center"
+                                WidthRequest="40" />
+                            <BoxView
+                                Grid.ColumnSpan="3"
+                                BackgroundColor="{StaticResource Green}"
+                                HeightRequest="1"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="EndAndExpand" />
+                        </Grid>
+                    </Frame>
+
+                    <Grid
+                        Grid.Row="1"
+                        ColumnSpacing="10"
                         HorizontalOptions="EndAndExpand">
-                        <Grid
-                            Margin="5"
-                            ColumnDefinitions="Auto,*"
-                            ColumnSpacing="0">
-                            <Image
-                                Grid.Column="0"
-                                Margin="0"
-                                Aspect="AspectFit"
-                                HeightRequest="20"
-                                HorizontalOptions="CenterAndExpand"
-                                Source="iconStatus.png"
-                                VerticalOptions="CenterAndExpand" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Frame
+                            x:Name="FrmSortBy"
+                            Grid.Column="0"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource LightGray}"
+                            CornerRadius="5"
+                            HasShadow="False"
+                            HorizontalOptions="EndAndExpand"
+                            IsClippedToBounds="True">
+                            <Grid
+                                Margin="5"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="0">
+                                <Image
+                                    x:Name="ImgSort"
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    HeightRequest="20"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Source="iconSortASC.png"
+                                    VerticalOptions="CenterAndExpand" />
 
-                            <Label
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                FontFamily="Poppins"
-                                FontSize="13"
-                                HorizontalOptions="CenterAndExpand"
-                                Text="Status"
-                                TextColor="{StaticResource Black}"
-                                VerticalOptions="CenterAndExpand" />
-                        </Grid>
-                        <ext:CustomShadowFrame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatus_Tapped" />
-                        </ext:CustomShadowFrame.GestureRecognizers>
-                    </ext:CustomShadowFrame>
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="12"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Text="Sort by"
+                                    TextColor="{StaticResource Black}"
+                                    VerticalOptions="CenterAndExpand" />
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSortBy_Tapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
+                        <!--<Frame
+                            x:Name="FrmStatusBy"
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource LightGray}"
+                            CornerRadius="5"
+                            HasShadow="False"
+                            HorizontalOptions="EndAndExpand"
+                            IsClippedToBounds="True">
+                            <Grid
+                                Margin="5"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="2">
+                                <Image
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Source="iconStatus.png"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="12"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Text="Status"
+                                    TextColor="{StaticResource Black}"
+                                    VerticalOptions="CenterAndExpand" />
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatusBy_Tapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>-->
+
+                        <Frame
+                            x:Name="FrmFilterBy"
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource LightGray}"
+                            CornerRadius="5"
+                            HasShadow="False"
+                            HorizontalOptions="EndAndExpand"
+                            IsClippedToBounds="True">
+                            <Grid
+                                Margin="5"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="0">
+                                <Image
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    HeightRequest="20"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Source="iconFilter.png"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontFamily="Poppins"
+                                    FontSize="12"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Text="Filter by"
+                                    TextColor="{StaticResource Black}"
+                                    VerticalOptions="CenterAndExpand" />
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmFilterBy_Tapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </Grid>
                 </Grid>
                 <!--#endregion-->
 
                 <ListView
                     x:Name="lstRequirements"
                     Grid.Row="2"
-                    ItemTapped="lstRequirements_ItemTapped"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True"
+                    ItemAppearing="lstRequirements_ItemAppearing"
+                    Refreshing="lstRequirements_Refreshing"
                     Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -243,6 +349,7 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
+
                                             <!--  Requerment Number  -->
                                             <Label
                                                 Grid.Row="0"
@@ -256,16 +363,16 @@
                                                 VerticalOptions="CenterAndExpand" />
 
                                             <!--  request Status  -->
-                                            <Label
+                                            <!--<Label
                                                 Grid.Row="0"
                                                 BackgroundColor="Transparent"
                                                 FontFamily="Poppins Medium"
                                                 FontSize="{OnPlatform Android=14,
                                                                       iOS=16}"
                                                 HorizontalOptions="EndAndExpand"
-                                                Text="{Binding ReqStatus}"
+                                                Text="{Binding Status}"
                                                 TextColor="{Binding StatusColor}"
-                                                VerticalOptions="CenterAndExpand" />
+                                                VerticalOptions="CenterAndExpand" />-->
 
                                             <!--  Requerment Code  -->
                                             <Label
@@ -275,18 +382,11 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding Code}"
+                                                Text="{Binding BuyerNo}"
                                                 TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,0" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
 
-                                            <!--  Requerment Description  -->
+                                            <!--  Requerment Title  -->
                                             <Label
                                                 Grid.Row="1"
                                                 Margin="0"
@@ -294,19 +394,12 @@
                                                 FontSize="{OnPlatform Android=14,
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                Text="{Binding RequirementDes}"
+                                                IsVisible="{Binding HideDetail, Mode=TwoWay}"
+                                                Text="{Binding Title}"
                                                 TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,0" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
 
-                                            <!--  Requerment Details  -->
+                                            <!--  Requerment Title  -->
                                             <Label
                                                 Grid.Row="2"
                                                 Margin="0"
@@ -315,7 +408,7 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding RequirementDes}"
+                                                Text="{Binding Title}"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 
@@ -326,8 +419,8 @@
                                                 FontSize="{OnPlatform Android=14,
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                Text="{Binding Price, StringFormat='RS {0:}'}"
+                                                IsVisible="{Binding HideDetail, Mode=TwoWay}"
+                                                Text="{Binding TotalPriceEstimation, StringFormat='RS {0:}'}"
                                                 TextColor="{StaticResource Green}"
                                                 VerticalOptions="CenterAndExpand" />
 
@@ -340,16 +433,9 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding ReqDate}"
+                                                Text="{Binding CreatedDate, StringFormat='{0:MM-dd-yyyy}'}"
                                                 TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,5" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
 
                                             <!--  Price BLACK  -->
                                             <Label
@@ -358,18 +444,11 @@
                                                 FontSize="17"
                                                 HorizontalOptions="EndAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding Price, StringFormat='RS {0:}'}"
+                                                Text="{Binding TotalPriceEstimation, StringFormat='RS {0:}'}"
                                                 TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,5" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
 
-                                            <!--  Category Description  -->
+                                            <!--  Description  -->
                                             <Label
                                                 Grid.Row="4"
                                                 Margin="0"
@@ -378,19 +457,12 @@
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding CatDescription}"
+                                                Text="{Binding ProductDescription}"
                                                 TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,5" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
                                         </Grid>
 
-                                        <!--  DoenArrow  -->
+                                        <!--  DownArrow  -->
                                         <ImageButton
                                             Grid.Column="1"
                                             Margin="0"
@@ -410,12 +482,25 @@
                                         HeightRequest="1"
                                         HorizontalOptions="FillAndExpand"
                                         VerticalOptions="EndAndExpand" />
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdRequirements_Tapped" />
+                                    </Grid.GestureRecognizers>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
+                <Label
+                    x:Name="lblNoRecord"
+                    Grid.Row="2"
+                    FontFamily="Poppins Medium"
+                    FontSize="15"
+                    HorizontalOptions="CenterAndExpand"
+                    IsVisible="false"
+                    Text="No requirments found"
+                    TextColor="{StaticResource Black}"
+                    VerticalOptions="CenterAndExpand" />
             </Grid>
         </Grid>
     </ContentView.Content>

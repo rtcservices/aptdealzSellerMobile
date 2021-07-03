@@ -19,7 +19,12 @@ namespace aptdealzSellerMobile.Utility
             {
                 FileData fileData = await CrossFilePicker.Current.PickFile();
                 if (fileData == null)
-                    return; // user canceled file picking
+                {
+                    fileName = string.Empty;
+                    fileByte = null;
+                    fileExtension = string.Empty;
+                    return;
+                }
 
                 fileName = fileData.FileName;
                 fileByte = fileData.DataArray;

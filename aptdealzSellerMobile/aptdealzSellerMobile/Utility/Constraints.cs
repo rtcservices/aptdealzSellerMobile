@@ -13,6 +13,9 @@
         public const string Arrow_Right = "iconRightArrow.png";
         public const string Arrow_Down = "iconDownArrow.png";
 
+        public const string Sort_ASC = "iconSortASC.png";
+        public const string Sort_DSC = "iconSortDSC.png";
+
         public const string CheckBox_UnChecked = "iconUncheck.png";
         public const string CheckBox_Checked = "iconCheck.png";
 
@@ -28,11 +31,11 @@
         public const string Img_Contact = "imgContact.jpg";
         public const string Img_Buyer = "imgBuyer.png";
         public const string Img_Home = "iconHome.png";
-        public const string Img_Quote = "iconRequirements.png";
+        public const string Img_Quote = "iconQuotes.png";
         public const string Img_Order = "iconOrders.png";
         public const string Img_Account = "iconAccount.png";
         public const string Img_Home_Activ = "iconHomeActive.png";
-        public const string Img_Quote_Active = "iconRequirementsActive.png";
+        public const string Img_Quote_Active = "iconQuotesActive.png";
         public const string Img_Order_Active = "iconOrdersActive.png";
         public const string Img_Account_Active = "iconAccountActive.png";
         #endregion
@@ -74,12 +77,17 @@
 
         public const string InValid_Email = "Please enter valid email address!";
         public const string InValid_PhoneNumber = "Please enter valid phone number!";
+        public const string InValid_AltNumber = "Please enter valid alternate phone number!";
         public const string InValid_NewPassword = "Please enter valid new password!";
         public const string InValid_ConfirmPassword = "Please enter valid confirm password!";
-        public const string Same_New_Confirm_Password = "New and Confirm password should be same!";
+        public const string InValid_Pincode = "Please enter valid pincode!";
+        public const string InValid_Nationality = "Please enter valid nationality!";
 
+        public const string Same_New_Confirm_Password = "New and Confirm password should be same!";
         public const string Agree_T_C = "Please check box for Terms & Conditions.";
 
+        public const string Required_All = "Selected fields are required!";
+        public const string Required_BillingAddress = "Please enter billing address!";
         public const string Required_Email_Phone = "Please enter email address or phone number!";
         public const string Required_VerificationCode = "Please enter verification code!";
         public const string Required_Email = "Please enter email address!";
@@ -105,6 +113,7 @@
         public const string Required_Subcategory = "Please enter sub category!";
         public const string Required_NewPassword = "Please enter new password!";
         public const string Required_ConfirmPassword = "Please enter confirm password!";
+        public const string Required_UnitPrice = "Please enter unit price!";
         #endregion               
     }
 }

@@ -4,19 +4,19 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
+    xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <Grid>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!--#region Header(NavigationBar)-->
+            <!--  Header(NavigationBar)  -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80" />
@@ -35,15 +35,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -72,81 +64,70 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
-            <!--#endregion-->
 
-            <Grid Grid.Row="2" Margin="0">
+
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!--#region Back Button-->
-                <StackLayout
+                <!--  Back Button  -->
+
+                <Grid
                     Grid.Row="0"
-                    Margin="20,0,0,0"
-                    HorizontalOptions="StartAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="25"
-                        HorizontalOptions="CenterAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
-                        Grid.Row="0"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="18"
-                        HorizontalOptions="StartAndExpand"
+                        x:Name="lblTitle"
+                        Grid.Column="1"
                         LineBreakMode="WordWrap"
-                        Text="Need 5 Canon A210 All In one &#10; Printers"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-                </StackLayout>
-                <!--#endregion-->
+                        Style="{StaticResource lblHeader}" />
+                </Grid>
 
-                <ScrollView
-                    Grid.Row="1"
-                    Margin="0"
-                    HorizontalScrollBarVisibility="Never"
-                    VerticalScrollBarVisibility="Never">
-                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
+                    <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <!--#region Product Image-->
-                        <ext:CustomShadowFrame
+                        <!--  Product Image  -->
+                        <Frame
                             Grid.Row="0"
                             Margin="10"
-                            Padding="0"
+                            Padding="5"
+                            BackgroundColor="Transparent"
                             BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
-                            HorizontalOptions="CenterAndExpand">
-                            <Image
-                                Margin="5"
-                                HorizontalOptions="CenterAndExpand"
-                                Source="iconProductBanner.png"
-                                VerticalOptions="CenterAndExpand" />
-                        </ext:CustomShadowFrame>
-                        <!--#endregion-->
+                            HeightRequest="100"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="150">
+                            <ffImage:CachedImage
+                                x:Name="imgProductImage"
+                                Margin="0"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                ErrorPlaceholder="iconProductBanner.png"
+                                HorizontalOptions="FillAndExpand"
+                                LoadingPlaceholder="iconProductBanner.png"
+                                VerticalOptions="FillAndExpand" />
+                        </Frame>
 
                         <Grid
                             Grid.Row="1"
@@ -163,87 +144,54 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!--#region Requirment ID-->
+                            <!--  Requirment ID  -->
                             <StackLayout Grid.Row="0">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requirement ID"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Requirement ID" />
 
                                     <Label
                                         x:Name="lblRequirementId"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="REQ#123"
-                                        TextColor="{StaticResource Green}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}"
+                                        TextColor="{StaticResource Green}" />
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Buyer ID-->
+
+                            <!--  Buyer ID  -->
                             <StackLayout Grid.Row="1">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Buyer ID"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Buyer ID" />
 
                                     <Label
                                         x:Name="lblBuyerId"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="B951"
-                                        TextColor="{StaticResource Green}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}"
+                                        TextColor="{StaticResource Green}" />
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Category-->
+
+                            <!--  Category  -->
                             <StackLayout Grid.Row="2">
                                 <StackLayout
                                     Margin="20,0"
@@ -251,414 +199,212 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Category"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Category" />
 
                                     <Label
                                         x:Name="lblCategory"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="IT Product"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Quantity-->
+
+                            <!--  Quantity  -->
                             <StackLayout Grid.Row="3">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Quantity"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Quantity" />
 
                                     <Label
                                         x:Name="lblQuantity"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="5 Pieces"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Total Price Estimation-->
+
+                            <!--  Total Price Estimation  -->
                             <StackLayout Grid.Row="4">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Totla Price Estimation"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Total Price Estimation" />
 
                                     <Label
                                         x:Name="lblEstimatePrice"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Rs 2500"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Preferred Source-->
+
+                            <!--  Preferred Source  -->
                             <StackLayout Grid.Row="5">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Preferred Source"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Preferred Source" />
 
                                     <Label
                                         x:Name="lblPreferredSource"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text=""
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Expected Delivery Date-->
+
+                            <!--  Expected Delivery Date  -->
                             <StackLayout Grid.Row="6">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Expected Delivery Date"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Expected Delivery Date" />
 
                                     <Label
                                         x:Name="lblDeliveryDate"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="12.02.2021"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region LOC PIN Code-->
+
+                            <!--  LOC PIN Code  -->
                             <StackLayout Grid.Row="7">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
-
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Loc PIN Code"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Loc PIN Code" />
 
                                     <Label
                                         x:Name="lblLocPinCode"
-                                        Margin="0"
-                                        FontFamily="Poppins Medium"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="89563"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Need Insurance-->
+
+                            <!--  Need Insurance  -->
                             <StackLayout Grid.Row="8">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
+                                    <Label
+                                        HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Need Insurance" />
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Need Insurance"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                    <Image
-                                        x:Name="imgInsurance"
-                                        Margin="0"
-                                        HeightRequest="25"
+                                        x:Name="lblNeedInsurance"
                                         HorizontalOptions="EndAndExpand"
-                                        Source="iconTick.png"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        TextColor="{StaticResource Green}" />
 
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
 
-                            <!--#region Prefer Make In India Product-->
+
+                            <!--  Prefer Make In India Product  -->
                             <StackLayout Grid.Row="9">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal">
+                                    <Label
+                                        HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Prefer Make In India Products" />
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Prefer Make In India Products"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                    <Image
-                                        x:Name="imgPreferIndia"
-                                        Margin="0"
-                                        HeightRequest="25"
+                                        x:Name="lblPreferInIndiaProducts"
                                         HorizontalOptions="EndAndExpand"
-                                        Source="iconTick.png"
-                                        VerticalOptions="CenterAndExpand" />
-
+                                        Style="{StaticResource lblLight15}"
+                                        TextColor="{StaticResource Green}" />
                                 </StackLayout>
-
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
-                            <!--#endregion-->
+                        </Grid>
 
-                            <!--#region Buyer Contact Detail-->
-                            <StackLayout Grid.Row="10">
-                                <Grid Margin="20,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        Grid.Column="0"
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=16,
-                                                              iOS=16}"
-                                        HorizontalOptions="StartAndExpand"
-                                        Text="Buyer Contact Details"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-                                    <ext:CustomShadowFrame
-                                        x:Name="frmReqDetailRevealContact"
-                                        Grid.Column="1"
-                                        Margin="0,20,0,20"
-                                        Padding="0"
-                                        BorderColor="{StaticResource Green}"
-                                        BorderWidth="2"
-                                        CornerRadius="5"
-                                        HasShadow="False"
-                                        HeightRequest="45"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="CenterAndExpand">
-                                        <Label
-                                            Margin="0"
-                                            Padding="0"
-                                            FontFamily="Poppins Medium"
-                                            FontSize="{OnPlatform Android=16,
-                                                                  iOS=16}"
-                                            HorizontalOptions="CenterAndExpand"
-                                            Text="Reveal Contact"
-                                            TextColor="{StaticResource Green}"
-                                            VerticalOptions="CenterAndExpand" />
-                                        <ext:CustomShadowFrame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="frmReqDetailRevealContact_Tapped" />
-                                        </ext:CustomShadowFrame.GestureRecognizers>
-                                    </ext:CustomShadowFrame>
-                                </Grid>
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
-                            </StackLayout>
-                            <!--#endregion-->
+                        <!--  Buyer Contact Detail  -->
+                        <Grid Grid.Row="2" Padding="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                Grid.Column="0"
+                                HorizontalOptions="StartAndExpand"
+                                Style="{StaticResource lblLight15}"
+                                Text="Buyer Contact Details" />
 
-                            <!--#region Buttond-->
-                            <StackLayout Grid.Row="11" Margin="20,0">
-                                <Grid
-                                    Margin="0"
-                                    Padding="0"
-                                    ColumnSpacing="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <ext:CustomShadowFrame
-                                        x:Name="frmReqDetailProvideQoute"
-                                        Grid.Column="0"
-                                        Margin="0,20,0,20"
-                                        Padding="0"
-                                        BorderColor="{StaticResource Green}"
-                                        BorderWidth="2"
-                                        CornerRadius="5"
-                                        HasShadow="False"
-                                        HeightRequest="45"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="CenterAndExpand">
-                                        <Label
-                                            Margin="0"
-                                            Padding="0"
-                                            FontFamily="Poppins Medium"
-                                            FontSize="{OnPlatform Android=16,
-                                                                  iOS=16}"
-                                            HorizontalOptions="CenterAndExpand"
-                                            Text="Provide Quote"
-                                            TextColor="{StaticResource Green}"
-                                            VerticalOptions="CenterAndExpand" />
-                                        <ext:CustomShadowFrame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="frmReqDetailProvideQoute_Tapped" />
-                                        </ext:CustomShadowFrame.GestureRecognizers>
-                                    </ext:CustomShadowFrame>
-                                    <ext:CustomShadowFrame
-                                        x:Name="frmReqDetailReject"
-                                        Grid.Column="1"
-                                        Margin="0,20,0,20"
-                                        Padding="0"
-                                        BorderColor="{StaticResource Green}"
-                                        BorderWidth="2"
-                                        CornerRadius="5"
-                                        HasShadow="False"
-                                        HeightRequest="45"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="CenterAndExpand">
-                                        <Label
-                                            Margin="0"
-                                            Padding="0"
-                                            FontFamily="Poppins Medium"
-                                            FontSize="{OnPlatform Android=16,
-                                                                  iOS=16}"
-                                            HorizontalOptions="CenterAndExpand"
-                                            Text="Reject"
-                                            TextColor="{StaticResource Green}"
-                                            VerticalOptions="CenterAndExpand" />
-                                        <ext:CustomShadowFrame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="frmReqDetailReject_Tapped" />
-                                        </ext:CustomShadowFrame.GestureRecognizers>
-                                    </ext:CustomShadowFrame>
-                                </Grid>
-                            </StackLayout>
-                            <!--#endregion-->
+                            <Button
+                                x:Name="BtnRevealContact"
+                                Grid.Column="1"
+                                BorderWidth="2"
+                                Clicked="BtnRevealContact_Tapped"
+                                HeightRequest="45"
+                                Style="{StaticResource btnBorder}"
+                                Text="Reveal Contact" />
+                        </Grid>
 
+                        <BoxView Grid.Row="3" Style="{StaticResource boxHorizontal}" />
+
+                        <!--  Button  -->
+                        <Grid
+                            Grid.Row="4"
+                            Padding="20"
+                            ColumnSpacing="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                x:Name="BtnProvideQoute"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                BorderWidth="2"
+                                Clicked="BtnProvideQuote_Tapped"
+                                HeightRequest="45"
+                                Style="{StaticResource btnBorder}"
+                                Text="Provide Quote" />
+                            <!--<Button
+                                x:Name="BtnReject"
+                                Grid.Column="1"
+                                BorderWidth="2"
+                                Clicked="BtnReject_Tapped"
+                                HeightRequest="45"
+                                Style="{StaticResource btnBorder}"
+                                Text="Reject" />-->
                         </Grid>
                     </Grid>
                 </ScrollView>

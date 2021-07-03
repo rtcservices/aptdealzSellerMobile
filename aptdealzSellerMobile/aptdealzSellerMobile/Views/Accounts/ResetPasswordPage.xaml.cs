@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Extention;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
@@ -27,7 +28,13 @@ namespace aptdealzSellerMobile.Views.Accounts
         public bool Validation()
         {
             bool isValid = false;
-            if (Common.EmptyFiels(txtNewPassword.Text))
+            if (Common.EmptyFiels(txtNewPassword.Text) || Common.EmptyFiels(txtConfirmPassword.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_All);
+                RequiredFields();
+                isValid = false;
+            }
+            else if (Common.EmptyFiels(txtNewPassword.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_NewPassword);
             }
@@ -54,12 +61,39 @@ namespace aptdealzSellerMobile.Views.Accounts
             return isValid;
         }
 
+        void RequiredFields()
+        {
+            try
+            {
+                if (Common.EmptyFiels(txtNewPassword.Text))
+                {
+                    BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtConfirmPassword.Text))
+                {
+                    BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/EnableRequiredFields: " + ex.Message);
+            }
+        }
+
+        void FieldsTrim()
+        {
+            txtNewPassword.Text = txtNewPassword.Text.Trim();
+            txtConfirmPassword.Text = txtConfirmPassword.Text.Trim();
+        }
+
         async void ResetPassword()
         {
             try
             {
                 if (Validation())
                 {
+                    FieldsTrim();
                     AuthenticationAPI authenticationAPI = new AuthenticationAPI();
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     ResetPassword mResetPassword = new ResetPassword();
@@ -106,7 +140,6 @@ namespace aptdealzSellerMobile.Views.Accounts
             Common.BindAnimation(button: BtnSubmit);
             ResetPassword();
         }
-        #endregion
 
         private void ImgNewPassword_Tapped(object sender, EventArgs e)
         {
@@ -151,5 +184,22 @@ namespace aptdealzSellerMobile.Views.Accounts
                 Common.DisplayErrorMessage("LoginPage/ImgPassword_Tapped: " + ex.Message);
             }
         }
+
+        private void Entry_Unfocused(object sender, FocusEventArgs e)
+        {
+            var entry = (ExtEntry)sender;
+            if (!Common.EmptyFiels(entry.Text))
+            {
+                if (entry.ClassId == "NewPassword")
+                {
+                    BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                }
+                else if (entry.ClassId == "ConfirmPassword")
+                {
+                    BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                }
+            }
+        }
+        #endregion
     }
 }

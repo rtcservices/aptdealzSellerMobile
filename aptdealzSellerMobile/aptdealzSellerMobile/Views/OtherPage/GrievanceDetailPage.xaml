@@ -9,10 +9,9 @@
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <Grid>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -35,15 +34,7 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
-                    Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -72,66 +63,43 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
             <!--#endregion-->
 
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <!--  Back Arrow  -->
-                <StackLayout
+                <Grid
                     Grid.Row="0"
-                    Margin="20,0,0,0"
-                    HorizontalOptions="StartAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="25"
-                        HorizontalOptions="CenterAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
-                        Grid.Row="0"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
-                        FontSize="{OnPlatform Android=18,
-                                              iOS=20}"
-                        HorizontalOptions="StartAndExpand"
-                        LineBreakMode="WordWrap"
-                        Text="Grievance Detail"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-                </StackLayout>
+                        Grid.Column="1"
+                        Style="{StaticResource lblHeader}"
+                        Text=" Grievances Details" />
+                </Grid>
 
-                <ScrollView
-                    Grid.Row="1"
-                    Margin="0,20,0,0"
-                    HorizontalScrollBarVisibility="Never"
-                    VerticalScrollBarVisibility="Never">
-                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
+
+                    <Grid HorizontalOptions="FillAndExpand" RowSpacing="0">
+
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid
-                            Grid.Row="0"
-                            HorizontalOptions="FillAndExpand"
-                            RowSpacing="10">
+                        <Grid Grid.Row="0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -141,12 +109,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-
                             <!--  Greivance ID  -->
                             <StackLayout Grid.Row="0">
                                 <StackLayout
@@ -419,7 +382,7 @@
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Attached Document"
+                                        Text="Attached Documents"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
                                     <Grid>
@@ -440,15 +403,26 @@
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="EndAndExpand" />
                             </StackLayout>
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="1"
+                            Padding="20"
+                            RowSpacing="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
                             <!--  Text Lorem ipsum Frame  -->
                             <StackLayout
-                                Grid.Row="8"
-                                Margin="30,20,30,0"
+                                Grid.Row="0"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand">
                                 <Frame
-                                    Padding="10,20,10,20"
+                                    Padding="10"
                                     BackgroundColor="White"
                                     BorderColor="{StaticResource LightGray}"
                                     HeightRequest="80"
@@ -466,8 +440,7 @@
                             </StackLayout>
 
                             <Grid
-                                Grid.Row="9"
-                                Margin="30,10"
+                                Grid.Row="1"
                                 RowDefinitions="Auto,Auto"
                                 RowSpacing="40">
 
@@ -502,25 +475,14 @@
 
                                     </StackLayout>
 
-                                    <ext:CustomShadowFrame
-                                        Grid.Column="1"
-                                        Margin="0"
-                                        Padding="0"
-                                        BorderColor="{StaticResource LightGray}"
-                                        CornerRadius="5"
-                                        HasShadow="False">
+                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=5}">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Response" />
                                         <Editor
                                             x:Name="txtAdminResponse"
-                                            Margin="5,10"
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
-                                            HorizontalOptions="FillAndExpand"
-                                            Placeholder="Response"
-                                            PlaceholderColor="{StaticResource Black}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="FillAndExpand" />
-                                    </ext:CustomShadowFrame>
+                                            HeightRequest="40"
+                                            Style="{StaticResource edPrimary}" />
+                                        <BoxView Style="{StaticResource boxHorizontal}" />
+                                    </StackLayout>
 
                                 </Grid>
 
@@ -555,78 +517,35 @@
 
                                     </StackLayout>
 
-                                    <ext:CustomShadowFrame
-                                        Grid.Column="1"
-                                        Margin="0"
-                                        Padding="0"
-                                        BorderColor="{StaticResource LightGray}"
-                                        CornerRadius="5"
-                                        HasShadow="False">
+                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=5}">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Response" />
                                         <Editor
                                             x:Name="txtBuyerResponse"
-                                            Margin="5,10"
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
-                                            HorizontalOptions="FillAndExpand"
-                                            Placeholder="Response"
-                                            PlaceholderColor="{StaticResource Black}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="FillAndExpand" />
-                                    </ext:CustomShadowFrame>
+                                            HeightRequest="40"
+                                            Style="{StaticResource edPrimary}" />
+                                        <BoxView Style="{StaticResource boxHorizontal}" />
+                                    </StackLayout>
                                 </Grid>
                             </Grid>
 
                             <!--  message  -->
-                            <ext:CustomShadowFrame
-                                Grid.Row="10"
-                                Margin="20,30"
-                                Padding="0"
-                                BorderColor="{StaticResource LightGray}"
-                                CornerRadius="5"
-                                HasShadow="False"
-                                HeightRequest="140">
+                            <StackLayout Grid.Row="2" Spacing="5">
+                                <Label Style="{StaticResource lblPrimary13}" Text="Enter your message" />
                                 <Editor
                                     x:Name="txtMessage"
-                                    Margin="10,10"
-                                    FontFamily="Poppins"
-                                    FontSize="{OnPlatform Android=14,
-                                                          iOS=16}"
-                                    HorizontalOptions="FillAndExpand"
-                                    Placeholder="Enter your message"
-                                    PlaceholderColor="{StaticResource Black}"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="FillAndExpand" />
-                            </ext:CustomShadowFrame>
+                                    Margin="10,0"
+                                    HeightRequest="100"
+                                    Style="{StaticResource edPrimary}" />
+                                <BoxView x:Name="BoxMessage" Style="{StaticResource boxHorizontal}" />
+                            </StackLayout>
 
                             <!--  SubmitButton  -->
-                            <ext:CustomShadowFrame
+                            <Button
                                 x:Name="frmGrievance"
-                                Grid.Row="11"
-                                Margin="20,0,20,20"
-                                Padding="0"
-                                BackgroundColor="{StaticResource Green}"
-                                CornerRadius="5"
-                                HasShadow="False"
-                                HeightRequest="{OnPlatform Android=50,
-                                                           iOS=50}"
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="CenterAndExpand">
-                                <Label
-                                    Grid.Column="1"
-                                    Margin="20,10"
-                                    FontFamily="Poppins Medium"
-                                    FontSize="{OnPlatform Android=16,
-                                                          iOS=18}"
-                                    HorizontalOptions="CenterAndExpand"
-                                    LineBreakMode="WordWrap"
-                                    Text="Submit"
-                                    TextColor="{StaticResource White}"
-                                    VerticalOptions="CenterAndExpand" />
-                                <ext:CustomShadowFrame.GestureRecognizers>
-                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSubmit_Tapped" />
-                                </ext:CustomShadowFrame.GestureRecognizers>
-                            </ext:CustomShadowFrame>
+                                Grid.Row="3"
+                                Clicked="FrmSubmit_Tapped"
+                                Style="{StaticResource btnPrimary}"
+                                Text="Submit" />
                         </Grid>
                     </Grid>
                 </ScrollView>

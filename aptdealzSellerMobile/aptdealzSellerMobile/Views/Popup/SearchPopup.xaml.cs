@@ -48,5 +48,10 @@ namespace aptdealzSellerMobile.Views.Popup
             BindList();
         }
         #endregion
+
+        private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

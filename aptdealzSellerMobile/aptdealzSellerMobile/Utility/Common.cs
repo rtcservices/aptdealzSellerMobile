@@ -12,11 +12,10 @@ namespace aptdealzSellerMobile.Utility
     {
         #region Properties
         public static MasterDataPage MasterData { get; set; }
-
-        //public static Position mLocation = null;
         public static string Token { get; set; }
         private static Regex PhoneNumber { get; set; } = new Regex(@"^[0-9]{10}$");
         private static Regex RegexPassword { get; set; } = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$");
+        private static Regex RegexPincode { get; set; } = new Regex(@"^[0-9]{6}$");
         #endregion
 
         #region DisplayMessages
@@ -107,17 +106,9 @@ namespace aptdealzSellerMobile.Utility
             }
         }
 
-        public static bool EmptyFiels(string extEntry)
-        {
-            if (string.IsNullOrEmpty(extEntry) || string.IsNullOrWhiteSpace(extEntry))
-            {
-                return true;
-            }
-            return false;
-        }
-
         public static bool IsValidPhone(this string value)
         {
+            value = value.Trim();
             return PhoneNumber.IsMatch(value);
         }
 
@@ -125,6 +116,7 @@ namespace aptdealzSellerMobile.Utility
         {
             try
             {
+                value = value.Trim();
                 var addr = new System.Net.Mail.MailAddress($"{value}");
                 return addr.Address == $"{value}";
             }
@@ -136,7 +128,27 @@ namespace aptdealzSellerMobile.Utility
 
         public static bool IsValidPassword(this string value)
         {
+            value = value.Trim();
             return (RegexPassword.IsMatch($"{value}"));
+        }
+
+        public static bool IsValidPincode(this string value)
+        {
+            value = value.Trim();
+            return (RegexPincode.IsMatch($"{value}"));
+        }
+
+        public static bool EmptyFiels(string extEntry)
+        {
+            if (string.IsNullOrEmpty(extEntry) || string.IsNullOrWhiteSpace(extEntry))
+            {
+                return true;
+            }
+            else
+            {
+                extEntry = extEntry.Trim();
+                return false;
+            }
         }
 
         public async static Task<bool> InternetConnection()
@@ -169,6 +181,27 @@ namespace aptdealzSellerMobile.Utility
         ProfilePicture = 0,
         ProfileDocuments = 1,
         RequirementImages = 2
+    }
+
+    public enum RequirementStatus
+    {
+        Active = 1,
+        Completed = 2,
+        Rejected = 3,
+        Inactive = 4,
+        Cancelled = 5
+    }
+
+    public enum RequirementSortBy
+    {
+        ID = 1,
+        Date = 2,
+        Quotes = 3,
+        quotationId = 4,
+        amount = 5,
+        validity = 6,
+        ASC = 7,
+        DSC = 8
     }
     #endregion
 }

@@ -2,7 +2,7 @@
 
 namespace aptdealzSellerMobile.Extention
 {
-    public class CustomAutoSuggestBox : AutoSuggestBox
+    public class ExtAutoSuggestBox : AutoSuggestBox
     {
 
     }

@@ -1,11 +1,13 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -21,7 +23,7 @@ namespace aptdealzSellerMobile.API
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    using (var hcf = new HttpClientFactory(token: Common.Token))
+                    using (var hcf = new HttpClientFactory())
                     {
                         string url = string.Format(EndPointURL.Country, (int)App.Current.Resources["Version"]);
                         var response = await hcf.GetAsync(url);
@@ -40,15 +42,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
-                            {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                            }
-                            else
-                            {
-                                mCountries = null;
-                            }
+                            mCountries = null;
                         }
                     }
                 }
@@ -67,6 +61,7 @@ namespace aptdealzSellerMobile.API
             return mCountries;
         }
 
+        int getMyProfileData = 0;
         public async Task<Response> GetMyProfileData()
         {
             Response mResponse = new Response();
@@ -95,8 +90,17 @@ namespace aptdealzSellerMobile.API
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh && getMyProfileData == 3)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                }
+                                else
+                                {
+                                    await GetMyProfileData();
+                                }
+                                getMyProfileData++;
                             }
                             else
                             {
@@ -120,6 +124,7 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
+        int getSellerDataById = 0;
         public async Task<Response> GetSellerDataById(string UserId)
         {
             Response mResponse = new Response();
@@ -148,8 +153,17 @@ namespace aptdealzSellerMobile.API
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh && getSellerDataById == 3)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                }
+                                else
+                                {
+                                    await GetSellerDataById(UserId);
+                                }
+                                getSellerDataById++;
                             }
                             else
                             {
@@ -171,6 +185,45 @@ namespace aptdealzSellerMobile.API
                 Common.DisplayErrorMessage("ProfileAPI/GetMyProfileData: " + ex.Message);
             }
             return mResponse;
+        }
+
+        public async Task<bool> HasValidPincode(int pinCode)
+        {
+            bool result = false;
+            try
+            {
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    using (var hcf = new HttpClientFactory(baseUrl: "https://api.postalpincode.in/"))
+                    {
+                        string url = string.Format(EndPointURL.ValidatePincode, pinCode);
+                        var response = await hcf.GetAsync(url);
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var mResponsePincodes = JsonConvert.DeserializeObject<List<ResponsePincode>>(responseJson);
+                            if (mResponsePincodes != null && mResponsePincodes.Count > 0)
+                            {
+                                var mResponsePincode = mResponsePincodes.FirstOrDefault();
+                                if (mResponsePincode != null && mResponsePincode.Status == "Success")
+                                    result = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (await Common.InternetConnection())
+                    {
+                        await HasValidPincode(pinCode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProfileAPI/GetCountry: " + ex.Message);
+            }
+            return result;
         }
         #endregion
 
@@ -202,15 +255,7 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
-                            {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                            }
-                            else
-                            {
-                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                            }
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
                         }
                     }
                 }
@@ -233,6 +278,7 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ PUT ]
+        int saveProfile = 0;
         public async Task<Response> SaveProfile(SellerDetails mSellerDetails)
         {
             Response mResponse = new Response();
@@ -262,8 +308,17 @@ namespace aptdealzSellerMobile.API
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
-                                Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh && saveProfile == 3)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                }
+                                else
+                                {
+                                    await SaveProfile(mSellerDetails);
+                                }
+                                saveProfile++;
                             }
                             else
                             {

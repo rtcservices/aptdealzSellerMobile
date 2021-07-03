@@ -85,7 +85,7 @@
                         Grid.Row="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
-                        Source="iconRequirements.png"
+                        Source="iconQuotes.png"
                         VerticalOptions="CenterAndExpand"
                         WidthRequest="40" />
                     <Label

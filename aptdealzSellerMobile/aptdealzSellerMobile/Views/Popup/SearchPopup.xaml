@@ -15,20 +15,24 @@
             <Image
                 Grid.Column="0"
                 Aspect="AspectFit"
-                HeightRequest="30"
+                BackgroundColor="Transparent"
+                HeightRequest="{OnPlatform Android=20,
+                                           iOS=25}"
                 HorizontalOptions="Center"
                 Source="iconSearch.png"
                 VerticalOptions="Center"
-                WidthRequest="30" />
+                WidthRequest="{OnPlatform Android=20,
+                                          iOS=25}" />
             <ext:ExtEntry
                 x:Name="entrSearch"
                 Grid.Column="1"
-                FontFamily="Poppins Medium"
-                FontSize="17"
+                FontFamily="Poppins"
+                FontSize="15"
                 Placeholder="Search"
-                Style="{StaticResource entrPrimary}"
-                Unfocused="entrSearch_Unfocused"
-                VerticalOptions="Center" />
+                TextChanged="entrSearch_TextChanged"
+                VerticalOptions="{OnPlatform Android=EndAndExpand,
+                                             iOS=CenterAndExpand}" />
+
             <ImageButton
                 x:Name="BtnClose"
                 Grid.Column="2"

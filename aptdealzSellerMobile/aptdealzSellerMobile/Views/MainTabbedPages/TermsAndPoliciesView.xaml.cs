@@ -36,7 +36,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            isRefresh?.Invoke(true, EventArgs.Empty);
+            Navigation.PopAsync();
         }
         #endregion
     }

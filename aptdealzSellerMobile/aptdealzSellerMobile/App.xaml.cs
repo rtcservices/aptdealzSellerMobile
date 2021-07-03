@@ -2,7 +2,6 @@
 using aptdealzSellerMobile.Services;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
-using Plugin.Geolocator;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -36,6 +35,8 @@ namespace aptdealzSellerMobile
         {
             Xamarin.Forms.DependencyService.Register<IFileUploadRepository, FileUploadRepository>();
             Xamarin.Forms.DependencyService.Register<ICategoryRepository, CategoryRepository>();
+            Xamarin.Forms.DependencyService.Register<IProfileRepository, ProfileRepository>();
+            Xamarin.Forms.DependencyService.Register<IAuthenticationRepository, AuthenticationRepository>();
         }
 
         public async void GetCurrentLocation()

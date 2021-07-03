@@ -33,7 +33,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PopAsync();
         }
 
         private void EditSubmit_Tapped(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void BackQoute_Tapped(object sender, EventArgs e)
         {
 
-        } 
+        }
         #endregion
     }
 }

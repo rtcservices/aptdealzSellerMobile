@@ -9,6 +9,7 @@ using aptdealzSellerMobile.Utility;
 using dotMorten.Xamarin.Forms;
 using dotMorten.Xamarin.Forms.Platform.Android;
 using System;
+using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
@@ -17,7 +18,8 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(Picker), typeof(PickerCustomRenderer))]
 [assembly: ExportRenderer(typeof(Editor), typeof(EditorCustomRenderer))]
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Button), typeof(CustomButtonRender))]
-[assembly: ExportRenderer(typeof(CustomAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
+[assembly: ExportRenderer(typeof(ExtAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
+[assembly: ExportRenderer(typeof(ExtDatePicker), typeof(CustomDatePickerRender))]
 
 namespace aptdealzSellerMobile.Droid.CustomRenderers
 {
@@ -168,11 +170,52 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
                     gd.SetColor(global::Android.Graphics.Color.Transparent);
                     Control.SetBackgroundDrawable(gd);
                     Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
+                    gd.SetSize(15, 15);
                 }
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("Droid/AutoSuggestBoxRenderer: " + ex.Message);
+            }
+        }
+    }
+
+    public class CustomDatePickerRender : DatePickerRenderer
+    {
+        public CustomDatePickerRender(Context context) : base(context)
+        {
+        }
+        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.DatePicker> e)
+        {
+            base.OnElementChanged(e);
+
+            if (Control == null)
+            {
+                return;
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            try
+            {
+                base.OnElementPropertyChanged(sender, e);
+
+                if (Control == null)
+                {
+                    return;
+                }
+
+                var nativeEditTextField = Control;
+                GradientDrawable gd = new GradientDrawable();
+                gd.SetCornerRadius(0);
+
+                nativeEditTextField.Background = gd;
+                Control.SetPadding(0, 0, 0, 0);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Droid/CustomDatePickerRender: " + ex.Message);
             }
         }
     }

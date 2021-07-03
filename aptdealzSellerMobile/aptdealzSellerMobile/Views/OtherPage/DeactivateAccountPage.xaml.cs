@@ -38,8 +38,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-
-        } 
+            Navigation.PopAsync();
+        }
         #endregion
     }
 }
