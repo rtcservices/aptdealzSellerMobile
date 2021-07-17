@@ -1,7 +1,8 @@
 ﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Views.MasterData;
-using Plugin.Geolocator.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -11,14 +12,20 @@ namespace aptdealzSellerMobile.Utility
     public static class Common
     {
         #region Properties
+        public static List<Country> mCountries { get; set; }
         public static MasterDataPage MasterData { get; set; }
         public static string Token { get; set; }
+        #endregion
+
+        #region Regex Properties
         private static Regex PhoneNumber { get; set; } = new Regex(@"^[0-9]{10}$");
         private static Regex RegexPassword { get; set; } = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$");
         private static Regex RegexPincode { get; set; } = new Regex(@"^[0-9]{6}$");
-        #endregion
+        private static Regex RegexGST { get; set; } = new Regex(@"[0-9]{2}[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}");
+        private static Regex RegexPAN { get; set; } = new Regex("([A-Z]){5}([0-9]){4}([A-Z]){1}$");
+        #endregion       
 
-        #region DisplayMessages
+        #region Display Messages
         public static void DisplayErrorMessage(string errormessage)
         {
             UserDialogs.Instance.Toast(new ToastConfig(errormessage)
@@ -106,38 +113,6 @@ namespace aptdealzSellerMobile.Utility
             }
         }
 
-        public static bool IsValidPhone(this string value)
-        {
-            value = value.Trim();
-            return PhoneNumber.IsMatch(value);
-        }
-
-        public static bool IsValidEmail(this string value)
-        {
-            try
-            {
-                value = value.Trim();
-                var addr = new System.Net.Mail.MailAddress($"{value}");
-                return addr.Address == $"{value}";
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static bool IsValidPassword(this string value)
-        {
-            value = value.Trim();
-            return (RegexPassword.IsMatch($"{value}"));
-        }
-
-        public static bool IsValidPincode(this string value)
-        {
-            value = value.Trim();
-            return (RegexPincode.IsMatch($"{value}"));
-        }
-
         public static bool EmptyFiels(string extEntry)
         {
             if (string.IsNullOrEmpty(extEntry) || string.IsNullOrWhiteSpace(extEntry))
@@ -172,10 +147,57 @@ namespace aptdealzSellerMobile.Utility
                 Common.DisplayErrorMessage("Common/OpenMenu: " + ex.Message);
             }
         }
+
+        public static bool IsValidPhone(this string value)
+        {
+            value = value.Trim();
+            return PhoneNumber.IsMatch(value);
+        }
+
+        public static bool IsValidEmail(this string value)
+        {
+            try
+            {
+                value = value.Trim();
+                var addr = new System.Net.Mail.MailAddress($"{value}");
+                return addr.Address == $"{value}";
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool IsValidPassword(this string value)
+        {
+            value = value.Trim();
+            return (RegexPassword.IsMatch($"{value}"));
+        }
+
+        public static bool IsValidPincode(this string value)
+        {
+            value = value.Trim();
+            return (RegexPincode.IsMatch($"{value}"));
+        }
+
+        public static bool IsValidGSTPIN(this string value)
+        {
+            value = value.Trim();
+            if (value.Length == 15)
+                return (RegexGST.IsMatch($"{value}"));
+            else
+                return false;
+        }
+
+        public static bool IsValidPAN(this string value)
+        {
+            value = value.Trim();
+            return (RegexPAN.IsMatch($"{value}"));
+        }
         #endregion
     }
 
-    #region Enum   
+    #region [ Enum ]
     public enum FileUploadCategory
     {
         ProfilePicture = 0,
@@ -192,16 +214,40 @@ namespace aptdealzSellerMobile.Utility
         Cancelled = 5
     }
 
-    public enum RequirementSortBy
+    public enum SortByField
     {
         ID = 1,
         Date = 2,
         Quotes = 3,
-        quotationId = 4,
-        amount = 5,
-        validity = 6,
-        ASC = 7,
-        DSC = 8
+        Validity = 4,
+        Amount = 5,
+        TotalPriceEstimation = 6
+    }
+
+    public enum QuoteStatus
+    {
+        Submitted = 1,
+        Accepted = 2,
+        Rejected = 3,
+        All = 4
+    }
+
+    public enum PaymentStatus
+    {
+        Success = 1,
+        Failed = 2
+    }
+
+    public enum OrderStatus
+    {
+        Pending = 1,
+        Accepted = 2,
+        ReadyForPickup = 3,
+        Shipped = 4,
+        Delivered = 5,
+        Completed = 6,
+        CancelledFromBuyer = 7,
+        All = 8
     }
     #endregion
 }

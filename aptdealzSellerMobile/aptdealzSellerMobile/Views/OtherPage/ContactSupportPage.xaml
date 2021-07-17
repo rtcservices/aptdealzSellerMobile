@@ -36,7 +36,11 @@
                         </Image.GestureRecognizers>
                     </Image>
 
-                    <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                    <ImageButton
+                        x:Name="BtnLogo"
+                        Grid.Column="1"
+                        Clicked="BtnLogo_Clicked"
+                        Style="{StaticResource imgLogo}" />
 
                     <StackLayout
                         Grid.Column="2"
@@ -226,7 +230,6 @@
                             <ext:CustomShadowFrame
                                 Margin="0,0,0,20"
                                 BackgroundColor="Transparent"
-                                HeightRequest="80"
                                 Style="{StaticResource frmEntry}">
                                 <Editor
                                     Grid.Column="0"

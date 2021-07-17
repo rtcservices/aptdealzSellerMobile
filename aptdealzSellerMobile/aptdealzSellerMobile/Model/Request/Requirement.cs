@@ -1,5 +1,4 @@
-﻿using aptdealzSellerMobile.Model.Reponse;
-using aptdealzSellerMobile.Utility;
+﻿using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,11 +36,14 @@ namespace aptdealzSellerMobile.Model.Request
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
+        [JsonProperty("unit")]
+        public string Unit { get; set; }
+
         [JsonProperty("status")]
         public string Status { get; set; }
 
         [JsonProperty("totalPriceEstimation")]
-        public int TotalPriceEstimation { get; set; }
+        public decimal TotalPriceEstimation { get; set; }
 
         [JsonProperty("preferInIndiaProducts")]
         public bool PreferInIndiaProducts { get; set; }
@@ -53,10 +55,13 @@ namespace aptdealzSellerMobile.Model.Request
         public string DeliveryLocationPinCode { get; set; }
 
         [JsonProperty("preferredSourceOfSupply")]
-        public string PreferredSourceOfSupply { get; set; }
+        public object PreferredSourceOfSupply { get; set; }
 
         [JsonProperty("expectedDeliveryDate")]
         public DateTime ExpectedDeliveryDate { get; set; }
+
+        [JsonProperty("expectedDeliveryDateStr")]
+        public string ExpectedDeliveryDateStr { get; set; }
 
         [JsonProperty("billingAddressName")]
         public string BillingAddressName { get; set; }
@@ -112,8 +117,11 @@ namespace aptdealzSellerMobile.Model.Request
         [JsonProperty("canRevealContact")]
         public bool CanRevealContact { get; set; }
 
+        [JsonProperty("receivedQuotes")]
+        public List<object> ReceivedQuotes { get; set; }
+
         [JsonProperty("buyerContact")]
-        public BuyerContact BuyerContact { get; set; }
+        public object BuyerContact { get; set; }
 
         [JsonProperty("isBuyerContactRevealed")]
         public bool IsBuyerContactRevealed { get; set; }
@@ -139,10 +147,7 @@ namespace aptdealzSellerMobile.Model.Request
         [JsonProperty("quotes")]
         public int Quotes { get; set; }
 
-        [JsonProperty("unit")]
-        public string Unit { get; set; }
-
-        #region Extra Properties
+        #region [ Extra Properties ]
         [JsonIgnore]
         private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
 
@@ -207,6 +212,7 @@ namespace aptdealzSellerMobile.Model.Request
             }
         }
 
+        [JsonIgnore]
         public Color StatusColor
         {
             get
@@ -226,6 +232,22 @@ namespace aptdealzSellerMobile.Model.Request
                 else
                 {
                     return (Color)App.Current.Resources["Black"];
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public string DeliveryDate
+        {
+            get
+            {
+                if (ExpectedDeliveryDate != null && ExpectedDeliveryDate != DateTime.MinValue)
+                {
+                    return ExpectedDeliveryDate.Date.ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    return string.Empty;
                 }
             }
         }

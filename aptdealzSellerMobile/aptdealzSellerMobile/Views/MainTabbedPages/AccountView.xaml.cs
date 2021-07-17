@@ -6,6 +6,7 @@ using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using dotMorten.Xamarin.Forms;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,7 +30,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         private ObservableCollection<string> _mCountriesData;
         public ObservableCollection<string> mCountriesData
         {
@@ -44,22 +44,29 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         #region Objects   
         ProfileAPI profileAPI;
-        private List<Country> mCountries;
         private List<Category> mCategories;
         private List<SubCategory> mSubCategories;
         private List<BillingAddress> mBillingAddresses;
         private List<string> selectedSubCategory;
+
         private string relativePath = string.Empty;
         private List<string> documentList;
         private SellerDetails mSellerDetail;
         private BillingAddress mBillingAddress;
         private bool isFirstLoad = true;
+        private string newCategory;
+        private bool isAddBillingAddress = false;
+        private bool isUpdatPhoto = false;
+        private bool isEditBillingAddress = false;
+        private bool isDeleteBillingAddress = false;
+        private bool isDeleteSubCategory = true;
         #endregion
 
         #region Constructor
         public AccountView()
         {
             InitializeComponent();
+            BtnUpdate.IsEnabled = false;
             BindObjects();
         }
         #endregion
@@ -68,154 +75,23 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         async void BindObjects()
         {
             profileAPI = new ProfileAPI();
-            mCountries = new List<Country>();
             mCategories = new List<Category>();
             mSubCategories = new List<SubCategory>();
             mBillingAddresses = new List<BillingAddress>();
             selectedSubCategory = new List<string>();
             documentList = new List<string>();
 
-            UserDialogs.Instance.ShowLoading(Constraints.Loading);
+            await Task.Run(() =>
+             {
+                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
+             });
             await GetCategory();
             await GetCountries();
             await GetProfile();
             UserDialogs.Instance.HideLoading();
         }
 
-        public bool Validations()
-        {
-            bool isValid = false;
-            if (Common.EmptyFiels(txtFullName.Text) || Common.EmptyFiels(txtEmail.Text)
-                || Common.EmptyFiels(txtPhoneNumber.Text) || Common.EmptyFiels(txtDescription.Text)
-                || pkCategory.SelectedIndex == -1 || selectedSubCategory == null
-                || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
-                || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
-                || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
-                || Common.EmptyFiels(txtIfsc.Text))
-            {
-                RequiredFields();
-                Common.DisplayErrorMessage(Constraints.Required_All);
-                isValid = false;
-            }
-
-            if (Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
-                || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtLandmark.Text)
-                || Common.EmptyFiels(pkNationality.Text))
-            {
-                if (mBillingAddresses.Count == 0)
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_BillingAddress);
-                    RequiredBillingFields();
-                    isValid = false;
-                }
-            }
-
-            if (Common.EmptyFiels(txtFullName.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_FullName);
-            }
-            else if (Common.EmptyFiels(txtEmail.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Email);
-            }
-            else if (!txtEmail.Text.IsValidEmail())
-            {
-                Common.DisplayErrorMessage(Constraints.InValid_Email);
-            }
-            else if (Common.EmptyFiels(txtPhoneNumber.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_PhoneNumber);
-            }
-            else if (!txtPhoneNumber.Text.IsValidPhone())
-            {
-                Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
-            }
-            
-            else if (Common.EmptyFiels(txtDescription.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Description);
-            }
-            else if (pkCategory.SelectedIndex == -1)
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Category);
-            }
-            else if (selectedSubCategory != null && selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Subcategory);
-            }
-            else if (selectedSubCategory != null && selectedSubCategory.Count == 0)
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Subcategory);
-            }
-            else if (Common.EmptyFiels(txtExperience.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Experience);
-            }
-            else if (Common.EmptyFiels(txtSupplyArea.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_SupplyArea);
-            }
-            else if (Common.EmptyFiels(txtGstNumber.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_GST);
-            }
-            else if (Common.EmptyFiels(txtPan.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_PAN);
-            }
-            else if (Common.EmptyFiels(txtBankAccount.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Bank_Account);
-            }
-            else if (Common.EmptyFiels(txtBankName.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Bank_Name);
-            }
-            else if (Common.EmptyFiels(txtIfsc.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_IFSC);
-            }
-            else if (!Common.EmptyFiels(txtAltPhoneNumber.Text))
-            {
-                if (!Common.IsValidPhone(txtAltPhoneNumber.Text))
-                {
-                    Common.DisplayErrorMessage(Constraints.InValid_AltNumber);
-                }
-                else
-                {
-                    isValid = true;
-                }
-            }
-            else
-            {
-                isValid = true;
-            }
-            return isValid;
-        }
-
-        void AddDocuments()
-        {
-            try
-            {
-                if (documentList != null && documentList.Count > 0)
-                {
-                    lblAttachDocument.IsVisible = false;
-                    lstDocument.ItemsSource = documentList.ToList();
-                    lstDocument.IsVisible = true;
-                }
-                else
-                {
-                    lblAttachDocument.IsVisible = true;
-                    lstDocument.ItemsSource = null;
-                    lstDocument.IsVisible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/BindDocumentList: " + ex.Message);
-            }
-        }
-
+        #region [ Get / Bind Data ]
         async Task GetCategory()
         {
             try
@@ -255,7 +131,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                mCountries = await DependencyService.Get<IProfileRepository>().GetCountry();
+                if (Common.mCountries == null || Common.mCountries.Count == 0)
+                {
+                    Common.mCountries = await DependencyService.Get<IProfileRepository>().GetCountry();
+                }
             }
             catch (Exception ex)
             {
@@ -293,6 +172,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             {
                 Common.DisplayErrorMessage("AccountView/GetProfile: " + ex.Message);
             }
+
         }
 
         void BindProfileDetails()
@@ -316,8 +196,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 Settings.UserId = mSellerDetail.SellerId;
                 txtFullName.Text = mSellerDetail.FullName;
                 txtEmail.Text = mSellerDetail.Email;
-                txtEmail.TextColor = Color.Gray;
-                txtEmail.IsReadOnly = true;
                 txtPhoneNumber.Text = mSellerDetail.PhoneNumber;
                 if (!Common.EmptyFiels((string)mSellerDetail.AlternativePhoneNumber))
                 {
@@ -332,6 +210,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     if (mBillingAddresses.Count == 0)
                     {
                         lstBilling.IsVisible = false;
+                        lstBilling.HeightRequest = 0;
                     }
                     else
                     {
@@ -346,6 +225,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         txtBuildingNumber.Text = mSellerDetail.Building;
                         txtStreet.Text = mSellerDetail.Street;
                         txtCity.Text = mSellerDetail.City;
+                        txtState.Text = mSellerDetail.State;
+                        txtPinCode.Text = mSellerDetail.PinCode;
                         txtLandmark.Text = mSellerDetail.Landmark;
                         pkNationality.Text = mSellerDetail.Nationality;
                     }
@@ -355,6 +236,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     txtBuildingNumber.Text = mSellerDetail.Building;
                     txtStreet.Text = mSellerDetail.Street;
                     txtCity.Text = mSellerDetail.City;
+                    txtState.Text = mSellerDetail.State;
+                    txtPinCode.Text = mSellerDetail.PinCode;
                     txtLandmark.Text = mSellerDetail.Landmark;
                     pkNationality.Text = mSellerDetail.Nationality;
                 }
@@ -381,17 +264,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     wlSubCategory.ItemsSource = selectedSubCategory.ToList();
                 }
 
-                txtDescription.Text = (string)mSellerDetail.CompanyProfile.Description;
-                txtExperience.Text = (string)mSellerDetail.CompanyProfile.Experience;
-                txtSupplyArea.Text = (string)mSellerDetail.CompanyProfile.AreaOfSupply;
+                txtDescription.Text = mSellerDetail.CompanyProfile.Description;
+                txtExperience.Text = mSellerDetail.CompanyProfile.Experience;
+                txtSupplyArea.Text = mSellerDetail.CompanyProfile.AreaOfSupply;
                 #endregion
 
                 #region Bank Information
-                txtGstNumber.Text = (string)mSellerDetail.BankInformation.Gstin;
-                txtPan.Text = (string)mSellerDetail.BankInformation.Pan;
-                txtBankAccount.Text = (string)mSellerDetail.BankInformation.BankAccountNumber;
-                txtBankName.Text = (string)mSellerDetail.BankInformation.Branch;
-                txtIfsc.Text = (string)mSellerDetail.BankInformation.Ifsc;
+                txtGstNumber.Text = mSellerDetail.BankInformation.Gstin;
+                txtPan.Text = mSellerDetail.BankInformation.Pan;
+                txtBankAccount.Text = mSellerDetail.BankInformation.BankAccountNumber;
+                txtBankName.Text = mSellerDetail.BankInformation.Branch;
+                txtIfsc.Text = mSellerDetail.BankInformation.Ifsc;
                 #endregion
 
                 #region Document List
@@ -405,6 +288,607 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
+        void AddDocuments()
+        {
+            try
+            {
+                if (documentList != null && documentList.Count > 0)
+                {
+                    lblAttachDocument.IsVisible = false;
+                    lstDocument.ItemsSource = documentList.ToList();
+                    lstDocument.IsVisible = true;
+                }
+                else
+                {
+                    lblAttachDocument.IsVisible = true;
+                    lstDocument.ItemsSource = null;
+                    lstDocument.IsVisible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/BindDocumentList: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region [ Validations ]
+        public bool Validations()
+        {
+            bool isValid = false;
+
+            if (Common.EmptyFiels(txtFullName.Text) || Common.EmptyFiels(txtEmail.Text)
+                || Common.EmptyFiels(txtPhoneNumber.Text) || Common.EmptyFiels(txtDescription.Text)
+                || pkCategory.SelectedIndex == -1 || selectedSubCategory == null
+                || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
+                || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
+                || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
+                || Common.EmptyFiels(txtIfsc.Text))
+            {
+                RequiredFields();
+                Common.DisplayErrorMessage(Constraints.Required_All);
+                return false;
+            }
+
+            if (mBillingAddresses.Count == 0)
+            {
+                return BillingAddressValidations();
+            }
+
+            if (Common.EmptyFiels(txtFullName.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_FullName);
+            }
+            else if (Common.EmptyFiels(txtPhoneNumber.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_PhoneNumber);
+            }
+            else if (!txtPhoneNumber.Text.IsValidPhone())
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
+            }
+            else if (Common.EmptyFiels(txtDescription.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Description);
+            }
+            else if (pkCategory.SelectedIndex == -1 && Common.EmptyFiels(txtOtherCategory.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Category);
+            }
+            else if (selectedSubCategory != null && selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Subcategory);
+            }
+            else if (selectedSubCategory != null && selectedSubCategory.Count == 0)
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Subcategory);
+            }
+            else if (Common.EmptyFiels(txtExperience.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Experience);
+            }
+            else if (Common.EmptyFiels(txtSupplyArea.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_SupplyArea);
+            }
+            else if (Common.EmptyFiels(txtGstNumber.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_GST);
+            }
+            else if (!Common.IsValidGSTPIN(txtGstNumber.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_GST);
+            }
+            else if (Common.EmptyFiels(txtPan.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_PAN);
+            }
+            else if (!Common.IsValidPAN(txtPan.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_PAN);
+            }
+            else if (Common.EmptyFiels(txtBankAccount.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Bank_Account);
+            }
+            else if (Common.EmptyFiels(txtBankName.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_Bank_Name);
+            }
+            else if (Common.EmptyFiels(txtIfsc.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_IFSC);
+            }
+            else if (!Common.EmptyFiels(txtAltPhoneNumber.Text))
+            {
+                if (!Common.IsValidPhone(txtAltPhoneNumber.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_AltNumber);
+                }
+                else if (txtAltPhoneNumber.Text == txtPhoneNumber.Text)
+                {
+                    Common.DisplayErrorMessage(Constraints.Same_Phone_AltPhone_Number);
+                }
+                else
+                {
+                    isValid = true;
+                }
+            }
+            else
+            {
+                isValid = true;
+            }
+
+            if (isValid)
+            {
+                if (Common.IsValidGSTPIN(txtGstNumber.Text) && Common.IsValidPAN(txtPan.Text))
+                {
+                    string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
+                    if (panFromGSTIN != txtPan.Text)
+                    {
+                        Common.DisplayErrorMessage(Constraints.InValid_PAN_GSTIN);
+                        isValid = false;
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        public bool BillingAddressValidations()
+        {
+            bool isValid = false;
+
+            if (mBillingAddresses.Count == 0)
+            {
+                if (Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
+                       || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text)
+                       || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtPinCode.Text)
+                       || Common.EmptyFiels(txtLandmark.Text))
+                {
+                    RequiredBillingFields();
+                    if (Common.EmptyFiels(txtBuildingNumber.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_BuildingNumber);
+                    }
+                    else if (Common.EmptyFiels(txtStreet.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_Street);
+                    }
+                    else if (Common.EmptyFiels(txtCity.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_City);
+                    }
+                    else if (Common.EmptyFiels(txtState.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_State);
+                    }
+                    else if (Common.EmptyFiels(pkNationality.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_Nationality);
+                    }
+                    else if (Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower()).Count() == 0)
+                    {
+                        Common.DisplayErrorMessage(Constraints.InValid_Nationality);
+                    }
+                    else if (Common.EmptyFiels(txtLandmark.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_Landmark);
+                    }
+                    else if (Common.EmptyFiels(txtPinCode.Text))
+                    {
+                        isValid = PinCodeValidation().Result;
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
+                }
+                else
+                {
+                    isValid = true;
+
+                }
+            }
+            else
+            {
+                isValid = true;
+            }
+
+            if (isValid)
+            {
+                BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxCity.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxState.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+            }
+
+            return isValid;
+        }
+
+        void HasUpdateProfileDetail()
+        {
+            try
+            {
+                bool isUpdate = false;
+
+                if (mSellerDetail == null)
+                    isUpdate = true;
+
+                if (mSellerDetail.FullName != txtFullName.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.Email != txtEmail.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.PhoneNumber != txtPhoneNumber.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.AlternativePhoneNumber != txtAltPhoneNumber.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.CompanyProfile.Description != txtDescription.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.CompanyProfile.Experience != txtExperience.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.CompanyProfile.AreaOfSupply != txtSupplyArea.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.BankInformation.Gstin != txtGstNumber.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.BankInformation.Pan != txtPan.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.BankInformation.BankAccountNumber != txtBankAccount.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.BankInformation.Branch != txtBankName.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.BankInformation.Ifsc != txtIfsc.Text)
+                    isUpdate = true;
+                else if (mSellerDetail.Documents != documentList)
+                    isUpdate = true;
+                else if (mSellerDetail.CompanyProfile.Category != (string)pkCategory.SelectedItem)
+                    isUpdate = true;
+                else if (mSellerDetail.CompanyProfile.SubCategories != selectedSubCategory)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.BuildingNumber != txtBuildingNumber.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Street != txtStreet.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.City != txtCity.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.State != txtState.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.PinCode != txtPinCode.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Nationality != pkNationality.Text)
+                    isUpdate = true;
+                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Landmark != txtLandmark.Text)
+                    isUpdate = true;
+                else if (isAddBillingAddress)
+                    isUpdate = true;
+                else if (isDeleteBillingAddress)
+                    isUpdate = true;
+                else if (isDeleteSubCategory)
+                    isUpdate = true;
+                else if (isUpdatPhoto)
+                    isUpdate = true;
+                else
+                    isUpdate = false;
+
+                BtnUpdate.IsEnabled = isUpdate;
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/HasUpdateProfileDetail: " + ex.Message);
+            }
+        }
+
+        void RequiredBillingFields()
+        {
+            if (Common.EmptyFiels(txtBuildingNumber.Text))
+            {
+                BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(txtStreet.Text))
+            {
+                BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(txtCity.Text))
+            {
+                BoxCity.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(txtState.Text))
+            {
+                BoxState.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(txtPinCode.Text))
+            {
+                BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(pkNationality.Text))
+            {
+                BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+
+            if (Common.EmptyFiels(txtLandmark.Text))
+            {
+                BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+            }
+        }
+
+        void RequiredFields()
+        {
+            try
+            {
+                if (Common.EmptyFiels(txtFullName.Text))
+                {
+                    BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                //if (Common.EmptyFiels(txtEmail.Text))
+                //{
+                //    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                //}
+
+                if (Common.EmptyFiels(txtPhoneNumber.Text))
+                {
+                    BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtDescription.Text))
+                {
+                    BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (pkCategory.SelectedIndex == -1)
+                {
+                    BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
+                {
+                    BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtExperience.Text))
+                {
+                    BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtSupplyArea.Text))
+                {
+                    BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtGstNumber.Text))
+                {
+                    BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtPan.Text))
+                {
+                    BoxPan.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtBankAccount.Text))
+                {
+                    BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtBankName.Text))
+                {
+                    BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtIfsc.Text))
+                {
+                    BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/RequiredFields: " + ex.Message);
+            }
+        }
+
+        void UnfocussedFields(Entry entry = null, ExtAutoSuggestBox autoSuggestBox = null, Editor editor = null, Picker picker = null)
+        {
+            try
+            {
+                if (entry != null)
+                {
+                    //else if (entry.ClassId == "Email")
+                    //{
+                    //    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    //}
+                    if (entry.ClassId == "FullName")
+                    {
+                        BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "PhoneNumber")
+                    {
+                        BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "Experience")
+                    {
+                        BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "SupplyArea")
+                    {
+                        BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "GstNumber")
+                    {
+                        BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "Pan")
+                    {
+                        BoxPan.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BankAccount")
+                    {
+                        BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BankName")
+                    {
+                        BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "IFSC")
+                    {
+                        BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BABuildingNumber")
+                    {
+                        BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BAStreet")
+                    {
+                        BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BACity")
+                    {
+                        BoxCity.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BAState")
+                    {
+                        BoxState.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BAPincode")
+                    {
+                        BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "BALandmark")
+                    {
+                        BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                }
+
+                if (editor != null)
+                {
+                    if (editor.ClassId == "Description")
+                    {
+                        BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                }
+
+                if (picker != null)
+                {
+                    if (picker.ClassId == "Category")
+                    {
+                        BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (picker.ClassId == "SubCategory")
+                    {
+                        BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                }
+
+                if (autoSuggestBox != null)
+                {
+                    if (autoSuggestBox.ClassId == "BANationality")
+                    {
+                        BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                }
+
+                HasUpdateProfileDetail();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/UnfocussedFields: " + ex.Message);
+            }
+        }
+
+        void FieldsTrim()
+        {
+            try
+            {
+                #region User Details            
+                txtFullName.Text = txtFullName.Text.Trim();
+                txtEmail.Text = txtEmail.Text.Trim();
+                txtPhoneNumber.Text = txtPhoneNumber.Text.Trim();
+                if (!Common.EmptyFiels(txtAltPhoneNumber.Text))
+                {
+                    txtAltPhoneNumber.Text = txtAltPhoneNumber.Text.Trim();
+                }
+                #endregion
+
+                #region Billing Address
+                if (!Common.EmptyFiels(txtBuildingNumber.Text))
+                    txtBuildingNumber.Text = txtBuildingNumber.Text.Trim();
+                if (!Common.EmptyFiels(txtStreet.Text))
+                    txtStreet.Text = txtStreet.Text.Trim();
+                if (!Common.EmptyFiels(txtCity.Text))
+                    txtCity.Text = txtCity.Text.Trim();
+                if (!Common.EmptyFiels(txtState.Text))
+                    txtState.Text = txtState.Text.Trim();
+                if (!Common.EmptyFiels(txtPinCode.Text))
+                    txtPinCode.Text = txtPinCode.Text.Trim();
+                if (!Common.EmptyFiels(txtLandmark.Text))
+                    txtLandmark.Text = txtLandmark.Text.Trim();
+                #endregion
+
+                #region Company Profile
+                txtDescription.Text = txtDescription.Text.Trim();
+                txtExperience.Text = txtExperience.Text.Trim();
+                txtSupplyArea.Text = txtSupplyArea.Text.Trim();
+                #endregion
+
+                #region Bank Information
+                txtGstNumber.Text = txtGstNumber.Text.Trim();
+                txtPan.Text = txtPan.Text.Trim();
+                txtBankAccount.Text = txtBankAccount.Text.Trim();
+                txtBankName.Text = txtBankName.Text.Trim();
+                txtIfsc.Text = txtIfsc.Text.Trim();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/FieldsTrim: " + ex.Message);
+            }
+        }
+
+        async Task<bool> PinCodeValidation()
+        {
+            bool isValid = false;
+            try
+            {
+                if (!Common.EmptyFiels(txtPinCode.Text))
+                {
+                    txtPinCode.Text = txtPinCode.Text.Trim();
+                    isValid = await DependencyService.Get<IProfileRepository>().ValidPincode(txtPinCode.Text);
+                    if (isValid)
+                    {
+                        BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else
+                    {
+                        BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    }
+                }
+                else
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_PinCode);
+                    BoxPincode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+                HasUpdateProfileDetail();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/PinCodeValidation: " + ex.Message);
+            }
+            return isValid;
+        }
+        #endregion
+
+        #region [ Update Profile Process ]
         Model.Request.SellerDetails FillProfileDetails()
         {
             #region Profile
@@ -412,7 +896,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             {
                 string baseURL = (string)App.Current.Resources["BaseURL"];
                 mSellerDetail.ProfilePhoto = relativePath.Replace(baseURL, "");
-                //mSellerDetail.ProfilePhoto = relativePath;
             }
             #endregion
 
@@ -468,48 +951,70 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             return mSellerDetail;
         }
 
-        void FieldsTrim()
+        void AddBillingAddress()
         {
             try
             {
-                #region User Details            
-                txtFullName.Text = txtFullName.Text.Trim();
-                txtEmail.Text = txtEmail.Text.Trim();
-                txtPhoneNumber.Text = txtPhoneNumber.Text.Trim();
-                if (!Common.EmptyFiels(txtAltPhoneNumber.Text))
+                if (BillingAddressValidations())
                 {
-                    txtAltPhoneNumber.Text = txtAltPhoneNumber.Text.Trim();
+                    int id = (mBillingAddresses.Count == 0) ? 0 : mBillingAddresses.Max(x => x.Id);
+                    if (id == 0)
+                        id = 1;
+                    else
+                        id++;
+
+                    bool isAdd = false;
+
+                    if (mBillingAddress == null)
+                    {
+                        isAdd = true;
+                        mBillingAddress = new BillingAddress();
+                        mBillingAddress.Id = id;
+                    }
+
+                    if (!Common.EmptyFiels(txtBuildingNumber.Text) && !Common.EmptyFiels(txtStreet.Text)
+                     && !Common.EmptyFiels(txtCity.Text) && !Common.EmptyFiels(txtState.Text)
+                     && !Common.EmptyFiels(txtPinCode.Text) && !Common.EmptyFiels(txtLandmark.Text)
+                     && !Common.EmptyFiels(pkNationality.Text))
+                    {
+                        mBillingAddress.BuildingNumber = txtBuildingNumber.Text;
+                        mBillingAddress.Street = txtStreet.Text;
+                        mBillingAddress.City = txtCity.Text;
+                        mBillingAddress.State = txtState.Text;
+                        mBillingAddress.PinCode = txtPinCode.Text;
+                        mBillingAddress.Landmark = txtLandmark.Text;
+                        mBillingAddress.Nationality = pkNationality.Text;
+                        mBillingAddress.CountryId = (int)(Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
+
+                        if (isAdd)
+                        {
+                            mBillingAddresses.Add(mBillingAddress);
+                        }
+
+                        isAddBillingAddress = true;
+                        ClearBillingAddress();
+                    }
                 }
-                #endregion
 
-                #region Billing Address
-                if (!Common.EmptyFiels(txtBuildingNumber.Text))
-                    txtBuildingNumber.Text = txtBuildingNumber.Text.Trim();
-                if (!Common.EmptyFiels(txtStreet.Text))
-                    txtStreet.Text = txtStreet.Text.Trim();
-                if (!Common.EmptyFiels(txtCity.Text))
-                    txtCity.Text = txtCity.Text.Trim();
-                if (!Common.EmptyFiels(txtLandmark.Text))
-                    txtLandmark.Text = txtLandmark.Text.Trim();
-                #endregion
+                mBillingAddress = null;
 
-                #region Company Profile
-                txtDescription.Text = txtDescription.Text.Trim();
-                txtExperience.Text = txtExperience.Text.Trim();
-                txtSupplyArea.Text = txtSupplyArea.Text.Trim();
-                #endregion
+                if (mBillingAddresses.Count == 0)
+                {
+                    lstBilling.IsVisible = false;
+                    lstBilling.HeightRequest = 0;
+                }
+                else
+                {
+                    lstBilling.IsVisible = true;
+                    lstBilling.ItemsSource = mBillingAddresses.ToList();
+                    lstBilling.HeightRequest = mBillingAddresses.Count * 120;
+                }
 
-                #region Bank Information
-                txtGstNumber.Text = txtGstNumber.Text.Trim();
-                txtPan.Text = txtPan.Text.Trim();
-                txtBankAccount.Text = txtBankAccount.Text.Trim();
-                txtBankName.Text = txtBankName.Text.Trim();
-                txtIfsc.Text = txtIfsc.Text.Trim();
-                #endregion
+                HasUpdateProfileDetail();
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/FieldsTrim: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/AddBillingAddress: " + ex.Message);
             }
         }
 
@@ -519,18 +1024,29 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             {
                 if (Validations())
                 {
-                    FieldsTrim();
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    var mBuyerDetails = FillProfileDetails();
+                    //if (!Common.EmptyFiels(txtPinCode.Text))
+                    //{
+                    //    if (!await PinCodeValidation())
+                    //        return;
+                    //}
 
-                    var mResponse = await profileAPI.SaveProfile(mBuyerDetails);
+                    FieldsTrim();
+                    var mSellerDetails = FillProfileDetails();
+
+                    var mResponse = await profileAPI.SaveProfile(mSellerDetails);
                     if (mResponse != null && mResponse.Succeeded)
                     {
+                        GetProfile();
+                        isAddBillingAddress = false;
+                        isDeleteBillingAddress = false;
+                        isEditBillingAddress = false;
+                        isDeleteSubCategory = false;
                         var updateId = mResponse.Data;
                         if (updateId != null)
                         {
-                            Common.DisplaySuccessMessage(mResponse.Message);
-                            //GetProfile();
+                            SuccessfullUpdate(mResponse.Message);
+                            BtnUpdate.IsEnabled = false;
                         }
                     }
                     else
@@ -552,285 +1068,73 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        void AddBillingAddress()
+        void SuccessfullUpdate(string MessageString)
         {
-            if (!Common.EmptyFiels(pkNationality.Text))
+            try
             {
-                if (!Common.EmptyFiels(pkNationality.Text))
-                {
-                    if (mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower()).Count() == 0)
-                    {
-                        Common.DisplayErrorMessage(Constraints.InValid_Nationality);
-                        return;
-                    }
-                }
+                var successPopup = new Popup.SuccessPopup(MessageString);
+                PopupNavigation.Instance.PushAsync(successPopup);
             }
-
-            if (!Common.EmptyFiels(txtBuildingNumber.Text) || !Common.EmptyFiels(txtStreet.Text)
-                || !Common.EmptyFiels(txtCity.Text) || !Common.EmptyFiels(pkNationality.Text)
-                || !Common.EmptyFiels(txtLandmark.Text))
+            catch (Exception ex)
             {
-                int id = (mBillingAddresses.Count == 0) ? 0 : mBillingAddresses.Max(x => x.Id);
-                if (id == 0)
-                    id = 1;
-                else
-                    id++;
-
-                bool isAdd = false;
-
-                if (mBillingAddress == null)
-                {
-                    isAdd = true;
-                    mBillingAddress = new BillingAddress();
-                    mBillingAddress.Id = id;
-                }
-
-                mBillingAddress.BuildingNumber = txtBuildingNumber.Text;
-                mBillingAddress.Street = txtStreet.Text;
-                mBillingAddress.City = txtCity.Text;
-                mBillingAddress.Landmark = txtLandmark.Text;
-                mBillingAddress.Nationality = pkNationality.Text;
-
-                if (isAdd)
-                    mBillingAddresses.Add(mBillingAddress);
-
-                ClearBillingAddress();
-            }
-
-            if (mBillingAddresses.Count == 0)
-                lstBilling.IsVisible = false;
-            else
-            {
-                lstBilling.IsVisible = true;
-                lstBilling.ItemsSource = mBillingAddresses.ToList();
-                lstBilling.HeightRequest = mBillingAddresses.Count * 120;
+                Common.DisplayErrorMessage("AccountView/SuccessfullUpdate: " + ex.Message);
             }
         }
+        #endregion
 
         void ClearBillingAddress()
         {
             txtBuildingNumber.Text = string.Empty;
             txtStreet.Text = string.Empty;
             txtCity.Text = string.Empty;
+            txtState.Text = string.Empty;
+            txtPinCode.Text = string.Empty;
             txtLandmark.Text = string.Empty;
             pkNationality.Text = string.Empty;
             mBillingAddress = null;
         }
 
-        void RequiredFields()
+        async void DoLogout()
         {
             try
             {
-                if (Common.EmptyFiels(txtFullName.Text))
+                var isClose = await App.Current.MainPage.DisplayAlert(Constraints.Logout, Constraints.AreYouSureWantLogout, Constraints.Yes, Constraints.No);
+                if (isClose)
                 {
-                    BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
+                    AuthenticationAPI authenticationAPI = new AuthenticationAPI();
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                    var mResponse = await authenticationAPI.Logout(Settings.RefreshToken, Settings.LoginTrackingKey);
+                    if (mResponse != null && mResponse.Succeeded)
+                    {
+                        Common.DisplaySuccessMessage(mResponse.Message);
+                    }
+                    else
+                    {
+                        if (mResponse != null && !mResponse.Message.Contains("TrackingKey"))
+                            Common.DisplayErrorMessage(mResponse.Message);
+                    }
 
-                if (Common.EmptyFiels(txtEmail.Text))
-                {
-                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
+                    Settings.EmailAddress = string.Empty;
+                    Settings.UserToken = string.Empty;
+                    Settings.RefreshToken = string.Empty;
+                    Settings.LoginTrackingKey = string.Empty;
 
-                if (Common.EmptyFiels(txtPhoneNumber.Text))
-                {
-                    BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtDescription.Text))
-                {
-                    BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (pkCategory.SelectedIndex == -1)
-                {
-                    BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (selectedSubCategory == null && selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
-                {
-                    BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtExperience.Text))
-                {
-                    BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtSupplyArea.Text))
-                {
-                    BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtGstNumber.Text))
-                {
-                    BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtPan.Text))
-                {
-                    BoxPan.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtBankAccount.Text))
-                {
-                    BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtBankName.Text))
-                {
-                    BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-
-                if (Common.EmptyFiels(txtIfsc.Text))
-                {
-                    BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/RequiredFields: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/DoLogout: " + ex.Message);
             }
-        }
-
-        void RequiredBillingFields()
-        {
-            if (Common.EmptyFiels(txtBuildingNumber.Text))
+            finally
             {
-                BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-            }
-
-            if (Common.EmptyFiels(txtStreet.Text))
-            {
-                BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-            }
-
-            if (Common.EmptyFiels(txtCity.Text))
-            {
-                BoxCity.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-            }
-
-            if (Common.EmptyFiels(pkNationality.Text))
-            {
-                BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-            }
-
-            if (Common.EmptyFiels(txtLandmark.Text))
-            {
-                BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-            }
-
-
-
-        }
-
-        void UnfocussedFields(Entry entry = null, ExtAutoSuggestBox autoSuggestBox = null, Editor editor = null, Picker picker = null)
-        {
-            try
-            {
-                if (entry != null)
-                {
-                    if (entry.ClassId == "FullName")
-                    {
-                        BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "Email")
-                    {
-                        BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "PhoneNumber")
-                    {
-                        BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "BuildingNumber")
-                    {
-                        BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "Street")
-                    {
-                        BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "City")
-                    {
-                        BoxCity.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "Landmark")
-                    {
-                        BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "Experience")
-                    {
-                        BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "SupplyArea")
-                    {
-                        BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "GstNumber")
-                    {
-                        BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "Pan")
-                    {
-                        BoxPan.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "BankAccount")
-                    {
-                        BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "BankName")
-                    {
-                        BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "IFSC")
-                    {
-                        BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                }
-
-                if (autoSuggestBox != null)
-                {
-                    if (autoSuggestBox.ClassId == "Nationality")
-                    {
-                        BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                        //if (!Common.EmptyFiels(pkNationality.Text))
-                        //{
-                        //    if (mCountries.Where(x => x.Name == pkNationality.Text).Count() == 0)
-                        //    {
-                        //        Common.DisplayErrorMessage(Constraints.InValid_Nationality);
-                        //    }
-                        //}
-                    }
-                }
-
-                if (editor != null)
-                {
-                    if (editor.ClassId == "Description")
-                    {
-                        BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                }
-
-                if (picker != null)
-                {
-                    if (picker.ClassId == "Category")
-                    {
-                        BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (picker.ClassId == "SubCategory")
-                    {
-                        BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/UnfocussedFields: " + ex.Message);
+                UserDialogs.Instance.HideLoading();
             }
         }
         #endregion
 
-        #region Events
-        private void ImgMenu_Clicked(object sender, EventArgs e)
+        #region Events    
+        private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
@@ -863,6 +1167,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (ImageConvertion.SelectedImageByte != null)
                 {
                     relativePath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfilePicture);
+                    isUpdatPhoto = true;
+                    HasUpdateProfileDetail();
                 }
             }
             catch (Exception ex)
@@ -871,9 +1177,31 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void ImgEdit_Tapped(object sender, EventArgs e)
+        private async void ImgUplodeDocument_Clicked(object sender, EventArgs e)
         {
+            try
+            {
+                await FileSelection.FilePickup();
+                relativePath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfileDocuments);
 
+                if (!Common.EmptyFiels(relativePath))
+                {
+                    if (documentList == null)
+                        documentList = new List<string>();
+
+                    documentList.Add(relativePath);
+                    AddDocuments();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/ImgUplodeDocument_Clicked: " + ex.Message);
+            }
+        }
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
         private void BtnUpdate_Clicked(object sender, EventArgs e)
@@ -882,31 +1210,18 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             UpdateProfile();
         }
 
-        private void GrdBilling_Tapped(object sender, EventArgs e)
-        {
-            if (GrdBilling.IsVisible == false)
-            {
-                GrdBilling.IsVisible = true;
-                ImgDropDownBilling.Rotation = 180;
-            }
-            else
-            {
-                GrdBilling.IsVisible = false;
-                ImgDropDownBilling.Rotation = 0;
-            }
-        }
-
         private void GrdCompanyProfile_Tapped(object sender, EventArgs e)
         {
             if (GrdCompanyProfile.IsVisible == false)
             {
                 GrdCompanyProfile.IsVisible = true;
-                ImgDownDownCompanyProfile.Rotation = 180;
+                ImgDownDownCompanyProfile.Source = Constraints.Arrow_Up;
+                ScrPrimary.ScrollToAsync(GrdCompnyProfile, ScrollToPosition.Start, true);
             }
             else
             {
                 GrdCompanyProfile.IsVisible = false;
-                ImgDownDownCompanyProfile.Rotation = 0;
+                ImgDownDownCompanyProfile.Source = Constraints.Arrow_Down;
             }
         }
 
@@ -915,20 +1230,22 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             if (GrdBankInfo.IsVisible == false)
             {
                 GrdBankInfo.IsVisible = true;
-                ImgDropDownBankInfo.Rotation = 180;
+                ImgDropDownBankInfo.Source = Constraints.Arrow_Up;
+                ScrPrimary.ScrollToAsync(GrdBankInformation, ScrollToPosition.Start, true);
             }
             else
             {
                 GrdBankInfo.IsVisible = false;
-                ImgDropDownBankInfo.Rotation = 0;
+                ImgDropDownBankInfo.Source = Constraints.Arrow_Down;
             }
         }
 
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private void Logout_Tapped(object sender, EventArgs e)
         {
-
+            DoLogout();
         }
 
+        #region [ AutoSuggestBox-Country ]
         int i = 0;
         private void AutoSuggestBox_TextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
         {
@@ -949,11 +1266,11 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             mCountriesData.Clear();
             if (!string.IsNullOrEmpty(pkNationality.Text))
             {
-                mCountriesData = new ObservableCollection<string>(mCountries.Where(x => x.Name.ToLower().Contains(pkNationality.Text.ToLower())).Select(x => x.Name));
+                mCountriesData = new ObservableCollection<string>(Common.mCountries.Where(x => x.Name.ToLower().Contains(pkNationality.Text.ToLower())).Select(x => x.Name));
             }
             else
             {
-                mCountriesData = new ObservableCollection<string>(mCountries.Select(x => x.Name));
+                mCountriesData = new ObservableCollection<string>(Common.mCountries.Select(x => x.Name));
             }
         }
 
@@ -974,32 +1291,19 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             pkNationality.Text = e.SelectedItem.ToString();
         }
+        #endregion
 
-        private async void ImgUplodeDocument_Clicked(object sender, EventArgs e)
-        {
-            await FileSelection.FilePickup();
-            relativePath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfileDocuments);
-
-            if (!Common.EmptyFiels(relativePath))
-            {
-                if (documentList == null)
-                    documentList = new List<string>();
-
-                documentList.Add(relativePath);
-                AddDocuments();
-            }
-        }
-
+        #region [ Category-SubCategory ]
         private void pkCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (pkCategory.SelectedIndex > -1 && pkCategory.SelectedItem != null)
                 {
-                    var catId = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).Select(x => x.CategoryId).FirstOrDefault();
-                    if (catId != null)
+                    newCategory = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).Select(x => x.CategoryId).FirstOrDefault();
+                    if (newCategory != null)
                     {
-                        GetSubCategoryByCategoryId(catId);
+                        GetSubCategoryByCategoryId(newCategory);
                     }
                 }
             }
@@ -1038,6 +1342,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (selectedSubCategory != null && selectedSubCategory.Count > 0)
                 {
                     selectedSubCategory.Remove(subName);
+                    isDeleteSubCategory = true;
+                    HasUpdateProfileDetail();
                 }
 
                 wlSubCategory.ItemsSource = selectedSubCategory.ToList();
@@ -1048,66 +1354,60 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private async void Logout_Tapped(object sender, EventArgs e)
+        private async void txtOtherCategory_Completed(object sender, EventArgs e)
         {
-            try
+            if (!Common.EmptyFiels(txtOtherCategory.Text))
             {
-                var isClose = await App.Current.MainPage.DisplayAlert(Constraints.Logout, Constraints.AreYouSureWantLogout, Constraints.Yes, Constraints.No);
-                if (isClose)
+                mCategories = await DependencyService.Get<ICategoryRepository>().CreateCategory(txtOtherCategory.Text);
+                if (mCategories != null)
                 {
-                    AuthenticationAPI authenticationAPI = new AuthenticationAPI();
-                    var mResponse = await authenticationAPI.Logout(Settings.RefreshToken, Settings.LoginTrackingKey);
-                    if (mResponse != null && mResponse.Succeeded)
+                    var lastAddedCategory = mCategories.Select(x => x.Name).ToList();
+                    if (lastAddedCategory.Any(x => x.ToLower().Trim() == txtOtherCategory.Text.ToLower().Trim()))
                     {
-                        Common.DisplaySuccessMessage(mResponse.Message);
+                        newCategory = mCategories.Where(x => x.Name == txtOtherCategory.Text).FirstOrDefault()?.CategoryId;
+                        pkCategory.ItemsSource = lastAddedCategory.ToList();
+                        pkCategory.SelectedItem = txtOtherCategory.Text;
+                        txtOtherCategory.Text = string.Empty;
+                        GetSubCategoryByCategoryId(newCategory);
                     }
-                    else
-                    {
-                        if (mResponse != null && !mResponse.Message.Contains("TrackingKey"))
-                            Common.DisplayErrorMessage(mResponse.Message);
-                    }
-
-                    Settings.EmailAddress = string.Empty;
-                    Settings.UserToken = string.Empty;
-                    Settings.RefreshToken = string.Empty;
-                    Settings.LoginTrackingKey = string.Empty;
-
-                    App.Current.MainPage = new NavigationPage(new SplashScreen.WelcomePage(true));
                 }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/DoLogout: " + ex.Message);
             }
         }
 
-        private async void BtnDeleteBillding_Clicked(object sender, EventArgs e)
+        private async void txtOtherSubCategory_Completed(object sender, EventArgs e)
         {
-            try
+            if (!Common.EmptyFiels(txtOtherSubCategory.Text))
             {
-                var isDelete = await App.Current.MainPage.DisplayAlert(Constraints.Alert, Constraints.AreYouSureWantDelete, Constraints.Yes, Constraints.No);
-                if (isDelete)
+                mSubCategories = await DependencyService.Get<ICategoryRepository>().CreateSubCategory(txtOtherSubCategory.Text, newCategory);
+                if (mSubCategories != null)
                 {
-                    var btn = (Button)sender;
-                    var mBillingAddress = (BillingAddress)btn.BindingContext;
-                    if (mBillingAddress != null && mBillingAddresses != null && mBillingAddresses.Count > 0)
+                    if (selectedSubCategory.Where(x => x == txtOtherSubCategory.Text).Count() == 0)
                     {
-                        mBillingAddresses.Remove(mBillingAddress);
+                        selectedSubCategory = mSubCategories.Select(x => x.Name).ToList();
+                        pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                        pkSubCategory.SelectedItem = txtOtherSubCategory.Text;
+                        txtOtherSubCategory.Text = string.Empty;
                     }
-                }
 
-                if (mBillingAddresses.Count == 0)
-                    lstBilling.IsVisible = false;
-                else
-                {
-                    lstBilling.IsVisible = true;
-                    lstBilling.ItemsSource = mBillingAddresses.ToList();
-                    lstBilling.HeightRequest = mBillingAddresses.Count * 120;
+                    wlSubCategory.ItemsSource = selectedSubCategory.ToList();
                 }
             }
-            catch (Exception ex)
+        }
+        #endregion
+
+        #region [ Billing Address ]
+        private void GrdBilling_Tapped(object sender, EventArgs e)
+        {
+            if (GrdBilling.IsVisible == false)
             {
-                Common.DisplayErrorMessage("AccountView/BtnDeleteBillding: " + ex.Message);
+                GrdBilling.IsVisible = true;
+                ImgDropDownBilling.Source = Constraints.Arrow_Up;
+                ScrPrimary.ScrollToAsync(GrdBillingAddress, ScrollToPosition.Start, true);
+            }
+            else
+            {
+                GrdBilling.IsVisible = false;
+                ImgDropDownBilling.Source = Constraints.Arrow_Down;
             }
         }
 
@@ -1128,12 +1428,18 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     txtBuildingNumber.Text = mBillingAddress.BuildingNumber;
                     txtStreet.Text = mBillingAddress.Street;
                     txtCity.Text = mBillingAddress.City;
+                    txtState.Text = (string)mBillingAddress.State;
+                    txtPinCode.Text = (string)mBillingAddress.PinCode;
                     txtLandmark.Text = mBillingAddress.Landmark;
-                    pkNationality.Text = mBillingAddress.Nationality;
+                    pkNationality.Text = (string)mBillingAddress.Nationality;
+                    isEditBillingAddress = true;
                 }
 
                 if (mBillingAddresses.Count == 0)
+                {
                     lstBilling.IsVisible = false;
+                    lstBilling.HeightRequest = 0;
+                }
                 else
                 {
                     lstBilling.IsVisible = true;
@@ -1147,19 +1453,57 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void txtOtherSubCategory_Completed(object sender, EventArgs e)
+        private async void BtnDeleteBillding_Clicked(object sender, EventArgs e)
         {
-            if (!Common.EmptyFiels(txtOtherSubCategory.Text))
+            try
             {
-                if (selectedSubCategory.Where(x => x == txtOtherSubCategory.Text).Count() == 0)
+                var isDelete = await App.Current.MainPage.DisplayAlert(Constraints.Alert, Constraints.AreYouSureWantDelete, Constraints.Yes, Constraints.No);
+                if (isDelete)
                 {
-                    selectedSubCategory.Add(pkSubCategory.SelectedItem.ToString());
-                }
+                    isDeleteBillingAddress = true;
+                    var btn = (Button)sender;
+                    var mBillingAddress = (BillingAddress)btn.BindingContext;
+                    if (mBillingAddress != null && mBillingAddresses != null && mBillingAddresses.Count > 0)
+                    {
+                        mBillingAddresses.Remove(mBillingAddress);
+                    }
 
-                wlSubCategory.ItemsSource = selectedSubCategory.ToList();
+                    if (mBillingAddresses.Count == 0)
+                    {
+                        lstBilling.IsVisible = false;
+                        lstBilling.HeightRequest = 0;
+                    }
+                    else
+                    {
+                        lstBilling.IsVisible = true;
+                        lstBilling.ItemsSource = mBillingAddresses.ToList();
+                        lstBilling.HeightRequest = mBillingAddresses.Count * 120;
+                    }
+                    HasUpdateProfileDetail();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/BtnDeleteBillding: " + ex.Message);
             }
         }
 
+        private void BillingAddressEntry_Unfocused(object sender, FocusEventArgs e)
+        {
+            var entry = (ExtEntry)sender;
+            if (!Common.EmptyFiels(entry.Text))
+            {
+                UnfocussedFields(entry: entry);
+            }
+        }
+
+        private async void BillingPincode_Unfocused(object sender, FocusEventArgs e)
+        {
+            await PinCodeValidation();
+        }
+        #endregion
+
+        #region [ Unfocus ]
         private void Entry_Unfocused(object sender, FocusEventArgs e)
         {
             var entry = (ExtEntry)sender;
@@ -1196,5 +1540,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
         #endregion
+        #endregion
+
+
     }
 }

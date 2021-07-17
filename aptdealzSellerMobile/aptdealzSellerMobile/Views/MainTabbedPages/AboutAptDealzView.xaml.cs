@@ -1,5 +1,6 @@
-﻿using System;
-
+﻿using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.MasterData;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,7 +10,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     public partial class AboutAptDealzView : ContentView
     {
         #region Objects
-        public event EventHandler isRefresh;
+
         #endregion
 
         #region Constructor
@@ -38,7 +39,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
             Navigation.PopAsync();
+            Common.BindAnimation(imageButton: ImgBack);
+            App.Current.MainPage = new MasterDataPage();
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
+        }
     }
 }

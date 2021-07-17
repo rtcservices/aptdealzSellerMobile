@@ -34,7 +34,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -119,18 +123,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Greivance ID"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Greivance ID" />
 
                                     <Label
                                         x:Name="lblOrderRequirementId"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -140,11 +140,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Order ID  -->
@@ -156,18 +152,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Order ID"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Order ID" />
 
                                     <Label
                                         x:Name="lblOrderReferenceNo"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -177,11 +169,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Order Date  -->
@@ -193,18 +181,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Order Date"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Order Date" />
 
                                     <Label
                                         x:Name="lblOrderBuyerName"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -214,11 +198,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Grievance Date  -->
@@ -230,18 +210,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Grievance Date"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Grievance Date" />
 
                                     <Label
                                         x:Name="lblOrderSellerName"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -251,11 +227,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Buyer Name  -->
@@ -267,18 +239,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Buyer Name"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Buyer Name" />
 
                                     <Label
                                         x:Name="lblOrderPinCode"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -288,11 +256,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Grievance Type  -->
@@ -304,18 +268,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Grievance Type"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Grievance Type" />
 
                                     <Label
                                         x:Name="lblOrderQuntity"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -325,11 +285,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Status  -->
@@ -341,18 +297,14 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Status"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Status" />
 
                                     <Label
                                         x:Name="lblOrderUnitPrice"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
@@ -362,11 +314,7 @@
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
                             <!--  Attached Document  -->
@@ -378,13 +326,9 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Attached Documents"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Attached Documents" />
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -397,11 +341,7 @@
                                     </Grid>
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                         </Grid>
 
@@ -425,17 +365,14 @@
                                     Padding="10"
                                     BackgroundColor="White"
                                     BorderColor="{StaticResource LightGray}"
-                                    HeightRequest="80"
                                     Style="{StaticResource frmEntry}">
                                     <Editor
+                                        AutoSize="TextChanges"
                                         FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         Keyboard="Text"
-                                        Placeholder="Lorem Ipsum is simply dummy text of the &#10; printing and typesetting industry. Lorem Ipsum &#10; has been the industry's standard dummy text "
-                                        PlaceholderColor="{StaticResource Gray}"
-                                        TabIndex="1"
-                                        TextColor="{StaticResource Black}" />
+                                        Placeholder="Notes"
+                                        Style="{StaticResource edPrimary}"
+                                        TabIndex="1" />
                                 </Frame>
                             </StackLayout>
 
@@ -466,7 +403,7 @@
 
                                         <Label
                                             Margin="0"
-                                            FontFamily="Poppins Medium"
+                                            FontFamily="Poppins-Medium"
                                             FontSize="16"
                                             HorizontalOptions="CenterAndExpand"
                                             Text="Admin"
@@ -475,11 +412,11 @@
 
                                     </StackLayout>
 
-                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=5}">
+                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <Label Style="{StaticResource lblPrimary13}" Text="Response" />
                                         <Editor
                                             x:Name="txtAdminResponse"
-                                            HeightRequest="40"
+                                            AutoSize="TextChanges"
                                             Style="{StaticResource edPrimary}" />
                                         <BoxView Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
@@ -508,20 +445,17 @@
 
                                         <Label
                                             Margin="0"
-                                            FontFamily="Poppins"
-                                            FontSize="16"
                                             HorizontalOptions="CenterAndExpand"
-                                            Text="Buyer"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblLight15}"
+                                            Text="Buyer" />
 
                                     </StackLayout>
 
-                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=5}">
+                                    <StackLayout Grid.Column="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <Label Style="{StaticResource lblPrimary13}" Text="Response" />
                                         <Editor
                                             x:Name="txtBuyerResponse"
-                                            HeightRequest="40"
+                                            AutoSize="TextChanges"
                                             Style="{StaticResource edPrimary}" />
                                         <BoxView Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
@@ -534,7 +468,7 @@
                                 <Editor
                                     x:Name="txtMessage"
                                     Margin="10,0"
-                                    HeightRequest="100"
+                                    AutoSize="TextChanges"
                                     Style="{StaticResource edPrimary}" />
                                 <BoxView x:Name="BoxMessage" Style="{StaticResource boxHorizontal}" />
                             </StackLayout>

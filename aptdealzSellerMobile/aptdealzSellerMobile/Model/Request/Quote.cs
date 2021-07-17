@@ -1,11 +1,14 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.Model.Request
 {
-    public class Quote
+    public class Quote : INotifyPropertyChanged
     {
         [JsonProperty("quoteId")]
         public string QuoteId { get; set; }
@@ -39,6 +42,9 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("countryId")]
         public int CountryId { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
 
         [JsonProperty("comments")]
         public string Comments { get; set; }
@@ -99,5 +105,47 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("buyerContact")]
         public BuyerContact BuyerContact { get; set; }
+
+        [JsonProperty("created")]
+        public DateTime Created { get; set; }
+
+        [JsonProperty("unit")]
+        public string Unit { get; set; }
+
+        #region Extra
+        private Color _GridBg { get; set; } = Color.Transparent;
+        public Color GridBg
+        {
+            get { return _GridBg; }
+            set { _GridBg = value; PropertyChangedEventArgs("GridBg"); }
+        }
+
+        private bool _MoreDetail { get; set; } = false;
+        public bool MoreDetail
+        {
+            get { return _MoreDetail; }
+            set { _MoreDetail = value; PropertyChangedEventArgs("MoreDetail"); }
+        }
+
+        private bool _OldDetail { get; set; } = true;
+        public bool OldDetail
+        {
+            get { return _OldDetail; }
+            set { _OldDetail = value; PropertyChangedEventArgs("OldDetail"); }
+        }
+
+        private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
+        public string ArrowImage
+        {
+            get { return _ArrowImage; }
+            set { _ArrowImage = value; PropertyChangedEventArgs("ArrowImage"); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void PropertyChangedEventArgs(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }

@@ -1,10 +1,7 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.MasterData;
-using aptdealzSellerMobile.Views.SplashScreen;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -156,6 +153,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region Events
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 

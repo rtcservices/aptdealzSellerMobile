@@ -88,6 +88,9 @@
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Polly">
+      <Version>7.2.2</Version>
+    </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.11</Version>
     </PackageReference>
@@ -136,11 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Poppins.otf" />
-    <AndroidAsset Include="Assets\Poppins Black.otf" />
-    <AndroidAsset Include="Assets\Poppins ExtraBold.otf" />
-    <AndroidAsset Include="Assets\Poppins Medium.otf" />
-    <AndroidAsset Include="Assets\Poppins SemiBold.otf" />
-    <AndroidAsset Include="Assets\Poppins Thin.otf" />
+    <AndroidAsset Include="Assets\Poppins-Thin.otf" />
+    <AndroidAsset Include="Assets\Poppins-Black.otf" />
+    <AndroidAsset Include="Assets\Poppins-ExtraBold.otf" />
+    <AndroidAsset Include="Assets\Poppins-Medium.otf" />
+    <AndroidAsset Include="Assets\Poppins-SemiBold.otf" />
     <None Include="KeyStore\aptdealzSellerMobile.keystore" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

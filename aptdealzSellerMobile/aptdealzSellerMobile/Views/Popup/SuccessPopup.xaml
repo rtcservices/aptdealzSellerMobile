@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage
+    x:Class="aptdealzSellerMobile.Views.Popup.SuccessPopup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+    <Frame
+        Margin="35,0"
+        Padding="0"
+        BackgroundColor="{StaticResource White}"
+        BorderColor="{StaticResource White}"
+        CornerRadius="10"
+        HasShadow="False"
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="CenterAndExpand">
+
+        <Grid
+            Margin="0"
+            Padding="25"
+            RowDefinitions="Auto,Auto,*,Auto"
+            RowSpacing="25">
+
+            <Image
+                Grid.Row="0"
+                HeightRequest="70"
+                HorizontalOptions="CenterAndExpand"
+                Source="iconSmile.png"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="70" />
+
+            <Label
+                Grid.Row="1"
+                FontFamily="Poppins-Medium"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                Text="Success"
+                TextColor="{StaticResource Green}"
+                VerticalOptions="CenterAndExpand" />
+
+            <Label
+                x:Name="lblMessage"
+                Grid.Row="2"
+                FontSize="17"
+                HorizontalOptions="FillAndExpand"
+                HorizontalTextAlignment="Center"
+                LineBreakMode="WordWrap"
+                Style="{StaticResource lblLight15}"
+                Text=""
+                TextColor="{StaticResource Green}" />
+
+            <Button
+                Grid.Row="3"
+                Clicked="FrmHome_Tapped"
+                CornerRadius="25"
+                HorizontalOptions="CenterAndExpand"
+                Style="{StaticResource btnPrimary}"
+                Text="OK"
+                WidthRequest="150" />
+
+        </Grid>
+
+    </Frame>
+
+</popup:PopupPage>

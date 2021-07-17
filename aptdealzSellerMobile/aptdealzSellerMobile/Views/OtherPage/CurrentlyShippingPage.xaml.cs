@@ -5,7 +5,6 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +15,11 @@ namespace aptdealzSellerMobile.Views.OtherPage
     {
         #region Objects
         private List<CurrentlyShipping> mCurrentlyShippings = new List<CurrentlyShipping>();
+        private string filterBy = "";
+        private string title = string.Empty;
+        private bool? sortBy = null;
+        private readonly int pageSize = 10;
+        private int pageNo;
         #endregion
 
         #region Constructor
@@ -78,20 +82,12 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 if (mCurrentlyShippings != null && mCurrentlyShippings.Count > 0)
                 {
                     lstCurrentlyShipping.IsVisible = true;
-                    FrmSortBy.IsVisible = true;
-                   // FrmStatusBy.IsVisible = true;
-                    FrmSearchBy.IsVisible = true;
-                    FrmFilterBy.IsVisible = true;
                     lblNoRecord.IsVisible = false;
                     lstCurrentlyShipping.ItemsSource = mCurrentlyShippings.ToList();
                 }
                 else
                 {
                     lstCurrentlyShipping.IsVisible = false;
-                    //FrmStatusBy.IsVisible = false;
-                    FrmSearchBy.IsVisible = false;
-                    FrmSortBy.IsVisible = false;
-                    FrmFilterBy.IsVisible = false;
                     lblNoRecord.IsVisible = true;
                 }
             }
@@ -179,7 +175,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
-           
+
         }
 
         //private async void FrmStatusBy_Tapped(object sender, EventArgs e)
@@ -206,13 +202,16 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
-                SortByPopup sortByPopup = new SortByPopup("", "");
+                FilterPopup sortByPopup = new FilterPopup("", "");
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
                     if (!Common.EmptyFiels(result))
                     {
-                        //Bind list as per result
+                        filterBy = result;
+                        lblFilterBy.Text = filterBy;
+                        pageNo = 1;
+                        BindList();
                     }
                 };
                 await PopupNavigation.Instance.PushAsync(sortByPopup);
@@ -234,8 +233,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 var frm = (Frame)sender;
                 if (frm != null)
                 {
-                    await frm.ScaleTo(0.9, 100, Easing.Linear);
-                    await frm.ScaleTo(1.0, 100, Easing.Linear);
+                    Common.BindAnimation(frame: frm);
 
                     var frmScanQrCode = (CurrentlyShippingPage)frm.BindingContext;
                     if (frmScanQrCode != null && frmScanQrCode.IsVisible == true)
@@ -257,8 +255,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 var frmTrackUp = (Frame)sender;
                 if (frmTrackUp != null)
                 {
-                    await frmTrackUp.ScaleTo(0.9, 100, Easing.Linear);
-                    await frmTrackUp.ScaleTo(1.0, 100, Easing.Linear);
+                    Common.BindAnimation(frame: frmTrackUp);
 
                     var frmScanQrCode = (CurrentlyShippingPage)frmTrackUp.BindingContext;
                     if (frmScanQrCode != null && frmScanQrCode.IsVisible == true)
@@ -298,18 +295,12 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     if (CrnShpSearch != null && CrnShpSearch.Count > 0)
                     {
                         lstCurrentlyShipping.IsVisible = true;
-                        FrmSortBy.IsVisible = true;
-                        //FrmStatusBy.IsVisible = true;
-                        FrmFilterBy.IsVisible = true;
                         lblNoRecord.IsVisible = false;
                         lstCurrentlyShipping.ItemsSource = CrnShpSearch.ToList();
                     }
                     else
                     {
                         lstCurrentlyShipping.IsVisible = false;
-                        //FrmStatusBy.IsVisible = false;
-                        FrmSortBy.IsVisible = false;
-                        FrmFilterBy.IsVisible = false;
                         lblNoRecord.IsVisible = true;
                     }
                 }
@@ -323,6 +314,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 Common.DisplayErrorMessage("CurrentlyShipping/entrSearch_TextChanged: " + ex.Message);
             }
         }
-      
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

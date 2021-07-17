@@ -51,5 +51,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

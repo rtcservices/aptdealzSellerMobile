@@ -20,6 +20,7 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Button), typeof(CustomButtonRender))]
 [assembly: ExportRenderer(typeof(ExtAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
 [assembly: ExportRenderer(typeof(ExtDatePicker), typeof(CustomDatePickerRender))]
+[assembly: ExportRenderer(typeof(ExtTimePicker), typeof(CustomTimePickerRenderer))]
 
 namespace aptdealzSellerMobile.Droid.CustomRenderers
 {
@@ -212,10 +213,97 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
 
                 nativeEditTextField.Background = gd;
                 Control.SetPadding(0, 0, 0, 0);
+
+                ExtDatePicker element = Element as ExtDatePicker;
+                if (element.NullableDate.HasValue)
+                    Control.Text = element.NullableDate.Value.ToString(element.Format);
+                else
+                    Control.Text = string.Empty;
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("Droid/CustomDatePickerRender: " + ex.Message);
+            }
+        }
+    }
+
+    public class CustomTimePickerRenderer : TimePickerRenderer
+    {
+        public CustomTimePickerRenderer(Context context) : base(context)
+        {
+        }
+        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.TimePicker> e)
+        {
+            try
+            {
+                base.OnElementChanged(e);
+                if (Control == null)
+                {
+                    return;
+                }
+                var customDatePicker = e.NewElement as ExtTimePicker;
+                var nativeEditTextField = Control;
+                GradientDrawable gd = new GradientDrawable();
+                gd.SetCornerRadius(0);
+                //gd.SetStroke(3, Android.Graphics.Color.ParseColor("#66FFFFFF"));
+                //gd.SetColor(Android.Graphics.Color.ParseColor("#66FFFFFF"));
+
+                nativeEditTextField.Background = gd;
+                //Control.SetPadding(5, 0, 5, 0);
+                Control.Gravity = Android.Views.GravityFlags.CenterVertical;
+
+                if (customDatePicker != null)
+                {
+                    SetValue(customDatePicker);
+                }
+                string fontDamily = e.NewElement?.FontFamily;
+
+                if (!string.IsNullOrEmpty(fontDamily))
+                {
+                    var label = (TextView)Control; // for example
+                    Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontDamily + ".otf");
+                    label.Typeface = font;
+                }
+
+                ExtTimePicker element = Element as ExtTimePicker;
+                if (!string.IsNullOrWhiteSpace(element.Placeholder))
+                {
+                    Control.Text = element.Placeholder;
+                }
+
+                //this.Control.TextFormatted = "hh:mm tt";
+
+                Control.TextChanged += (sender, arg) =>
+                {
+                    var selectedDate = Convert.ToString(arg.Text);
+                    if (selectedDate == element.Placeholder)
+                    {
+                        Control.Text = DateTime.Now.ToString("hh:mm tt");
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Droid/TimePicker/OnElementChanged: " + ex.Message);
+            }
+        }
+
+        private void SetValue(ExtTimePicker customTimePicker)
+        {
+            try
+            {
+                if (customTimePicker.NullableTime.HasValue)
+                {
+                    Control.Text = customTimePicker.NullableTime.Value.ToString(customTimePicker.Format);
+                }
+                else
+                {
+                    Control.Text = customTimePicker.NullText ?? string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Droid/TimePicker/OnElementChanged: " + ex.Message);
             }
         }
     }

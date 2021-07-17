@@ -1,7 +1,6 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.SplashScreen;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
@@ -13,8 +12,7 @@ namespace aptdealzSellerMobile.API
     public class RequirementAPI
     {
         #region [ GET ]
-        int getAllActiveRequirements = 0;
-        public async Task<Response> GetAllActiveRequirements(string SortBy = "", bool? IsAscending = null, int PageNumber = 1, int PageSize = 10)
+        public async Task<Response> GetAllActiveRequirements(string SortBy = "", string Title = "", bool? IsAscending = null, int PageNumber = 1, int PageSize = 10)
         {
             Response mResponse = new Response();
             try
@@ -23,15 +21,13 @@ namespace aptdealzSellerMobile.API
                 {
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
-                        string url = "";
-                        if (!Common.EmptyFiels(SortBy) && IsAscending != null)
-                            url = string.Format(EndPointURL.GetAllActiveRequirements + "?SortBy={1}&IsAscending={2}&PageNumber={3}&PageSize={4}", (int)App.Current.Resources["Version"], SortBy, IsAscending, PageNumber, PageSize);
-                        else if (!Common.EmptyFiels(SortBy) && IsAscending == null)
-                            url = string.Format(EndPointURL.GetAllActiveRequirements + "?SortBy={1}&PageNumber={2}&PageSize={3}", (int)App.Current.Resources["Version"], SortBy, PageNumber, PageSize);
-                        else if (Common.EmptyFiels(SortBy) && IsAscending != null)
-                            url = string.Format(EndPointURL.GetAllActiveRequirements + "?IsAscending={1}&PageNumber={2}&PageSize={3}", (int)App.Current.Resources["Version"], IsAscending, PageNumber, PageSize);
-                        else
-                            url = string.Format(EndPointURL.GetAllActiveRequirements + "?PageNumber={1}&PageSize={2}", (int)App.Current.Resources["Version"], PageNumber, PageSize);
+                        string url = string.Format(EndPointURL.GetAllActiveRequirements + "?PageNumber={1}&PageSize={2}", (int)App.Current.Resources["Version"], PageNumber, PageSize);
+                        if (!Common.EmptyFiels(Title))
+                            url += "&Title=" + Title;
+                        if (!Common.EmptyFiels(SortBy))
+                            url += "&SortBy=" + SortBy;
+                        if (IsAscending.HasValue)
+                            url += "&IsAscending=" + IsAscending.Value;
 
                         var response = await hcf.GetAsync(url);
                         var responseJson = await response.Content.ReadAsStringAsync();
@@ -45,24 +41,31 @@ namespace aptdealzSellerMobile.API
                             if (errorString == Constraints.Session_Expired)
                             {
                                 Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
-                                if (!isRefresh && getAllActiveRequirements == 3)
+                                if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                                 }
                                 else
                                 {
-                                    await GetAllActiveRequirements(RequirementSortBy.ID.ToString(), null, PageNumber, PageSize);
+                                    await GetAllActiveRequirements(SortBy, Title, IsAscending, PageNumber, PageSize);
                                 }
-                                getAllActiveRequirements++;
                             }
                             else
                             {
@@ -75,7 +78,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await GetAllActiveRequirements(RequirementSortBy.ID.ToString(), null, PageNumber, PageSize);
+                        await GetAllActiveRequirements(SortBy, Title, IsAscending, PageNumber, PageSize);
                     }
                 }
             }
@@ -86,7 +89,6 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
-        int getRequirementById = 0;
         public async Task<Response> GetRequirementById(string RequirmentId)
         {
             Response mResponse = new Response();
@@ -109,24 +111,31 @@ namespace aptdealzSellerMobile.API
                             if (errorString == Constraints.Session_Expired)
                             {
                                 Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
-                                if (!isRefresh && getRequirementById == 3)
+                                if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                                 }
                                 else
                                 {
                                     await GetRequirementById(RequirmentId);
                                 }
-                                getRequirementById++;
                             }
                             else
                             {
@@ -149,50 +158,54 @@ namespace aptdealzSellerMobile.API
             }
             return mResponse;
         }
-        #endregion
 
-        #region [ POST ]
-        int revealBuyerContact = 0;
-        public async Task<Response> RevealBuyerContact(string quoteId)
+        public async Task<Response> GetRequirementDetailsWithoutQuoteDetails(string RequirmentId)
         {
             Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    string requestJson = "{\"quoteId\":\"" + quoteId + "\"}";
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
-                        string url = string.Format(EndPointURL.RevealBuyerContact, (int)App.Current.Resources["Version"], quoteId);
-                        var mResponseMessage = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await mResponseMessage.Content.ReadAsStringAsync();
-                        if (mResponseMessage.IsSuccessStatusCode)
+                        string url = string.Format(EndPointURL.GetRequirementDetailsWithoutQuoteDetails, (int)App.Current.Resources["Version"], RequirmentId);
+                        var response = await hcf.GetAsync(url);
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
                         {
                             mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
                         }
-                        else if (mResponseMessage.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                         {
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
-                                if (!isRefresh && revealBuyerContact == 3)
+                                if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                                 }
                                 else
                                 {
-                                    await RevealBuyerContact(quoteId);
+                                    await GetRequirementDetailsWithoutQuoteDetails(RequirmentId);
                                 }
-                                revealBuyerContact++;
                             }
                             else
                             {
@@ -205,7 +218,79 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await RevealBuyerContact(quoteId);
+                        await GetRequirementDetailsWithoutQuoteDetails(RequirmentId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementAPI/GetRequirementDetailsWithoutQuoteDetails: " + ex.Message);
+            }
+            return mResponse;
+        }
+        #endregion
+
+        #region [ POST ]
+        public async Task<Response> RevealBuyerContact(string requirementId, int paymentStatus)
+        {
+            Response mResponse = new Response();
+            try
+            {
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    string requestJson = "{\"requirementId\":\"" + requirementId + "\",\"paymentStatus\":" + paymentStatus + "}";
+                    using (var hcf = new HttpClientFactory(token: Common.Token))
+                    {
+                        string url = string.Format(EndPointURL.RevealBuyerContact, (int)App.Current.Resources["Version"]);
+                        var response = await hcf.PostAsync(url, requestJson);
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                        {
+                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
+                            if (errorString == Constraints.Session_Expired)
+                            {
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                            }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
+                        }
+                        else
+                        {
+                            if (responseJson.Contains("TokenExpired"))
+                            {
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                                }
+                                else
+                                {
+                                    await RevealBuyerContact(requirementId, paymentStatus);
+                                }
+                            }
+                            else
+                            {
+                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (await Common.InternetConnection())
+                    {
+                        await RevealBuyerContact(requirementId, paymentStatus);
                     }
                 }
             }

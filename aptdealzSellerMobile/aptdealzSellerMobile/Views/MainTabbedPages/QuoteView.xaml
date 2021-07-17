@@ -32,7 +32,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -75,7 +79,7 @@
                 <Grid
                     Grid.Row="0"
                     Margin="5,5,5,0"
-                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnDefinitions="Auto,*"
                     ColumnSpacing="0">
                     <ImageButton
                         x:Name="ImgBack"
@@ -87,11 +91,6 @@
                         Grid.Column="1"
                         Style="{StaticResource lblHeader}"
                         Text="Submitted Quotes" />
-                    <!--<ImageButton
-                        Grid.Column="2"
-                        Clicked="ImgSearch_Tapped"
-                        Source="iconSearch.png"
-                        Style="{StaticResource ImgBtnPrimary}" />-->
                 </Grid>
 
                 <Grid
@@ -123,43 +122,24 @@
                             <Image
                                 Grid.Column="0"
                                 Aspect="AspectFit"
-                                BackgroundColor="Transparent"
-                                HeightRequest="{OnPlatform Android=20,
-                                                           iOS=25}"
-                                HorizontalOptions="Center"
                                 Source="iconSearch.png"
-                                VerticalOptions="Center"
-                                WidthRequest="{OnPlatform Android=20,
-                                                          iOS=25}" />
+                                Style="{StaticResource imgSearch}" />
+
                             <ext:ExtEntry
                                 x:Name="entrSearch"
                                 Grid.Column="1"
-                                FontFamily="Poppins"
-                                FontSize="15"
                                 Placeholder="Search"
-                                TextChanged="entrSearch_TextChanged"
-                                VerticalOptions="{OnPlatform Android=EndAndExpand,
-                                                             iOS=CenterAndExpand}" />
+                                Style="{StaticResource entrPrimary}"
+                                TextChanged="entrSearch_TextChanged" />
+
 
                             <ImageButton
                                 x:Name="BtnClose"
                                 Grid.Column="2"
-                                Margin="0"
-                                Padding="13"
-                                Aspect="AspectFit"
-                                BackgroundColor="Transparent"
                                 Clicked="BtnClose_Clicked"
-                                HeightRequest="40"
-                                HorizontalOptions="EndAndExpand"
                                 Source="iconClose.png"
-                                VerticalOptions="Center"
-                                WidthRequest="40" />
-                            <BoxView
-                                Grid.ColumnSpan="3"
-                                BackgroundColor="{StaticResource Green}"
-                                HeightRequest="1"
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="EndAndExpand" />
+                                Style="{StaticResource ImgBtnH40P13}" />
+                            <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontalGreen}" />
                         </Grid>
                     </Frame>
 
@@ -168,6 +148,7 @@
                         ColumnSpacing="10"
                         HorizontalOptions="EndAndExpand">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -198,12 +179,10 @@
                                 <Label
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Sort by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight15}"
+                                    Text="Sort by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSortBy_Tapped" />
@@ -234,17 +213,53 @@
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
+                                    x:Name="lblFilterBy"
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Filter by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight15}"
+                                    Text="Filter by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmFilterBy_Tapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
+                        <Frame
+                            x:Name="FrmStatusBy"
+                            Grid.Column="2"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource LightGray}"
+                            CornerRadius="5"
+                            HasShadow="False"
+                            HorizontalOptions="EndAndExpand"
+                            IsClippedToBounds="True">
+                            <Grid
+                                Margin="5"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="2">
+                                <Image
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Source="iconStatus.png"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Style="{StaticResource lblLight15}"
+                                    Text="Status" />
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatusBy_Tapped" />
                             </Frame.GestureRecognizers>
                         </Frame>
                     </Grid>
@@ -253,14 +268,15 @@
                 <ListView
                     x:Name="lstQuotesDetails"
                     Grid.Row="2"
-                    HorizontalScrollBarVisibility="Never"
+                    IsPullToRefreshEnabled="True"
+                    ItemAppearing="lstQuotesDetails_ItemAppearing"
                     ItemTapped="lstQuotesDetails_ItemTapped"
-                    Style="{StaticResource lstPrimary}"
-                    VerticalScrollBarVisibility="Never">
+                    Refreshing="lstQuotesDetails_Refreshing"
+                    Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid>
+                                <Grid x:Name="GrdList">
                                     <Grid
                                         Padding="20,15,5,5"
                                         BackgroundColor="{Binding GridBg, Mode=TwoWay}"
@@ -283,136 +299,77 @@
                                             <!--  Quote Number  -->
                                             <Label
                                                 Grid.Row="0"
-                                                FontFamily="Poppins Medium"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                FontFamily="Poppins-Medium"
+                                                FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
-                                                Text="{Binding QuoteId}"
+                                                Text="{Binding QuoteNo}"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 
                                             <!--  Quote Amount  -->
                                             <Label
                                                 Grid.Row="0"
-                                                FontFamily="Poppins Medium"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                FontFamily="Poppins-Medium"
+                                                FontSize="15"
                                                 HorizontalOptions="EndAndExpand"
                                                 IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                Text="{Binding QuoteAmount, StringFormat='RS {0:}'}"
+                                                Text="{Binding TotalQuoteAmount, StringFormat='RS {0:}'}"
                                                 TextColor="{StaticResource Green}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,5" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
 
-                                            <!--  Quote Description  -->
+                                            <!--  Req Title  -->
                                             <Label
                                                 Grid.Row="1"
-                                                FontFamily="Poppins"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                Text="{Binding Description}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,0" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                Style="{StaticResource lblLight15}"
+                                                Text="{Binding RequirementTitle}" />
+
                                             <!--  Requerment Number  -->
                                             <Label
                                                 Grid.Row="1"
-                                                FontFamily="Poppins Medium"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                FontFamily="Poppins-Medium"
+                                                FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding ReqId}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,0" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
-                                            <!--  Quote Description  -->
-                                            <Label
-                                                Grid.Row="2"
-                                                FontFamily="Poppins"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
-                                                HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding Description}"
+                                                Text="{Binding RequirementNo}"
                                                 TextColor="{StaticResource Black}"
                                                 VerticalOptions="CenterAndExpand" />
 
-                                            <!--  Quote Code  -->
+                                            <!--  Req Title  -->
                                             <Label
-                                                Grid.Row="3"
-                                                FontFamily="Poppins"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                Grid.Row="2"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding QuoteCode}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,0" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                Style="{StaticResource lblLight15}"
+                                                Text="{Binding RequirementTitle}" />
+
+                                            <!--  Buyer Id  -->
+                                            <Label
+                                                Grid.Row="3"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                Style="{StaticResource lblLight15}"
+                                                Text="{Binding BuyerId}" />
 
                                             <!--  Quote Date  -->
                                             <Label
                                                 Grid.Row="4"
-                                                FontFamily="Poppins"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding QuoteDate}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,10" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                Style="{StaticResource lblLight15}"
+                                                Text="{Binding ValidityDate, StringFormat='{0:dd/MM/yyyy}'}" />
+
                                             <!--  Quote Amount  -->
                                             <Label
                                                 Grid.Row="4"
-                                                FontFamily="Poppins Medium"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                FontFamily="Poppins-Medium"
+                                                FontSize="15"
                                                 HorizontalOptions="EndAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding QuoteAmount, StringFormat='RS {0:}'}"
+                                                Text="{Binding TotalQuoteAmount, StringFormat='RS {0:}'}"
                                                 TextColor="{StaticResource Green}"
-                                                VerticalOptions="CenterAndExpand">
-                                                <Label.Margin>
-                                                    <OnPlatform x:TypeArguments="Thickness">
-                                                        <On Platform="Android" Value="0" />
-                                                        <On Platform="iOS" Value="0,10,0,5" />
-                                                    </OnPlatform>
-                                                </Label.Margin>
-                                            </Label>
+                                                VerticalOptions="CenterAndExpand" />
                                         </Grid>
 
                                         <!--  DoenArrow  -->
@@ -430,11 +387,11 @@
                                             WidthRequest="50" />
                                     </Grid>
 
-                                    <BoxView
-                                        BackgroundColor="{StaticResource Green}"
-                                        HeightRequest="1"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="EndAndExpand" />
+                                    <BoxView Style="{StaticResource boxHorizontalGreen}" />
+
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdList_Tapped" />
+                                    </Grid.GestureRecognizers>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
@@ -444,7 +401,7 @@
                 <Label
                     x:Name="lblNoRecord"
                     Grid.Row="2"
-                    FontFamily="Poppins Medium"
+                    FontFamily="Poppins-Medium"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"

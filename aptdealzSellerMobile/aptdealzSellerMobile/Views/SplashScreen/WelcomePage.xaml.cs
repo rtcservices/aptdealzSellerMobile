@@ -22,12 +22,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
         public WelcomePage()
         {
             InitializeComponent();
-        }
-
-        public WelcomePage(bool IsLogin)
-        {
-            InitializeComponent();
-            Navigation.PushAsync(new LoginPage());
+            Settings.IsViewWelcomeScreen = false;
         }
         #endregion
 

@@ -30,7 +30,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             {
                 if (Control != null)
                 {
-                    if (e.NewElement != null)
+                    if (e.NewElement != null && e.NewElement.Text != null)
                     {
                         if (!string.IsNullOrEmpty(Element.FontFamily))
                             Control.Font = UIFont.FromName(this.Element.FontFamily, (nfloat)e.NewElement.FontSize);
@@ -212,10 +212,16 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             try
             {
                 base.OnElementPropertyChanged(sender, e);
-                if (Control!=null)
+                if (Control != null)
                 {
                     Control.Layer.BorderWidth = 0;
-                    Control.BorderStyle = UITextBorderStyle.None; 
+                    Control.BorderStyle = UITextBorderStyle.None;
+
+                    ExtDatePicker element = Element as ExtDatePicker;
+                    if (element.NullableDate.HasValue)
+                        Control.Text = element.NullableDate.Value.ToString(element.Format);
+                    else
+                        Control.Text = string.Empty;
                 }
             }
             catch (Exception ex)

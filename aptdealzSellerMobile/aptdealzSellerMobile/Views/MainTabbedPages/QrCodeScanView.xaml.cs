@@ -132,5 +132,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         }
         #endregion
 
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aptdealzSellerMobile.Utility;
+using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -41,5 +42,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Navigation.PopAsync();
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

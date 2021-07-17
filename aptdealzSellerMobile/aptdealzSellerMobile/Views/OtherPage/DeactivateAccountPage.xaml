@@ -12,7 +12,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -34,15 +33,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
+                <ImageButton
+                    x:Name="BtnLogo"
                     Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -71,16 +66,11 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
-            <!--#endregion-->
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
 
-            <Grid Grid.Row="2" Margin="0">
+
+            <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -107,7 +97,7 @@
                     <Label
                         Grid.Column="1"
                         Margin="5,0,0,0"
-                        FontFamily="Poppins SemiBold"
+                        FontFamily="Poppins-SemiBold"
                         FontSize="20"
                         HorizontalOptions="StartAndExpand"
                         Text="Deactivate Account"
@@ -122,13 +112,11 @@
                         <Label
                             Grid.Row="0"
                             Margin="30,20,20,20"
-                            FontFamily="Poppins"
-                            FontSize="16"
                             HorizontalOptions="FillAndExpand"
                             LineBreakMode="WordWrap"
                             LineHeight="1.2"
+                            Style="{StaticResource lblLight15}"
                             Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-                            TextColor="{StaticResource Black}"
                             VerticalOptions="FillAndExpand" />
 
                         <ext:CustomShadowFrame
@@ -138,19 +126,14 @@
                             BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
-                            HeightRequest="150"
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand">
                             <Editor
                                 x:Name="txtReason"
                                 Margin="10,10"
-                                FontFamily="Poppins"
-                                FontSize="16"
-                                HorizontalOptions="FillAndExpand"
+                                AutoSize="TextChanges"
                                 Placeholder="Reason for Deactivation:"
-                                PlaceholderColor="{StaticResource Black}"
-                                TextColor="{StaticResource Black}"
-                                VerticalOptions="FillAndExpand" />
+                                Style="{StaticResource edPrimary}" />
                         </ext:CustomShadowFrame>
 
                         <ext:CustomShadowFrame
@@ -165,7 +148,7 @@
                             <Label
                                 Grid.Column="1"
                                 Margin="20,10"
-                                FontFamily="Poppins Medium"
+                                FontFamily="Poppins-Medium"
                                 FontSize="16"
                                 HorizontalOptions="CenterAndExpand"
                                 LineBreakMode="WordWrap"

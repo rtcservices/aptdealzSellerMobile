@@ -7,6 +7,6 @@ namespace aptdealzSellerMobile.Repository
     public interface IProfileRepository
     {
         Task<List<Country>> GetCountry();
-        Task<bool> ValidPincode(int pinCode);
+        Task<bool> ValidPincode(string pinCode);
     }
 }

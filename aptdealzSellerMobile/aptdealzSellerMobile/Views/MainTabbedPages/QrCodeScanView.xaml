@@ -35,15 +35,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image
+                <ImageButton
+                    x:Name="BtnLogo"
                     Grid.Column="1"
-                    Margin="0"
-                    Aspect="AspectFill"
-                    HeightRequest="45"
-                    HorizontalOptions="CenterAndExpand"
-                    Source="iconHeaderLogo.png"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="45" />
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -74,12 +70,7 @@
                 </StackLayout>
             </Grid>
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
+            <BoxView Grid.Row="1" Style="{StaticResource boxHorizontal}" />
 
             <Grid
                 x:Name="grdQrCode"
@@ -127,14 +118,14 @@
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
-                    FontFamily="Poppins Medium"
+                    FontFamily="Poppins-Medium"
                     FontSize="{OnPlatform Android=14,
                                           iOS=14}"
                     Text="Warning"
                     TextColor="{StaticResource Black}" />
                 <Label
                     Grid.Row="1"
-                    FontFamily="Poppins Medium"
+                    FontFamily="Poppins-Medium"
                     FontSize="{OnPlatform Android=14,
                                           iOS=14}"
                     Text="Scan the buyer's QR code only after &#10; providing them the product."

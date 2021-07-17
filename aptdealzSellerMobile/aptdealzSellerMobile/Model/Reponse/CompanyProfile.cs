@@ -6,7 +6,7 @@ namespace aptdealzSellerMobile.Model.Reponse
     public class CompanyProfile
     {
         [JsonProperty("description")]
-        public object Description { get; set; }
+        public string Description { get; set; }
 
         [JsonProperty("category")]
         public string Category { get; set; }
@@ -15,9 +15,12 @@ namespace aptdealzSellerMobile.Model.Reponse
         public List<string> SubCategories { get; set; }
 
         [JsonProperty("experience")]
-        public object Experience { get; set; }
+        public string Experience { get; set; }
 
         [JsonProperty("areaOfSupply")]
-        public object AreaOfSupply { get; set; }
+        public string AreaOfSupply { get; set; }
+
+        [JsonProperty("commissionRate")]
+        public int CommissionRate { get; set; }
     }
 }

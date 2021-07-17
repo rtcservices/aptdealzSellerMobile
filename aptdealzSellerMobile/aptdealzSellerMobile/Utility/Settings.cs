@@ -104,6 +104,18 @@ namespace aptdealzSellerMobile.Utility
                 Settings.LoginTrackingKey = value;
             }
         }
+
+        public bool isViewWelcomeScreen = true;
+        public bool IsViewWelcomeScreen
+        {
+            get { return IsViewWelcomeScreen; }
+            set
+            {
+                isViewWelcomeScreen = value;
+                Settings.IsViewWelcomeScreen = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsViewWelcomeScreen"));
+            }
+        }
     }
 
     public class Settings
@@ -121,8 +133,10 @@ namespace aptdealzSellerMobile.Utility
         private const string UserIdKey = "userId_key";
         private const string RefreshTokenKey = "refreshToken_key";
         private const string LoginTrackingKey_Key = "loginTrackingKey_key";
-        private static readonly string SettingsDefault = string.Empty;
+        private const string IsViewWelcomeScreen_Key = "IsViewWelcomeScreen_Key";
 
+        private static readonly string SettingsDefault = string.Empty;
+        private static readonly bool SettingsBoolDefault = true;
         public static string EmailAddress
         {
             get { return AppSettings.GetValueOrDefault(EmailAddressKey, SettingsDefault); }
@@ -169,6 +183,12 @@ namespace aptdealzSellerMobile.Utility
         {
             get { return AppSettings.GetValueOrDefault(LoginTrackingKey_Key, SettingsDefault); }
             set { AppSettings.AddOrUpdateValue(LoginTrackingKey_Key, value); }
+        }
+
+        public static bool IsViewWelcomeScreen
+        {
+            get { return AppSettings.GetValueOrDefault(IsViewWelcomeScreen_Key, SettingsBoolDefault); }
+            set { AppSettings.AddOrUpdateValue(IsViewWelcomeScreen_Key, value); }
         }
     }
 }

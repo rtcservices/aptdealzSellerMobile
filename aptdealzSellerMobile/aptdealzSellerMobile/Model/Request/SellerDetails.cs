@@ -108,5 +108,8 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("commissionRate")]
         public int CommissionRate { get; set; }
+
+        [JsonProperty("isActive")]
+        public bool IsActive { get; set; }
     }
 }

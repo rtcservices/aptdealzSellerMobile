@@ -3,7 +3,6 @@ using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Extention;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.SplashScreen;
 using System;
 
 using Xamarin.Forms;
@@ -106,7 +105,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                     if (mResponse != null && mResponse.Succeeded)
                     {
                         Common.DisplaySuccessMessage(mResponse.Message);
-                        App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                        App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                     }
                     else
                     {
@@ -131,7 +130,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region Events
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(image: ImgBack);
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 

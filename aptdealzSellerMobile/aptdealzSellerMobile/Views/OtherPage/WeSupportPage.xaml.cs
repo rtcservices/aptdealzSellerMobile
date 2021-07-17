@@ -35,7 +35,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
                 new CarousellImage{ImageName="imgMakeInIndia.png"},
-            }; 
+            };
             Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
         }
 
@@ -62,5 +62,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Navigation.PopAsync();
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

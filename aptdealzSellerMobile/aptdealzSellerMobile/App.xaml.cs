@@ -37,6 +37,7 @@ namespace aptdealzSellerMobile
             Xamarin.Forms.DependencyService.Register<ICategoryRepository, CategoryRepository>();
             Xamarin.Forms.DependencyService.Register<IProfileRepository, ProfileRepository>();
             Xamarin.Forms.DependencyService.Register<IAuthenticationRepository, AuthenticationRepository>();
+            Xamarin.Forms.DependencyService.Register<IOrderRepository, OrderRepository>();
         }
 
         public async void GetCurrentLocation()

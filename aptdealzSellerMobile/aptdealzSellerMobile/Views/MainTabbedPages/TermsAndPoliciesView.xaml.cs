@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aptdealzSellerMobile.Views.MasterData;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,8 +37,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            App.Current.MainPage = new MasterDataPage();
             Navigation.PopAsync();
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

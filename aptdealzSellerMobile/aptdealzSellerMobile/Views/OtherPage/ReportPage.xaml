@@ -33,7 +33,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -121,7 +125,7 @@
                                             <!--  Title  -->
                                             <Label
                                                 Grid.Row="0"
-                                                FontFamily="Poppins Medium"
+                                                FontFamily="Poppins-Medium"
                                                 FontSize="{OnPlatform Android=16,
                                                                       iOS=16}"
                                                 Text="{Binding Title}"
@@ -130,7 +134,7 @@
                                             <!--  Amount  -->
                                             <Label
                                                 Grid.Row="1"
-                                                FontFamily="Poppins Medium"
+                                                FontFamily="Poppins-Medium"
                                                 FontSize="{OnPlatform Android=16,
                                                                       iOS=16}"
                                                 Text="{Binding Amount, StringFormat='Rs {0:00,000}'}"

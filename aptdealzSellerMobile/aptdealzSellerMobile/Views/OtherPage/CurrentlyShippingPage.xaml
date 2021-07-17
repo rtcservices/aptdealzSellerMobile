@@ -33,7 +33,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -120,43 +124,25 @@
                             <Image
                                 Grid.Column="0"
                                 Aspect="AspectFit"
-                                BackgroundColor="Transparent"
-                                HeightRequest="{OnPlatform Android=20,
-                                                           iOS=25}"
-                                HorizontalOptions="Center"
                                 Source="iconSearch.png"
-                                VerticalOptions="Center"
-                                WidthRequest="{OnPlatform Android=20,
-                                                          iOS=25}" />
+                                Style="{StaticResource imgSearch}" />
+
                             <ext:ExtEntry
                                 x:Name="entrSearch"
                                 Grid.Column="1"
-                                FontFamily="Poppins"
-                                FontSize="15"
                                 Placeholder="Search"
-                                TextChanged="entrSearch_TextChanged"
-                                VerticalOptions="{OnPlatform Android=EndAndExpand,
-                                                             iOS=CenterAndExpand}" />
+                                Style="{StaticResource entrPrimary}"
+                                TextChanged="entrSearch_TextChanged" />
+
 
                             <ImageButton
                                 x:Name="BtnClose"
                                 Grid.Column="2"
-                                Margin="0"
-                                Padding="13"
-                                Aspect="AspectFit"
-                                BackgroundColor="Transparent"
                                 Clicked="BtnClose_Clicked"
-                                HeightRequest="40"
-                                HorizontalOptions="EndAndExpand"
                                 Source="iconClose.png"
-                                VerticalOptions="Center"
-                                WidthRequest="40" />
-                            <BoxView
-                                Grid.ColumnSpan="3"
-                                BackgroundColor="{StaticResource Green}"
-                                HeightRequest="1"
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="EndAndExpand" />
+                                Style="{StaticResource ImgBtnH40P13}" />
+
+                            <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontalGreen}" />
                         </Grid>
                     </Frame>
 
@@ -195,56 +181,15 @@
                                 <Label
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Sort by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight15}"
+                                    Text="Sort by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSortBy_Tapped" />
                             </Frame.GestureRecognizers>
                         </Frame>
-
-                        <!--<Frame
-                            x:Name="FrmStatusBy"
-                            Grid.Column="1"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
-                            <Grid
-                                Margin="5"
-                                ColumnDefinitions="Auto,*"
-                                ColumnSpacing="2">
-                                <Image
-                                    Grid.Column="0"
-                                    Margin="0"
-                                    Aspect="AspectFit"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
-                                    Source="iconStatus.png"
-                                    VerticalOptions="CenterAndExpand" />
-
-                                <Label
-                                    Grid.Column="1"
-                                    Margin="0,5,0,0"
-                                    FontFamily="Poppins"
-                                    FontSize="12"
-                                    HorizontalOptions="CenterAndExpand"
-                                    Text="Status"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
-                            </Grid>
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatusBy_Tapped" />
-                            </Frame.GestureRecognizers>
-                        </Frame>-->
 
                         <Frame
                             x:Name="FrmFilterBy"
@@ -270,14 +215,13 @@
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
+                                    x:Name="lblFilterBy"
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Filter by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight15}"
+                                    Text="Filter by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmFilterBy_Tapped" />
@@ -322,7 +266,7 @@
                                             <Grid Grid.Row="0">
                                                 <!--  InvoceId  -->
                                                 <Label
-                                                    FontFamily="Poppins SemiBold"
+                                                    FontFamily="Poppins-SemiBold"
                                                     FontSize="{OnPlatform Android=14,
                                                                           iOS=16}"
                                                     HorizontalOptions="StartAndExpand"
@@ -346,7 +290,7 @@
                                                     <Label
                                                         Margin="0"
                                                         Padding="0"
-                                                        FontFamily="Poppins Medium"
+                                                        FontFamily="Poppins-Medium"
                                                         FontSize="{OnPlatform Android=14,
                                                                               iOS=16}"
                                                         HorizontalOptions="CenterAndExpand"
@@ -364,7 +308,7 @@
                                             <Label
                                                 Grid.Row="1"
                                                 Grid.Column="0"
-                                                FontFamily="Poppins Medium"
+                                                FontFamily="Poppins-Medium"
                                                 FontSize="{OnPlatform Android=14,
                                                                       iOS=16}"
                                                 HorizontalOptions="StartAndExpand"
@@ -378,7 +322,7 @@
                                                     Grid.Column="0"
                                                     Margin="{OnPlatform Android=0,
                                                                         iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins Medium"
+                                                    FontFamily="Poppins-Medium"
                                                     FontSize="{OnPlatform Android=16,
                                                                           iOS=18}"
                                                     HorizontalOptions="StartAndExpand"
@@ -391,7 +335,7 @@
                                                     Grid.Column="1"
                                                     Margin="{OnPlatform Android=0,
                                                                         iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins Medium"
+                                                    FontFamily="Poppins-Medium"
                                                     FontSize="{OnPlatform Android=16,
                                                                           iOS=18}"
                                                     HorizontalOptions="EndAndExpand"
@@ -422,7 +366,7 @@
 
                                                     <Label
                                                         Grid.Column="0"
-                                                        FontFamily="Poppins Medium"
+                                                        FontFamily="Poppins-Medium"
                                                         FontSize="{OnPlatform Android=14,
                                                                               iOS=16}"
                                                         HorizontalOptions="CenterAndExpand"
@@ -440,7 +384,7 @@
                                                     Grid.Column="1"
                                                     Margin="{OnPlatform Android=0,
                                                                         iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins Medium"
+                                                    FontFamily="Poppins-Medium"
                                                     FontSize="{OnPlatform Android=14,
                                                                           iOS=16}"
                                                     HorizontalOptions="EndAndExpand"
@@ -466,11 +410,7 @@
 
                                     </Grid>
 
-                                    <BoxView
-                                        BackgroundColor="{StaticResource Green}"
-                                        HeightRequest="1"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="EndAndExpand" />
+                                    <BoxView Style="{StaticResource boxHorizontalGreen}" />
 
                                 </Grid>
                             </ViewCell>
@@ -481,7 +421,7 @@
                 <Label
                     x:Name="lblNoRecord"
                     Grid.Row="2"
-                    FontFamily="Poppins Medium"
+                    FontFamily="Poppins-Medium"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"

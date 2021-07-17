@@ -43,6 +43,10 @@
         #region Error Message
         public static string Session_Expired = "Session expired, Please login again!";
         public static string Something_Wrong = "Something went wrong!";
+        public static string Something_Wrong_Server = "Something went wrong from server!";
+        public static string ServiceUnavailable = "Service Unavailable, Try again later!";
+        public static string Number_was_null = "Number was null or white space";
+        public static string Phone_Dialer_Not_Support = "Phone Dialer is not supported on this device";
         #endregion
 
         #region Alert Title
@@ -82,9 +86,15 @@
         public const string InValid_ConfirmPassword = "Please enter valid confirm password!";
         public const string InValid_Pincode = "Please enter valid pincode!";
         public const string InValid_Nationality = "Please enter valid nationality!";
+        public const string InValid_CountryOfOrigin = "Please enter valid country of origin!";
+        public const string InValid_GST = "Please enter valid GST number!";
+        public const string InValid_PAN = "Please enter valid PAN number!";
+        public const string InValid_PAN_GSTIN = "Please enter valid GST number or PAN number!";
 
         public const string Same_New_Confirm_Password = "New and Confirm password should be same!";
+        public const string Same_Phone_AltPhone_Number = "Please enter different alternative number!";
         public const string Agree_T_C = "Please check box for Terms & Conditions.";
+        public const string ContactRevealed = "Buyer Contacts Revealed!";
 
         public const string Required_All = "Selected fields are required!";
         public const string Required_BillingAddress = "Please enter billing address!";
@@ -98,7 +108,9 @@
         public const string Required_BuildingNumber = "Please enter building number!";
         public const string Required_Street = "Please enter street!";
         public const string Required_City = "Please enter city!";
+        public const string Required_State = "Please enter state!";
         public const string Required_Nationality = "Please enter nationality!";
+        public const string Required_CountryofOrigin = "Please enter country of origin!";
         public const string Required_PinCode = "Please enter pincode!";
         public const string Required_Landmark = "Please enter landmark!";
         public const string Required_Description = "Please enter description!";
@@ -114,6 +126,12 @@
         public const string Required_NewPassword = "Please enter new password!";
         public const string Required_ConfirmPassword = "Please enter confirm password!";
         public const string Required_UnitPrice = "Please enter unit price!";
+        public const string Required_QuoteValidityDate = "Please enter quote validity date!";
+        public const string Required_OrderStatus = "Please select order status!";
+        public const string Required_ShippingNumber = "Please enter shipping number!";
+        public const string Required_LRNumber = "Please enter LR number!";
+        public const string Required_EWayBillNumber = "Please enter EWay bill number!";
+        public const string Required_TrackingLink = "Please enter tracking link!";
         #endregion               
     }
 }

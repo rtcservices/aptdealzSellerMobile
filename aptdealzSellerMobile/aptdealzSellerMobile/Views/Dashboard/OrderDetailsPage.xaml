@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="aptdealzSellerMobile.Views.Dashboard.UpdateOrderDetailPage"
+    x:Class="aptdealzSellerMobile.Views.Dashboard.OrderDetailsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
@@ -33,7 +33,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -65,7 +69,7 @@
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <Grid Grid.Row="1" Margin="0">
+            <Grid Grid.Row="1" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -88,7 +92,10 @@
                         Text=" Order Details" />
                 </Grid>
 
-                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
+                <ScrollView
+                    x:Name="AllDetails"
+                    Grid.Row="1"
+                    Style="{StaticResource scrPrimary}">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -123,32 +130,23 @@
 
                                     <Label
                                         Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requirement ID"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Requirement ID" />
 
                                     <Label
                                         x:Name="lblOrderRequirementId"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="REQ#123"
                                         TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -160,33 +158,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Quote Reference No"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Quote Reference No" />
 
                                     <Label
                                         x:Name="lblOrderReferenceNo"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="QUO#987"
                                         TextColor="{StaticResource Green}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -198,33 +186,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Buyer Name"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Buyer Name" />
 
                                     <Label
                                         x:Name="lblOrderBuyerName"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Benjamin"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -236,33 +214,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Seller Name"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Seller Name" />
 
                                     <Label
                                         x:Name="lblOrderSellerName"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="ABC Export"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -274,33 +242,24 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        x:Name="lblPinCodeTitle"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Shipping PIN Code"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Shipping PIN Code" />
 
                                     <Label
                                         x:Name="lblOrderPinCode"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="682017"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -312,33 +271,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Requested Quantity"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Requested Quantity" />
 
                                     <Label
                                         x:Name="lblOrderQuntity"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="100"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -350,33 +299,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Unit Price"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Unit Price" />
 
                                     <Label
                                         x:Name="lblOrderUnitPrice"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="RS 25"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -388,33 +327,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Net Amount"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Net Amount" />
 
                                     <Label
                                         x:Name="lblOrderNetAmount"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Rs 2500"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -426,33 +355,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Handling Charges"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Handling Charges" />
 
                                     <Label
-                                        x:Name="lblOrderandlingCharge"
+                                        x:Name="lblOrderHandlingCharge"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Rs 500"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -464,33 +383,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Shipping Charges"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Shipping Charges" />
 
                                     <Label
                                         x:Name="lblOrderShippingCharge"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Rs 250"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -502,33 +411,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Insurance Charges"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Insurance Charges" />
 
                                     <Label
                                         x:Name="lblOrderInsuranceCharge"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="Rs 250"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
 
@@ -540,33 +439,23 @@
                                     Orientation="Horizontal">
 
                                     <Label
-                                        Margin="0"
-                                        FontFamily="Poppins"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Country of origin"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Country of origin" />
 
                                     <Label
                                         x:Name="lblOrderCountry"
                                         Margin="0"
-                                        FontFamily="Poppins Medium"
+                                        FontFamily="Poppins-Medium"
                                         FontSize="{OnPlatform Android=14,
                                                               iOS=16}"
                                         HorizontalOptions="EndAndExpand"
-                                        Text="India"
                                         TextColor="{StaticResource Black}"
                                         VerticalOptions="CenterAndExpand" />
 
                                 </StackLayout>
 
-                                <BoxView
-                                    BackgroundColor="{StaticResource LightGray}"
-                                    HeightRequest="1"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="EndAndExpand" />
+                                <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
                             <!--#endregion-->
                         </Grid>
@@ -608,87 +497,69 @@
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Invoice Number"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}"
+                                        Text="Invoice Number" />
 
                                     <Label
+                                        x:Name="lblInvoiceNo"
                                         Grid.Row="0"
                                         Grid.Column="1"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="#INV67"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}" />
 
                                     <!--  Tatal Amount  -->
                                     <Label
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Tatal Amount"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}"
+                                        Text="Total Amount" />
 
                                     <Label
+                                        x:Name="lblTotalAmount"
                                         Grid.Row="1"
                                         Grid.Column="1"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Rs 3500"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}" />
 
                                     <!--  Expected Delivery  -->
                                     <Label
                                         Grid.Row="2"
                                         Grid.Column="0"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Expected Delivery"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblSemiBold}"
+                                        Text="Expected Delivery" />
 
                                     <Label
+                                        x:Name="lblExpectedDate"
                                         Grid.Row="2"
                                         Grid.Column="1"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="20-10-2021"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}" />
 
                                     <!--  Contact Seller  -->
                                     <Label
                                         Grid.Row="3"
                                         Grid.Column="0"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Contact Buyer"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
+                                        Style="{StaticResource lblSemiBold}"
+                                        Text="Contact Buyer" />
 
                                     <Label
+                                        x:Name="lblBuyerContact"
                                         Grid.Row="3"
                                         Grid.Column="1"
-                                        FontFamily="Poppins SemiBold"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
+                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="0484-32165498"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblSemiBold}" />
 
                                     <!--  Accepted  -->
                                     <StackLayout
@@ -703,17 +574,11 @@
                                             Source="iconTickRound.png"
                                             VerticalOptions="CenterAndExpand" />
                                         <Label
-                                            x:Name="lblAccepted"
-                                            FontFamily="Poppins SemiBold"
+                                            x:Name="lblOrderStatus"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Text="Accepted"
-                                            TextColor="{StaticResource Green}"
-                                            VerticalOptions="CenterAndExpand"
-                                            VerticalTextAlignment="Center" />
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkActivity_Tapped" />
-                                        </StackLayout.GestureRecognizers>
+                                            Style="{StaticResource lblSemiBold}"
+                                            TextColor="{StaticResource Green}" />
                                     </StackLayout>
                                 </Grid>
                             </Frame>
@@ -728,7 +593,10 @@
 
                                     <!--  Order Status  -->
                                     <StackLayout Grid.Row="0">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
+                                        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
+                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                        </StackLayout>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -777,9 +645,13 @@
                                         </Grid.RowDefinitions>
 
                                         <!--  Shipping Number  -->
-                                        <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=5}">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
+                                        <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
                                             <ext:ExtEntry
+                                                x:Name="txtShippingNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="2" />
@@ -787,9 +659,13 @@
                                         </StackLayout>
 
                                         <!--  LR Number  -->
-                                        <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=5}">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
+                                        <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
                                             <ext:ExtEntry
+                                                x:Name="txtLRNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="3" />
@@ -797,9 +673,13 @@
                                         </StackLayout>
 
                                         <!--  EWay Bill Number  -->
-                                        <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=5}">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
+                                        <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
                                             <ext:ExtEntry
+                                                x:Name="txtEWayBillNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="4" />
@@ -807,9 +687,13 @@
                                         </StackLayout>
 
                                         <!--  Tracking Link  -->
-                                        <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=5}">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="Tracking Link" />
+                                        <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="Tracking Link" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
                                             <ext:ExtEntry
+                                                x:Name="txtTrackingLink"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="5" />
@@ -824,7 +708,7 @@
                                 x:Name="StkDelivered"
                                 Grid.Row="1"
                                 IsVisible="false">
-                                <Grid Margin="10">
+                                <Grid Margin="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -837,39 +721,31 @@
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        FontFamily="Poppins"
-                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Platform Charges"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Platform Charges" />
 
                                     <Label
+                                        x:Name="lblPlatformCharges"
                                         Grid.Row="0"
                                         Grid.Column="1"
-                                        FontFamily="Poppins"
-                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Rs 500"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblLight15}" />
 
                                     <!--  Seller Earnings  -->
                                     <Label
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        FontFamily="Poppins"
-                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Seller Earnings"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Seller Earnings" />
 
                                     <Label
+                                        x:Name="lblSellerEarnings"
                                         Grid.Row="1"
                                         Grid.Column="1"
-                                        FontFamily="Poppins"
-                                        FontSize="15"
                                         HorizontalOptions="StartAndExpand"
-                                        Text="Rs 3000"
-                                        TextColor="{StaticResource Black}" />
+                                        Style="{StaticResource lblLight15}" />
                                 </Grid>
 
                                 <Frame
@@ -890,22 +766,20 @@
                                         <Label
                                             Grid.Row="0"
                                             Grid.Column="0"
-                                            FontFamily="Poppins Medium"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
+                                            FontSize="15"
                                             HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblMedium}"
                                             Text="Status:"
                                             TextColor="{StaticResource Green}" />
 
                                         <!--  Payment Credited  -->
                                         <Label
+                                            x:Name="lblPaymentStatus"
                                             Grid.Row="1"
                                             Grid.Column="0"
-                                            FontFamily="Poppins Medium"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
+                                            FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Text="Payment Credited"
+                                            Style="{StaticResource lblMedium}"
                                             TextColor="{StaticResource Green}" />
 
                                     </Grid>
@@ -916,14 +790,32 @@
                             <Button
                                 x:Name="BtnUpdate"
                                 Grid.Row="2"
-                                Clicked="frmUpdateTapped_Tapped"
+                                Clicked="BtnUpdate_Tapped"
                                 Style="{StaticResource btnPrimary}"
                                 Text="Update" />
+                            <!--#endregion-->
+
+                            <!--  Scan QR Button  -->
+                            <Button
+                                x:Name="BtnScanQRCode"
+                                Grid.Row="2"
+                                Clicked="BtnScanQRCode_Clicked"
+                                Style="{StaticResource btnPrimary}"
+                                Text="Scan QR Code" />
                             <!--#endregion-->
                         </Grid>
 
                     </Grid>
                 </ScrollView>
+
+                <Label
+                    x:Name="lblCancelledOrder"
+                    Grid.Row="1"
+                    FontSize="15"
+                    HorizontalOptions="CenterAndExpand"
+                    IsVisible="false"
+                    Style="{StaticResource lblMedium}"
+                    Text="This Order is Cancelled" />
             </Grid>
         </Grid>
     </ContentPage.Content>

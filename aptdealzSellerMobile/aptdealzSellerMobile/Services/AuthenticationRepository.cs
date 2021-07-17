@@ -2,9 +2,6 @@
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace aptdealzSellerMobile.Services
@@ -18,6 +15,7 @@ namespace aptdealzSellerMobile.Services
             AuthenticationAPI authenticationAPI = new AuthenticationAPI();
             try
             {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var mResponse = await authenticationAPI.RefreshToken(Settings.RefreshToken);
                 if (mResponse != null && mResponse.Succeeded)
                 {

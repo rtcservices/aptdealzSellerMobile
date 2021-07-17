@@ -17,12 +17,7 @@
 
             <Grid x:Name="grdMain" Grid.Row="0" />
 
-            <BoxView
-                Grid.Row="1"
-                BackgroundColor="{StaticResource LightGray}"
-                HeightRequest="1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="EndAndExpand" />
+            <BoxView Grid.Row="1" Style="{StaticResource boxHorizontal}" />
 
             <Grid
                 Grid.Row="2"
@@ -57,13 +52,9 @@
                         x:Name="lblHome"
                         Grid.Row="1"
                         Margin="0,0,0,5"
-                        FontFamily="Poppins"
-                        FontSize="{OnPlatform Android=12,
-                                              iOS=14}"
                         HorizontalOptions="CenterAndExpand"
-                        Text="Home"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="EndAndExpand" />
+                        Style="{StaticResource lblLight15}"
+                        Text="Home" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Home_Tapped" />
                     </Grid.GestureRecognizers>
@@ -92,12 +83,9 @@
                         x:Name="lblRequirements"
                         Grid.Row="1"
                         Margin="0,0,0,5"
-                        FontFamily="Poppins"
-                        FontSize="{OnPlatform Android=12,
-                                              iOS=14}"
                         HorizontalOptions="CenterAndExpand"
-                        Text="Quotes"
-                        TextColor="{StaticResource Black}" />
+                        Style="{StaticResource lblLight15}"
+                        Text="Quotes" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Quotes_Tapped" />
                     </Grid.GestureRecognizers>
@@ -126,12 +114,9 @@
                         x:Name="lblOrders"
                         Grid.Row="1"
                         Margin="0,0,0,5"
-                        FontFamily="Poppins"
-                        FontSize="{OnPlatform Android=12,
-                                              iOS=14}"
                         HorizontalOptions="CenterAndExpand"
-                        Text="Orders"
-                        TextColor="{StaticResource Black}" />
+                        Style="{StaticResource lblLight15}"
+                        Text="Orders" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Orders_Tapped" />
                     </Grid.GestureRecognizers>
@@ -160,12 +145,9 @@
                         x:Name="lblAccount"
                         Grid.Row="1"
                         Margin="0,0,0,5"
-                        FontFamily="Poppins"
-                        FontSize="{OnPlatform Android=12,
-                                              iOS=14}"
                         HorizontalOptions="CenterAndExpand"
-                        Text="Account"
-                        TextColor="{StaticResource Black}" />
+                        Style="{StaticResource lblLight15}"
+                        Text="Account" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Account_Tapped" />
                     </Grid.GestureRecognizers>

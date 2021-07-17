@@ -32,7 +32,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -120,14 +124,10 @@
                                         <Label
                                             Grid.Column="1"
                                             Margin="10,0,0,0"
-                                            FontFamily="Poppins"
-                                            FontSize="{OnPlatform Android=14,
-                                                                  iOS=16}"
                                             HorizontalOptions="StartAndExpand"
                                             LineBreakMode="WordWrap"
-                                            Text="{Binding NotificationTitle}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblLight15}"
+                                            Text="{Binding NotificationTitle}" />
 
                                         <Image
                                             Grid.Column="2"
@@ -142,12 +142,7 @@
                                         </Image>
                                     </Grid>
 
-                                    <BoxView
-                                        Grid.Row="1"
-                                        BackgroundColor="{StaticResource LightGray}"
-                                        HeightRequest="1"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="EndAndExpand" />
+                                    <BoxView Grid.Row="1" Style="{StaticResource boxHorizontal}" />
 
                                 </Grid>
                             </ViewCell>

@@ -1,9 +1,11 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Extention;
+using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -25,6 +27,30 @@ namespace aptdealzSellerMobile.Views.Accounts
         #endregion
 
         #region Methods
+        protected override bool OnBackButtonPressed()
+        {
+            base.OnBackButtonPressed();
+            try
+            {
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        var result = await DisplayAlert(Constraints.Alert, Constraints.DoYouWantToExit, Constraints.Yes, Constraints.No);
+                        if (result)
+                        {
+                            Xamarin.Forms.DependencyService.Get<ICloseAppOnBackButton>().CloseApp();
+                        }
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/OnBackButtonPressed: " + ex.Message);
+            }
+            return true;
+        }
+
         public bool Validations()
         {
             bool isValid = false;
@@ -88,7 +114,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             txtPassword.Text = txtPassword.Text.Trim();
         }
 
-        async void LoginUser()
+        async void AuthenticateUser()
         {
             try
             {
@@ -108,11 +134,16 @@ namespace aptdealzSellerMobile.Views.Accounts
                     }
                     else
                     {
-                        var isValidNumber = await authenticationAPI.CheckPhoneNumber(txtUsername.Text);
+                        var isValidNumber = await authenticationAPI.CheckPhoneNumberExists(txtUsername.Text);
                         if (isValidNumber != null)
                         {
                             mLocalResponse.Data = isValidNumber.Succeeded;
                             mLocalResponse.Message = isValidNumber.Message;
+                        }
+                        else
+                        {
+                            mLocalResponse.Data = false;
+                            mLocalResponse.Message = string.Empty;
                         }
                     }
 
@@ -165,7 +196,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                     }
                     else
                     {
-                        if (mLocalResponse != null)
+                        if (mLocalResponse != null && !Common.EmptyFiels(mLocalResponse.Message))
                             Common.DisplayErrorMessage(mLocalResponse.Message);
                         else
                             Common.DisplayErrorMessage(Constraints.Something_Wrong);
@@ -184,33 +215,6 @@ namespace aptdealzSellerMobile.Views.Accounts
         #endregion
 
         #region Events
-        private void ImgBack_Tapped(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
-        }
-
-        //private void StkRemember_Tapped(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (imgCheck.Source.ToString().Replace("File: ", "") == Constraints.CheckBox_Checked)
-        //        {
-        //            isChecked = false;
-        //            imgCheck.Source = Constraints.CheckBox_UnChecked;
-        //        }
-        //        else
-        //        {
-        //            isChecked = true;
-        //            imgCheck.Source = Constraints.CheckBox_Checked;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Common.DisplayErrorMessage("LoginPage/StkRemember_Tapped: " + ex.Message);
-
-        //    }
-        //}
-
         private void StkSignup_Tapped(object sender, EventArgs e)
         {
             Navigation.PushAsync(new SignupPage());
@@ -224,23 +228,23 @@ namespace aptdealzSellerMobile.Views.Accounts
         private void BtnLogin_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(button: BtnLogin);
-            LoginUser();
+            AuthenticateUser();
         }
 
         private void ImgPassword_Tapped(object sender, EventArgs e)
         {
             try
             {
-                var selectedImage = Convert.ToString(imgEye.Source).Replace("File: ", string.Empty);
+                var selectedImage = Convert.ToString(imgPassword.Source).Replace("File: ", string.Empty);
                 if (selectedImage == Constraints.Img_Hide)
                 {
                     txtPassword.IsPassword = false;
-                    imgEye.Source = Constraints.Img_Show;
+                    imgPassword.Source = Constraints.Img_Show;
                 }
                 else
                 {
                     txtPassword.IsPassword = true;
-                    imgEye.Source = Constraints.Img_Hide;
+                    imgPassword.Source = Constraints.Img_Hide;
                 }
             }
             catch (Exception ex)

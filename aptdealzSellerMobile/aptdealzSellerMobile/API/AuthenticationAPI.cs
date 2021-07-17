@@ -2,7 +2,6 @@
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.SplashScreen;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
@@ -13,7 +12,7 @@ namespace aptdealzSellerMobile.API
 {
     public class AuthenticationAPI
     {
-        #region [POST]
+        #region [ POST ]
         public async Task<Response> SellerAuth(Authenticate mRequestLogin)
         {
             Response mResponseLogin = new Response();
@@ -36,8 +35,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -84,8 +91,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -110,7 +125,7 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
-        public async Task<Response> CheckPhoneNumber(string phoneNumber)
+        public async Task<Response> CheckPhoneNumberExists(string phoneNumber)
         {
             Response mResponse = new Response();
             try
@@ -120,7 +135,7 @@ namespace aptdealzSellerMobile.API
                     string requestJson = "{\"phoneNumber\":\"" + phoneNumber + "\"}";
                     using (var hcf = new HttpClientFactory())
                     {
-                        string url = string.Format(EndPointURL.CheckPhoneNumber, (int)App.Current.Resources["Version"], phoneNumber);
+                        string url = string.Format(EndPointURL.CheckPhoneNumberExists, (int)App.Current.Resources["Version"], phoneNumber);
                         var response = await hcf.PostAsync(url, requestJson);
                         var responseJson = await response.Content.ReadAsStringAsync();
                         if (response.IsSuccessStatusCode)
@@ -132,8 +147,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -145,7 +168,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await CheckPhoneNumber(phoneNumber);
+                        await CheckPhoneNumberExists(phoneNumber);
                     }
                 }
             }
@@ -168,7 +191,7 @@ namespace aptdealzSellerMobile.API
                     string requestJson = "{\"email\":\"" + email + "\"}";
                     using (var hcf = new HttpClientFactory())
                     {
-                        string url = string.Format(EndPointURL.SendOtpByEmail);
+                        string url = string.Format(EndPointURL.SendOtpByEmail, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
                         var responseJson = await response.Content.ReadAsStringAsync();
                         if (response.IsSuccessStatusCode)
@@ -180,8 +203,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -216,7 +247,7 @@ namespace aptdealzSellerMobile.API
                     string requestJson = JsonConvert.SerializeObject(mAuthenticateEmail);
                     using (var hcf = new HttpClientFactory())
                     {
-                        string url = string.Format(EndPointURL.ValidateOtpForResetPassword);
+                        string url = string.Format(EndPointURL.ValidateOtpForResetPassword, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
                         var responseJson = await response.Content.ReadAsStringAsync();
                         if (response.IsSuccessStatusCode)
@@ -228,8 +259,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -264,7 +303,7 @@ namespace aptdealzSellerMobile.API
                     string requestJson = JsonConvert.SerializeObject(mResetPassword);
                     using (var hcf = new HttpClientFactory())
                     {
-                        string url = string.Format(EndPointURL.ResetPassword);
+                        string url = string.Format(EndPointURL.ResetPassword, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
                         var responseJson = await response.Content.ReadAsStringAsync();
                         if (response.IsSuccessStatusCode)
@@ -276,8 +315,16 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
@@ -302,7 +349,6 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
-        int token = 0;
         public async Task<Response> RefreshToken(string refreshToken)
         {
             Response mResponseToken = new Response();
@@ -326,24 +372,23 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
-                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
-                                if (!isRefresh && token == 3)
-                                {
-                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
-                                }
-                                else
-                                {
-                                    await RefreshToken(refreshToken);
-                                }
-                                token++;
+                                Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
                             else
                             {
@@ -369,7 +414,6 @@ namespace aptdealzSellerMobile.API
             return mResponseToken;
         }
 
-        int logout = 0;
         public async Task<Response> Logout(string refreshToken, string loginTrackingKey)
         {
             Response mResponse = new Response();
@@ -392,24 +436,31 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                             }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
                         }
                         else
                         {
                             if (responseJson.Contains("TokenExpired"))
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
-                                if (!isRefresh && logout == 3)
+                                if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
-                                    App.Current.MainPage = new NavigationPage(new WelcomePage(true));
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
                                 }
                                 else
                                 {
                                     await Logout(refreshToken, loginTrackingKey);
                                 }
-                                logout++;
                             }
                             else
                             {

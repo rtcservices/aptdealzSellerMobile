@@ -17,6 +17,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
     {
         #region Objects
         private List<Grievances> mGrievances = new List<Grievances>();
+        private string filterBy = SortByField.ID.ToString();
+        private string title = string.Empty;
+        private int pageNo;
         #endregion
 
         #region Constructor
@@ -77,27 +80,19 @@ namespace aptdealzSellerMobile.Views.Dashboard
             lstGrievances.ItemsSource = mGrievances.ToList();
         }
 
-        void BindList()
+        void BindList(List<Grievances> mGrievanceList)
         {
             try
             {
-                if (mGrievances != null && mGrievances.Count > 0)
+                if (mGrievanceList != null && mGrievanceList.Count > 0)
                 {
                     lstGrievances.IsVisible = true;
-                    FrmSortBy.IsVisible = true;
-                    //FrmStatusBy.IsVisible = true;
-                    FrmSearchBy.IsVisible = true;
-                    FrmFilterBy.IsVisible = true;
                     lblNoRecord.IsVisible = false;
-                    lstGrievances.ItemsSource = mGrievances.ToList();
+                    lstGrievances.ItemsSource = mGrievanceList.ToList();
                 }
                 else
                 {
                     lstGrievances.IsVisible = false;
-                    //FrmStatusBy.IsVisible = false;
-                    FrmSearchBy.IsVisible = false;
-                    FrmSortBy.IsVisible = false;
-                    FrmFilterBy.IsVisible = false;
                     lblNoRecord.IsVisible = true;
                 }
             }
@@ -131,20 +126,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
         //}
         private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
-           
+
         }
 
         private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                SortByPopup sortByPopup = new SortByPopup("", "");
+                FilterPopup sortByPopup = new FilterPopup("", "");
                 sortByPopup.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
                     if (!Common.EmptyFiels(result))
                     {
-                        //Bind list as per result
+                        filterBy = result;
+                        lblFilterBy.Text = filterBy;
+                        pageNo = 1;
+                        BindGrievancesData();
                     }
                 };
                 await PopupNavigation.Instance.PushAsync(sortByPopup);
@@ -180,36 +178,20 @@ namespace aptdealzSellerMobile.Views.Dashboard
             lstGrievances.SelectedItem = null;
             Navigation.PushAsync(new GrievanceDetailPage());
         }
-        
+
         private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
                 if (!Common.EmptyFiels(entrSearch.Text))
                 {
-                    var grievanceSearch = mGrievances.Where(x =>
+                    var GrievanceSearch = mGrievances.Where(x =>
                                                         x.GrievanceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
-                    if (grievanceSearch != null && grievanceSearch.Count > 0)
-                    {
-                        lstGrievances.IsVisible = true;
-                        FrmSortBy.IsVisible = true;
-                        //FrmStatusBy.IsVisible = true;
-                        FrmFilterBy.IsVisible = true;
-                        lblNoRecord.IsVisible = false;
-                        lstGrievances.ItemsSource = grievanceSearch.ToList();
-                    }
-                    else
-                    {
-                        lstGrievances.IsVisible = false;
-                       // FrmStatusBy.IsVisible = false;
-                        FrmSortBy.IsVisible = false;
-                        FrmFilterBy.IsVisible = false;
-                        lblNoRecord.IsVisible = true;
-                    }
+                    BindList(GrievanceSearch);
                 }
                 else
                 {
-                    BindList();
+                    BindList(mGrievances);
                 }
             }
             catch (Exception ex)
@@ -223,7 +205,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             try
             {
                 entrSearch.Text = string.Empty;
-                BindList();
+                BindList(mGrievances);
             }
             catch (Exception ex)
             {
@@ -232,8 +214,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
 
 
+
         #endregion
 
-       
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <popup:PopupPage
-    x:Class="aptdealzSellerMobile.Views.Popup.SortByPopup"
+    x:Class="aptdealzSellerMobile.Views.Popup.FilterPopup"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     NavigationPage.HasNavigationBar="False">
-
     <Grid
         BackgroundColor="{StaticResource White}"
         HorizontalOptions="FillAndExpand"
@@ -16,24 +15,17 @@
             x:Name="lblTitle"
             Grid.Row="0"
             Margin="25,10,25,0"
-            FontFamily="Poppins"
             FontSize="17"
             HorizontalOptions="StartAndExpand"
-            Text="Sort By"
-            TextColor="{StaticResource Black}"
-            VerticalOptions="CenterAndExpand" />
+            Style="{StaticResource lblLight15}"
+            Text="Sort By" />
 
-        <BoxView
-            Grid.Row="1"
-            BackgroundColor="{StaticResource LightGray}"
-            HeightRequest="1"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="EndAndExpand" />
+        <BoxView Grid.Row="1" Style="{StaticResource boxHorizontal}" />
 
         <Grid
             Grid.Row="2"
             Margin="25,0,25,30"
-            RowDefinitions="Auto,Auto,Auto"
+            RowDefinitions="Auto,Auto,Auto,Auto"
             RowSpacing="10">
 
             <StackLayout
@@ -45,12 +37,8 @@
                 <Label
                     x:Name="lblFirstType"
                     Grid.Row="0"
-                    Margin="0"
-                    FontFamily="Poppins"
-                    FontSize="15"
                     HorizontalOptions="StartAndExpand"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblLight15}" />
                 <Image
                     x:Name="imgFirstType"
                     Margin="0"
@@ -74,12 +62,8 @@
                 <Label
                     x:Name="lblSecondType"
                     Grid.Row="0"
-                    Margin="0"
-                    FontFamily="Poppins"
-                    FontSize="15"
                     HorizontalOptions="StartAndExpand"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblLight15}" />
                 <Image
                     x:Name="imgSecondType"
                     Margin="0"
@@ -104,12 +88,8 @@
                 <Label
                     x:Name="lblThirdType"
                     Grid.Row="0"
-                    Margin="0"
-                    FontFamily="Poppins"
-                    FontSize="15"
                     HorizontalOptions="StartAndExpand"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblLight15}" />
                 <Image
                     x:Name="imgThirdType"
                     Margin="0"
@@ -121,6 +101,32 @@
                     WidthRequest="20" />
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkThirdType_Tapped" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+
+            <StackLayout
+                x:Name="StkFourType"
+                Grid.Row="3"
+                Margin="0"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="CenterAndExpand">
+                <Label
+                    x:Name="lblFourType"
+                    Grid.Row="0"
+                    HorizontalOptions="StartAndExpand"
+                    Style="{StaticResource lblLight15}" />
+                <Image
+                    x:Name="imgFourType"
+                    Margin="0"
+                    Aspect="Fill"
+                    HeightRequest="20"
+                    HorizontalOptions="EndAndExpand"
+                    Source="iconRadioUnselect.png"
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="20" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkFourType_Tapped" />
                 </StackLayout.GestureRecognizers>
             </StackLayout>
 

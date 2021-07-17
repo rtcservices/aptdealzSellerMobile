@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.API;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -18,11 +19,16 @@ namespace aptdealzSellerMobile.Services
         {
             try
             {
+                //UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 categories = await categoryAPI.GetCategory();
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("CategoryRepository/GetCategory: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
             }
             return categories;
         }
@@ -31,11 +37,16 @@ namespace aptdealzSellerMobile.Services
         {
             try
             {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 subCategories = await categoryAPI.GetSubCategory(CategortyId);
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("CategoryRepository/GetSubCategory: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
             }
 
             return subCategories;
@@ -45,6 +56,7 @@ namespace aptdealzSellerMobile.Services
         {
             try
             {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var mResponse = await categoryAPI.CreateCategory(OtherCategory);
                 if (mResponse != null && mResponse.Succeeded)
                 {
@@ -59,6 +71,10 @@ namespace aptdealzSellerMobile.Services
             {
                 Common.DisplayErrorMessage("CategoryRepository/CreateCategory: " + ex.Message);
             }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
             return categories;
         }
 
@@ -66,6 +82,7 @@ namespace aptdealzSellerMobile.Services
         {
             try
             {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var mResponse = await categoryAPI.CreateSubCategory(OtherSubCategory, categoryId);
                 if (mResponse != null && mResponse.Succeeded)
                 {
@@ -79,6 +96,10 @@ namespace aptdealzSellerMobile.Services
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("CategoryRepository/CreateSubCategory: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
             }
             return subCategories;
         }

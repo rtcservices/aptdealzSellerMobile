@@ -5,7 +5,6 @@ using aptdealzSellerMobile.Views.OtherPage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -53,7 +52,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #region Events
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            //Common.OpenMenu();
         }
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
@@ -99,13 +98,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 }
                 else if (menuName != null && menuName.MenuName != null)
                 {
-                    Navigation.PushAsync(new MainTabbedPage(menuName.MenuName));
+                    Common.MasterData.Detail = new NavigationPage(new MainTabbedPage(menuName.MenuName, true));
                 }
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("HomeView/BtnMenu_Tapped: " + ex.Message);
             }
+        }
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
         #endregion
     }

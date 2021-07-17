@@ -35,7 +35,11 @@
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image Grid.Column="1" Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
                 <StackLayout
                     Grid.Column="2"
@@ -129,11 +133,9 @@
                                 VerticalOptions="FillAndExpand" />
                         </Frame>
 
-                        <Grid
-                            Grid.Row="1"
-                            HorizontalOptions="FillAndExpand"
-                            RowSpacing="10">
+                        <Grid Grid.Row="1" RowSpacing="10">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -146,35 +148,46 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!--  Requirment ID  -->
-                            <StackLayout Grid.Row="0">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-                                    <Label
-                                        Margin="0"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Requirement ID" />
+                            <Grid Grid.Row="0" RowSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <!--  Requirment ID  -->
+                                <StackLayout Grid.Row="0">
+                                    <StackLayout Margin="20,0" Orientation="Horizontal">
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight15}"
+                                            Text="Requirement ID" />
 
-                                    <Label
-                                        x:Name="lblRequirementId"
-                                        HorizontalOptions="EndAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        TextColor="{StaticResource Green}" />
+                                        <Label
+                                            x:Name="lblRequirementId"
+                                            HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource lblLight15}"
+                                            TextColor="{StaticResource Green}" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
+                                <!--  Description  -->
+                                <StackLayout Grid.Row="1">
+                                    <StackLayout Margin="20,0" Orientation="Horizontal">
+                                        <Label
+                                            x:Name="lblDescription"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight15}" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+                            </Grid>
 
 
                             <!--  Buyer ID  -->
                             <StackLayout Grid.Row="1">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
+                                <StackLayout Margin="20,0" Orientation="Horizontal">
                                     <Label
                                         HorizontalOptions="StartAndExpand"
                                         Style="{StaticResource lblLight15}"
@@ -211,9 +224,33 @@
                                 <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
 
-
-                            <!--  Quantity  -->
                             <StackLayout Grid.Row="3">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Sub-category" />
+
+                                    <Label
+                                        x:Name="lblSubCategory"
+                                        Margin="0"
+                                        FontFamily="Poppins-Medium"
+                                        FontSize="15"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text=""
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                </StackLayout>
+
+                                <BoxView Style="{StaticResource boxHorizontal}" />
+                            </StackLayout>
+                            <!--  Quantity  -->
+                            <StackLayout Grid.Row="4">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -233,7 +270,7 @@
 
 
                             <!--  Total Price Estimation  -->
-                            <StackLayout Grid.Row="4">
+                            <StackLayout Grid.Row="5">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -253,7 +290,7 @@
 
 
                             <!--  Preferred Source  -->
-                            <StackLayout Grid.Row="5">
+                            <StackLayout Grid.Row="6">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -273,7 +310,7 @@
 
 
                             <!--  Expected Delivery Date  -->
-                            <StackLayout Grid.Row="6">
+                            <StackLayout Grid.Row="7">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -293,7 +330,7 @@
 
 
                             <!--  LOC PIN Code  -->
-                            <StackLayout Grid.Row="7">
+                            <StackLayout Grid.Row="8">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -313,7 +350,7 @@
 
 
                             <!--  Need Insurance  -->
-                            <StackLayout Grid.Row="8">
+                            <StackLayout Grid.Row="9">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -335,7 +372,7 @@
 
 
                             <!--  Prefer Make In India Product  -->
-                            <StackLayout Grid.Row="9">
+                            <StackLayout Grid.Row="10">
                                 <StackLayout
                                     Margin="20,0"
                                     HorizontalOptions="FillAndExpand"
@@ -353,6 +390,33 @@
                                 </StackLayout>
                                 <BoxView Style="{StaticResource boxHorizontal}" />
                             </StackLayout>
+
+                            <StackLayout Grid.Row="11">
+                                <StackLayout
+                                    Margin="20,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                    <Label
+                                        HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblLight15}"
+                                        Text="Pickup Product Directly From Seller"
+                                        TextColor="{StaticResource Black}"
+                                        VerticalOptions="CenterAndExpand" />
+
+                                    <Label
+                                        x:Name="lblPreferSeller"
+                                        Margin="0"
+                                        FontFamily="Poppins-Medium"
+                                        FontSize="15"
+                                        HorizontalOptions="EndAndExpand"
+                                        TextColor="{StaticResource Green}"
+                                        VerticalOptions="CenterAndExpand" />
+                                </StackLayout>
+
+                                <BoxView Style="{StaticResource boxHorizontal}" />
+                            </StackLayout>
+
                         </Grid>
 
                         <!--  Buyer Contact Detail  -->

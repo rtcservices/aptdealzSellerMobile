@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,5 +72,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
             Navigation.PopAsync();
         }
         #endregion
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
     }
 }

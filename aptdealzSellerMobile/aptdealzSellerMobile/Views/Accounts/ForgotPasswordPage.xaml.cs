@@ -81,7 +81,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region Events
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(image: ImgBack);
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 

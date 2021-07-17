@@ -7,6 +7,7 @@ namespace aptdealzSellerMobile.Extention
     {
 #pragma warning disable CS0618 // Type or member is obsolete
         public const string NullableDatePropertyName = "NullableDate";
+        private string _format = null;
 
         // Die BinableProperty
         public static readonly BindableProperty NullableDateProperty = BindableProperty.Create<ExtDatePicker, DateTime?>(i => i.NullableDate, null, BindingMode.TwoWay, null, NullableDateChanged);
@@ -68,7 +69,7 @@ namespace aptdealzSellerMobile.Extention
         {
             this.DateSelected += CustomDatePicker_DateSelected;
             // this.Date = DateTime.Now.Date;
-            this.Format = "MM/dd/yyyy";
+            this.Format = "dd/MM/yyyy";
         }
 
         // Wird gefeuert wenn ein neues Datum selektiert wurde
@@ -106,6 +107,23 @@ namespace aptdealzSellerMobile.Extention
         {
             get;
             set;
+        }
+
+        private void UpdateDate()
+        {
+            if (NullableDate.HasValue) { if (null != _format) Format = _format; Date = NullableDate.Value; }
+            else { _format = Format; Format = "pick ..."; }
+        }
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            UpdateDate();
+        }
+
+        protected override void OnPropertyChanged(string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+            if (propertyName == "Date") NullableDate = Date;
         }
 #pragma warning restore CS0618 // Type or member is obsolete
 

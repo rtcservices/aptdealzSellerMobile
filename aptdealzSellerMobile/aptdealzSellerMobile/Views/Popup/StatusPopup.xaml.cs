@@ -11,94 +11,99 @@ namespace aptdealzSellerMobile.Views.Popup
     {
         #region Objects
         public event EventHandler isRefresh;
-        private string isStatus;
-
         #endregion
 
         #region Constructor
-        public StatusPopup(string isStatus = null)
+        public StatusPopup(int? StatusBy)
         {
             InitializeComponent();
-            this.isStatus = isStatus;
-            BindStatus();
+            BindSource(StatusBy);
         }
         #endregion
 
         #region Methods
-        private void BindStatus()
+        protected override void OnAppearing()
         {
-            try
+            base.OnAppearing();
+            BindLabel();
+        }
+
+        void BindLabel()
+        {
+            lblFirstType.Text = "Submitted";
+            lblSecondType.Text = "Accepted";
+            lblThirdType.Text = "Rejected";
+            lblFourType.Text = "All";
+        }
+
+        void BindSource(int? viewSource)
+        {
+            if (viewSource == null)
+                return;
+
+            if (viewSource == (int)QuoteStatus.Submitted)
             {
-                if (isStatus == "isRequest")
-                {
-                    lblOpen.Text = "Cleared";
-                    lblRejected.Text = "Pending";
-                }
-                else if (isStatus == "isGrievanceRequest")
-                {
-                    lblOpen.Text = "Open";
-                    lblRejected.Text = "Closed";
-                }
+                ClearSource();
+                imgFirstType.Source = Constraints.Redio_Selected;
             }
-            catch (Exception ex)
+            else if (viewSource == (int)QuoteStatus.Accepted)
             {
+                ClearSource();
+                imgSecondType.Source = Constraints.Redio_Selected;
+            }
+            else if (viewSource == (int)QuoteStatus.Rejected)
+            {
+                ClearSource();
+                imgThirdType.Source = Constraints.Redio_Selected;
+            }
+            else if (viewSource == (int)QuoteStatus.All)
+            {
+                ClearSource();
+                imgFourType.Source = Constraints.Redio_Selected;
+            }
+            else
+            {
+                ClearSource();
+                imgFourType.Source = Constraints.Redio_Selected;
             }
         }
 
-        private void BindSource(string viewSource)
+        void ClearSource()
         {
-            if (!Common.EmptyFiels(viewSource))
-            {
-                if (viewSource == "All")
-                {
-                    ClearSource();
-                    BtnAll.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == "Open")
-                {
-                    ClearSource();
-                    BtnOpen.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == "Rejected")
-                {
-                    ClearSource();
-                    BtnRejected.Source = Constraints.Redio_Selected;
-                }
-                else
-                {
-                    ClearSource();
-                    BtnAll.Source = Constraints.Redio_Selected;
-                }
-            }
-        }
-
-        private void ClearSource()
-        {
-            BtnAll.Source = Constraints.Redio_UnSelected;
-            BtnOpen.Source = Constraints.Redio_UnSelected;
-            BtnRejected.Source = Constraints.Redio_UnSelected;
+            imgFirstType.Source = Constraints.Redio_UnSelected;
+            imgSecondType.Source = Constraints.Redio_UnSelected;
+            imgThirdType.Source = Constraints.Redio_UnSelected;
+            imgFourType.Source = Constraints.Redio_UnSelected;
         }
         #endregion
 
         #region Events
-        private void BtnAll_Clicked(object sender, EventArgs e)
+        private void StkFirstType_Tapped(object sender, EventArgs e)
         {
-            BindSource("All");
-            isRefresh?.Invoke("All", null);
+            BindSource((int)QuoteStatus.Submitted);
+            isRefresh?.Invoke((int)QuoteStatus.Submitted, null);
             PopupNavigation.Instance.PopAsync();
         }
 
-        private void BtnOpen_Clicked(object sender, EventArgs e)
+        private void StkSecondType_Tapped(object sender, EventArgs e)
         {
-            BindSource("Open");
-            isRefresh?.Invoke("Open", null);
+
+            BindSource((int)QuoteStatus.Accepted);
+            isRefresh?.Invoke((int)QuoteStatus.Accepted, null);
             PopupNavigation.Instance.PopAsync();
         }
 
-        private void BtnRejected_Clicked(object sender, EventArgs e)
+        private void StkThirdType_Tapped(object sender, EventArgs e)
         {
-            BindSource("Rejected");
-            isRefresh?.Invoke("Rejected", null);
+            BindSource((int)QuoteStatus.Rejected);
+            isRefresh?.Invoke((int)QuoteStatus.Rejected, null);
+            PopupNavigation.Instance.PopAsync();
+        }
+
+        private void StkFourType_Tapped(object sender, EventArgs e)
+        {
+            BindSource((int)QuoteStatus.All);
+            isRefresh?.Invoke((int)QuoteStatus.All, null);
             PopupNavigation.Instance.PopAsync();
         }
         #endregion

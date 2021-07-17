@@ -5,6 +5,7 @@ using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -92,7 +93,6 @@ namespace aptdealzSellerMobile.Views.Accounts
                 || Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
                 || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtLandmark.Text)
                 || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtDescription.Text)
-                || pkCategory.SelectedIndex == -1 || selectedSubCategory == null
                 || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
                 || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
                 || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
@@ -101,7 +101,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 Common.DisplayErrorMessage(Constraints.Required_All);
 
                 RequiredFields();
-                isValid = false;
+                return false;
             }
 
             if (Common.EmptyFiels(txtFullName.Text))
@@ -144,6 +144,10 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 Common.DisplayErrorMessage(Constraints.Required_City);
             }
+            else if (Common.EmptyFiels(txtPinCode.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.Required_PinCode);
+            }
             else if (Common.EmptyFiels(txtLandmark.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_Landmark);
@@ -152,7 +156,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 Common.DisplayErrorMessage(Constraints.Required_Nationality);
             }
-            else if (mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower()).Count() == 0)
+            else if (mCountries.Where(x => x.Name.Trim().ToLower() == pkNationality.Text.Trim().ToLower()).Count() == 0)
             {
                 Common.DisplayErrorMessage(Constraints.InValid_Nationality);
             }
@@ -160,11 +164,12 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 Common.DisplayErrorMessage(Constraints.Required_Description);
             }
-            else if (pkCategory.SelectedIndex == -1)
+            else if (pkCategory.SelectedIndex == -1 && Common.EmptyFiels(txtOtherCategory.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_Category);
             }
-            else if (selectedSubCategory != null && selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
+            else if (selectedSubCategory != null && selectedSubCategory.Count == 0
+                && pkSubCategory.SelectedIndex == -1 && Common.EmptyFiels(txtOtherSubCategory.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_Subcategory);
             }
@@ -180,10 +185,19 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 Common.DisplayErrorMessage(Constraints.Required_GST);
             }
+            else if (!Common.IsValidGSTPIN(txtGstNumber.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_GST);
+            }
             else if (Common.EmptyFiels(txtPan.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_PAN);
             }
+            else if (!Common.IsValidPAN(txtPan.Text))
+            {
+                Common.DisplayErrorMessage(Constraints.InValid_PAN);
+            }
+
             else if (Common.EmptyFiels(txtBankAccount.Text))
             {
                 Common.DisplayErrorMessage(Constraints.Required_Bank_Account);
@@ -205,6 +219,22 @@ namespace aptdealzSellerMobile.Views.Accounts
                 if (!Common.IsValidPhone(txtAltPhoneNumber.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_AltNumber);
+                }
+                else if (txtAltPhoneNumber.Text == txtPhoneNumber.Text)
+                {
+                    Common.DisplayErrorMessage(Constraints.Same_Phone_AltPhone_Number);
+                }
+                else
+                {
+                    isValid = true;
+                }
+            }
+            else if (!Common.IsValidGSTPIN(txtGstNumber.Text) && !Common.IsValidPAN(txtPan.Text))
+            {
+                string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
+                if (panFromGSTIN != txtPan.Text)
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_PAN_GSTIN);
                 }
                 else
                 {
@@ -246,7 +276,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             try
             {
                 mCategories = await DependencyService.Get<ICategoryRepository>().GetCategory();
-                if (mCategories != null || mCategories.Count > 0)
+                if (mCategories != null && mCategories.Count > 0)
                 {
                     pkCategory.ItemsSource = mCategories.Select(x => x.Name).ToList();
                 }
@@ -298,9 +328,9 @@ namespace aptdealzSellerMobile.Views.Accounts
                 mRegister.PhoneNumber = txtPhoneNumber.Text;
                 mRegister.AlternativePhoneNumber = txtAltPhoneNumber.Text;
                 mRegister.Password = txtPassword.Text;
-                mRegister.About = txtAbout.Text;
-                mRegister.State = txtState.Text;
-                mRegister.PinCode = txtPincode.Text;
+                //mRegister.About = txtAbout.Text;
+                //mRegister.State = txtState.Text;
+                //mRegister.PinCode = txtPincode.Text;
 
                 if (documentList.Count != 0)
                 {
@@ -348,10 +378,16 @@ namespace aptdealzSellerMobile.Views.Accounts
                     mRegister.Category = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).FirstOrDefault()?.Name;
                 }
 
-                if (selectedSubCategory != null)
+                if (selectedSubCategory != null && selectedSubCategory.Count > 0)
                 {
                     mRegister.SubCategories = selectedSubCategory;
                 }
+                else if (!Common.EmptyFiels(txtOtherSubCategory.Text))
+                {
+                    selectedSubCategory.Add(txtOtherSubCategory.Text);
+                }
+
+                mRegister.SubCategories = selectedSubCategory;
 
                 if (!Common.EmptyFiels(txtExperience.Text))
                 {
@@ -440,18 +476,18 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     txtAltPhoneNumber.Text = txtAltPhoneNumber.Text.Trim();
                 }
-                if (!Common.EmptyFiels(txtAbout.Text))
-                {
-                    txtAbout.Text = txtAbout.Text.Trim();
-                }
-                if (!Common.EmptyFiels(txtState.Text))
-                {
-                    txtState.Text = txtState.Text.Trim();
-                }
-                if (!Common.EmptyFiels(txtPincode.Text))
-                {
-                    txtPincode.Text = txtPincode.Text.Trim();
-                }
+                //if (!Common.EmptyFiels(txtAbout.Text))
+                //{
+                //    txtAbout.Text = txtAbout.Text.Trim();
+                //}
+                //if (!Common.EmptyFiels(txtState.Text))
+                //{
+                //    txtState.Text = txtState.Text.Trim();
+                //}
+                //if (!Common.EmptyFiels(txtPincode.Text))
+                //{
+                //    txtPincode.Text = txtPincode.Text.Trim();
+                //}
                 #endregion
 
                 #region Billing Address
@@ -487,7 +523,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Validations())
                 {
-                    if (!await PinCodeValidation())
+                    if (!await PinCodeValidation(txtPinCode.Text, BoxPinCode))
                         return;
 
                     FieldsTrim();
@@ -504,25 +540,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                             mResponse = await registerAPI.Register(mRegister);
                             if (mResponse != null && mResponse.Succeeded)
                             {
-                                // var UserCreated = mResponse.Message;
-                                // Settings.UserId = (string)mResponse.Data;
-                                // AuthenticationAPI authenticationAPI = new AuthenticationAPI();
-
-                                //mResponse = await authenticationAPI.ActivateUser(Settings.UserId);
-                                //if (mResponse != null && mResponse.Succeeded)
-                                //{
-                                //    Common.DisplaySuccessMessage(UserCreated);
-                                //    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                //}
-                                //else
-                                //{
-                                //    if (mResponse != null)
-                                //        Common.DisplayErrorMessage(mResponse.Message);
-                                //    else
-                                //        Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                                //}
-                                Common.DisplaySuccessMessage(mResponse.Message);
-                                ClearPropeties();
+                                SuccessfullRegister(mResponse.Message);
                             }
                             else
                             {
@@ -553,6 +571,29 @@ namespace aptdealzSellerMobile.Views.Accounts
             finally
             {
                 UserDialogs.Instance.HideLoading();
+            }
+        }
+
+        void SuccessfullRegister(string messageString)
+        {
+            try
+            {
+                var successPopup = new Popup.SuccessPopup(messageString);
+                successPopup.isRefresh += (s1, e1) =>
+                {
+                    bool res = (bool)s1;
+                    if (res)
+                    {
+                        ClearPropeties();
+                        Navigation.PopAsync();
+                    }
+                };
+
+                PopupNavigation.Instance.PushAsync(successPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/SuccessfullRegister: " + ex.Message);
             }
         }
 
@@ -631,6 +672,11 @@ namespace aptdealzSellerMobile.Views.Accounts
                     BoxCity.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 }
 
+                if (Common.EmptyFiels(txtPinCode.Text))
+                {
+                    BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
                 if (Common.EmptyFiels(txtLandmark.Text))
                 {
                     BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightRed"];
@@ -651,7 +697,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                     BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 }
 
-                if (selectedSubCategory == null && selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
+                if (selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
                 {
                     BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 }
@@ -731,6 +777,10 @@ namespace aptdealzSellerMobile.Views.Accounts
                     {
                         BoxCity.BackgroundColor = (Color)App.Current.Resources["LightGray"];
                     }
+                    else if (entry.ClassId == "PinCode")
+                    {
+                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
                     else if (entry.ClassId == "Landmark")
                     {
                         BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightGray"];
@@ -799,32 +849,33 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
-        async Task<bool> PinCodeValidation()
+        async Task<bool> PinCodeValidation(string PinCode, BoxView boxView)
         {
             bool isValid = false;
             try
             {
-                if (!Common.EmptyFiels(txtPincode.Text))
+                if (!Common.EmptyFiels(PinCode))
                 {
-                    txtPincode.Text = txtPincode.Text.Trim();
-                    if (Common.IsValidPincode(txtPincode.Text))
+                    PinCode = PinCode.Trim();
+                    isValid = await DependencyService.Get<IProfileRepository>().ValidPincode(PinCode);
+                    if (isValid)
                     {
-                        isValid = true;
-                        //isValid = await DependencyService.Get<IProfileRepository>().ValidPincode(Convert.ToInt32(txtPincode.Text));
+                        boxView.BackgroundColor = (Color)App.Current.Resources["LightGray"];
                     }
                     else
                     {
-                        Common.DisplayErrorMessage(Constraints.InValid_Pincode);
+                        boxView.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                     }
                 }
                 else
                 {
-                    isValid = true;
+                    Common.DisplayErrorMessage(Constraints.Required_PinCode);
+                    boxView.BackgroundColor = (Color)App.Current.Resources["LightGray"];
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/PinCodeValidation: " + ex.Message);
+                Common.DisplayErrorMessage("PostNewRequiremntPage/PinCodeValidation: " + ex.Message);
             }
             return isValid;
         }
@@ -833,6 +884,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region Events
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 
@@ -842,6 +894,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 imgCompanyProfileDown.Source = Constraints.Arrow_Up;
                 grdShippingAddress.IsVisible = true;
+                ScrPrimary.ScrollToAsync(GrdCompnyProfile, ScrollToPosition.Start, true);
             }
             else
             {
@@ -856,6 +909,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 imgGstDown.Source = Constraints.Arrow_Up;
                 grdBankInfo.IsVisible = true;
+                ScrPrimary.ScrollToAsync(GrdBankInformation, ScrollToPosition.Start, true);
             }
             else
             {
@@ -1085,10 +1139,10 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
-        private async void txtPincode_Unfocused(object sender, FocusEventArgs e)
-        {
-            await PinCodeValidation();
-        }
+        //private async void txtPincode_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    await PinCodeValidation();
+        //}
         #endregion
     }
 }

@@ -24,5 +24,25 @@ namespace aptdealzSellerMobile.iOS
 
             return base.FinishedLaunching(app, options);
         }
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
+                return true;
+
+            return base.OpenUrl(app, url, options);
+        }
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            if (Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler))
+                return true;
+
+            return base.ContinueUserActivity(application, userActivity, completionHandler);
+        }
+
+        public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
+            => Xamarin.Essentials.Platform.PerformActionForShortcutItem(application, shortcutItem, completionHandler);
+
     }
 }

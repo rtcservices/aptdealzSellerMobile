@@ -4,10 +4,11 @@ using Rg.Plugins.Popup.Services;
 using System;
 using Xamarin.Forms.Xaml;
 
+
 namespace aptdealzSellerMobile.Views.Popup
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SortByPopup : PopupPage
+    public partial class FilterPopup : PopupPage
     {
         #region Objects       
         public event EventHandler isRefresh;
@@ -15,7 +16,7 @@ namespace aptdealzSellerMobile.Views.Popup
         #endregion
 
         #region Constructor        
-        public SortByPopup(string SortBy, string SortPageName)
+        public FilterPopup(string SortBy, string SortPageName)
         {
             InitializeComponent();
             PageName = SortPageName;
@@ -35,50 +36,50 @@ namespace aptdealzSellerMobile.Views.Popup
         {
             if (PageName == "Active")
             {
-                StkThirdType.IsVisible = true;
                 lblFirstType.Text = "ID";
                 lblSecondType.Text = "Date";
-                lblThirdType.Text = "No of Quotes";
+                lblThirdType.Text = "Quotes";
+                lblFourType.Text = "TotalPriceEstimation";
             }
-            else if (PageName == "Previous")
+            else if (PageName == "Quote")
             {
-                StkThirdType.IsVisible = false;
                 lblFirstType.Text = "ID";
-                lblSecondType.Text = "Quotes";
-            }
-            else if (PageName == "ViewReq")
-            {
-                StkThirdType.IsVisible = true;
-                lblFirstType.Text = "ID";
-                lblSecondType.Text = "Amount";
-                lblThirdType.Text = "Validity";
+                lblSecondType.Text = "Date";
+                lblThirdType.Text = "Amount";
+                lblFourType.Text = "Validity";
             }
             else
             {
-                StkThirdType.IsVisible = true;
                 lblFirstType.Text = "ID";
                 lblSecondType.Text = "Date";
-                lblThirdType.Text = "No of Quotes";
+                lblThirdType.Text = "Quotes";
+                lblFourType.Text = "TotalPriceEstimation";
             }
         }
+
         void BindSource(string viewSource)
         {
-            if (!string.IsNullOrEmpty(viewSource))
+            if (!Common.EmptyFiels(viewSource))
             {
-                if (viewSource == RequirementSortBy.ID.ToString())
+                if (viewSource == SortByField.ID.ToString())
                 {
                     ClearSource();
                     imgFirstType.Source = Constraints.Redio_Selected;
                 }
-                else if (viewSource == RequirementSortBy.Date.ToString())
+                else if (viewSource == SortByField.Date.ToString())
                 {
                     ClearSource();
                     imgSecondType.Source = Constraints.Redio_Selected;
                 }
-                else if (viewSource == RequirementSortBy.Quotes.ToString())
+                else if (viewSource == SortByField.Quotes.ToString() || viewSource == SortByField.Amount.ToString())
                 {
                     ClearSource();
                     imgThirdType.Source = Constraints.Redio_Selected;
+                }
+                else if (viewSource == SortByField.Validity.ToString() || viewSource == SortByField.TotalPriceEstimation.ToString())
+                {
+                    ClearSource();
+                    imgFourType.Source = Constraints.Redio_Selected;
                 }
                 else
                 {
@@ -93,54 +94,57 @@ namespace aptdealzSellerMobile.Views.Popup
             imgFirstType.Source = Constraints.Redio_UnSelected;
             imgSecondType.Source = Constraints.Redio_UnSelected;
             imgThirdType.Source = Constraints.Redio_UnSelected;
+            imgFourType.Source = Constraints.Redio_UnSelected;
         }
         #endregion
 
         #region Events
         private void StkFirstType_Tapped(object sender, EventArgs e)
         {
-            if (PageName == "ViewReq")
-            {
-                BindSource(RequirementSortBy.quotationId.ToString());
-                isRefresh?.Invoke(RequirementSortBy.quotationId.ToString(), null);
-            }
-            else
-            {
-                BindSource(RequirementSortBy.ID.ToString());
-                isRefresh?.Invoke(RequirementSortBy.ID.ToString(), null);
-            }
+            BindSource(SortByField.ID.ToString());
+            isRefresh?.Invoke(SortByField.ID.ToString(), null);
             PopupNavigation.Instance.PopAsync();
         }
 
         private void StkSecondType_Tapped(object sender, EventArgs e)
         {
-            if (PageName == "ViewReq")
-            {
-                BindSource(RequirementSortBy.amount.ToString());
-                isRefresh?.Invoke(RequirementSortBy.amount.ToString(), null);
-            }
-            else
-            {
-                BindSource(RequirementSortBy.Date.ToString());
-                isRefresh?.Invoke(RequirementSortBy.Date.ToString(), null);
-            }
+
+            BindSource(SortByField.Date.ToString());
+            isRefresh?.Invoke(SortByField.Date.ToString(), null);
             PopupNavigation.Instance.PopAsync();
         }
 
         private void StkThirdType_Tapped(object sender, EventArgs e)
         {
-            if (PageName == "ViewReq")
+            if (PageName != "Active")
             {
-                BindSource(RequirementSortBy.validity.ToString());
-                isRefresh?.Invoke(RequirementSortBy.validity.ToString(), null);
+                BindSource(SortByField.Amount.ToString());
+                isRefresh?.Invoke(SortByField.Amount.ToString(), null);
             }
             else
             {
-                BindSource(RequirementSortBy.Quotes.ToString());
-                isRefresh?.Invoke(RequirementSortBy.Quotes.ToString(), null);
+                BindSource(SortByField.Quotes.ToString());
+                isRefresh?.Invoke(SortByField.Quotes.ToString(), null);
+
             }
             PopupNavigation.Instance.PopAsync();
         }
         #endregion
+
+        private void StkFourType_Tapped(object sender, EventArgs e)
+        {
+            if (PageName != "Active")
+            {
+                BindSource(SortByField.Validity.ToString());
+                isRefresh?.Invoke(SortByField.Validity.ToString(), null);
+            }
+            else
+            {
+                BindSource(SortByField.TotalPriceEstimation.ToString());
+                isRefresh?.Invoke(SortByField.TotalPriceEstimation.ToString(), null);
+
+            }
+            PopupNavigation.Instance.PopAsync();
+        }
     }
 }
