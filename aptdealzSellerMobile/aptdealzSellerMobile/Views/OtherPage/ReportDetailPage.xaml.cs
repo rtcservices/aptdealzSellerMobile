@@ -27,6 +27,20 @@ namespace aptdealzSellerMobile.Views.OtherPage
         public ReportDetailPage()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
@@ -39,9 +53,11 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void BindShippingData()
         {
-            lstReportDetails.ItemsSource = null;
+            try
+            {
+                lstReportDetails.ItemsSource = null;
 
-            mReportDetails = new List<ReportDetail>()
+                mReportDetails = new List<ReportDetail>()
             {
                 new ReportDetail
                 {
@@ -90,10 +106,15 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 },
             };
 
-            lstReportDetails.ItemsSource = mReportDetails.ToList();
+                lstReportDetails.ItemsSource = mReportDetails.ToList();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/BindShippingData: " + ex.Message);
+            }
         }
 
-        void BindList(List<ReportDetail> mReportDetailList)
+        private void BindList(List<ReportDetail> mReportDetailList)
         {
             try
             {
@@ -111,7 +132,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Report/BindList: " + ex.Message);
+                Common.DisplayErrorMessage("ReportDetailPage/BindList: " + ex.Message);
             }
         }
         #endregion
@@ -119,26 +140,55 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #region Events
         private void ImgExpand_Tapped(object sender, EventArgs e)
         {
-            var imgExp = (Image)sender;
-            var viewCell = (ViewCell)imgExp.Parent.Parent.Parent;
-            if (viewCell != null)
+            try
             {
-                viewCell.ForceUpdateSize();
+                var selectGrid = (ImageButton)sender;
+                var setHight = (ViewCell)selectGrid.Parent.Parent.Parent;
+                if (setHight != null)
+                {
+                    setHight.ForceUpdateSize();
+                }
+
+                var response = (ReportDetail)selectGrid.BindingContext;
+                if (response != null)
+                {
+                    foreach (var selectedImage in mReportDetails)
+                    {
+                        if (selectedImage.ArrowImage == Constraints.Arrow_Right)
+                        {
+                            selectedImage.ArrowImage = Constraints.Arrow_Right;
+                            selectedImage.GridBg = Color.Transparent;
+                            selectedImage.MoreDetail = false;
+                            selectedImage.OldDetail = true;
+                        }
+                        else
+                        {
+                            selectedImage.ArrowImage = Constraints.Arrow_Down;
+                            selectedImage.GridBg = (Color)App.Current.Resources["LightGray"];
+                            selectedImage.MoreDetail = true;
+                            selectedImage.OldDetail = false;
+                        }
+                    }
+                    if (response.ArrowImage == Constraints.Arrow_Right)
+                    {
+                        response.ArrowImage = Constraints.Arrow_Down;
+                        response.GridBg = (Color)App.Current.Resources["LightGray"];
+                        response.MoreDetail = true;
+                        response.OldDetail = false;
+                    }
+                    else
+                    {
+                        response.ArrowImage = Constraints.Arrow_Right;
+                        response.GridBg = Color.Transparent;
+                        response.MoreDetail = false;
+                        response.OldDetail = true;
+                    }
+
+                }
             }
-            var shippingModel = imgExp.BindingContext as ReportDetail;
-            if (shippingModel != null && shippingModel.ArrowImage == Constraints.Arrow_Right)
+            catch (Exception ex)
             {
-                shippingModel.ArrowImage = Constraints.Arrow_Down;
-                shippingModel.Layout = LayoutOptions.StartAndExpand;
-                shippingModel.ShowDelete = false;
-                shippingModel.ShowCategory = true;
-            }
-            else
-            {
-                shippingModel.ArrowImage = Constraints.Arrow_Right;
-                shippingModel.Layout = LayoutOptions.CenterAndExpand;
-                shippingModel.ShowDelete = true;
-                shippingModel.ShowCategory = false;
+                Common.DisplayErrorMessage("ReportDetailPage/ImgExpand_Tapped: " + ex.Message);
             }
         }
 
@@ -149,7 +199,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -159,12 +209,32 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
+            try
+            {
+                //if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
+                //{
+                //    ImgSort.Source = Constraints.Sort_DSC;
+                //    sortBy = false;
+                //}
+                //else
+                //{
+                //    ImgSort.Source = Constraints.Sort_ASC;
+                //    sortBy = true;
+                //}
 
+                pageNo = 1;
+                //GetOrders(statusBy, title, filterBy, sortBy);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/FrmSortBy_Tapped: " + ex.Message);
+            }
         }
 
         private async void FrmFilterBy_Tapped(object sender, EventArgs e)
@@ -187,6 +257,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
             catch (Exception ex)
             {
+                Common.DisplayErrorMessage("ReportDetailPage/FrmFilterBy_Tapped: " + ex.Message);
             }
         }
 
@@ -199,7 +270,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
             catch (Exception ex)
             {
-
+                Common.DisplayErrorMessage("ReportDetailPage/BtnClose_Clicked: " + ex.Message);
             }
         }
 
@@ -220,13 +291,18 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Report/entrSearch_TextChanged: " + ex.Message);
+                Common.DisplayErrorMessage("ReportDetailPage/entrSearch_TextChanged: " + ex.Message);
             }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)
         {
             Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
+
+        private void lstReportDetails_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            lstReportDetails.SelectedItem = null;
         }
         #endregion
     }

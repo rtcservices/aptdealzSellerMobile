@@ -34,11 +34,25 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             mQuote = new List<Quote>();
             pageNo = 1;
             GetSubmittedQuotes(statusBy, title, filterBy, sortBy, true);
+
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
         #region Method        
-        public async void GetSubmittedQuotes(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = false)
+        private async void GetSubmittedQuotes(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = false)
         {
             try
             {
@@ -70,10 +84,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     lstQuotesDetails.IsVisible = false;
                     lblNoRecord.IsVisible = true;
-                    if (mResponse.Message != null)
-                    {
-                        lblNoRecord.Text = mResponse.Message;
-                    }
+                    //if (mResponse.Message != null)
+                    //{
+                    //    lblNoRecord.Text = mResponse.Message;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -86,7 +100,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        void BindList(List<Quote> mQuotes)
+        private void BindList(List<Quote> mQuotes)
         {
             try
             {
@@ -119,7 +133,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            App.Current.MainPage = new MasterData.MasterDataPage();
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
@@ -142,13 +156,13 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("ActiveRequirementView/FrmSortBy_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("QuoteView/FrmSortBy_Tapped: " + ex.Message);
             }
         }
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -206,7 +220,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
             catch (Exception ex)
             {
-
+                Common.DisplayErrorMessage("QuoteView/BtnQuotes_Tapped: " + ex.Message);
             }
         }
 
@@ -273,22 +287,23 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private async void FrmStatusBy_Tapped(object sender, EventArgs e)
+        private void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                StatusPopup statusPopup = new StatusPopup(statusBy);
+                var statusPopup = new StatusPopup(statusBy);
                 statusPopup.isRefresh += (s1, e1) =>
                 {
-                    int result = (int)s1;
-                    //if (result != null)
-                    //{
-                    pageNo = 1;
-                    statusBy = result;
-                    GetSubmittedQuotes(statusBy, title, filterBy, sortBy, true);
-                    //}
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        lblStatus.Text = result;
+                        statusBy = Common.GetQuoteStatus(result);
+                        pageNo = 1;
+                        GetSubmittedQuotes(statusBy, title, filterBy, sortBy);
+                    }
                 };
-                await PopupNavigation.Instance.PushAsync(statusPopup);
+                PopupNavigation.Instance.PushAsync(statusPopup);
             }
             catch (Exception ex)
             {
@@ -332,7 +347,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                         if (this.mQuote.Count() >= totalAspectedRow)
                         {
-                            GetSubmittedQuotes(statusBy, title, filterBy, sortBy, true);
+                            GetSubmittedQuotes(statusBy, title, filterBy, sortBy, false);
                         }
                     }
                     else
@@ -359,9 +374,16 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void GrdList_Tapped(object sender, EventArgs e)
         {
-            var GridExp = (Grid)sender;
-            var mQuote = GridExp.BindingContext as Quote;
-            Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mQuote.RequirementId, mQuote.QuoteId));
+            try
+            {
+                var GridExp = (Grid)sender;
+                var mQuote = GridExp.BindingContext as Quote;
+                Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mQuote.QuoteId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/GrdList_Tapped: " + ex.Message);
+            }
         }
         #endregion
     }

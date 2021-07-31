@@ -59,6 +59,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
+    <Reference Include="RazorPayBindingForXamarin">
+      <HintPath>DLL\RazorPayBindingForXamarin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -85,6 +88,12 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Plugin.CurrentActivity">
+      <Version>2.1.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.FirebasePushNotification">
+      <Version>3.3.10</Version>
+    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
@@ -99,6 +108,9 @@
     </PackageReference>
     <PackageReference Include="SkiaSharp">
       <Version>2.80.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugin.Connectivity">
       <Version>3.2.0</Version>
@@ -115,10 +127,22 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
       <Version>2.4.11.982</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.Auth">
+      <Version>71.1605.4</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.Core">
+      <Version>71.1601.4</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.Firestore">
+      <Version>71.1705.4</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="Xamarin.Forms.PancakeView">
       <Version>2.3.0.759</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.GooglePlayServices.Base">
+      <Version>71.1610.0</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Plugin.FilePicker">
       <Version>2.1.41</Version>
@@ -129,11 +153,20 @@
     <PackageReference Include="ZXing.Net.Mobile.Forms">
       <Version>2.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Google.Guava" ExcludeAssets="all">
+      <Version>27.1.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomRenderers\CustomRenderer.cs" />
-    <Compile Include="Implementations\CloseAppOnBackButton.cs" />
+    <Compile Include="DependencService\CloseAppOnBackButton.cs" />
+    <Compile Include="DependencService\FirebaseAuthenticator.cs" />
+    <Compile Include="DependencService\NotificationHelper.cs" />
+    <Compile Include="DependencService\PhoneDialer.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MainApplication.cs" />
+    <Compile Include="MyFirebaseIIDService.cs" />
+    <Compile Include="MyFirebaseMessagingService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -144,6 +177,7 @@
     <AndroidAsset Include="Assets\Poppins-ExtraBold.otf" />
     <AndroidAsset Include="Assets\Poppins-Medium.otf" />
     <AndroidAsset Include="Assets\Poppins-SemiBold.otf" />
+    <GoogleServicesJson Include="google-services.json" />
     <None Include="KeyStore\aptdealzSellerMobile.keystore" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -167,12 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\iconShowGray.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\aptdealzSellerMobile\aptdealzSellerMobile.csproj">
-      <Project>{2348AE33-AD3A-4130-BC22-75A3243560A9}</Project>
-      <Name>aptdealzSellerMobile</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\iconAccount.png" />
@@ -417,10 +445,25 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\iconSubmitedQuotes.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\iconSad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\RazorPayBindingForXamarin.dll" />
+    <AndroidResource Include="Resources\drawable\iconVideo.png" />
+    <AndroidResource Include="Resources\drawable\iconFiles2.png" />
+    <AndroidResource Include="Resources\drawable\iconMusic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\aptdealzSellerMobile\aptdealzSellerMobile.csproj">
+      <Project>{7da39111-ebee-46fa-9269-bb29a5bf1801}</Project>
+      <Name>aptdealzSellerMobile</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

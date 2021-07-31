@@ -39,7 +39,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                _ = ex.Message;
+                Common.DisplayErrorMessage("iOS/LabelRenderer: " + ex.Message);
             }
         }
     }
@@ -66,7 +66,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                var _ = ex.Message;
+                Common.DisplayErrorMessage("iOS/EntryRenderer: " + ex.Message);
             }
         }
     }
@@ -91,7 +91,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                var errorr = ex.Message;
+                Common.DisplayErrorMessage("iOS/PickerRenderer: " + ex.Message);
             }
         }
     }
@@ -111,7 +111,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("iOS/EditorCustomRenderer: " + ex.Message);
+                Common.DisplayErrorMessage("iOS/EditorRenderer: " + ex.Message);
             }
         }
     }
@@ -199,7 +199,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                var _ = ex.Message;
+                Common.DisplayErrorMessage("iOS/AutoSuggestBoxRenderer: " + ex.Message);
             }
         }
     }
@@ -226,7 +226,7 @@ namespace aptdealzSellerMobile.iOS.CustomRenderers
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("iOS/CustomeDatePickerRenderer: " + ex.Message);
+                Common.DisplayErrorMessage("iOS/DatePickerRenderer: " + ex.Message);
             }
         }
     }

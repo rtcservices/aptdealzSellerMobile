@@ -2,6 +2,7 @@
 using aptdealzSellerMobile.Services;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
+using Plugin.FirebasePushNotification;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -13,8 +14,11 @@ namespace aptdealzSellerMobile
         #region Objects
         public static int latitude = 0;
         public static int longitude = 0;
+        public static StoppableTimer stoppableTimer;
+        public static bool IsNotification = false;
         #endregion
 
+        #region Ctor
         public App()
         {
             Device.SetFlags(new string[]
@@ -28,9 +32,21 @@ namespace aptdealzSellerMobile
 
             RegisterDependencies();
             GetCurrentLocation();
-            MainPage = new SplashScreen();
-        }
+            BindCrossFirebasePushNotification();
 
+            if (!IsNotification)
+            {
+                MainPage = new SplashScreen();
+            }
+            else
+            {
+                MainPage = new Views.MasterData.MasterDataPage(true);
+                IsNotification = false;
+            }
+        }
+        #endregion
+
+        #region Methods
         public static void RegisterDependencies()
         {
             Xamarin.Forms.DependencyService.Register<IFileUploadRepository, FileUploadRepository>();
@@ -38,9 +54,12 @@ namespace aptdealzSellerMobile
             Xamarin.Forms.DependencyService.Register<IProfileRepository, ProfileRepository>();
             Xamarin.Forms.DependencyService.Register<IAuthenticationRepository, AuthenticationRepository>();
             Xamarin.Forms.DependencyService.Register<IOrderRepository, OrderRepository>();
+            Xamarin.Forms.DependencyService.Register<IQuoteRepository, QuoteRepository>();
+            Xamarin.Forms.DependencyService.Register<IGrievanceRepository, GrievanceRepository>();
+            Xamarin.Forms.DependencyService.Register<INotificationRepository, NotificationRepository>();
         }
 
-        public async void GetCurrentLocation()
+        private async void GetCurrentLocation()
         {
             try
             {
@@ -57,16 +76,63 @@ namespace aptdealzSellerMobile
             }
         }
 
+        private void BindCrossFirebasePushNotification()
+        {
+            try
+            {
+                CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+                };
+
+                CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("Received");
+                };
+
+                CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
+                {
+                    IsNotification = true;
+                };
+
+                CrossFirebasePushNotification.Current.OnNotificationAction += (s, p) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("Action");
+
+                    if (!string.IsNullOrEmpty(p.Identifier))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"ActionId: {p.Identifier}");
+                        foreach (var data in p.Data)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+                        }
+                    }
+                };
+
+                CrossFirebasePushNotification.Current.OnNotificationDeleted += (s, p) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("Deleted");
+                };
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("App/BindCrossFirebasePushNotification: " + ex.Message);
+            }
+        }
+
         protected override void OnStart()
         {
         }
 
         protected override void OnSleep()
         {
+            if (App.stoppableTimer != null)
+                stoppableTimer.Stop();
         }
 
         protected override void OnResume()
         {
         }
+        #endregion
     }
 }

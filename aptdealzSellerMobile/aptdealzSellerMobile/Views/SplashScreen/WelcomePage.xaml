@@ -65,7 +65,7 @@
 
                     <Label
                         HorizontalTextAlignment="Center"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
                 </StackLayout>
 

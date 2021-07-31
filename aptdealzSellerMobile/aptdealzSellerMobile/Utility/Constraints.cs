@@ -2,7 +2,7 @@
 {
     public class Constraints
     {
-        #region Images
+        #region [ Images ]
         public const string Password_Hide = "iconHidePass.png";
         public const string Password_Visible = "iconVisiblepass.png";
 
@@ -40,7 +40,7 @@
         public const string Img_Account_Active = "iconAccountActive.png";
         #endregion
 
-        #region Error Message
+        #region [ Error Message ]
         public static string Session_Expired = "Session expired, Please login again!";
         public static string Something_Wrong = "Something went wrong!";
         public static string Something_Wrong_Server = "Something went wrong from server!";
@@ -49,7 +49,7 @@
         public static string Phone_Dialer_Not_Support = "Phone Dialer is not supported on this device";
         #endregion
 
-        #region Alert Title
+        #region [ Alert Title ]
         public const string Yes = "Yes";
         public const string No = "No";
         public const string Ok = "OK";
@@ -62,13 +62,15 @@
         public const string Alert = "Alert!";
         public const string Loading = "Loading...";
         public const string Logout = "Logout";
-        #endregion       
+        #endregion
 
-        #region Alert Message           
+        #region [ Alert Message ]   
+        public const string CouldNotSentOTP = "Could not send Verification Code to the given number!";
         public const string DoYouWantToExit = "Do you really want to exit?";
         public const string AreYouSureWantDeactivateAccount = "Are you sure want to deactivate account?";
         public const string AreYouSureWantDelete = "Are you sure want to delete?";
         public const string AreYouSureWantLogout = "Are you sure want to logout?";
+        public const string AreYouSureWantDeleteNotification = "Are you sure you want to delete the notification?";
 
         public const string NoInternetConnection = "No internet connection!";
         public const string NoCameraAwailable = "No camera awailable!";
@@ -132,6 +134,22 @@
         public const string Required_LRNumber = "Please enter LR number!";
         public const string Required_EWayBillNumber = "Please enter EWay bill number!";
         public const string Required_TrackingLink = "Please enter tracking link!";
-        #endregion               
+
+        public const string Required_Response = "Please enter your message!";
+        #endregion
+
+        #region [ Success ]
+        public const string OTPSent = "OTP Verification Code Sent Successfully";
+        public const string InstantVerification = "you don't get any code, it is instant verification. Please try to login with email address";
+        #endregion
+
+        #region [ Copy Message ]
+        public const string CopiedBuyerId = "Copied Buyer Id!";
+        public const string CopiedSellerId = "Copied Seller Id!";
+        public const string CopiedRequirementId = "Copied Requirement ID!";
+        public const string CopiedOrderId = "Copied Order Id!";
+        public const string CopiedQuoteRefNo = "Copied Quote Reference No!";
+        public const string CopiedGrievanceId = "Copied Grievance Id!";
+        #endregion
     }
 }

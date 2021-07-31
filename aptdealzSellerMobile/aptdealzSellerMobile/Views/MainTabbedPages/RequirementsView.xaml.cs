@@ -21,7 +21,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private List<Requirement> mRequirements;
         private string filterBy = "";
         private string title = string.Empty;
-        private bool? sortBy = null;
+        private bool sortBy = false;
         private readonly int pageSize = 10;
         private int pageNo;
         #endregion       
@@ -32,12 +32,26 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             InitializeComponent();
             mRequirements = new List<Requirement>();
             pageNo = 1;
-            GetActiveRequirements(filterBy, title, sortBy, true);
+            GetActiveRequirements(filterBy, title, sortBy);
+
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
         #region Methods
-        public async void GetActiveRequirements(string FilterBy = "", string Title = "", bool? SortBy = null, bool isLoader = false)
+        private async void GetActiveRequirements(string FilterBy = "", string Title = "", bool? SortBy = null, bool isLoader = true)
         {
             try
             {
@@ -67,10 +81,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     lstRequirements.IsVisible = false;
                     lblNoRecord.IsVisible = true;
-                    if (mResponse.Message != null)
-                    {
-                        lblNoRecord.Text = mResponse.Message;
-                    }
+                    //if (mResponse.Message != null)
+                    //{
+                    //    lblNoRecord.Text = mResponse.Message;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -83,7 +97,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        void BindList(List<Requirement> mRequirementList)
+        private void BindList(List<Requirement> mRequirementList)
         {
             try
             {
@@ -114,7 +128,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -125,7 +139,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(image: ImgBack);
-            App.Current.MainPage = new MasterData.MasterDataPage();
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
@@ -143,7 +157,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     sortBy = true;
                 }
                 pageNo = 1;
-                GetActiveRequirements(filterBy, title, sortBy, true);
+                GetActiveRequirements(filterBy, title, sortBy);
             }
             catch (Exception ex)
             {
@@ -197,7 +211,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 }
                 else
                 {
-                    GetActiveRequirements(filterBy, "", sortBy, true);
+                    GetActiveRequirements(filterBy, title, sortBy);
                 }
             }
             catch (Exception ex)
@@ -226,7 +240,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                         if (this.mRequirements.Count() >= totalAspectedRow)
                         {
-                            GetActiveRequirements(filterBy, title, sortBy, true);
+                            GetActiveRequirements(filterBy, title, sortBy, false);
                         }
                     }
                     else
@@ -253,7 +267,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 lstRequirements.IsRefreshing = true;
                 pageNo = 1;
                 mRequirements.Clear();
-                GetActiveRequirements(filterBy, title, sortBy, true);
+                GetActiveRequirements(filterBy, title, sortBy);
                 lstRequirements.IsRefreshing = false;
             }
             catch (Exception ex)
@@ -281,7 +295,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         filterBy = result;
                         lblFilterBy.Text = filterBy;
                         pageNo = 1;
-                        GetActiveRequirements(filterBy, title, sortBy, true);
+                        GetActiveRequirements(filterBy, title, sortBy);
                     }
                 };
                 PopupNavigation.Instance.PushAsync(sortby);
@@ -305,11 +319,16 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 Common.DisplayErrorMessage("RequirementsView/GrdRequirements_Tapped: " + ex.Message);
             }
         }
-        #endregion
 
         private void BtnLogo_Clicked(object sender, EventArgs e)
         {
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
+
+        private void lstRequirements_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            lstRequirements.SelectedItem = null;
+        }
+        #endregion
     }
 }

@@ -38,33 +38,54 @@
                     Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
-                <StackLayout
+                <Grid
                     Grid.Column="2"
-                    Margin="0,0,20,0"
-                    HorizontalOptions="EndAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        HeightRequest="30"
-                        HorizontalOptions="CenterAndExpand"
-                        Source="iconNotification.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
+                        <Image
+                            Margin="0"
+                            HeightRequest="30"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconNotification.png"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"  HasShadow="False"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HeightRequest="20"
+                            HorizontalOptions="CenterAndExpand"
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"  FontSize="15"
+                            Margin="10,5,0,0"
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
                     <Image
+                        Grid.Column="1"
                         Margin="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
                         Source="iconQuestion.png"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
-                </StackLayout>
+                </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
@@ -260,6 +281,7 @@
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
+                                    x:Name="lblStatus"
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
                                     FontFamily="Poppins"
@@ -299,71 +321,65 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+
+                                        <!--  Title  -->
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="2"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblMedium}"
+                                            Text="{Binding Title}" />
 
                                         <!--  INV ID  -->
                                         <Label
-                                            Grid.Row="0"
+                                            Grid.Row="1"
                                             Grid.Column="0"
-                                            Margin="0"
-                                            FontFamily="Poppins-Medium"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Text="{Binding OrderNo}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblMedium}"
+                                            Text="{Binding OrderNo}" />
 
                                         <!--  Amount  -->
                                         <Label
-                                            Grid.Row="0"
+                                            Grid.Row="1"
                                             Grid.Column="1"
-                                            Margin="0,0,0,0"
-                                            FontFamily="Poppins-Medium"
-                                            FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             HorizontalTextAlignment="End"
+                                            Style="{StaticResource lblMedium}"
                                             Text="{Binding PaidAmount, StringFormat='RS {0:}'}"
-                                            TextColor="{StaticResource Green}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            TextColor="{StaticResource Green}" />
 
                                         <!--  Status  -->
                                         <Label
-                                            Grid.Row="1"
+                                            Grid.Row="2"
                                             Grid.Column="0"
-                                            FontFamily="Poppins"
-                                            FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Text="{Binding OrderStatusDescr}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblLight}"
+                                            Text="{Binding OrderStatusDescr}" />
 
                                         <!--  Created Date  -->
                                         <Label
-                                            Grid.Row="1"
+                                            Grid.Row="2"
                                             Grid.Column="1"
-                                            FontFamily="Poppins"
-                                            FontSize="15"
                                             HorizontalOptions="EndAndExpand"
-                                            Text="{Binding Created, StringFormat='{0:dd/MM/yyyy}'}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblLight}"
+                                            Text="{Binding Created, StringFormat='{0:dd/MM/yyyy}'}" />
 
                                         <!--  Expire Date  -->
                                         <Label
-                                            Grid.Row="2"
+                                            Grid.Row="3"
                                             Grid.Column="0"
-                                            Margin="0"
-                                            FontFamily="Poppins"
-                                            FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Text="{Binding ExpectedDelivery, StringFormat='Exp Delivery {0:dd/MM/yyyy}'}"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblLight}"
+                                            Text="{Binding ExpectedDelivery, StringFormat='Exp Delivery {0:dd/MM/yyyy}'}" />
 
                                         <!--  QR Button  -->
                                         <Button
                                             x:Name="BtnQRScan"
-                                            Grid.Row="3"
+                                            Grid.Row="4"
                                             Grid.Column="0"
                                             Padding="10,0"
                                             Clicked="BtnQRScan_Clicked"

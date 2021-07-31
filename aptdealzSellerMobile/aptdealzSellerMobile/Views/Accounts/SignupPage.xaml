@@ -355,7 +355,7 @@
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <ext:ExtPicker
+                                                    <Picker
                                                         x:Name="pkCategory"
                                                         Title="Category"
                                                         Grid.Column="1"
@@ -408,7 +408,7 @@
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <ext:ExtPicker
+                                                    <Picker
                                                         x:Name="pkSubCategory"
                                                         Title="Sub Category"
                                                         Grid.Column="1"
@@ -435,13 +435,13 @@
                                             <Frame Grid.Row="1" Style="{StaticResource frmEntry}">
                                                 <ext:ExtEntry
                                                     x:Name="txtOtherSubCategory"
-                                                    Completed="txtOtherSubCategory_Completed"
                                                     HorizontalOptions="StartAndExpand"
                                                     Keyboard="Text"
                                                     Placeholder="If Other, specify"
                                                     ReturnType="Done"
                                                     Style="{StaticResource entrPrimary}"
-                                                    TabIndex="18" />
+                                                    TabIndex="18"
+                                                    Unfocused="txtOtherSubCategory_Unfocused" />
                                             </Frame>
                                         </Grid>
 
@@ -479,7 +479,7 @@
                                                                             Grid.Column="0"
                                                                             HorizontalOptions="FillAndExpand"
                                                                             HorizontalTextAlignment="Center"
-                                                                            Style="{StaticResource lblLight15}"
+                                                                            Style="{StaticResource lblLight}"
                                                                             Text="{Binding .}" />
 
                                                                         <Button
@@ -691,7 +691,7 @@
                                                 <Label
                                                     x:Name="lblAttachDocument"
                                                     Grid.Column="0"
-                                                    Style="{StaticResource lblLight15}"
+                                                    Style="{StaticResource lblLight}"
                                                     Text="No Docs found"
                                                     TextColor="{StaticResource DarkGray}"
                                                     VerticalOptions="CenterAndExpand" />
@@ -750,7 +750,7 @@
                                     Margin="10,0,0,0"
                                     HorizontalOptions="StartAndExpand"
                                     HorizontalTextAlignment="Start"
-                                    Style="{StaticResource lblLight15}"
+                                    Style="{StaticResource lblLight}"
                                     Text="Accept Terms &amp; Condition" />
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="StkAcceptTerm_Tapped" />

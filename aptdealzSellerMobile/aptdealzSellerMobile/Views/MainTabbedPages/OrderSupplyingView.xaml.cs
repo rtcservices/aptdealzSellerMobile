@@ -4,6 +4,7 @@ using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
+using aptdealzSellerMobile.Views.OtherPage;
 using aptdealzSellerMobile.Views.Popup;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
@@ -20,7 +21,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     public partial class OrderSupplyingView : ContentView
     {
         #region Objects
-        public event EventHandler isRefresh;
         public event EventHandler isRefreshScanQR;
         public List<Order> mOrders = new List<Order>();
         private string filterBy = "";
@@ -36,18 +36,35 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             InitializeComponent();
             pageNo = 1;
-            GetOrders(statusBy, filterBy, sortBy);
+            GetOrders(statusBy, title, filterBy, sortBy);
+
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
         #region Method
-        public async void GetOrders(int? StatusBy = null, string FilterBy = "", bool? SortBy = null)
+        private async void GetOrders(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = true)
         {
             try
             {
                 OrderAPI orderAPI = new OrderAPI();
-                UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                var mResponse = await orderAPI.GetOrdersForSeller(StatusBy, FilterBy, SortBy, pageNo, pageSize);
+                if (isLoader)
+                {
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                }
+                var mResponse = await orderAPI.GetOrdersForSeller(StatusBy, Title, FilterBy, SortBy, pageNo, pageSize);
                 if (mResponse != null && mResponse.Succeeded)
                 {
                     JArray result = (JArray)mResponse.Data;
@@ -68,7 +85,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     lstOrderSupplyings.IsVisible = false;
                     lblNoRecord.IsVisible = true;
-                    lblNoRecord.Text = mResponse.Message;
+                    // lblNoRecord.Text = mResponse.Message;
                 }
             }
             catch (Exception ex)
@@ -81,7 +98,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        void BindList(List<Order> mOrderList)
+        private void BindList(List<Order> mOrderList)
         {
             try
             {
@@ -117,13 +134,13 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            App.Current.MainPage = new MasterData.MasterDataPage();
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
@@ -142,24 +159,31 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 }
 
                 pageNo = 1;
-                GetOrders(statusBy, filterBy, sortBy);
+                GetOrders(statusBy, title, filterBy, sortBy);
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("OrderView/FrmSortBy_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("OrderSupplyingView/FrmSortBy_Tapped: " + ex.Message);
             }
         }
 
-        private async void FrmStatusBy_Tapped(object sender, EventArgs e)
+        private void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
             try
             {
-                StatusPopup statusPopup = new StatusPopup(statusBy);
+                var statusPopup = new OrderStatusPopup(statusBy);
                 statusPopup.isRefresh += (s1, e1) =>
                 {
-                    int result = (int)s1;
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        lblStatus.Text = result.ToCamelCase();
+                        statusBy = Common.GetOrderStatus(result);
+                        pageNo = 1;
+                        GetOrders(statusBy, title, filterBy, sortBy);
+                    }
                 };
-                await PopupNavigation.Instance.PushAsync(statusPopup);
+                PopupNavigation.Instance.PushAsync(statusPopup);
             }
             catch (Exception ex)
             {
@@ -171,7 +195,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                var sortby = new FilterPopup(filterBy, "Active");
+                var sortby = new FilterPopup(filterBy, "Order");
                 sortby.isRefresh += (s1, e1) =>
                 {
                     string result = s1.ToString();
@@ -180,14 +204,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         filterBy = result;
                         lblFilterBy.Text = filterBy;
                         pageNo = 1;
-                        BindList(mOrders);
+                        GetOrders(statusBy, title, filterBy, sortBy);
                     }
                 };
                 PopupNavigation.Instance.PushAsync(sortby);
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("OrderSupplyingView/CustomEntry_Unfocused: " + ex.Message);
+                Common.DisplayErrorMessage("OrderSupplyingView/FrmFilterBy_Tapped: " + ex.Message);
             }
         }
 
@@ -219,14 +243,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
+                pageNo = 1;
                 if (!Common.EmptyFiels(entrSearch.Text))
                 {
-                    var OrderSearch = mOrders.Where(x => x.OrderNo.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
-                    BindList(OrderSearch);
+                    GetOrders(statusBy, entrSearch.Text, filterBy, sortBy, false);
                 }
                 else
                 {
-                    BindList(mOrders);
+                    GetOrders(statusBy, title, filterBy, sortBy);
                 }
             }
             catch (Exception ex)
@@ -242,15 +266,15 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void GrdList_Tapped(object sender, EventArgs e)
         {
-            var GridExp = (Grid)sender;
-            var mOrder = GridExp.BindingContext as Order;
-            if (mOrder.OrderStatusDescr.Contains("Cancelled"))
+            try
             {
-                Navigation.PushAsync(new OrderDetailsPage(mOrder.OrderId, true));
-            }
-            else
-            {
+                var GridExp = (Grid)sender;
+                var mOrder = GridExp.BindingContext as Order;
                 Navigation.PushAsync(new OrderDetailsPage(mOrder.OrderId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderSupplyingview/GrdList_Tapped: " + ex.Message);
             }
         }
 
@@ -274,7 +298,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                         if (this.mOrders.Count() >= totalAspectedRow)
                         {
-                            GetOrders(statusBy, filterBy, sortBy);
+                            GetOrders(statusBy, title, filterBy, sortBy, false);
                         }
                     }
                     else
@@ -301,7 +325,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 lstOrderSupplyings.IsRefreshing = true;
                 pageNo = 1;
                 mOrders.Clear();
-                GetOrders(statusBy, filterBy, sortBy);
+                GetOrders(statusBy, title, filterBy, sortBy);
                 lstOrderSupplyings.IsRefreshing = false;
             }
             catch (Exception ex)
@@ -314,16 +338,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                var mResponse = (Button)sender;
-                if (mResponse != null)
-                {
-                    Common.BindAnimation(button: mResponse);
-                    var isScanQrCode = (Order)mResponse.BindingContext;
-                    if (isScanQrCode != null && isScanQrCode.ScanQRCode)
-                    {
-                        isRefreshScanQR?.Invoke(true, EventArgs.Empty);
-                    }
-                }
+                Navigation.PushAsync(new QrCodeScanPage());
             }
             catch (Exception ex)
             {

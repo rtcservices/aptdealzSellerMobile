@@ -5,19 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.Utility
 {
     public static class Common
     {
-        #region Properties
-        public static List<Country> mCountries { get; set; }
+        #region [ Properties ]
         public static MasterDataPage MasterData { get; set; }
+        public static Model.Request.SellerDetails mSellerDetails { get; set; }
+        public static List<Country> mCountries { get; set; }
         public static string Token { get; set; }
+        public static string NotificationCount { get; set; }
         #endregion
 
-        #region Regex Properties
+        #region [ Regex Properties ]
         private static Regex PhoneNumber { get; set; } = new Regex(@"^[0-9]{10}$");
         private static Regex RegexPassword { get; set; } = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$");
         private static Regex RegexPincode { get; set; } = new Regex(@"^[0-9]{6}$");
@@ -25,7 +28,7 @@ namespace aptdealzSellerMobile.Utility
         private static Regex RegexPAN { get; set; } = new Regex("([A-Z]){5}([0-9]){4}([A-Z]){1}$");
         #endregion       
 
-        #region Display Messages
+        #region [ Display Messages ]
         public static void DisplayErrorMessage(string errormessage)
         {
             UserDialogs.Instance.Toast(new ToastConfig(errormessage)
@@ -60,7 +63,7 @@ namespace aptdealzSellerMobile.Utility
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
         public static async void BindAnimation(ImageButton imageButton = null, Button button = null, Grid grid = null, StackLayout stackLayout = null, Label label = null, Image image = null, Frame frame = null)
         {
             try
@@ -111,6 +114,11 @@ namespace aptdealzSellerMobile.Utility
             {
                 Common.DisplayErrorMessage("Common/BindAnimation: " + ex.Message);
             }
+        }
+
+        public static string ToCamelCase(this string str)
+        {
+            return Regex.Replace(str, "(\\B[A-Z])", " $1");
         }
 
         public static bool EmptyFiels(string extEntry)
@@ -194,6 +202,110 @@ namespace aptdealzSellerMobile.Utility
             value = value.Trim();
             return (RegexPAN.IsMatch($"{value}"));
         }
+
+        public static int GetOrderStatus(string orderStatus)
+        {
+            orderStatus = orderStatus.Replace(" ", "");
+
+            switch (orderStatus)
+            {
+                case "Pending":
+                    return (int)OrderStatus.Pending;
+                case "Accepted":
+                    return (int)OrderStatus.Accepted;
+                case "ReadyForPickup":
+                    return (int)OrderStatus.ReadyForPickup;
+                case "Shipped":
+                    return (int)OrderStatus.Shipped;
+                case "Delivered":
+                    return (int)OrderStatus.Delivered;
+                case "Completed":
+                    return (int)OrderStatus.Completed;
+                case "CancelledFromBuyer":
+                    return (int)OrderStatus.CancelledFromBuyer;
+                case "All":
+                    return (int)OrderStatus.All;
+                default:
+                    return 0;
+            }
+        }
+
+        public static int GetOrderIndex(int orderStatus)
+        {
+
+            switch (orderStatus)
+            {
+                case (int)OrderStatus.Pending:
+                    return 0;
+                case (int)OrderStatus.Accepted:
+                    return 1;
+                case (int)OrderStatus.ReadyForPickup:
+                    return 2;
+                case (int)OrderStatus.Shipped:
+                    return 3;
+                case (int)OrderStatus.Delivered:
+                    return 4;
+                case (int)OrderStatus.Completed:
+                    return 5;
+                case (int)OrderStatus.CancelledFromBuyer:
+                    return 6;
+                case (int)OrderStatus.All:
+                    return 7;
+                default:
+                    return 0;
+            }
+        }
+
+        public static int GetQuoteStatus(string quoteStatus)
+        {
+            switch (quoteStatus)
+            {
+                case "Submitted":
+                    return (int)QuoteStatus.Submitted;
+                case "Accepted":
+                    return (int)QuoteStatus.Accepted;
+                case "Rejected":
+                    return (int)QuoteStatus.Rejected;
+                case "All":
+                    return (int)QuoteStatus.All;
+                default:
+                    return 0;
+            }
+        }
+
+        public static int GetGrievanceStatus(string grievanceStatus)
+        {
+            switch (grievanceStatus)
+            {
+                case "Pending":
+                    return (int)GrievancesStatus.Pending;
+                case "Open":
+                    return (int)GrievancesStatus.Open;
+                case "Closed":
+                    return (int)GrievancesStatus.Closed;
+                case "All":
+                    return (int)GrievancesStatus.All;
+                default:
+                    return 0;
+            }
+        }
+
+        public static void CopyText(Label copyLabel, string message)
+        {
+            try
+            {
+                Clipboard.SetTextAsync(copyLabel.Text);
+                if (Clipboard.HasText)
+                {
+                    Common.BindAnimation(label: copyLabel);
+                    UserDialogs.Instance.Toast(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Common/CopyText: " + ex.Message);
+            }
+        }
         #endregion
     }
 
@@ -234,8 +346,9 @@ namespace aptdealzSellerMobile.Utility
 
     public enum PaymentStatus
     {
-        Success = 1,
-        Failed = 2
+        Pending = 1,
+        Success = 2,
+        Failed = 3
     }
 
     public enum OrderStatus
@@ -248,6 +361,37 @@ namespace aptdealzSellerMobile.Utility
         Completed = 6,
         CancelledFromBuyer = 7,
         All = 8
+    }
+
+    public enum GrievancesStatus
+    {
+        Pending = 1,
+        Open = 2,
+        Closed = 3,
+        All = 4
+    }
+
+    public enum GrievancesType
+    {
+        OrderRelated,
+        DelayedDelivery,
+        PaymentRelated
+    }
+
+    public enum GrievancesFrom
+    {
+        Buyer,
+        Seller,
+        MarkettingExecutive
+    }
+
+    public enum NavigationScreen
+    {
+        System,
+        RequirementDetails,
+        QuoteDetails,
+        OrderDetails,
+        GrievanceDetails,
     }
     #endregion
 }

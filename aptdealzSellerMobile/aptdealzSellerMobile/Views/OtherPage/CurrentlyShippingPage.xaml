@@ -14,6 +14,7 @@
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
             <!--  Heare(NavigationBar)  -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -39,37 +40,60 @@
                     Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
-                <StackLayout
+                <Grid
                     Grid.Column="2"
-                    Margin="0,0,20,0"
-                    HorizontalOptions="EndAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        HeightRequest="30"
-                        HorizontalOptions="CenterAndExpand"
-                        Source="iconNotification.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
+                        <Image
+                            Margin="0"
+                            HeightRequest="30"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconNotification.png"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HasShadow="False"
+                            HeightRequest="20"
+                            HorizontalOptions="CenterAndExpand"
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"
+                            Margin="10,5,0,0"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
                     <Image
+                        Grid.Column="1"
                         Margin="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
                         Source="iconQuestion.png"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
-                </StackLayout>
+                </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-            <Grid Grid.Row="1" Margin="0">
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -157,14 +181,7 @@
                         <Frame
                             x:Name="FrmSortBy"
                             Grid.Column="0"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                            Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
@@ -172,18 +189,15 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
                                     Source="iconSortASC.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Style="{StaticResource lblLight15}"
+                                    Style="{StaticResource lblLight}"
                                     Text="Sort by" />
                             </Grid>
                             <Frame.GestureRecognizers>
@@ -194,25 +208,15 @@
                         <Frame
                             x:Name="FrmFilterBy"
                             Grid.Column="1"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                            Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
                                 ColumnSpacing="0">
                                 <Image
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
                                     Source="iconFilter.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     x:Name="lblFilterBy"
@@ -220,7 +224,7 @@
                                     Margin="0,5,0,0"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Style="{StaticResource lblLight15}"
+                                    Style="{StaticResource lblLight}"
                                     Text="Filter by" />
                             </Grid>
                             <Frame.GestureRecognizers>
@@ -233,18 +237,17 @@
                 <ListView
                     x:Name="lstCurrentlyShipping"
                     Grid.Row="2"
-                    HasUnevenRows="True"
-                    HorizontalOptions="FillAndExpand"
-                    SelectionMode="None"
-                    SeparatorVisibility="None"
-                    VerticalOptions="FillAndExpand">
+                    IsPullToRefreshEnabled="True"
+                    ItemAppearing="lstCurrentlyShipping_ItemAppearing"
+                    ItemTapped="lsCurrentShipingDetails_ItemTapped"
+                    Refreshing="lstCurrentlyShipping_Refreshing"
+                    Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <Grid>
                                     <Grid
-                                        Margin="0"
-                                        Padding="20,15,5,5"
+                                        Padding="20,20,0,20"
                                         BackgroundColor="{Binding GridBg, Mode=TwoWay}"
                                         RowSpacing="0">
                                         <Grid.ColumnDefinitions>
@@ -252,149 +255,88 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Grid
-                                            Grid.Column="0"
-                                            Margin="0"
-                                            RowSpacing="5">
+                                        <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
 
-                                            <Grid Grid.Row="0">
-                                                <!--  InvoceId  -->
-                                                <Label
-                                                    FontFamily="Poppins-SemiBold"
-                                                    FontSize="{OnPlatform Android=14,
-                                                                          iOS=16}"
-                                                    HorizontalOptions="StartAndExpand"
-                                                    Text="{Binding InvoceId}"
-                                                    TextColor="{StaticResource Black}" />
+                                            <!--  InvoceId  -->
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                FontSize="15"
+                                                HorizontalOptions="StartAndExpand"
+                                                Style="{StaticResource lblSemiBold}"
+                                                Text="{Binding OrderNo}" />
 
-                                                <!--  Track Button  -->
-                                                <ext:CustomShadowFrame
-                                                    x:Name="frmTrackUp"
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    BackgroundColor="Transparent"
-                                                    BorderColor="Gray"
-                                                    CornerRadius="5"
-                                                    HasShadow="False"
-                                                    HeightRequest="30"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                    VerticalOptions="CenterAndExpand"
-                                                    WidthRequest="80">
-                                                    <Label
-                                                        Margin="0"
-                                                        Padding="0"
-                                                        FontFamily="Poppins-Medium"
-                                                        FontSize="{OnPlatform Android=14,
-                                                                              iOS=16}"
-                                                        HorizontalOptions="CenterAndExpand"
-                                                        Text="Track"
-                                                        TextColor="{StaticResource Green}"
-                                                        VerticalOptions="CenterAndExpand"
-                                                        VerticalTextAlignment="Center" />
-                                                    <ext:CustomShadowFrame.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="frmTrackUp_Tapped" />
-                                                    </ext:CustomShadowFrame.GestureRecognizers>
-                                                </ext:CustomShadowFrame>
+                                            <!--  Track Button  -->
+                                            <Button
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Padding="10,0"
+                                                BorderColor="{StaticResource DarkGray}"
+                                                BorderWidth="1"
+                                                Clicked="BtnTrack_Clicked"
+                                                FontSize="15"
+                                                HeightRequest="35"
+                                                HorizontalOptions="EndAndExpand"
+                                                IsVisible="{Binding OldDetail, Mode=TwoWay}"
+                                                Style="{StaticResource btnBorder}"
+                                                Text="Track" />
 
-                                            </Grid>
                                             <!--  Description  -->
                                             <Label
                                                 Grid.Row="1"
                                                 Grid.Column="0"
-                                                FontFamily="Poppins-Medium"
-                                                FontSize="{OnPlatform Android=14,
-                                                                      iOS=16}"
+                                                FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding OldDetail, Mode=TwoWay}"
-                                                Text="{Binding Description}"
-                                                TextColor="{StaticResource Black}" />
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding PaymentStatusDescr}" />
 
-                                            <!--  Description  -->
-                                            <Grid Grid.Row="2">
-                                                <Label
-                                                    Grid.Column="0"
-                                                    Margin="{OnPlatform Android=0,
-                                                                        iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins-Medium"
-                                                    FontSize="{OnPlatform Android=16,
-                                                                          iOS=18}"
-                                                    HorizontalOptions="StartAndExpand"
-                                                    IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                    Text="{Binding Description}"
-                                                    TextColor="{StaticResource Black}" />
+                                            <!--  ShippingDate  -->
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="15"
+                                                HorizontalOptions="EndAndExpand"
+                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding ExpectedDelivery, StringFormat='{0:dd/MM/yyyy}'}" />
 
-                                                <!--  ShippingDate  -->
-                                                <Label
-                                                    Grid.Column="1"
-                                                    Margin="{OnPlatform Android=0,
-                                                                        iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins-Medium"
-                                                    FontSize="{OnPlatform Android=16,
-                                                                          iOS=18}"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                    Text="{Binding ShippingDate}"
-                                                    TextColor="{StaticResource Black}" />
-                                            </Grid>
+                                            <!--  Track Button  -->
+                                            <Button
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                Padding="10,0"
+                                                BorderColor="{StaticResource DarkGray}"
+                                                BorderWidth="1"
+                                                Clicked="BtnTrack_Clicked"
+                                                FontSize="15"
+                                                HeightRequest="35"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                Style="{StaticResource btnBorder}"
+                                                Text="Track" />
 
-                                            <Grid
-                                                Grid.Row="3"
-                                                Margin="0,0,0,10"
-                                                Padding="0"
-                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}">
-                                                <!--  Track Button  -->
-                                                <ext:CustomShadowFrame
-                                                    x:Name="frmTrack"
-                                                    Grid.Column="0"
-                                                    Margin="{OnPlatform Android=0,
-                                                                        iOS='0,10,0,0'}"
-                                                    Padding="0"
-                                                    BorderColor="Gray"
-                                                    CornerRadius="5"
-                                                    HasShadow="False"
-                                                    HeightRequest="30"
-                                                    HorizontalOptions="StartAndExpand"
-                                                    VerticalOptions="CenterAndExpand"
-                                                    WidthRequest="80">
-
-                                                    <Label
-                                                        Grid.Column="0"
-                                                        FontFamily="Poppins-Medium"
-                                                        FontSize="{OnPlatform Android=14,
-                                                                              iOS=16}"
-                                                        HorizontalOptions="CenterAndExpand"
-                                                        Text="Track"
-                                                        TextColor="{StaticResource Green}"
-                                                        VerticalOptions="CenterAndExpand"
-                                                        VerticalTextAlignment="Center" />
-                                                    <ext:CustomShadowFrame.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="frmTrack_Tapped" />
-                                                    </ext:CustomShadowFrame.GestureRecognizers>
-                                                </ext:CustomShadowFrame>
-
-                                                <!--  Amount  -->
-                                                <Label
-                                                    Grid.Column="1"
-                                                    Margin="{OnPlatform Android=0,
-                                                                        iOS='0,10,0,0'}"
-                                                    FontFamily="Poppins-Medium"
-                                                    FontSize="{OnPlatform Android=14,
-                                                                          iOS=16}"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    Text="{Binding Amount, StringFormat='Rs {0:}'}"
-                                                    TextColor="{StaticResource Green}" />
-
-                                            </Grid>
+                                            <!--  Amount  -->
+                                            <Label
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="15"
+                                                HorizontalOptions="EndAndExpand"
+                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding PaidAmount, StringFormat='Rs {0:}'}"
+                                                TextColor="{StaticResource Green}" />
                                         </Grid>
 
-                                        <!--#region Colum 1 ArrowImage-->
+                                        <!--  ArrowImage  -->
                                         <ImageButton
                                             Grid.Column="1"
                                             Margin="0"
@@ -407,11 +349,12 @@
                                             Source="{Binding ArrowImage, Mode=TwoWay}"
                                             VerticalOptions="StartAndExpand"
                                             WidthRequest="50" />
-
                                     </Grid>
 
                                     <BoxView Style="{StaticResource boxHorizontalGreen}" />
-
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdList_Tapped" />
+                                    </Grid.GestureRecognizers>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
@@ -421,13 +364,11 @@
                 <Label
                     x:Name="lblNoRecord"
                     Grid.Row="2"
-                    FontFamily="Poppins-Medium"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"
-                    Text="No CurrentlyShipping found"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblMedium}"
+                    Text="No CurrentlyShipping found" />
             </Grid>
         </Grid>
     </ContentPage.Content>

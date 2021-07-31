@@ -9,10 +9,12 @@ namespace aptdealzSellerMobile.Views.SplashScreen
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SplashScreen : ContentPage
     {
+        #region Ctor
         public SplashScreen()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region Method
         protected async override void OnAppearing()
@@ -22,7 +24,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
             BindNavigation();
         }
 
-        void BindNavigation()
+        private void BindNavigation()
         {
             try
             {

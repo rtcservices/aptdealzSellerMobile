@@ -20,9 +20,11 @@ namespace aptdealzSellerMobile.Views.Popup
         }
         #endregion
 
-        #region Methods
-
-        #endregion
+        protected override bool OnBackgroundClicked()
+        {
+            base.OnBackgroundClicked();
+            return false;
+        }
 
         #region Events
         private void FrmHome_Tapped(object sender, EventArgs e)

@@ -20,19 +20,6 @@ namespace aptdealzSellerMobile.Utility
             }
         }
 
-        public string password;
-
-        public string Password
-        {
-            get { return Password; }
-            set
-            {
-                password = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Password"));
-                Settings.Password = value;
-            }
-        }
-
         public string _fcm_token;
         public string fcm_token
         {
@@ -42,18 +29,6 @@ namespace aptdealzSellerMobile.Utility
                 _fcm_token = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("fcm_token"));
                 Settings.fcm_token = value;
-            }
-        }
-
-        public string _firebaseVerificationId;
-        public string firebaseVerificationId
-        {
-            get { return firebaseVerificationId; }
-            set
-            {
-                _firebaseVerificationId = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("firebaseVerificationId"));
-                Settings.firebaseVerificationId = value;
             }
         }
 
@@ -126,9 +101,7 @@ namespace aptdealzSellerMobile.Utility
         }
 
         private const string EmailAddressKey = "email_address_key";
-        private const string PasswordKey = "password_key";
         private const string fcm_tokenKey = "fcm_token_key";
-        private const string firebaseVerificationIdKey = "firebaseVerificationId_key";
         private const string UserTokenKey = "userToken_key";
         private const string UserIdKey = "userId_key";
         private const string RefreshTokenKey = "refreshToken_key";
@@ -143,22 +116,10 @@ namespace aptdealzSellerMobile.Utility
             set { AppSettings.AddOrUpdateValue(EmailAddressKey, value); }
         }
 
-        public static string Password
-        {
-            get { return AppSettings.GetValueOrDefault(PasswordKey, SettingsDefault); }
-            set { AppSettings.AddOrUpdateValue(PasswordKey, value); }
-        }
-
         public static string fcm_token
         {
             get { return AppSettings.GetValueOrDefault(fcm_tokenKey, SettingsDefault); }
             set { AppSettings.AddOrUpdateValue(fcm_tokenKey, value); }
-        }
-
-        public static string firebaseVerificationId
-        {
-            get { return AppSettings.GetValueOrDefault(firebaseVerificationIdKey, SettingsDefault); }
-            set { AppSettings.AddOrUpdateValue(firebaseVerificationIdKey, value); }
         }
 
         public static string UserToken

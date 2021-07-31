@@ -1,8 +1,8 @@
 ﻿using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,6 +19,20 @@ namespace aptdealzSellerMobile.Views.OtherPage
         public WeSupportPage()
         {
             InitializeComponent();
+           
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
@@ -30,15 +44,21 @@ namespace aptdealzSellerMobile.Views.OtherPage
         }
         private void BindCarousallData()
         {
-            mCarousellImages = new List<CarousellImage>()
+            try
             {
-                new CarousellImage{ImageName="imgMakeInIndia.png"},
-                new CarousellImage{ImageName="imgMakeInIndia.png"},
-                new CarousellImage{ImageName="imgMakeInIndia.png"},
-            };
-            Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+                mCarousellImages = new List<CarousellImage>()
+                {
+                    new CarousellImage{ImageName="imgMakeInIndia.png"},
+                    new CarousellImage{ImageName="imgMakeInIndia.png"},
+                    new CarousellImage{ImageName="imgMakeInIndia.png"},
+                };
+                Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WeSupportPage/BindCarousallData: " + ex.Message);
+            }
         }
-
         #endregion
 
         #region Events
@@ -49,7 +69,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -59,13 +79,14 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
-        #endregion
 
         private void BtnLogo_Clicked(object sender, EventArgs e)
         {
             Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
+        #endregion
     }
 }

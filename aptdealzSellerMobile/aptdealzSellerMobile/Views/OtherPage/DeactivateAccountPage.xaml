@@ -3,13 +3,13 @@
     x:Class="aptdealzSellerMobile.Views.OtherPage.DeactivateAccountPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <Grid>
+
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
@@ -22,6 +22,7 @@
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
                 <Image
+                    x:Name="ImgMenu"
                     Grid.Column="0"
                     Margin="20,0,0,0"
                     HeightRequest="30"
@@ -39,33 +40,54 @@
                     Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
-                <StackLayout
+                <Grid
                     Grid.Column="2"
-                    Margin="0,0,20,0"
-                    HorizontalOptions="EndAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        HeightRequest="30"
-                        HorizontalOptions="CenterAndExpand"
-                        Source="iconNotification.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
+                        <Image
+                            Margin="0"
+                            HeightRequest="30"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconNotification.png"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"  HasShadow="False"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HeightRequest="20"
+                            HorizontalOptions="CenterAndExpand"
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"  FontSize="15"
+                            Margin="10,5,0,0"
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
                     <Image
+                        Grid.Column="1"
                         Margin="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
                         Source="iconQuestion.png"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
-                </StackLayout>
+                </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
@@ -78,51 +100,41 @@
 
                 <Grid
                     Grid.Row="0"
-                    Margin="20,0"
-                    ColumnDefinitions="Auto,*,Auto"
-                    HorizontalOptions="FillAndExpand">
-                    <Image
-                        Margin="0"
-                        Aspect="AspectFit"
-                        HeightRequest="30"
-                        HorizontalOptions="StartAndExpand"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
                         Source="iconBackArrow.png"
-                        VerticalOptions="CenterAndExpand"
-                        WidthRequest="30">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgBack_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                        Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
-                        Margin="5,0,0,0"
-                        FontFamily="Poppins-SemiBold"
-                        FontSize="20"
-                        HorizontalOptions="StartAndExpand"
-                        Text="Deactivate Account"
-                        TextColor="{StaticResource Black}"
-                        VerticalOptions="CenterAndExpand" />
-
+                        Style="{StaticResource lblHeader}"
+                        Text="Deactivate Account" />
                 </Grid>
 
-                <ScrollView Grid.Row="1" Margin="0,15,0,0">
+                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
 
-                    <Grid Margin="0" RowDefinitions="Auto,*,Auto">
+                    <Grid
+                        Padding="20,0,20,20"
+                        RowDefinitions="Auto,Auto,*"
+                        RowSpacing="15">
+
                         <Label
                             Grid.Row="0"
-                            Margin="30,20,20,20"
                             HorizontalOptions="FillAndExpand"
                             LineBreakMode="WordWrap"
-                            LineHeight="1.2"
-                            Style="{StaticResource lblLight15}"
+                            Style="{StaticResource lblLight}"
                             Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
                             VerticalOptions="FillAndExpand" />
 
-                        <ext:CustomShadowFrame
+                        <Frame
                             Grid.Row="1"
-                            Margin="30,0"
-                            Padding="0"
+                            Margin="0"
+                            Padding="10"
+                            BackgroundColor="Transparent"
                             BorderColor="{StaticResource LightGray}"
                             CornerRadius="5"
                             HasShadow="False"
@@ -130,40 +142,20 @@
                             VerticalOptions="FillAndExpand">
                             <Editor
                                 x:Name="txtReason"
-                                Margin="10,10"
                                 AutoSize="TextChanges"
                                 Placeholder="Reason for Deactivation:"
                                 Style="{StaticResource edPrimary}" />
-                        </ext:CustomShadowFrame>
+                        </Frame>
 
-                        <ext:CustomShadowFrame
+                        <Button
+                            x:Name="BtnDeactivation"
                             Grid.Row="2"
-                            Margin="20,20,20,40"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Green}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="CenterAndExpand">
-                            <Label
-                                Grid.Column="1"
-                                Margin="20,10"
-                                FontFamily="Poppins-Medium"
-                                FontSize="16"
-                                HorizontalOptions="CenterAndExpand"
-                                LineBreakMode="WordWrap"
-                                Text="Confirm Account Deactivation"
-                                TextColor="{StaticResource White}"
-                                VerticalOptions="CenterAndExpand" />
-                            <ext:CustomShadowFrame.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmDeactivation_Tapped" />
-                            </ext:CustomShadowFrame.GestureRecognizers>
-                        </ext:CustomShadowFrame>
-
+                            Clicked="BtnDeactivation_Clicked"
+                            Style="{StaticResource btnPrimary}"
+                            Text="Confirm Account Deactivation"
+                            VerticalOptions="EndAndExpand" />
                     </Grid>
-
                 </ScrollView>
-
             </Grid>
         </Grid>
     </ContentPage.Content>

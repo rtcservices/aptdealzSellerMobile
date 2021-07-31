@@ -3,258 +3,273 @@
     x:Class="aptdealzSellerMobile.Views.OtherPage.ContactSupportPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:aptdealzSellerMobile.Converter"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     iOS:Page.UseSafeArea="True"
     BackgroundColor="{StaticResource White}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <ext:ExtKeyboard>
-            <Grid RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <!--#region Header (NavigationBar)-->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="80" />
-                    </Grid.ColumnDefinitions>
-                    <Image
-                        Grid.Column="0"
-                        Margin="20,0,0,0"
-                        HeightRequest="30"
-                        HorizontalOptions="StartAndExpand"
-                        Source="IconMenu.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+            <!--#region Header (NavigationBar)-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="StartAndExpand"
+                    Source="IconMenu.png"
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
 
-                    <ImageButton
-                        x:Name="BtnLogo"
-                        Grid.Column="1"
-                        Clicked="BtnLogo_Clicked"
-                        Style="{StaticResource imgLogo}" />
+                <ImageButton
+                    x:Name="BtnLogo"
+                    Grid.Column="1"
+                    Clicked="BtnLogo_Clicked"
+                    Style="{StaticResource imgLogo}" />
 
-                    <StackLayout
-                        Grid.Column="2"
-                        Margin="0,0,20,0"
-                        HorizontalOptions="EndAndExpand"
-                        Orientation="Horizontal">
+                <Grid
+                    Grid.Column="2"
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
                         <Image
                             Margin="0"
                             HeightRequest="30"
                             HorizontalOptions="CenterAndExpand"
                             Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                            </Image.GestureRecognizers>
-                        </Image>
-
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"  HasShadow="False"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HeightRequest="20"
                             HorizontalOptions="CenterAndExpand"
-                            Source="iconQuestion.png"
-                            VerticalOptions="CenterAndExpand">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </StackLayout>
-                    <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"  FontSize="15"
+                            Margin="10,5,0,0"
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <Image
+                        Grid.Column="1"
+                        Margin="0"
+                        HeightRequest="30"
+                        HorizontalOptions="CenterAndExpand"
+                        Source="iconQuestion.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
+            </Grid>
+            <!--#endregion-->
+
+            <Grid Grid.Row="1" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--#region Back Button-->
+                <Grid
+                    Grid.Row="0"
+                    Margin="5,5,5,0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="0">
+                    <ImageButton
+                        x:Name="ImgBack"
+                        Grid.Column="0"
+                        Clicked="ImgBack_Tapped"
+                        Source="iconBackArrow.png"
+                        Style="{StaticResource ImgBtnPrimary}" />
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource lblHeader}"
+                        Text="Contact Support" />
+
                 </Grid>
                 <!--#endregion-->
 
-                <Grid
-                    Grid.Row="1"
-                    Margin="0"
-                    RowSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
+                <ext:ExtKeyboard Grid.Row="1" RowSpacing="0">
+                    <ext:ExtKeyboard.RowDefinitions>
                         <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </ext:ExtKeyboard.RowDefinitions>
 
-                    <!--#region Back Button-->
-                    <Grid
+                    <ListView
+                        x:Name="lstChar"
                         Grid.Row="0"
-                        Margin="5,5,5,0"
-                        ColumnDefinitions="Auto,*"
-                        ColumnSpacing="0">
-                        <ImageButton
-                            x:Name="ImgBack"
-                            Grid.Column="0"
-                            Clicked="ImgBack_Tapped"
-                            Source="iconBackArrow.png"
-                            Style="{StaticResource ImgBtnPrimary}" />
-                        <Label
-                            Grid.Column="1"
-                            Style="{StaticResource lblHeader}"
-                            Text="Contact Support" />
+                        Margin="20,0"
+                        ItemTapped="lstChar_ItemTapped"
+                        Refreshing="lstChar_Refreshing"
+                        Style="{StaticResource lstPrimary}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <pan:PancakeView
+                                        Margin="{Binding IsUser, Converter={converter:BooleanToMessageMargin}}"
+                                        Padding="10"
+                                        BackgroundColor="{StaticResource LightGray}"
+                                        CornerRadius="{Binding IsUser, Converter={converter:BooleanToPancakeRadius}}"
+                                        HorizontalOptions="{Binding IsUser, Converter={converter:BooleanToMessagePosition}}"
+                                        IsClippedToBounds="True"
+                                        VerticalOptions="CenterAndExpand">
 
-                    </Grid>
-                    <!--#endregion-->
+                                        <Grid Margin="0" ColumnDefinitions="Auto,*,Auto">
 
-                    <Grid Grid.Row="1" Margin="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                                            <Image
+                                                Grid.Column="0"
+                                                Margin="0"
+                                                Aspect="AspectFit"
+                                                HeightRequest="50"
+                                                HorizontalOptions="EndAndExpand"
+                                                IsVisible="{Binding IsContact}"
+                                                Source="{Binding ChatMessageFromUserProfileImage}"
+                                                VerticalOptions="CenterAndExpand"
+                                                WidthRequest="50">
+                                                <Image.Clip>
+                                                    <EllipseGeometry
+                                                        Center="25,25"
+                                                        RadiusX="25"
+                                                        RadiusY="25" />
+                                                </Image.Clip>
+                                            </Image>
 
-                        <Grid
-                            Grid.Row="0"
-                            Padding="20,10"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="FillAndExpand">
-                            <flv:FlowListView
-                                x:Name="flvMain"
-                                Margin="0,0,0,0"
-                                BackgroundColor="Transparent"
-                                FlowColumnCount="1"
-                                HasUnevenRows="True"
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="FillAndExpand"
-                                VerticalScrollBarVisibility="Never">
-                                <flv:FlowListView.FlowColumnTemplate>
-                                    <DataTemplate>
-                                        <Frame
-                                            Margin="{Binding MessageMargin}"
-                                            Padding="15,10"
-                                            BackgroundColor="{Binding MessageBackgroundColor}"
-                                            CornerRadius="10"
-                                            HasShadow="False"
-                                            HorizontalOptions="{Binding MessagePosition}"
-                                            IsClippedToBounds="True"
-                                            VerticalOptions="CenterAndExpand">
-
-                                            <Grid Margin="0" ColumnDefinitions="Auto,*,Auto">
-
-                                                <Image
-                                                    Grid.Column="0"
-                                                    Margin="0"
-                                                    Aspect="AspectFill"
-                                                    HeightRequest="70"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    IsVisible="{Binding IsContact}"
-                                                    Source="{Binding ContactImage}"
-                                                    VerticalOptions="CenterAndExpand">
-                                                    <Image.Clip>
-                                                        <EllipseGeometry
-                                                            Center="35,35"
-                                                            RadiusX="35"
-                                                            RadiusY="35" />
-                                                    </Image.Clip>
-                                                </Image>
-
-
-                                                <Grid Grid.Column="1">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="*" />
-                                                        <RowDefinition Height="Auto" />
-                                                    </Grid.RowDefinitions>
+                                            <Grid
+                                                Grid.Column="1"
+                                                RowSpacing="0"
+                                                VerticalOptions="FillAndExpand">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Label
+                                                    Grid.Row="0"
+                                                    FontSize="13"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    LineBreakMode="WordWrap"
+                                                    Style="{StaticResource lblLight}"
+                                                    Text="{Binding Message}"
+                                                    VerticalOptions="StartAndExpand" />
+                                                <StackLayout
+                                                    Grid.Row="1"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Orientation="Horizontal"
+                                                    Spacing="20"
+                                                    VerticalOptions="EndAndExpand">
                                                     <Label
-                                                        Grid.Row="0"
-                                                        Margin="0"
-                                                        FontFamily="Poppins"
-                                                        FontSize="{OnPlatform Android=13,
-                                                                              iOS=15}"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        LineBreakMode="WordWrap"
-                                                        Text="{Binding Message}"
-                                                        TextColor="{Binding MessageTextColor}"
-                                                        VerticalOptions="FillAndExpand" />
-                                                    <StackLayout
-                                                        Grid.Row="1"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        Orientation="Horizontal">
-                                                        <Label
-                                                            Margin="0"
-                                                            FontFamily="Poppins"
-                                                            FontSize="{OnPlatform Android=13,
-                                                                                  iOS=15}"
-                                                            HorizontalOptions="StartAndExpand"
-                                                            Text="{Binding UserName}"
-                                                            TextColor="{StaticResource Black}"
-                                                            VerticalOptions="FillAndExpand" />
-                                                        <Label
-                                                            Margin="0"
-                                                            FontFamily="Poppins"
-                                                            FontSize="{OnPlatform Android=11,
-                                                                                  iOS=13}"
-                                                            HorizontalOptions="EndAndExpand"
-                                                            Text="{Binding Time}"
-                                                            TextColor="{Binding MessageTextColor}"
-                                                            VerticalOptions="EndAndExpand" />
-                                                    </StackLayout>
-                                                </Grid>
-
-                                                <Image
-                                                    Grid.Column="2"
-                                                    Margin="0"
-                                                    Aspect="AspectFill"
-                                                    HeightRequest="70"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    IsVisible="{Binding IsBuyer}"
-                                                    Source="{Binding BuyerImage}"
-                                                    VerticalOptions="CenterAndExpand">
-                                                    <Image.Clip>
-                                                        <EllipseGeometry
-                                                            Center="35,35"
-                                                            RadiusX="35"
-                                                            RadiusY="35" />
-                                                    </Image.Clip>
-                                                </Image>
+                                                        FontSize="11"
+                                                        HorizontalOptions="StartAndExpand"
+                                                        Style="{StaticResource lblMedium}"
+                                                        Text="{Binding ChatMessageFromUserName}"
+                                                        VerticalOptions="EndAndExpand" />
+                                                    <Label
+                                                        FontSize="9"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Style="{StaticResource lblSemiBold}"
+                                                        Text="{Binding CreatedDate, StringFormat='{0:hh:mm tt}'}"
+                                                        TextColor="{StaticResource DarkGray}"
+                                                        VerticalOptions="EndAndExpand" />
+                                                </StackLayout>
                                             </Grid>
-                                        </Frame>
-                                    </DataTemplate>
-                                </flv:FlowListView.FlowColumnTemplate>
-                            </flv:FlowListView>
-                        </Grid>
 
+                                            <Image
+                                                Grid.Column="2"
+                                                Margin="0"
+                                                Aspect="AspectFit"
+                                                HeightRequest="50"
+                                                HorizontalOptions="EndAndExpand"
+                                                IsVisible="{Binding IsUser}"
+                                                Source="{Binding ChatMessageFromUserProfileImage}"
+                                                VerticalOptions="CenterAndExpand"
+                                                WidthRequest="50">
+                                                <Image.Clip>
+                                                    <EllipseGeometry
+                                                        Center="25,25"
+                                                        RadiusX="25"
+                                                        RadiusY="25" />
+                                                </Image.Clip>
+                                            </Image>
+                                        </Grid>
+                                    </pan:PancakeView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Label
+                        x:Name="lblNoRecord"
+                        Grid.Row="0"
+                        FontSize="15"
+                        HorizontalOptions="CenterAndExpand"
+                        IsVisible="false"
+                        Style="{StaticResource lblMedium}"
+                        Text="No message found" />
+
+                    <StackLayout
+                        Grid.Row="1"
+                        Padding="20,10,20,20"
+                        VerticalOptions="EndAndExpand">
                         <Grid
-                            Grid.Row="1"
-                            Padding="20,10,20,0"
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="10"
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="EndAndExpand">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ext:CustomShadowFrame
-                                Margin="0,0,0,20"
+
+                            <Frame
+                                Grid.Column="0"
                                 BackgroundColor="Transparent"
                                 Style="{StaticResource frmEntry}">
                                 <Editor
-                                    Grid.Column="0"
+                                    x:Name="txtMessage"
                                     Margin="0,10,0,0"
                                     AutoSize="TextChanges"
-                                    FontFamily="Poppins"
-                                    FontSize="{OnPlatform Android=14,
-                                                          iOS=18}"
                                     Keyboard="Text"
-                                    Placeholder="Enter You message " />
-                            </ext:CustomShadowFrame>
+                                    Placeholder="Enter You message "
+                                    Style="{StaticResource edPrimary}" />
+                            </Frame>
                             <ImageButton
-                                x:Name="btnSend"
+                                x:Name="BtnSend"
                                 Grid.Column="1"
-                                Margin="0,0,0,20"
                                 BackgroundColor="Transparent"
                                 Clicked="BtnSend_Clicked"
-                                HeightRequest="50"
                                 Source="iconSend.png"
-                                VerticalOptions="EndAndExpand"
-                                WidthRequest="50" />
+                                Style="{StaticResource imgLogo}"
+                                VerticalOptions="EndAndExpand" />
                         </Grid>
-                    </Grid>
-                </Grid>
+                    </StackLayout>
+                </ext:ExtKeyboard>
             </Grid>
-        </ext:ExtKeyboard>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

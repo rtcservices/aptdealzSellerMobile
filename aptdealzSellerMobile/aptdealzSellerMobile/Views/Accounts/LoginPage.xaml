@@ -41,7 +41,7 @@
                             Style="{StaticResource lblBoldHeader}"
                             Text="Welcome Back" />
 
-                        <Label Style="{StaticResource lblLight15}" Text="Login to your AptDealz Seller Account" />
+                        <Label Style="{StaticResource lblLight}" Text="Login to your AptDealz Seller Account" />
                     </StackLayout>
 
                     <Grid

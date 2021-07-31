@@ -51,7 +51,7 @@
 
                     <Label
                         HorizontalTextAlignment="Center"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Please enter the 6 digit OTP &#x0a; received on your email or phone number." />
                 </StackLayout>
 
@@ -207,45 +207,25 @@
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
                     </Frame>
-
                 </StackLayout>
 
-
-                <Frame
-                    x:Name="frmSubmit"
+                <Button
+                    x:Name="BtnSubmit"
                     Grid.Row="2"
-                    Margin="30,10"
-                    Padding="10,5"
+                    Margin="20,10"
                     BackgroundColor="{StaticResource Gray}"
+                    Clicked="BtnSubmit_Tapped"
                     CornerRadius="5"
-                    HasShadow="False"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="StartAndExpand">
-                    <Label
-                        Margin="15,10"
-                        FontFamily="Poppins-Medium"
-                        HorizontalOptions="CenterAndExpand"
-                        Text="Submit"
-                        TextColor="{StaticResource White}"
-                        VerticalOptions="CenterAndExpand" />
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSubmit_Tapped" />
-                    </Frame.GestureRecognizers>
-                </Frame>
-
+                    Style="{StaticResource btnPrimary}"
+                    Text="Submit" />
                 <Button
                     x:Name="BtnResentOtp"
                     Grid.Row="3"
-                    Margin="0"
-                    Padding="15"
                     BackgroundColor="Transparent"
                     Clicked="BtnResentOtp_Tapped"
-                    FontFamily="Poppins-Medium"
-                    FontSize="15"
-                    HorizontalOptions="CenterAndExpand"
+                    Style="{StaticResource btnPrimary}"
                     Text="Resend OTP"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    TextColor="{StaticResource Black}" />
             </Grid>
 
         </Grid>

@@ -37,33 +37,54 @@
                     Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
-                <StackLayout
+                <Grid
                     Grid.Column="2"
-                    Margin="0,0,20,0"
-                    HorizontalOptions="EndAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        HeightRequest="30"
-                        HorizontalOptions="CenterAndExpand"
-                        Source="iconNotification.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
+                        <Image
+                            Margin="0"
+                            HeightRequest="30"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconNotification.png"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"  HasShadow="False"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HeightRequest="20"
+                            HorizontalOptions="CenterAndExpand"
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"  FontSize="15"
+                            Margin="10,5,0,0" 
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
                     <Image
+                        Grid.Column="1"
                         Margin="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
                         Source="iconQuestion.png"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
-                </StackLayout>
+                </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
@@ -73,7 +94,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!--#region Back Button-->
+                <!--  Back Button  -->
                 <Grid
                     Grid.Row="0"
                     Margin="5,5,5,0"
@@ -90,78 +111,50 @@
                         Style="{StaticResource lblHeader}"
                         Text=" About AptDealz" />
                 </Grid>
-                <!--#endregion-->
 
-                <ScrollView Grid.Row="1" Margin="0">
-
+                <ScrollView Grid.Row="1" Style="{StaticResource scrPrimary}">
                     <Grid
-                        Margin="0"
+                        Padding="20,0,20,20"
                         RowDefinitions="*,Auto"
-                        RowSpacing="0">
+                        RowSpacing="15">
                         <Label
                             Grid.Row="0"
                             HorizontalOptions="FillAndExpand"
                             LineBreakMode="WordWrap"
                             LineHeight="1.2"
-                            Style="{StaticResource lblLight15}"
+                            Style="{StaticResource lblLight}"
                             Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                            VerticalOptions="FillAndExpand">
-                            <Label.Margin>
-                                <OnPlatform x:TypeArguments="Thickness">
-                                    <On Platform="Android" Value="20,0" />
-                                    <On Platform="iOS" Value="30,30" />
-                                </OnPlatform>
-                            </Label.Margin>
-                        </Label>
+                            VerticalOptions="FillAndExpand" />
 
                         <!--  Contact Info  -->
-                        <ext:CustomShadowFrame
+                        <Frame
                             Grid.Row="1"
-                            Margin="20"
-                            Padding="0"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="CenterAndExpand">
-                            <Grid
-                                Margin="5,30"
-                                RowDefinitions="Auto,Auto,Auto"
-                                RowSpacing="20">
-
+                            Padding="15,10"
+                            Style="{StaticResource frmBlank}">
+                            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
 
                                 <Label
                                     Grid.Row="0"
-                                    Margin="5,0,0,0"
-                                    FontFamily="Poppins-Medium"
-                                    FontSize="{OnPlatform Android=20,
-                                                          iOS=22}"
+                                    FontSize="19"
                                     HorizontalOptions="StartAndExpand"
-                                    Text="Contact Info"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblBoldHeader}"
+                                    Text="Contact Info" />
 
                                 <Label
                                     Grid.Row="1"
-                                    Margin="5,0,0,0"
                                     HorizontalOptions="StartAndExpand"
-                                    Style="{StaticResource lblLight15}"
+                                    Style="{StaticResource lblLight}"
                                     Text="30, ABC, XYZ Road &#x0a;Kochi, Kerala &#x0a;PIN - 682024" />
 
                                 <Label
                                     Grid.Row="2"
-                                    Margin="5,0,0,0"
                                     HorizontalOptions="StartAndExpand"
-                                    Style="{StaticResource lblLight15}"
+                                    Style="{StaticResource lblLight}"
                                     Text="Phone: +91 012345678" />
-
                             </Grid>
-                        </ext:CustomShadowFrame>
-
+                        </Frame>
                     </Grid>
-
                 </ScrollView>
-
             </Grid>
         </Grid>
     </ContentView.Content>

@@ -18,5 +18,18 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("phoneNumber")]
         public string PhoneNumber { get; set; }
+
+        [JsonProperty("requirementId")]
+        public string RequirementId { get; set; }
+
+        [JsonProperty("paymentStatus")]
+        public int PaymentStatus { get; set; }
+
+        [JsonProperty("razorPayPaymentId")]
+        public string RazorPayPaymentId { get; set; }
+
+        [JsonProperty("razorPayOrderId")]
+        public string RazorPayOrderId { get; set; }
+
     }
 }

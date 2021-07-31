@@ -53,7 +53,7 @@
                         Grid.Row="1"
                         Margin="0,0,0,5"
                         HorizontalOptions="CenterAndExpand"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Home" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Home_Tapped" />
@@ -84,7 +84,7 @@
                         Grid.Row="1"
                         Margin="0,0,0,5"
                         HorizontalOptions="CenterAndExpand"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Quotes" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Quotes_Tapped" />
@@ -115,7 +115,7 @@
                         Grid.Row="1"
                         Margin="0,0,0,5"
                         HorizontalOptions="CenterAndExpand"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Orders" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Orders_Tapped" />
@@ -146,16 +146,14 @@
                         Grid.Row="1"
                         Margin="0,0,0,5"
                         HorizontalOptions="CenterAndExpand"
-                        Style="{StaticResource lblLight15}"
+                        Style="{StaticResource lblLight}"
                         Text="Account" />
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Account_Tapped" />
                     </Grid.GestureRecognizers>
                 </Grid>
                 <!--#endregion-->
-
             </Grid>
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

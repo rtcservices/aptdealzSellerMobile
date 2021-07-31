@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.Interfaces;
+﻿using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
@@ -13,7 +14,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     {
         #region Objects
         private string selectedView;
-        bool isNavigate = false;
+        private bool isNavigate = false;
         #endregion
 
         #region Constuctor
@@ -23,6 +24,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             this.isNavigate = isNavigate;
             selectedView = OpenView;
             BindViews(selectedView);
+            GetProfile();
         }
         #endregion
 
@@ -40,6 +42,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         || selectedView == "Policies"
                         )
                     {
+                        isNavigate = true;
                         selectedView = "Home";
                         BindViews("Home");
                     }
@@ -69,7 +72,35 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             return true;
         }
 
-        public void BindViews(string view)
+        async void GetProfile()
+        {
+            try
+            {
+                ProfileAPI profileAPI = new ProfileAPI();
+                var mResponse = await profileAPI.GetMyProfileData();
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
+                    if (jObject != null)
+                    {
+                        Common.mSellerDetails = jObject.ToObject<Model.Request.SellerDetails>();
+                    }
+                }
+                else
+                {
+                    if (mResponse != null)
+                        Common.DisplayErrorMessage(mResponse.Message);
+                    else
+                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("MainTabbedPage/GetProfile: " + ex.Message);
+            }
+        }
+
+        private void BindViews(string view)
         {
             try
             {
@@ -108,13 +139,13 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     lblAccount.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new AccountView());
                 }
-                else if (view == "QrCodeScan")
-                {
-                    UnselectTab();
-                    imgOrders.Source = Constraints.Img_Order_Active;
-                    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
-                    grdMain.Children.Add(new QrCodeScanView());
-                }
+                //else if (view == "QrCodeScan")
+                //{
+                //    UnselectTab();
+                //    imgOrders.Source = Constraints.Img_Order_Active;
+                //    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
+                //    grdMain.Children.Add(new QrCodeScanView());
+                //}
                 else if (view == "AptDealz")
                 {
                     UnselectTab();

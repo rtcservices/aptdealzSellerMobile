@@ -1,12 +1,15 @@
-﻿using aptdealzSellerMobile.Model;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.OtherPage;
 using aptdealzSellerMobile.Views.Popup;
+using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,9 +19,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
     public partial class GrievancesPage : ContentPage
     {
         #region Objects
-        private List<Grievances> mGrievances = new List<Grievances>();
-        private string filterBy = SortByField.ID.ToString();
+        private List<Grievance> mGrievance;
+        private string filterBy = "";
         private string title = string.Empty;
+        private int? statusBy = null;
+        private bool? sortBy = null;
+        private readonly int pageSize = 10;
         private int pageNo;
         #endregion
 
@@ -26,6 +32,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
         public GrievancesPage()
         {
             InitializeComponent();
+            mGrievance = new List<Grievance>();
+            pageNo = 1;
+            GetGrievance(statusBy, title, filterBy, sortBy);
+          
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
@@ -33,129 +56,86 @@ namespace aptdealzSellerMobile.Views.Dashboard
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindGrievancesData();
+            GetGrievance();
         }
 
-        private void BindGrievancesData()
+        private async void GetGrievance(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = true)
         {
-            mGrievances = new List<Grievances>()
+            try
             {
-                 new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Open",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-                  new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Closed",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-                   new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Closed",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-                     new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Closed",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-                       new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Closed",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-                         new Grievances
-                  {
-                    GrievanceId="GR#123",
-                    GrievanceStatus="Closed",
-                    Description="Need 5 Canon A210 All In One Printers",
-                  },
-            };
-            lstGrievances.ItemsSource = mGrievances.ToList();
+                GrievanceAPI grievanceAPI = new GrievanceAPI();
+                if (isLoader)
+                {
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                }
+                var mResponse = await grievanceAPI.GetAllGrievances(StatusBy, Title, FilterBy, SortBy, pageNo, pageSize);
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    JArray result = (JArray)mResponse.Data;
+                    var orders = result.ToObject<List<Grievance>>();
+                    if (pageNo == 1)
+                    {
+                        mGrievance.Clear();
+                    }
+
+                    foreach (var mGrievances in orders)
+                    {
+                        if (mGrievance.Where(x => x.GrievanceId == mGrievances.GrievanceId).Count() == 0)
+                            mGrievance.Add(mGrievances);
+                    }
+                    BindList(mGrievance);
+                }
+                else
+                {
+                    lstGrievance.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                    // lblNoRecord.Text = mResponse.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievancesPage/GetGrievance: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
         }
 
-        void BindList(List<Grievances> mGrievanceList)
+        private void BindList(List<Grievance> mGrievanceList)
         {
             try
             {
                 if (mGrievanceList != null && mGrievanceList.Count > 0)
                 {
-                    lstGrievances.IsVisible = true;
+                    lstGrievance.IsVisible = true;
                     lblNoRecord.IsVisible = false;
-                    lstGrievances.ItemsSource = mGrievanceList.ToList();
+                    lstGrievance.ItemsSource = mGrievanceList.ToList();
                 }
                 else
                 {
-                    lstGrievances.IsVisible = false;
+                    lstGrievance.IsVisible = false;
                     lblNoRecord.IsVisible = true;
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Grievance/BindList: " + ex.Message);
+                Common.DisplayErrorMessage("GrievancesPage/BindList: " + ex.Message);
             }
         }
-
         #endregion
 
-        #region Events
-        //private async void FrmStatusBy_Tapped(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        StatusPopup statusPopup = new StatusPopup();
-        //        statusPopup.isRefresh += (s1, e1) =>
-        //        {
-        //            string result = s1.ToString();
-        //            if (!Common.EmptyFiels(result))
-        //            {
-        //                Bind list as per result
-        //            }
-        //        };
-        //        await PopupNavigation.Instance.PushAsync(statusPopup);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-        //}
-        private void FrmSortBy_Tapped(object sender, EventArgs e)
+        #region Events      
+        #region [ Header Navigation ]
+        private void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            Common.BindAnimation(image: ImgMenu);
+            //Common.OpenMenu();
         }
 
-        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
+        private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            try
-            {
-                FilterPopup sortByPopup = new FilterPopup("", "");
-                sortByPopup.isRefresh += (s1, e1) =>
-                {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
-                    {
-                        filterBy = result;
-                        lblFilterBy.Text = filterBy;
-                        pageNo = 1;
-                        BindGrievancesData();
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(sortByPopup);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("GrievancesPage/FrmSortBy_Tapped: " + ex.Message);
-            }
-        }
-
-        private void ImgBack_Tapped(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
+            Navigation.PushAsync(new NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -163,63 +143,191 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private void ImgBack_Tapped(object sender, EventArgs e)
+        {
+            Common.BindAnimation(imageButton: ImgBack);
+            Navigation.PopAsync();
+        }
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
+        #endregion
+        private void ImgSearch_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        #region [ Filtering ]
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
+            try
+            {
+                if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
+                {
+                    ImgSort.Source = Constraints.Sort_DSC;
+                    sortBy = false;
+                }
+                else
+                {
+                    ImgSort.Source = Constraints.Sort_ASC;
+                    sortBy = true;
+                }
 
+                pageNo = 1;
+                GetGrievance(statusBy, title, filterBy, sortBy);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievancesPage/FrmSortBy_Tapped: " + ex.Message);
+            }
         }
 
-        private void lstGrievance_ItemTapped(object sender, ItemTappedEventArgs e)
+        private void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
-            lstGrievances.SelectedItem = null;
-            Navigation.PushAsync(new GrievanceDetailPage());
+            try
+            {
+                var statusPopup = new StatusPopup(statusBy, "Grievances");
+                statusPopup.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        lblStatus.Text = result;
+                        statusBy = Common.GetGrievanceStatus(result);
+                        pageNo = 1;
+                        GetGrievance(statusBy, title, filterBy, sortBy);
+                    }
+                };
+                PopupNavigation.Instance.PushAsync(statusPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievancesPage/FrmStatusBy_Tapped: " + ex.Message);
+            }
+        }
+
+        private void FrmFilterBy_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var sortby = new FilterPopup(filterBy, "Active");
+                sortby.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        filterBy = result;
+                        pageNo = 1;
+                        GetGrievance(statusBy, title, filterBy, sortBy);
+                    }
+                };
+                PopupNavigation.Instance.PushAsync(sortby);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievancesPage/FrmFilterBy_Tapped: " + ex.Message);
+            }
         }
 
         private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
+                pageNo = 1;
                 if (!Common.EmptyFiels(entrSearch.Text))
                 {
-                    var GrievanceSearch = mGrievances.Where(x =>
-                                                        x.GrievanceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
-                    BindList(GrievanceSearch);
+                    GetGrievance(statusBy, entrSearch.Text, filterBy, sortBy, false);
                 }
                 else
                 {
-                    BindList(mGrievances);
+                    GetGrievance(statusBy, filterBy, title, sortBy);
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Grievance/entrSearch_TextChanged: " + ex.Message);
+                Common.DisplayErrorMessage("GrievancesPage/CustomEntry_Unfocused: " + ex.Message);
             }
+
         }
 
         private void BtnClose_Clicked(object sender, EventArgs e)
         {
+            entrSearch.Text = string.Empty;
+            BindList(mGrievance);
+        }
+        #endregion
+
+        #region [ Listing ]
+        private void GrdViewGrievances_Tapped(object sender, EventArgs e)
+        {
+            var GridExp = (Grid)sender;
+            var mGrievance = GridExp.BindingContext as Grievance;
+            Navigation.PushAsync(new GrievanceDetailPage(mGrievance.GrievanceId));
+        }
+
+        private void lstGrievance_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
             try
             {
-                entrSearch.Text = string.Empty;
-                BindList(mGrievances);
+                if (this.mGrievance.Count < 10)
+                    return;
+                if (this.mGrievance.Count == 0)
+                    return;
+
+                var lastrequirement = this.mGrievance[this.mGrievance.Count - 1];
+                var lastAppearing = (Grievance)e.Item;
+                if (lastAppearing != null)
+                {
+                    if (lastrequirement == lastAppearing)
+                    {
+                        var totalAspectedRow = pageSize * pageNo;
+                        pageNo += 1;
+
+                        if (this.mGrievance.Count() >= totalAspectedRow)
+                        {
+                            GetGrievance(statusBy, title, filterBy, sortBy, false);
+                        }
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    }
+                }
+                else
+                {
+                    UserDialogs.Instance.HideLoading();
+                }
             }
             catch (Exception ex)
             {
-
+                Common.DisplayErrorMessage("GrievancesPage/ItemAppearing: " + ex.Message);
+                UserDialogs.Instance.HideLoading();
             }
         }
 
-
-
-        #endregion
-
-        private void BtnLogo_Clicked(object sender, EventArgs e)
+        private void lstGrievance_Refreshing(object sender, EventArgs e)
         {
-            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+            try
+            {
+                lstGrievance.IsRefreshing = true;
+                pageNo = 1;
+                mGrievance.Clear();
+                GetGrievance(statusBy, title, filterBy, sortBy);
+                lstGrievance.IsRefreshing = false;
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievancesPage/Refreshing: " + ex.Message);
+            }
         }
+
+        private void lstGrievance_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            lstGrievance.SelectedItem = null;
+        }
+        #endregion
+        #endregion
     }
 }

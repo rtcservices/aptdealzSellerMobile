@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="aptdealzSellerMobile.Views.OtherPage.QrCodeScanPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+    xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+    BackgroundColor="{StaticResource White}"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            x:Name="grdQrCode"
+            Grid.Row="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand">
+            <zxing:ZXingBarcodeImageView
+                x:Name="zXingQR"
+                BarcodeFormat="QR_CODE"
+                BarcodeValue="86420"
+                HeightRequest="400"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="400">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxcm:EncodingOptions Width="400" Height="400" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

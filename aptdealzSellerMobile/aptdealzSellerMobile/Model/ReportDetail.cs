@@ -36,6 +36,27 @@ namespace aptdealzSellerMobile.Model
             get { return _ArrowImage; }
             set { _ArrowImage = value; PropertyChangedEventArgs("ArrowImage"); }
         }
+
+        private Color _GridBg { get; set; } = Color.Transparent;
+        public Color GridBg
+        {
+            get { return _GridBg; }
+            set { _GridBg = value; PropertyChangedEventArgs("GridBg"); }
+        }
+
+        private bool _MoreDetail { get; set; } = false;
+        public bool MoreDetail
+        {
+            get { return _MoreDetail; }
+            set { _MoreDetail = value; PropertyChangedEventArgs("MoreDetail"); }
+        }
+
+        private bool _OldDetail { get; set; } = true;
+        public bool OldDetail
+        {
+            get { return _OldDetail; }
+            set { _OldDetail = value; PropertyChangedEventArgs("OldDetail"); }
+        }
         private bool _ShowCategory { get; set; } = false;
         public bool ShowCategory
         {

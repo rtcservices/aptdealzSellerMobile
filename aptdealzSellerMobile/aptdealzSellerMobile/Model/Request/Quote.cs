@@ -104,7 +104,7 @@ namespace aptdealzSellerMobile.Model.Request
         public object SellerContact { get; set; }
 
         [JsonProperty("buyerContact")]
-        public BuyerContact BuyerContact { get; set; }
+        public object BuyerContact { get; set; }
 
         [JsonProperty("created")]
         public DateTime Created { get; set; }
@@ -113,28 +113,36 @@ namespace aptdealzSellerMobile.Model.Request
         public string Unit { get; set; }
 
         #region Extra
+        [JsonIgnore]
         private Color _GridBg { get; set; } = Color.Transparent;
+        [JsonIgnore]
         public Color GridBg
         {
             get { return _GridBg; }
             set { _GridBg = value; PropertyChangedEventArgs("GridBg"); }
         }
 
+        [JsonIgnore]
         private bool _MoreDetail { get; set; } = false;
+        [JsonIgnore]
         public bool MoreDetail
         {
             get { return _MoreDetail; }
             set { _MoreDetail = value; PropertyChangedEventArgs("MoreDetail"); }
         }
 
+        [JsonIgnore]
         private bool _OldDetail { get; set; } = true;
+        [JsonIgnore]
         public bool OldDetail
         {
             get { return _OldDetail; }
             set { _OldDetail = value; PropertyChangedEventArgs("OldDetail"); }
         }
 
+        [JsonIgnore]
         private string _ArrowImage { get; set; } = Constraints.Arrow_Right;
+        [JsonIgnore]
         public string ArrowImage
         {
             get { return _ArrowImage; }

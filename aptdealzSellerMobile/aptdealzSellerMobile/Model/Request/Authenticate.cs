@@ -9,5 +9,8 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("password")]
         public string Password { get; set; }
+
+        [JsonProperty("fcm_Token")]
+        public string FcmToken { get; set; }
     }
 }

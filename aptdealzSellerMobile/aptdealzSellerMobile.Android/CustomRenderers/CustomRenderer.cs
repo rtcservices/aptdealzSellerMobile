@@ -20,7 +20,6 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Button), typeof(CustomButtonRender))]
 [assembly: ExportRenderer(typeof(ExtAutoSuggestBox), typeof(AutoSuggestBoxCustomRenderer))]
 [assembly: ExportRenderer(typeof(ExtDatePicker), typeof(CustomDatePickerRender))]
-[assembly: ExportRenderer(typeof(ExtTimePicker), typeof(CustomTimePickerRenderer))]
 
 namespace aptdealzSellerMobile.Droid.CustomRenderers
 {
@@ -29,13 +28,20 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
         {
-            base.OnElementChanged(e);
-            string fontFamily = e.NewElement?.FontFamily;
-            if (!Common.EmptyFiels(fontFamily))
+            try
             {
-                var label = (TextView)Control; // for example
-                Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
-                label.Typeface = font;
+                base.OnElementChanged(e);
+                string fontFamily = e.NewElement?.FontFamily;
+                if (!Common.EmptyFiels(fontFamily))
+                {
+                    var label = (TextView)Control; // for example
+                    Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
+                    label.Typeface = font;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Droid/LabelRenderer: " + ex.Message);
             }
         }
     }
@@ -44,29 +50,36 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
-            base.OnElementChanged(e);
-            string fontFamily = e.NewElement?.FontFamily;
-            if (!Common.EmptyFiels(fontFamily))
+            try
             {
-                var textbox = (TextView)Control; // for example
-                Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
-                textbox.Typeface = font;
-            }
+                base.OnElementChanged(e);
+                string fontFamily = e.NewElement?.FontFamily;
+                if (!Common.EmptyFiels(fontFamily))
+                {
+                    var textbox = (TextView)Control; // for example
+                    Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
+                    textbox.Typeface = font;
+                }
 
-            var editText = (Android.Widget.EditText)this.Control;
-            GradientDrawable gd = new GradientDrawable();
-            gd.SetCornerRadius(0);
-            gd.SetColor(Android.Graphics.Color.Transparent);
-            editText.Background = gd;
+                var editText = (Android.Widget.EditText)this.Control;
+                GradientDrawable gd = new GradientDrawable();
+                gd.SetCornerRadius(0);
+                gd.SetColor(Android.Graphics.Color.Transparent);
+                editText.Background = gd;
 
-            var maxLenght = e.NewElement?.MaxLength;
-            if (maxLenght == 1)
-            {
-                Control.Gravity = Android.Views.GravityFlags.Center;
+                var maxLenght = e.NewElement?.MaxLength;
+                if (maxLenght == 1)
+                {
+                    Control.Gravity = Android.Views.GravityFlags.Center;
+                }
+                else
+                {
+                    Control.Gravity = Android.Views.GravityFlags.CenterVertical;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Control.Gravity = Android.Views.GravityFlags.CenterVertical;
+                Common.DisplayErrorMessage("Droid/EntryRenderer: " + ex.Message);
             }
         }
     }
@@ -75,23 +88,29 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
         {
-            base.OnElementChanged(e);
-            string fontFamily = e.NewElement?.FontFamily;
-            if (!Common.EmptyFiels(fontFamily))
+            try
             {
-                var label = (TextView)Control; // for example
-                Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
-                label.Typeface = font;
+                base.OnElementChanged(e);
+                string fontFamily = e.NewElement?.FontFamily;
+                if (!Common.EmptyFiels(fontFamily))
+                {
+                    var label = (TextView)Control; // for example
+                    Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
+                    label.Typeface = font;
+                }
+
+                var nativeedittextfield = (Android.Widget.EditText)this.Control;
+                GradientDrawable gd = new GradientDrawable();
+                gd.SetCornerRadius(0);
+                gd.SetColor(Android.Graphics.Color.Transparent);
+                nativeedittextfield.Background = gd;
+
+                Control.SetPadding(0, 0, 0, 0);
             }
-
-            var nativeedittextfield = (Android.Widget.EditText)this.Control;
-            GradientDrawable gd = new GradientDrawable();
-            gd.SetCornerRadius(0);
-            gd.SetColor(Android.Graphics.Color.Transparent);
-            nativeedittextfield.Background = gd;
-
-            Control.SetPadding(0, 0, 0, 0);
-            //Control.Gravity = Android.Views.GravityFlags.CenterVertical;
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Droid/PickerRenderer: " + ex.Message);
+            }
         }
     }
 
@@ -119,7 +138,7 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Droid/CustomEditorRenderer: " + ex.Message);
+                Common.DisplayErrorMessage("Droid/EditorRenderer: " + ex.Message);
             }
         }
     }
@@ -147,7 +166,7 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Droid/CustomButtonRender: " + ex.Message);
+                Common.DisplayErrorMessage("Droid/ButtonRenderer: " + ex.Message);
             }
         }
     }
@@ -169,7 +188,9 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
                 {
                     GradientDrawable gd = new GradientDrawable();
                     gd.SetColor(global::Android.Graphics.Color.Transparent);
+#pragma warning disable CS0618 // Type or member is obsolete
                     Control.SetBackgroundDrawable(gd);
+#pragma warning restore CS0618 // Type or member is obsolete
                     Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
                     gd.SetSize(15, 15);
                 }
@@ -222,88 +243,7 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("Droid/CustomDatePickerRender: " + ex.Message);
-            }
-        }
-    }
-
-    public class CustomTimePickerRenderer : TimePickerRenderer
-    {
-        public CustomTimePickerRenderer(Context context) : base(context)
-        {
-        }
-        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.TimePicker> e)
-        {
-            try
-            {
-                base.OnElementChanged(e);
-                if (Control == null)
-                {
-                    return;
-                }
-                var customDatePicker = e.NewElement as ExtTimePicker;
-                var nativeEditTextField = Control;
-                GradientDrawable gd = new GradientDrawable();
-                gd.SetCornerRadius(0);
-                //gd.SetStroke(3, Android.Graphics.Color.ParseColor("#66FFFFFF"));
-                //gd.SetColor(Android.Graphics.Color.ParseColor("#66FFFFFF"));
-
-                nativeEditTextField.Background = gd;
-                //Control.SetPadding(5, 0, 5, 0);
-                Control.Gravity = Android.Views.GravityFlags.CenterVertical;
-
-                if (customDatePicker != null)
-                {
-                    SetValue(customDatePicker);
-                }
-                string fontDamily = e.NewElement?.FontFamily;
-
-                if (!string.IsNullOrEmpty(fontDamily))
-                {
-                    var label = (TextView)Control; // for example
-                    Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontDamily + ".otf");
-                    label.Typeface = font;
-                }
-
-                ExtTimePicker element = Element as ExtTimePicker;
-                if (!string.IsNullOrWhiteSpace(element.Placeholder))
-                {
-                    Control.Text = element.Placeholder;
-                }
-
-                //this.Control.TextFormatted = "hh:mm tt";
-
-                Control.TextChanged += (sender, arg) =>
-                {
-                    var selectedDate = Convert.ToString(arg.Text);
-                    if (selectedDate == element.Placeholder)
-                    {
-                        Control.Text = DateTime.Now.ToString("hh:mm tt");
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("Droid/TimePicker/OnElementChanged: " + ex.Message);
-            }
-        }
-
-        private void SetValue(ExtTimePicker customTimePicker)
-        {
-            try
-            {
-                if (customTimePicker.NullableTime.HasValue)
-                {
-                    Control.Text = customTimePicker.NullableTime.Value.ToString(customTimePicker.Format);
-                }
-                else
-                {
-                    Control.Text = customTimePicker.NullText ?? string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("Droid/TimePicker/OnElementChanged: " + ex.Message);
+                Common.DisplayErrorMessage("Droid/DatePickerRenderer: " + ex.Message);
             }
         }
     }

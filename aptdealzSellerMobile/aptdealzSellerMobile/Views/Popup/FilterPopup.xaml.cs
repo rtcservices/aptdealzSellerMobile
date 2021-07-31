@@ -25,6 +25,11 @@ namespace aptdealzSellerMobile.Views.Popup
         #endregion
 
         #region Methos
+        protected override bool OnBackgroundClicked()
+        {
+            base.OnBackgroundClicked();
+            return false;
+        }
 
         protected override void OnAppearing()
         {
@@ -32,64 +37,88 @@ namespace aptdealzSellerMobile.Views.Popup
             BindLabel();
         }
 
-        void BindLabel()
+        private void BindLabel()
         {
-            if (PageName == "Active")
+            try
             {
-                lblFirstType.Text = "ID";
-                lblSecondType.Text = "Date";
-                lblThirdType.Text = "Quotes";
-                lblFourType.Text = "TotalPriceEstimation";
-            }
-            else if (PageName == "Quote")
-            {
-                lblFirstType.Text = "ID";
-                lblSecondType.Text = "Date";
-                lblThirdType.Text = "Amount";
-                lblFourType.Text = "Validity";
-            }
-            else
-            {
-                lblFirstType.Text = "ID";
-                lblSecondType.Text = "Date";
-                lblThirdType.Text = "Quotes";
-                lblFourType.Text = "TotalPriceEstimation";
-            }
-        }
-
-        void BindSource(string viewSource)
-        {
-            if (!Common.EmptyFiels(viewSource))
-            {
-                if (viewSource == SortByField.ID.ToString())
+                if (PageName == "Active")
                 {
-                    ClearSource();
-                    imgFirstType.Source = Constraints.Redio_Selected;
+                    StkFourType.IsVisible = true;
+                    lblFirstType.Text = "ID";
+                    lblSecondType.Text = "Date";
+                    lblThirdType.Text = "Quotes";
+                    lblFourType.Text = "TotalPriceEstimation";
                 }
-                else if (viewSource == SortByField.Date.ToString())
+                else if (PageName == "Quote")
                 {
-                    ClearSource();
-                    imgSecondType.Source = Constraints.Redio_Selected;
+                    StkFourType.IsVisible = true;
+                    lblFirstType.Text = "ID";
+                    lblSecondType.Text = "Date";
+                    lblThirdType.Text = "Amount";
+                    lblFourType.Text = "Validity";
                 }
-                else if (viewSource == SortByField.Quotes.ToString() || viewSource == SortByField.Amount.ToString())
+                else if (PageName == "Order")
                 {
-                    ClearSource();
-                    imgThirdType.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == SortByField.Validity.ToString() || viewSource == SortByField.TotalPriceEstimation.ToString())
-                {
-                    ClearSource();
-                    imgFourType.Source = Constraints.Redio_Selected;
+                    StkFourType.IsVisible = false;
+                    lblFirstType.Text = "ID";
+                    lblSecondType.Text = "Date";
+                    lblThirdType.Text = "Amount";
                 }
                 else
                 {
-                    ClearSource();
-                    imgFirstType.Source = Constraints.Redio_Selected;
+                    StkFourType.IsVisible = true;
+                    lblFirstType.Text = "ID";
+                    lblSecondType.Text = "Date";
+                    lblThirdType.Text = "Quotes";
+                    lblFourType.Text = "TotalPriceEstimation";
                 }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/BindLabel: " + ex.Message);
             }
         }
 
-        void ClearSource()
+        private void BindSource(string viewSource)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(viewSource))
+                {
+                    if (viewSource == SortByField.ID.ToString())
+                    {
+                        ClearSource();
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == SortByField.Date.ToString())
+                    {
+                        ClearSource();
+                        imgSecondType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == SortByField.Quotes.ToString() || viewSource == SortByField.Amount.ToString())
+                    {
+                        ClearSource();
+                        imgThirdType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == SortByField.Validity.ToString() || viewSource == SortByField.TotalPriceEstimation.ToString())
+                    {
+                        ClearSource();
+                        imgFourType.Source = Constraints.Redio_Selected;
+                    }
+                    else
+                    {
+                        ClearSource();
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/BindSource: " + ex.Message);
+            }
+        }
+
+        private void ClearSource()
         {
             imgFirstType.Source = Constraints.Redio_UnSelected;
             imgSecondType.Source = Constraints.Redio_UnSelected;
@@ -101,50 +130,77 @@ namespace aptdealzSellerMobile.Views.Popup
         #region Events
         private void StkFirstType_Tapped(object sender, EventArgs e)
         {
-            BindSource(SortByField.ID.ToString());
-            isRefresh?.Invoke(SortByField.ID.ToString(), null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                BindSource(SortByField.ID.ToString());
+                isRefresh?.Invoke(SortByField.ID.ToString(), null);
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/StkFirstType: " + ex.Message);
+            }
         }
 
         private void StkSecondType_Tapped(object sender, EventArgs e)
         {
-
-            BindSource(SortByField.Date.ToString());
-            isRefresh?.Invoke(SortByField.Date.ToString(), null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                BindSource(SortByField.Date.ToString());
+                isRefresh?.Invoke(SortByField.Date.ToString(), null);
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/StkSecondType: " + ex.Message);
+            }
         }
 
         private void StkThirdType_Tapped(object sender, EventArgs e)
         {
-            if (PageName != "Active")
+            try
             {
-                BindSource(SortByField.Amount.ToString());
-                isRefresh?.Invoke(SortByField.Amount.ToString(), null);
-            }
-            else
-            {
-                BindSource(SortByField.Quotes.ToString());
-                isRefresh?.Invoke(SortByField.Quotes.ToString(), null);
+                if (PageName != "Active")
+                {
+                    BindSource(SortByField.Amount.ToString());
+                    isRefresh?.Invoke(SortByField.Amount.ToString(), null);
+                }
+                else
+                {
+                    BindSource(SortByField.Quotes.ToString());
+                    isRefresh?.Invoke(SortByField.Quotes.ToString(), null);
 
+                }
+                PopupNavigation.Instance.PopAsync();
             }
-            PopupNavigation.Instance.PopAsync();
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/StkThirdType: " + ex.Message);
+            }
         }
-        #endregion
 
         private void StkFourType_Tapped(object sender, EventArgs e)
         {
-            if (PageName != "Active")
+            try
             {
-                BindSource(SortByField.Validity.ToString());
-                isRefresh?.Invoke(SortByField.Validity.ToString(), null);
-            }
-            else
-            {
-                BindSource(SortByField.TotalPriceEstimation.ToString());
-                isRefresh?.Invoke(SortByField.TotalPriceEstimation.ToString(), null);
+                if (PageName != "Active")
+                {
+                    BindSource(SortByField.Validity.ToString());
+                    isRefresh?.Invoke(SortByField.Validity.ToString(), null);
+                }
+                else
+                {
+                    BindSource(SortByField.TotalPriceEstimation.ToString());
+                    isRefresh?.Invoke(SortByField.TotalPriceEstimation.ToString(), null);
 
+                }
+                PopupNavigation.Instance.PopAsync();
             }
-            PopupNavigation.Instance.PopAsync();
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FilterPopup/StkFourType: " + ex.Message);
+            }
         }
+        #endregion
     }
 }

@@ -9,14 +9,24 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutAptDealzView : ContentView
     {
-        #region Objects
-
-        #endregion
-
         #region Constructor
         public AboutAptDealzView()
         {
             InitializeComponent();
+           
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
@@ -28,7 +38,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new Dashboard.NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -38,15 +48,15 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Navigation.PopAsync();
             Common.BindAnimation(imageButton: ImgBack);
-            App.Current.MainPage = new MasterDataPage();
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
+
         }
-        #endregion
 
         private void BtnLogo_Clicked(object sender, EventArgs e)
         {
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
+        #endregion
     }
 }

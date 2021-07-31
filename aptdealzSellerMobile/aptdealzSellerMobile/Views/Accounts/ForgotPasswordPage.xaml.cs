@@ -11,10 +11,6 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForgotPasswordPage : ContentPage
     {
-        #region Objects
-
-        #endregion
-
         #region Constructor
         public ForgotPasswordPage()
         {
@@ -23,26 +19,33 @@ namespace aptdealzSellerMobile.Views.Accounts
         #endregion
 
         #region Methods
-        public bool Validation()
+        private bool Validation()
         {
             bool isValid = false;
-            if (Common.EmptyFiels(txtEmail.Text))
+            try
             {
-                BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                Common.DisplayErrorMessage(Constraints.Required_Email);
+                if (Common.EmptyFiels(txtEmail.Text))
+                {
+                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    Common.DisplayErrorMessage(Constraints.Required_Email);
+                }
+                else if (!txtEmail.Text.IsValidEmail())
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_Email);
+                }
+                else
+                {
+                    isValid = true;
+                }
             }
-            else if (!txtEmail.Text.IsValidEmail())
+            catch (Exception ex)
             {
-                Common.DisplayErrorMessage(Constraints.InValid_Email);
-            }
-            else
-            {
-                isValid = true;
+                Common.DisplayErrorMessage("ForgotPasswordPage/Validation: " + ex.Message);
             }
             return isValid;
         }
 
-        async void SendOtpByEmail()
+        private async void SendOtpByEmail()
         {
             try
             {

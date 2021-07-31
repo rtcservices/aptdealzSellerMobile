@@ -20,6 +20,7 @@
         #endregion
 
         #region [ Profile API ]       
+        public const string DeactivateUser = "api/Account/DeactivateUser";
         public const string Country = "api/v{0}/Country/Get";
         public const string Category = "api/v{0}/Category/Get";
         public const string SubCategory = "api/v{0}/SubCategory/Get?CategoryId={1}";
@@ -49,6 +50,31 @@
         public const string GetOrdersForSeller = "api/v{0}/Order/GetOrdersForSeller";
         public const string GetOrderDetailsForSeller = "api/v{0}/Order/GetOrderDetailsForSeller/{1}";
         public const string UpdateOrder = "api/v{0}/Order/Update";
+        public const string GetShippedOrdersForSeller = "api/v{0}/Order/GetShippedOrdersForSeller";
+        public const string ScanQRCodeAndUpdateOrder = "api​/v{0}​/Order​/ScanQRCodeAndUpdateOrder";
+        #endregion
+
+        #region [ RateAndReview API ]
+        public const string ReviewSeller = "api/v{0}/RateAndReview/ReviewSeller";
+        public const string ReviewSellerProduct = "api/v{0}/RateAndReview/ReviewSellerProduct";
+        #endregion
+
+        #region [ Grievance API ]
+        public const string GetAllGrievancesByMe = "api/v{0}/Grievance/GetAllGrievancesByMe";
+        public const string GetGrievancesDetailsForSeller = "api/v{0}/Grievance/GetGrievancesDetailsForSeller/{1}";
+        public const string SubmitGrievanceResponseFromSeller = "api/v{0}/Grievance/SubmitGrievanceResponseFromSeller";
+        public const string CreateGrievanceFromSeller = "api/v{0}/Grievance/CreateGrievanceFromSeller";
+        #endregion
+
+        #region [ Notification API ]
+        public const string GetAllNotificationsForUser = "api/v{0}/Notifications/GetAllNotificationsForUser";
+        public const string GetNotificationsCountForUser = "api/v{0}/Notifications/GetNotificationsCountForUser";
+        public const string SetUserNoficiationAsRead = "api/v{0}/Notifications/SetUserNoficiationAsRead/{1}";
+        #endregion
+
+        #region [ SupportChat API ]
+        public const string GetAllMyChat = "api/v{0}/SupportChat/GetAllMyChat";
+        public const string SendChatSupportMessage = "api/v{0}/SupportChat/SendChatSupportMessage";
         #endregion
     }
 }

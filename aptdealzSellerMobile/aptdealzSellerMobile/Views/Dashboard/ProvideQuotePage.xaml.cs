@@ -48,6 +48,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private string ErrorMessage = string.Empty;
         private Requirement mRequirement;
         private Quote mQuote;
+        private RequestQuote mRequestQuote;
         #endregion
 
         #region Constructor
@@ -56,7 +57,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
             InitializeComponent();
             lblTotalAmount.Text = "Rs 0";
             RequirementId = requirementId;
+            mQuote = new Quote();
+            mRequestQuote = new RequestQuote();
             GetRequirementsById();
+           
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
 
         public ProvideQuotePage(Quote mQuote)
@@ -65,6 +82,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             lblTotalAmount.Text = "Rs 0";
             this.mQuote = mQuote;
             RequirementId = this.mQuote.RequirementId;
+            mRequestQuote = new RequestQuote();
             GetRequirementsById();
             BindQuoteDetails();
         }
@@ -78,69 +96,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
             dpValidityDate.MinimumDate = DateTime.Today;
         }
 
-        public bool Validations()
-        {
-            bool isValid = false;
-            try
-            {
-                if (Common.EmptyFiels(txtUnitPrice.Text) || Common.EmptyFiels(pckCountry.Text) || dpValidityDate.NullableDate == null)
-                {
-                    RequiredFields();
-                    isValid = false;
-                }
-
-                if (Common.EmptyFiels(txtUnitPrice.Text))
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_UnitPrice);
-                }
-                else if (dpValidityDate.NullableDate == null)
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_QuoteValidityDate);
-                }
-                else if (Common.EmptyFiels(pckCountry.Text))
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_CountryofOrigin);
-                }
-                else if (Common.mCountries.Where(x => x.Name.ToLower() == pckCountry.Text.ToLower()).Count() == 0)
-                {
-                    Common.DisplayErrorMessage(Constraints.InValid_CountryOfOrigin);
-                }
-                else
-                {
-                    isValid = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("QuoteDetailPage/Validations: " + ex.Message);
-            }
-            return isValid;
-        }
-
-        void RequiredFields()
-        {
-            try
-            {
-                if (Common.EmptyFiels(txtUnitPrice.Text))
-                {
-                    BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-                if (dpValidityDate.NullableDate == null)
-                {
-                    BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-                if (Common.EmptyFiels(pckCountry.Text))
-                {
-                    BoxCountry.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("QuoteDetailPage/EnableRequiredFields: " + ex.Message);
-            }
-        }
-
-        async void BindProperties()
+        #region [ Binding ]
+        private async void BindPropertiesByRequirementId()
         {
             try
             {
@@ -169,7 +126,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/BindProperties: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/BindProperties: " + ex.Message);
             }
             finally
             {
@@ -177,7 +134,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        async Task GetCountries()
+        private async Task GetCountries()
         {
             try
             {
@@ -188,11 +145,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/GetCountries: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/GetCountries: " + ex.Message);
             }
         }
 
-        async void BindQuoteDetails()
+        private async void BindQuoteDetails()
         {
             try
             {
@@ -228,174 +185,107 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/GetCountries: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/GetCountries: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region [ Validations ]
+        private bool Validations()
+        {
+            bool isValid = false;
+            try
+            {
+                if (Common.EmptyFiels(txtUnitPrice.Text) || Common.EmptyFiels(pckCountry.Text) || dpValidityDate.NullableDate == null)
+                {
+                    RequiredFields();
+                    isValid = false;
+                }
+
+                if (Common.EmptyFiels(txtUnitPrice.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_UnitPrice);
+                }
+                else if (dpValidityDate.NullableDate == null)
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_QuoteValidityDate);
+                }
+                else if (Common.EmptyFiels(pckCountry.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_CountryofOrigin);
+                }
+                else if (Common.mCountries.Where(x => x.Name.ToLower() == pckCountry.Text.ToLower()).Count() == 0)
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_CountryOfOrigin);
+                }
+                else
+                {
+                    isValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/Validations: " + ex.Message);
+            }
+            return isValid;
+        }
+
+        private void RequiredFields()
+        {
+            try
+            {
+                if (Common.EmptyFiels(txtUnitPrice.Text))
+                {
+                    BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+                if (dpValidityDate.NullableDate == null)
+                {
+                    BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+                if (Common.EmptyFiels(pckCountry.Text))
+                {
+                    BoxCountry.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/EnableRequiredFields: " + ex.Message);
             }
         }
 
-        Model.Request.Quote FillQuote()
+        private void FieldsTrim()
         {
-            if (this.mQuote == null)
-                mQuote = new Quote();
             try
             {
-                mQuote.RequirementId = mRequirement.RequirementId;
-                mQuote.SellerId = mRequirement.UserId;
-
-                mQuote.UnitPrice = Convert.ToDecimal(txtUnitPrice.Text);
-                mQuote.HandlingCharges = Convert.ToDecimal(txtHandlingCharge.Text);
-                mQuote.ShippingCharges = Convert.ToDecimal(txtShippingCharge.Text);
-                mQuote.InsuranceCharges = Convert.ToDecimal(txtInsuranceCharge.Text);
-                mQuote.ShippingPinCode = txtShippingPinCode.Text;
-
-
-                if (dpValidityDate.NullableDate != null && dpValidityDate.NullableDate != DateTime.MinValue)
+                txtUnitPrice.Text = txtUnitPrice.Text.Trim();
+                if (!Common.EmptyFiels(txtHandlingCharge.Text))
                 {
-                    mQuote.ValidityDate = dpValidityDate.NullableDate.Value;
+                    txtHandlingCharge.Text = txtHandlingCharge.Text.Trim();
                 }
-
-                if (!Common.EmptyFiels(pckCountry.Text))
+                if (!Common.EmptyFiels(txtShippingCharge.Text))
                 {
-                    mQuote.CountryId = (int)(Common.mCountries.Where(x => x.Name.ToLower() == pckCountry.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
+                    txtShippingCharge.Text = txtShippingCharge.Text.Trim();
                 }
-
+                if (!Common.EmptyFiels(txtInsuranceCharge.Text))
+                {
+                    txtInsuranceCharge.Text = txtInsuranceCharge.Text.Trim();
+                }
+                if (!Common.EmptyFiels(txtShippingPinCode.Text))
+                {
+                    txtShippingPinCode.Text = txtShippingPinCode.Text.Trim();
+                }
                 if (!Common.EmptyFiels(edtrComment.Text))
                 {
-                    mQuote.Comments = edtrComment.Text;
+                    edtrComment.Text = edtrComment.Text.Trim();
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
-                return null;
-            }
-
-            return mQuote;
-        }
-
-        void FieldsTrim()
-        {
-            txtUnitPrice.Text = txtUnitPrice.Text.Trim();
-            if (!Common.EmptyFiels(txtHandlingCharge.Text))
-            {
-                txtHandlingCharge.Text = txtHandlingCharge.Text.Trim();
-            }
-            if (!Common.EmptyFiels(txtShippingCharge.Text))
-            {
-                txtShippingCharge.Text = txtShippingCharge.Text.Trim();
-            }
-            if (!Common.EmptyFiels(txtInsuranceCharge.Text))
-            {
-                txtInsuranceCharge.Text = txtInsuranceCharge.Text.Trim();
-            }
-            if (!Common.EmptyFiels(txtShippingPinCode.Text))
-            {
-                txtShippingPinCode.Text = txtShippingPinCode.Text.Trim();
-            }
-            if (!Common.EmptyFiels(edtrComment.Text))
-            {
-                edtrComment.Text = edtrComment.Text.Trim();
+                Common.DisplayErrorMessage("ProvideQuotePage/FieldsTrim: " + ex.Message);
             }
         }
 
-        async void SaveQuote()
-        {
-            try
-            {
-                if (Validations())
-                {
-                    if (!await PinCodeValidation())
-                        return;
-
-                    FieldsTrim();
-                    var mQuote = FillQuote();
-                    if (mQuote != null)
-                    {
-                        QuoteAPI quoteAPI = new QuoteAPI();
-                        UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                        Response mResponse = new Response();
-
-                        if (Common.EmptyFiels(mQuote.QuoteId))
-                        {
-                            mResponse = await quoteAPI.SaveQuote(mQuote);
-                        }
-                        else
-                        {
-                            mResponse = await quoteAPI.UpdateQuote(mQuote);
-                        }
-
-                        if (mResponse != null && mResponse.Succeeded)
-                        {
-                            SuccessfullSavedQuote(mResponse.Message);
-                        }
-                        else
-                        {
-                            if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
-                                Common.DisplayErrorMessage(mResponse.Message);
-                            else
-                                Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                        }
-                    }
-                    else
-                    {
-                        if (ErrorMessage != null)
-                            Common.DisplayErrorMessage(ErrorMessage);
-                        else
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("QuoteDetailPage/GetRequirements: " + ex.Message);
-            }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
-            }
-        }
-
-        void SuccessfullSavedQuote(string MessageString)
-        {
-            try
-            {
-                var successPopup = new Popup.SuccessPopup(MessageString);
-                successPopup.isRefresh += (s1, e1) =>
-                {
-                    bool res = (bool)s1;
-                    if (res)
-                    {
-                        if (!Common.EmptyFiels(mQuote.QuoteId))
-                        {
-                            Navigation.PopAsync();
-                        }
-                        else
-                        {
-                            Navigation.PushAsync(new MainTabbedPage("Submitted"));
-                        }
-                        ClearPropeties();
-                    }
-                };
-
-                PopupNavigation.Instance.PushAsync(successPopup);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("QuoteDetailPage/SuccessSavedQuote: " + ex.Message);
-            }
-        }
-
-        void ClearPropeties()
-        {
-            txtUnitPrice.Text = string.Empty;
-            txtHandlingCharge.Text = string.Empty;
-            txtShippingCharge.Text = string.Empty;
-            txtInsuranceCharge.Text = string.Empty;
-            txtShippingPinCode.Text = string.Empty;
-            pckCountry.Text = string.Empty;
-            edtrComment.Text = string.Empty;
-        }
-
-        void CalculateQuoteAmount()
+        private void CalculateQuoteAmount()
         {
             try
             {
@@ -430,11 +320,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/CalculateQuoteAmount: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/CalculateQuoteAmount: " + ex.Message);
             }
         }
 
-        async Task<bool> PinCodeValidation()
+        private async Task<bool> PinCodeValidation()
         {
             bool isValid = false;
             try
@@ -461,12 +351,155 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/PinCodeValidation: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/PinCodeValidation: " + ex.Message);
             }
             return isValid;
         }
+        #endregion
 
-        public async void GetRequirementsById()
+        #region [ Save Quote ]
+        private Model.Request.RequestQuote FillQuote()
+        {
+            try
+            {
+                mRequestQuote.RequirementId = mRequirement.RequirementId;
+
+                mRequestQuote.UnitPrice = Convert.ToDecimal(txtUnitPrice.Text);
+                mRequestQuote.HandlingCharges = Convert.ToDecimal(txtHandlingCharge.Text);
+                mRequestQuote.ShippingCharges = Convert.ToDecimal(txtShippingCharge.Text);
+                mRequestQuote.InsuranceCharges = Convert.ToDecimal(txtInsuranceCharge.Text);
+
+
+                if (Common.EmptyFiels(txtShippingPinCode.Text))
+                    mRequestQuote.ShippingPinCode = "";
+                else
+                    mRequestQuote.ShippingPinCode = txtShippingPinCode.Text;
+
+                if (dpValidityDate.NullableDate != null && dpValidityDate.NullableDate != DateTime.MinValue)
+                {
+                    mRequestQuote.ValidityDate = dpValidityDate.NullableDate.Value;
+                }
+
+                if (!Common.EmptyFiels(pckCountry.Text))
+                {
+                    mRequestQuote.CountryId = (int)(Common.mCountries.Where(x => x.Name.ToLower() == pckCountry.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
+                }
+
+                if (!Common.EmptyFiels(edtrComment.Text))
+                {
+                    mRequestQuote.Comments = edtrComment.Text;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return null;
+            }
+
+            return mRequestQuote;
+        }
+
+        private async void SaveQuote()
+        {
+            try
+            {
+                if (Validations())
+                {
+                    if (!await PinCodeValidation())
+                        return;
+
+                    FieldsTrim();
+                    var mRequestQuote = FillQuote();
+                    if (mRequestQuote != null)
+                    {
+                        QuoteAPI quoteAPI = new QuoteAPI();
+                        UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                        Response mResponse = new Response();
+
+                        if (Common.EmptyFiels(mQuote.QuoteId))
+                        {
+                            mResponse = await quoteAPI.SaveQuote(mRequestQuote);
+                        }
+                        else
+                        {
+                            mRequestQuote.QuoteId = mQuote.QuoteId;
+                            mResponse = await quoteAPI.UpdateQuote(mRequestQuote);
+                        }
+
+                        if (mResponse != null && mResponse.Succeeded)
+                        {
+                            SuccessfullSavedQuote(mResponse.Message);
+                        }
+                        else
+                        {
+                            if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                                Common.DisplayErrorMessage(mResponse.Message);
+                            else
+                                Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                        }
+                    }
+                    else
+                    {
+                        if (ErrorMessage != null)
+                            Common.DisplayErrorMessage(ErrorMessage);
+                        else
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/GetRequirements: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+
+        private void SuccessfullSavedQuote(string MessageString)
+        {
+            try
+            {
+                var successPopup = new Popup.SuccessPopup(MessageString);
+                successPopup.isRefresh += (s1, e1) =>
+                {
+                    bool res = (bool)s1;
+                    if (res)
+                    {
+                        if (!Common.EmptyFiels(mRequestQuote.QuoteId))
+                        {
+                            Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            Navigation.PushAsync(new MainTabbedPage("Submitted"));
+                        }
+                        ClearPropeties();
+                    }
+                };
+
+                PopupNavigation.Instance.PushAsync(successPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/SuccessSavedQuote: " + ex.Message);
+            }
+        }
+
+        private void ClearPropeties()
+        {
+            txtUnitPrice.Text = string.Empty;
+            txtHandlingCharge.Text = string.Empty;
+            txtShippingCharge.Text = string.Empty;
+            txtInsuranceCharge.Text = string.Empty;
+            txtShippingPinCode.Text = string.Empty;
+            pckCountry.Text = string.Empty;
+            edtrComment.Text = string.Empty;
+        }
+        #endregion
+
+        private async void GetRequirementsById()
         {
             try
             {
@@ -482,7 +515,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         mRequirement = jObject.ToObject<Requirement>();
                         if (mRequirement != null)
                         {
-                            BindProperties();
+                            BindPropertiesByRequirementId();
                         }
                     }
                 }
@@ -496,7 +529,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/GetRequirementsById: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/GetRequirementsById: " + ex.Message);
             }
             finally
             {
@@ -511,19 +544,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgCoutryPck_Clicked(object sender, EventArgs e)
-        {
-            pckCountry.Focus();
-        }
-
-        private void Submit_Quote_Click(object sender, EventArgs e)
-        {
-            //SubmitQuote.Focus();
-        }
-
         private void ImgNotification_Tapped(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -533,6 +556,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(imageButton: ImgBack);
             Navigation.PopAsync();
         }
 
@@ -545,7 +569,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/Submit_QuoteTapped: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/Submit_QuoteTapped: " + ex.Message);
             }
         }
 
@@ -570,7 +594,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/AutoSuggestBox_QuerySubmitted: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/AutoSuggestBox_QuerySubmitted: " + ex.Message);
             }
         }
 
@@ -610,8 +634,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteDetailPage/AutoSuggestBox_TextChanged: " + ex.Message);
+                Common.DisplayErrorMessage("ProvideQuotePage/AutoSuggestBox_TextChanged: " + ex.Message);
             }
+        }
+
+        private async void txtShippingPinCode_Unfocused(object sender, FocusEventArgs e)
+        {
+            await PinCodeValidation();
+        }
+
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
         private void Entry_Unfocused(object sender, FocusEventArgs e)
@@ -633,17 +667,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private async void txtShippingPinCode_Unfocused(object sender, FocusEventArgs e)
-        {
-            await PinCodeValidation();
-        }
-
-        private void BtnLogo_Clicked(object sender, EventArgs e)
-        {
-            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
-        }
-        #endregion
-
         private void dpValidityDate_Unfocused(object sender, FocusEventArgs e)
         {
             var date = (Extention.ExtDatePicker)sender;
@@ -652,5 +675,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["LightGray"];
             }
         }
+        #endregion
     }
 }

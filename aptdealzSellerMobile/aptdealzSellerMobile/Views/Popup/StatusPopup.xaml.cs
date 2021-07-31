@@ -11,64 +11,89 @@ namespace aptdealzSellerMobile.Views.Popup
     {
         #region Objects
         public event EventHandler isRefresh;
+        private string PageName;
         #endregion
 
         #region Constructor
-        public StatusPopup(int? StatusBy)
+        public StatusPopup(int? StatusBy, string StatusPageName = null)
         {
             InitializeComponent();
+            PageName = StatusPageName;
             BindSource(StatusBy);
         }
         #endregion
 
         #region Methods
+        protected override bool OnBackgroundClicked()
+        {
+            base.OnBackgroundClicked();
+            return false;
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
             BindLabel();
         }
 
-        void BindLabel()
+        private void BindLabel()
         {
-            lblFirstType.Text = "Submitted";
-            lblSecondType.Text = "Accepted";
-            lblThirdType.Text = "Rejected";
-            lblFourType.Text = "All";
-        }
-
-        void BindSource(int? viewSource)
-        {
-            if (viewSource == null)
-                return;
-
-            if (viewSource == (int)QuoteStatus.Submitted)
+            if (PageName == "Grievances")
             {
-                ClearSource();
-                imgFirstType.Source = Constraints.Redio_Selected;
-            }
-            else if (viewSource == (int)QuoteStatus.Accepted)
-            {
-                ClearSource();
-                imgSecondType.Source = Constraints.Redio_Selected;
-            }
-            else if (viewSource == (int)QuoteStatus.Rejected)
-            {
-                ClearSource();
-                imgThirdType.Source = Constraints.Redio_Selected;
-            }
-            else if (viewSource == (int)QuoteStatus.All)
-            {
-                ClearSource();
-                imgFourType.Source = Constraints.Redio_Selected;
+                lblFirstType.Text = GrievancesStatus.Pending.ToString();
+                lblSecondType.Text = GrievancesStatus.Open.ToString();
+                lblThirdType.Text = GrievancesStatus.Closed.ToString();
+                lblFourType.Text = GrievancesStatus.All.ToString();
             }
             else
             {
-                ClearSource();
-                imgFourType.Source = Constraints.Redio_Selected;
+                lblFirstType.Text = QuoteStatus.Submitted.ToString();
+                lblSecondType.Text = QuoteStatus.Accepted.ToString();
+                lblThirdType.Text = QuoteStatus.Rejected.ToString();
+                lblFourType.Text = QuoteStatus.All.ToString();
             }
         }
 
-        void ClearSource()
+        private void BindSource(int? viewSource)
+        {
+            try
+            {
+                if (viewSource == null)
+                    return;
+
+                if (viewSource == (int)QuoteStatus.Submitted || viewSource == (int)GrievancesStatus.Pending)
+                {
+                    ClearSource();
+                    imgFirstType.Source = Constraints.Redio_Selected;
+                }
+                else if (viewSource == (int)QuoteStatus.Accepted || viewSource == (int)GrievancesStatus.Open)
+                {
+                    ClearSource();
+                    imgSecondType.Source = Constraints.Redio_Selected;
+                }
+                else if (viewSource == (int)QuoteStatus.Rejected || viewSource == (int)GrievancesStatus.Closed)
+                {
+                    ClearSource();
+                    imgThirdType.Source = Constraints.Redio_Selected;
+                }
+                else if (viewSource == (int)QuoteStatus.All || viewSource == (int)GrievancesStatus.All)
+                {
+                    ClearSource();
+                    imgFourType.Source = Constraints.Redio_Selected;
+                }
+                else
+                {
+                    ClearSource();
+                    imgFirstType.Source = Constraints.Redio_Selected;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/BindSource: " + ex.Message);
+            }
+        }
+
+        private void ClearSource()
         {
             imgFirstType.Source = Constraints.Redio_UnSelected;
             imgSecondType.Source = Constraints.Redio_UnSelected;
@@ -80,31 +105,91 @@ namespace aptdealzSellerMobile.Views.Popup
         #region Events
         private void StkFirstType_Tapped(object sender, EventArgs e)
         {
-            BindSource((int)QuoteStatus.Submitted);
-            isRefresh?.Invoke((int)QuoteStatus.Submitted, null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PageName == "Grievances")
+                {
+                    BindSource((int)GrievancesStatus.Pending);
+                    isRefresh?.Invoke(GrievancesStatus.Pending.ToString(), null);
+                }
+                else
+                {
+                    BindSource((int)QuoteStatus.Submitted);
+                    isRefresh?.Invoke(QuoteStatus.Submitted.ToString(), null);
+                }
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/StkFirstType: " + ex.Message);
+            }
         }
 
         private void StkSecondType_Tapped(object sender, EventArgs e)
         {
 
-            BindSource((int)QuoteStatus.Accepted);
-            isRefresh?.Invoke((int)QuoteStatus.Accepted, null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PageName == "Grievances")
+                {
+                    BindSource((int)GrievancesStatus.Open);
+                    isRefresh?.Invoke(GrievancesStatus.Open.ToString(), null);
+                }
+                else
+                {
+                    BindSource((int)QuoteStatus.Accepted);
+                    isRefresh?.Invoke(QuoteStatus.Accepted.ToString(), null);
+                }
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/StkSecondType: " + ex.Message);
+            }
         }
 
         private void StkThirdType_Tapped(object sender, EventArgs e)
         {
-            BindSource((int)QuoteStatus.Rejected);
-            isRefresh?.Invoke((int)QuoteStatus.Rejected, null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PageName == "Grievances")
+                {
+                    BindSource((int)GrievancesStatus.Closed);
+                    isRefresh?.Invoke(GrievancesStatus.Closed.ToString(), null);
+                }
+                else
+                {
+                    BindSource((int)QuoteStatus.Rejected);
+                    isRefresh?.Invoke(QuoteStatus.Rejected.ToString(), null);
+                }
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/StkThirdType: " + ex.Message);
+            }
         }
 
         private void StkFourType_Tapped(object sender, EventArgs e)
         {
-            BindSource((int)QuoteStatus.All);
-            isRefresh?.Invoke((int)QuoteStatus.All, null);
-            PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PageName == "Grievances")
+                {
+                    BindSource((int)GrievancesStatus.All);
+                    isRefresh?.Invoke(GrievancesStatus.All.ToString(), null);
+                }
+                else
+                {
+                    BindSource((int)QuoteStatus.All);
+                    isRefresh?.Invoke(QuoteStatus.All.ToString(), null);
+                }
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/StkFourType: " + ex.Message);
+            }
         }
         #endregion
     }

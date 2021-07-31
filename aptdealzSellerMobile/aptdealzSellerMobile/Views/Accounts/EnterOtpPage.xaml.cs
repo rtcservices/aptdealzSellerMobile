@@ -14,7 +14,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region Objects
         private string EmailAddress;
         private string OTPString;
-        AuthenticationAPI authenticationAPI;
+        private AuthenticationAPI authenticationAPI;
         #endregion
 
         #region Constructor
@@ -25,30 +25,36 @@ namespace aptdealzSellerMobile.Views.Accounts
             authenticationAPI = new AuthenticationAPI();
             ResendButtonEnable();
         }
-
-        void ResendButtonEnable()
-        {
-            BtnResentOtp.IsEnabled = false;
-            int i = 120;
-
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-            {
-                BtnResentOtp.Text = i + " sec";
-                if (i == 0)
-                {
-                    BtnResentOtp.IsEnabled = true;
-                    BtnResentOtp.Text = "Resend OTP";
-                    return false;
-                }
-                i--;
-                return true;
-            });
-        }
-
         #endregion
 
         #region Methods        
-        bool Validations()
+        private void ResendButtonEnable()
+        {
+            try
+            {
+                BtnResentOtp.IsEnabled = false;
+                int i = 120;
+
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    BtnResentOtp.Text = i + " sec";
+                    if (i == 0)
+                    {
+                        BtnResentOtp.IsEnabled = true;
+                        BtnResentOtp.Text = "Resend OTP";
+                        return false;
+                    }
+                    i--;
+                    return true;
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("EnterOtpPage/ResendButtonEnable: " + ex.Message);
+            }
+        }
+
+        private bool Validations()
         {
             bool isValid = false;
             try
@@ -74,7 +80,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             return isValid;
         }
 
-        async void SubmitOTP()
+        private async void SubmitOTP()
         {
             try
             {
@@ -119,7 +125,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
-        async void ResentOTP()
+        private async void ResentOTP()
         {
             try
             {
@@ -157,8 +163,9 @@ namespace aptdealzSellerMobile.Views.Accounts
             Navigation.PopAsync();
         }
 
-        private void FrmSubmit_Tapped(object sender, EventArgs e)
+        private void BtnSubmit_Tapped(object sender, EventArgs e)
         {
+            Common.BindAnimation(button: BtnSubmit);
             SubmitOTP();
         }
 
@@ -210,7 +217,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             if (!Common.EmptyFiels(TxtOtpSix.Text))
             {
                 TxtOtpSix.Unfocus();
-                frmSubmit.BackgroundColor = (Color)App.Current.Resources["Green"];
+                BtnSubmit.BackgroundColor = (Color)App.Current.Resources["Green"];
             }
             else
                 TxtOtpFive.Focus();

@@ -1,5 +1,4 @@
-﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.API;
+﻿using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -14,23 +13,23 @@ namespace aptdealzSellerMobile.Services
         {
             string relativePath = string.Empty;
             string base64String;
+            string fileName = string.Empty;
 
             try
             {
                 if (ImageConvertion.SelectedImageByte != null || FileSelection.fileByte != null)
                 {
-                    if (fileUploadCategory == 0)
+                    if (fileUploadCategory != (int)FileUploadCategory.ProfileDocuments)
                     {
                         base64String = Convert.ToBase64String(ImageConvertion.SelectedImageByte);
+                        fileName = Guid.NewGuid().ToString() + ".png";
                     }
                     else
                     {
                         base64String = Convert.ToBase64String(FileSelection.fileByte);
+                        fileName = FileSelection.fileName;
                     }
 
-                    var fileName = Guid.NewGuid().ToString() + ".png";
-
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     ProfileAPI profileAPI = new ProfileAPI();
                     FileUpload mFileUpload = new FileUpload();
 
@@ -44,10 +43,10 @@ namespace aptdealzSellerMobile.Services
                         var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
                         if (jObject != null)
                         {
-                            var mBuyerFile = jObject.ToObject<Model.Reponse.SellerFileDocument>();
-                            if (mBuyerFile != null)
+                            var mSellerFile = jObject.ToObject<Model.Reponse.SellerFileDocument>();
+                            if (mSellerFile != null)
                             {
-                                relativePath = mBuyerFile.relativePath;
+                                relativePath = mSellerFile.relativePath;
                             }
                         }
                     }
@@ -67,10 +66,6 @@ namespace aptdealzSellerMobile.Services
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("FileUplodeRepository/UplodeFile: " + ex.Message);
-            }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
             }
             return relativePath;
         }

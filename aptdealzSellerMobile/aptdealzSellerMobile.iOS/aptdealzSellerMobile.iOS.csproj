@@ -68,6 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CustomRenderers\CustomRenderer.cs" />
+    <Compile Include="DependencService\PhoneDialer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -461,6 +462,18 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\iconSubmitedQuotes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\iconSad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\iconVideo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\iconFiles2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\iconMusic.png" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>

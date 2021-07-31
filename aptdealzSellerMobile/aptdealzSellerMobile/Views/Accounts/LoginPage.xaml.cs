@@ -15,7 +15,6 @@ namespace aptdealzSellerMobile.Views.Accounts
     public partial class LoginPage : ContentPage
     {
         #region Objects
-        //private bool isChecked = false;
         private bool isEmail = false;
         #endregion
 
@@ -54,42 +53,49 @@ namespace aptdealzSellerMobile.Views.Accounts
         public bool Validations()
         {
             bool isValid = false;
-            if (Common.EmptyFiels(txtUsername.Text) || Common.EmptyFiels(txtPassword.Text))
+            try
             {
-                Common.DisplayErrorMessage(Constraints.Required_All);
-                RequiredFields();
-                isValid = false;
-            }
-
-            else if (txtUsername.Text.Contains("@") || txtUsername.Text.Contains("."))
-            {
-                if (!txtUsername.Text.IsValidEmail())
+                if (Common.EmptyFiels(txtUsername.Text) || Common.EmptyFiels(txtPassword.Text))
                 {
-                    Common.DisplayErrorMessage(Constraints.InValid_Email);
+                    Common.DisplayErrorMessage(Constraints.Required_All);
+                    RequiredFields();
+                    isValid = false;
+                }
+
+                else if (txtUsername.Text.Contains("@") || txtUsername.Text.Contains("."))
+                {
+                    if (!txtUsername.Text.IsValidEmail())
+                    {
+                        Common.DisplayErrorMessage(Constraints.InValid_Email);
+                    }
+                    else
+                    {
+                        isEmail = true;
+                        isValid = true;
+                    }
+                }
+                else if (!txtUsername.Text.IsValidPhone())
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
+                }
+                else if (Common.EmptyFiels(txtPassword.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Password);
                 }
                 else
                 {
-                    isEmail = true;
+                    isEmail = false;
                     isValid = true;
                 }
             }
-            else if (!txtUsername.Text.IsValidPhone())
+            catch (Exception ex)
             {
-                Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
-            }
-            else if (Common.EmptyFiels(txtPassword.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_Password);
-            }
-            else
-            {
-                isEmail = false;
-                isValid = true;
+                Common.DisplayErrorMessage("LoginPage/Validations: " + ex.Message);
             }
             return isValid;
         }
 
-        void RequiredFields()
+        private void RequiredFields()
         {
             try
             {
@@ -108,13 +114,13 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
-        void FieldsTrim()
+        private void FieldsTrim()
         {
             txtUsername.Text = txtUsername.Text.Trim();
             txtPassword.Text = txtPassword.Text.Trim();
         }
 
-        async void AuthenticateUser()
+        private async void AuthenticateUser()
         {
             try
             {
@@ -125,6 +131,10 @@ namespace aptdealzSellerMobile.Views.Accounts
                     Model.Request.Authenticate mAuthenticate = new Model.Request.Authenticate();
                     mAuthenticate.Email = txtUsername.Text;
                     mAuthenticate.Password = txtPassword.Text;
+                    if (!Common.EmptyFiels(Settings.fcm_token))
+                    {
+                        mAuthenticate.FcmToken = Settings.fcm_token;
+                    }
 
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     Response mLocalResponse = new Response();
@@ -165,24 +175,10 @@ namespace aptdealzSellerMobile.Views.Accounts
                                     Settings.RefreshToken = mSeller.RefreshToken;
                                     Settings.LoginTrackingKey = mSeller.LoginTrackingKey == "00000000-0000-0000-0000-000000000000" ? Settings.LoginTrackingKey : mSeller.LoginTrackingKey;
 
-                                    //if (isChecked)
-                                    //{
-                                    //    Settings.EmailAddress = txtUsername.Text;
-                                    //    Settings.Password = txtPassword.Text;
-                                    //    Settings.UserToken = mSeller.JwToken;
-                                    //}
-                                    //else
-                                    //{
-                                    //    Settings.EmailAddress = string.Empty;
-                                    //    Settings.Password = string.Empty;
-                                    //    Settings.UserToken = string.Empty;
-                                    //}
                                     App.Current.MainPage = new MasterData.MasterDataPage();
 
                                     txtUsername.Text = string.Empty;
                                     txtPassword.Text = string.Empty;
-                                    //isChecked = false;
-                                    //imgCheck.Source = Constraints.CheckBox_UnChecked;
                                 }
                             }
                         }

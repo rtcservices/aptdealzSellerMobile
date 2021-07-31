@@ -6,13 +6,12 @@ using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.API
 {
-    class ProfileAPI
+    public class ProfileAPI
     {
         #region [ GET ]
         public async Task<List<Country>> GetCountry()
@@ -192,6 +191,78 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ POST ]
+        public async Task<Response> DeactiviateUser(string userId)
+        {
+            Response mResponse = new Response();
+            try
+            {
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    string requestJson = "{\"userId\":\"" + userId + "\"}";
+                    using (var hcf = new HttpClientFactory(token: Common.Token))
+                    {
+                        string url = EndPointURL.DeactivateUser; //sent UserId
+                        var response = await hcf.PostAsync(url, requestJson);
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                        {
+                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
+                            if (errorString == Constraints.Session_Expired)
+                            {
+                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                            }
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        {
+                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
+                        }
+                        else
+                        {
+                            if (responseJson.Contains("TokenExpired"))
+                            {
+                                var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
+                                if (!isRefresh)
+                                {
+                                    Common.DisplayErrorMessage(Constraints.Session_Expired);
+                                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                                }
+                                else
+                                {
+                                    await DeactiviateUser(userId);
+                                }
+                            }
+                            else
+                            {
+                                mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (await Common.InternetConnection())
+                    {
+                        await DeactiviateUser(userId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mResponse.Succeeded = false;
+                mResponse.Errors = ex.Message;
+                Common.DisplayErrorMessage("ProfileAPI/DeactiviateUser: " + ex.Message);
+            }
+            return mResponse;
+        }
+
         public async Task<Response> FileUpload(FileUpload mFileUpload)
         {
             Response mResponse = new Response();

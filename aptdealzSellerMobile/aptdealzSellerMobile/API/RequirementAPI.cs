@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
@@ -231,14 +232,14 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ POST ]
-        public async Task<Response> RevealBuyerContact(string requirementId, int paymentStatus)
+        public async Task<Response> RevealBuyerContact(RevealBuyerContact mRevealBuyerContact)
         {
             Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    string requestJson = "{\"requirementId\":\"" + requirementId + "\",\"paymentStatus\":" + paymentStatus + "}";
+                    string requestJson = JsonConvert.SerializeObject(mRevealBuyerContact);
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
                         string url = string.Format(EndPointURL.RevealBuyerContact, (int)App.Current.Resources["Version"]);
@@ -276,7 +277,7 @@ namespace aptdealzSellerMobile.API
                                 }
                                 else
                                 {
-                                    await RevealBuyerContact(requirementId, paymentStatus);
+                                    await RevealBuyerContact(mRevealBuyerContact);
                                 }
                             }
                             else
@@ -290,7 +291,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await RevealBuyerContact(requirementId, paymentStatus);
+                        await RevealBuyerContact(mRevealBuyerContact);
                     }
                 }
             }

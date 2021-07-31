@@ -13,39 +13,95 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeView : ContentView
     {
-        #region Objects
-
-        #endregion
-
         #region Constructor
         public HomeView()
         {
             InitializeComponent();
             BindMenus();
+
+            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            {
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = count;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+            });
         }
         #endregion
 
         #region Methods
         private void BindMenus()
         {
-            List<HomeMenu> HomeMenus;
-            HomeMenus = new List<HomeMenu>()
+            try
             {
-                new HomeMenu() { MenuImage = "iconViewReq.png",UiName = "View \nRequirements",MenuName = "Requirements"},
-                new HomeMenu() { MenuImage = "iconSubmitedQuotes.png",UiName = "Quotes \nSubmitted",MenuName = "Submitted"},
-                new HomeMenu() { MenuImage = "iconSupplying.png",UiName = "Orders For \nSupplying",MenuName = "Supplying"},
-                new HomeMenu() { MenuImage = "imgProfile.png",UiName = "Account / \nProfile",MenuName = "AccountProfile"},
-                new HomeMenu() { MenuImage = "imgNotifications.png", UiName = "Notifications",MenuName = "Notifications"},
-                new HomeMenu() { MenuImage = "imgGrievances.png", UiName = "Grievances",MenuName = "Grievances"},
-                new HomeMenu() { MenuImage = "imgAboutAptDealz.png", UiName = "About \nAptDealz",MenuName = "AptDealz"},
-                new HomeMenu() { MenuImage = "iconTandP.png", UiName = "Terms & Policies",MenuName = "Policies"},
-                new HomeMenu() { MenuImage = "imgContactSupport.png", UiName = "Contact \nSupport",MenuName = "Support"},
-                new HomeMenu() { MenuImage = "iconCurrentlyShip.png", UiName = "Currently \nShipping",MenuName = "Shipping"},
-                new HomeMenu() { MenuImage = "iconReports.png", UiName = "Reports",MenuName = "Reports"},
-                new HomeMenu() { MenuImage = "imgWeSupport.png", UiName = "We Support",MenuName = "WeSupport"},
+                List<HomeMenu> HomeMenus;
+                HomeMenus = new List<HomeMenu>()
+            {
+                new HomeMenu() { MenuImage = "iconViewReq.png",UiName = "View\nRequirements", MenuName = "Requirements"},
+                new HomeMenu() { MenuImage = "iconSubmitedQuotes.png",UiName = "Quotes\nSubmitted", MenuName = "Submitted"},
+                new HomeMenu() { MenuImage = "iconSupplying.png",UiName = "Orders For\nSupplying", MenuName = "Supplying"},
+                new HomeMenu() { MenuImage = "imgProfile.png",UiName = "Account /\nProfile", MenuName = "AccountProfile"},
+                new HomeMenu() { MenuImage = "imgNotifications.png", UiName = "Notifications", MenuName = "Notifications"},
+                new HomeMenu() { MenuImage = "imgGrievances.png", UiName = "Grievances", MenuName = "Grievances"},
+                new HomeMenu() { MenuImage = "imgAboutAptDealz.png", UiName = "About\nAptDealz", MenuName = "AptDealz"},
+                new HomeMenu() { MenuImage = "iconTandP.png", UiName = "Terms & Policies", MenuName = "Policies"},
+                new HomeMenu() { MenuImage = "imgContactSupport.png", UiName = "Contact\nSupport", MenuName = "Support"},
+                new HomeMenu() { MenuImage = "iconCurrentlyShip.png", UiName = "Currently\nShipping", MenuName = "Shipping"},
+                new HomeMenu() { MenuImage = "iconReports.png", UiName = "Reports", MenuName = "Reports"},
+                new HomeMenu() { MenuImage = "imgWeSupport.png", UiName = "We Support", MenuName = "WeSupport"},
             };
 
-            flvMenus.FlowItemsSource = HomeMenus.ToList();
+                flvMenus.FlowItemsSource = HomeMenus.ToList();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("HomeView/BindMenus: " + ex.Message);
+            }
+        }
+
+        private void DashboardMenuSelection(HomeMenu mHomeMenu)
+        {
+            try
+            {
+                if (mHomeMenu != null && mHomeMenu.MenuName == "Notifications")
+                {
+                    Navigation.PushAsync(new NotificationPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Grievances")
+                {
+                    Navigation.PushAsync(new GrievancesPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Support")
+                {
+                    Navigation.PushAsync(new ContactSupportPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Shipping")
+                {
+                    Navigation.PushAsync(new CurrentlyShippingPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Reports")
+                {
+                    Navigation.PushAsync(new ReportDetailPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "WeSupport")
+                {
+                    Navigation.PushAsync(new WeSupportPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName != null)
+                {
+                    Common.MasterData.Detail = new NavigationPage(new MainTabbedPage(mHomeMenu.MenuName, true));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("HomeView/DashboardMenuSelection: " + ex.Message);
+            }
         }
         #endregion
 
@@ -65,45 +121,17 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void BtnMenu_Tapped(object sender, EventArgs e)
+        private void DashboardMenu_Tapped(object sender, EventArgs e)
         {
             try
             {
                 var frm = (Frame)sender;
-                var menuName = frm.BindingContext as HomeMenu;
-
-                if (menuName != null && menuName.MenuName == "Notifications")
-                {
-                    Navigation.PushAsync(new NotificationPage());
-                }
-                else if (menuName != null && menuName.MenuName == "Grievances")
-                {
-                    Navigation.PushAsync(new GrievancesPage());
-                }
-                else if (menuName != null && menuName.MenuName == "Support")
-                {
-                    Navigation.PushAsync(new ContactSupportPage());
-                }
-                else if (menuName != null && menuName.MenuName == "Shipping")
-                {
-                    Navigation.PushAsync(new CurrentlyShippingPage());
-                }
-                else if (menuName != null && menuName.MenuName == "Reports")
-                {
-                    Navigation.PushAsync(new ReportDetailPage());
-                }
-                else if (menuName != null && menuName.MenuName == "WeSupport")
-                {
-                    Navigation.PushAsync(new WeSupportPage());
-                }
-                else if (menuName != null && menuName.MenuName != null)
-                {
-                    Common.MasterData.Detail = new NavigationPage(new MainTabbedPage(menuName.MenuName, true));
-                }
+                var mHomeMenu = frm.BindingContext as HomeMenu;
+                DashboardMenuSelection(mHomeMenu);
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("HomeView/BtnMenu_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("HomeView/DashboardMenu_Tapped: " + ex.Message);
             }
         }
 

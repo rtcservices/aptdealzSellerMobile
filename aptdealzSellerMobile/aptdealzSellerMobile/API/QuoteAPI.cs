@@ -165,14 +165,14 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ POST ]
-        public async Task<Response> SaveQuote(Quote mQuote)
+        public async Task<Response> SaveQuote(RequestQuote mRequestQuote)
         {
             Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    var requestJson = JsonConvert.SerializeObject(mQuote);
+                    var requestJson = JsonConvert.SerializeObject(mRequestQuote);
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
                         string url = string.Format(EndPointURL.CreateQuote, (int)App.Current.Resources["Version"]);
@@ -210,7 +210,7 @@ namespace aptdealzSellerMobile.API
                                 }
                                 else
                                 {
-                                    await SaveQuote(mQuote);
+                                    await SaveQuote(mRequestQuote);
                                 }
                             }
                             else
@@ -224,7 +224,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await SaveQuote(mQuote);
+                        await SaveQuote(mRequestQuote);
                     }
                 }
             }
@@ -239,14 +239,14 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ PUT ]
-        public async Task<Response> UpdateQuote(Quote mQuote)
+        public async Task<Response> UpdateQuote(RequestQuote mRequestQuote)
         {
             Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    var requestJson = JsonConvert.SerializeObject(mQuote);
+                    var requestJson = JsonConvert.SerializeObject(mRequestQuote);
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
                         string url = string.Format(EndPointURL.UpdateQuote, (int)App.Current.Resources["Version"]);
@@ -284,7 +284,7 @@ namespace aptdealzSellerMobile.API
                                 }
                                 else
                                 {
-                                    await UpdateQuote(mQuote);
+                                    await UpdateQuote(mRequestQuote);
                                 }
                             }
                             else
@@ -298,7 +298,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await UpdateQuote(mQuote);
+                        await UpdateQuote(mRequestQuote);
                     }
                 }
             }

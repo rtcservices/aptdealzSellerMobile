@@ -13,7 +13,9 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ResetPasswordPage : ContentPage
     {
-        protected string EmailAddress;
+        #region Objects
+        private string EmailAddress;
+        #endregion
 
         #region Ctor
         public ResetPasswordPage(string Email)
@@ -24,43 +26,50 @@ namespace aptdealzSellerMobile.Views.Accounts
         #endregion
 
         #region Methods
-        public bool Validation()
+        private bool Validation()
         {
             bool isValid = false;
-            if (Common.EmptyFiels(txtNewPassword.Text) || Common.EmptyFiels(txtConfirmPassword.Text))
+            try
             {
-                Common.DisplayErrorMessage(Constraints.Required_All);
-                RequiredFields();
-                isValid = false;
+                if (Common.EmptyFiels(txtNewPassword.Text) || Common.EmptyFiels(txtConfirmPassword.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_All);
+                    RequiredFields();
+                    isValid = false;
+                }
+                else if (Common.EmptyFiels(txtNewPassword.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_NewPassword);
+                }
+                else if (!txtNewPassword.Text.IsValidPassword())
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_NewPassword);
+                }
+                else if (Common.EmptyFiels(txtConfirmPassword.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_ConfirmPassword);
+                }
+                else if (!txtConfirmPassword.Text.IsValidPassword())
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_ConfirmPassword);
+                }
+                else if (txtNewPassword.Text != txtConfirmPassword.Text)
+                {
+                    Common.DisplayErrorMessage(Constraints.Same_New_Confirm_Password);
+                }
+                else
+                {
+                    isValid = true;
+                }
             }
-            else if (Common.EmptyFiels(txtNewPassword.Text))
+            catch (Exception ex)
             {
-                Common.DisplayErrorMessage(Constraints.Required_NewPassword);
-            }
-            else if (!txtNewPassword.Text.IsValidPassword())
-            {
-                Common.DisplayErrorMessage(Constraints.InValid_NewPassword);
-            }
-            else if (Common.EmptyFiels(txtConfirmPassword.Text))
-            {
-                Common.DisplayErrorMessage(Constraints.Required_ConfirmPassword);
-            }
-            else if (!txtConfirmPassword.Text.IsValidPassword())
-            {
-                Common.DisplayErrorMessage(Constraints.InValid_ConfirmPassword);
-            }
-            else if (txtNewPassword.Text != txtConfirmPassword.Text)
-            {
-                Common.DisplayErrorMessage(Constraints.Same_New_Confirm_Password);
-            }
-            else
-            {
-                isValid = true;
+                Common.DisplayErrorMessage("ResetPasswordPage/Validation: " + ex.Message);
             }
             return isValid;
         }
 
-        void RequiredFields()
+        private void RequiredFields()
         {
             try
             {
@@ -76,25 +85,25 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("LoginPage/EnableRequiredFields: " + ex.Message);
+                Common.DisplayErrorMessage("ResetPasswordPage/EnableRequiredFields: " + ex.Message);
             }
         }
 
-        void FieldsTrim()
+        private void FieldsTrim()
         {
             txtNewPassword.Text = txtNewPassword.Text.Trim();
             txtConfirmPassword.Text = txtConfirmPassword.Text.Trim();
         }
 
-        async void ResetPassword()
+        private async void ResetPassword()
         {
             try
             {
                 if (Validation())
                 {
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     FieldsTrim();
                     AuthenticationAPI authenticationAPI = new AuthenticationAPI();
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     ResetPassword mResetPassword = new ResetPassword();
 
                     mResetPassword.Email = EmailAddress;
@@ -158,7 +167,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("LoginPage/ImgPassword_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("ResetPasswordPage/ImgPassword_Tapped: " + ex.Message);
             }
         }
 
@@ -180,23 +189,30 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("LoginPage/ImgPassword_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("ResetPasswordPage/ImgPassword_Tapped: " + ex.Message);
             }
         }
 
         private void Entry_Unfocused(object sender, FocusEventArgs e)
         {
-            var entry = (ExtEntry)sender;
-            if (!Common.EmptyFiels(entry.Text))
+            try
             {
-                if (entry.ClassId == "NewPassword")
+                var entry = (ExtEntry)sender;
+                if (!Common.EmptyFiels(entry.Text))
                 {
-                    BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    if (entry.ClassId == "NewPassword")
+                    {
+                        BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
+                    else if (entry.ClassId == "ConfirmPassword")
+                    {
+                        BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    }
                 }
-                else if (entry.ClassId == "ConfirmPassword")
-                {
-                    BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ResetPasswordPage/Entry_Unfocused: " + ex.Message);
             }
         }
         #endregion

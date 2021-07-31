@@ -22,6 +22,7 @@
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
                 <Image
+                    x:Name="ImgMenu"
                     Grid.Column="0"
                     Margin="20,0,0,0"
                     HeightRequest="30"
@@ -39,33 +40,56 @@
                     Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
-                <StackLayout
+                <Grid
                     Grid.Column="2"
-                    Margin="0,0,20,0"
-                    HorizontalOptions="EndAndExpand"
-                    Orientation="Horizontal">
-                    <Image
-                        Margin="0"
-                        HeightRequest="30"
-                        HorizontalOptions="CenterAndExpand"
-                        Source="iconNotification.png"
-                        VerticalOptions="CenterAndExpand">
-                        <Image.GestureRecognizers>
+                    Margin="0,0,10,0"
+                    ColumnDefinitions="*,*"
+                    HorizontalOptions="EndAndExpand">
+                    <Grid>
+                        <Image
+                            Margin="0"
+                            HeightRequest="30"
+                            HorizontalOptions="CenterAndExpand"
+                            Source="iconNotification.png"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="30" />
+                        <Frame
+                            x:Name="frmNotification"
+                            Margin="10,5,0,0"
+                            Padding="0"
+                            BackgroundColor="{StaticResource Orange}"
+                            CornerRadius="10"
+                            HasShadow="False"
+                            HeightRequest="20"
+                            HorizontalOptions="CenterAndExpand"
+                            IsVisible="false"
+                            VerticalOptions="StartAndExpand"
+                            WidthRequest="20" />
+                        <Label
+                            x:Name="lblNotificationCount"
+                            Margin="10,5,0,0"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource lblMedium}"
+                            VerticalOptions="Start" />
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
                     <Image
+                        Grid.Column="1"
                         Margin="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
                         Source="iconQuestion.png"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
-                </StackLayout>
+                </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
@@ -92,730 +116,754 @@
                         Text=" Order Details" />
                 </Grid>
 
-                <ScrollView
-                    x:Name="AllDetails"
+                <RefreshView
+                    x:Name="rfView"
                     Grid.Row="1"
-                    Style="{StaticResource scrPrimary}">
-                    <Grid RowSpacing="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Grid
-                            Grid.Row="0"
-                            HorizontalOptions="FillAndExpand"
-                            RowSpacing="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <!--#region Requirement ID-->
-                            <StackLayout Grid.Row="0">
-                                <StackLayout
-                                    Margin="20,5"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        Margin="0"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Requirement ID" />
-
-                                    <Label
-                                        x:Name="lblOrderRequirementId"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Green}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Quote Reference No-->
-                            <StackLayout Grid.Row="1">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Quote Reference No" />
-
-                                    <Label
-                                        x:Name="lblOrderReferenceNo"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Green}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Buyer Name-->
-                            <StackLayout Grid.Row="2">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Buyer Name" />
-
-                                    <Label
-                                        x:Name="lblOrderBuyerName"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Seller Name-->
-                            <StackLayout Grid.Row="3">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Seller Name" />
-
-                                    <Label
-                                        x:Name="lblOrderSellerName"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Shipping PIN Code-->
-                            <StackLayout Grid.Row="4">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        x:Name="lblPinCodeTitle"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Shipping PIN Code" />
-
-                                    <Label
-                                        x:Name="lblOrderPinCode"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Requested Quantity-->
-                            <StackLayout Grid.Row="5">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Requested Quantity" />
-
-                                    <Label
-                                        x:Name="lblOrderQuntity"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Unit Price-->
-                            <StackLayout Grid.Row="6">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Unit Price" />
-
-                                    <Label
-                                        x:Name="lblOrderUnitPrice"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Net Amount-->
-                            <StackLayout Grid.Row="7">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Net Amount" />
-
-                                    <Label
-                                        x:Name="lblOrderNetAmount"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Handling Charge-->
-                            <StackLayout Grid.Row="8">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Handling Charges" />
-
-                                    <Label
-                                        x:Name="lblOrderHandlingCharge"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Shipping Charge-->
-                            <StackLayout Grid.Row="9">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Shipping Charges" />
-
-                                    <Label
-                                        x:Name="lblOrderShippingCharge"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Insurance Charges-->
-                            <StackLayout Grid.Row="10">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Insurance Charges" />
-
-                                    <Label
-                                        x:Name="lblOrderInsuranceCharge"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-
-                            <!--#region Country of origin-->
-                            <StackLayout Grid.Row="11">
-                                <StackLayout
-                                    Margin="20,0"
-                                    HorizontalOptions="FillAndExpand"
-                                    Orientation="Horizontal">
-
-                                    <Label
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Country of origin" />
-
-                                    <Label
-                                        x:Name="lblOrderCountry"
-                                        Margin="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=14,
-                                                              iOS=16}"
-                                        HorizontalOptions="EndAndExpand"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-
-                                </StackLayout>
-
-                                <BoxView Style="{StaticResource boxHorizontal}" />
-                            </StackLayout>
-                            <!--#endregion-->
-                        </Grid>
-
-                        <Grid
-                            Grid.Row="1"
-                            Padding="20"
-                            RowSpacing="20">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <!--  Accepted Frame  -->
-                            <Frame
-                                Grid.Row="0"
-                                Margin="0"
-                                Padding="15"
-                                BackgroundColor="Transparent"
-                                BorderColor="{StaticResource LightGray}"
-                                CornerRadius="5"
-                                HasShadow="False"
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="FillAndExpand">
-
-                                <Grid Margin="0,0,0,0" RowSpacing="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <!--  Invoice Number  -->
-                                    <Label
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}"
-                                        Text="Invoice Number" />
-
-                                    <Label
-                                        x:Name="lblInvoiceNo"
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}" />
-
-                                    <!--  Tatal Amount  -->
-                                    <Label
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}"
-                                        Text="Total Amount" />
-
-                                    <Label
-                                        x:Name="lblTotalAmount"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}" />
-
-                                    <!--  Expected Delivery  -->
-                                    <Label
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}"
-                                        Text="Expected Delivery" />
-
-                                    <Label
-                                        x:Name="lblExpectedDate"
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}" />
-
-                                    <!--  Contact Seller  -->
-                                    <Label
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}"
-                                        Text="Contact Buyer" />
-
-                                    <Label
-                                        x:Name="lblBuyerContact"
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        FontSize="15"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblSemiBold}" />
-
-                                    <!--  Accepted  -->
+                    Refreshing="RefreshView_Refreshing">
+                    <ScrollView x:Name="AllDetails" Style="{StaticResource scrPrimary}">
+                        <Grid RowDefinitions="Auto,Auto" RowSpacing="0">
+                            <Grid Grid.Row="0" RowSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!--  Order ID  -->
+                                <StackLayout Grid.Row="0" ClassId="OrderId">
                                     <StackLayout
-                                        x:Name="StkActivity"
-                                        Grid.Row="4"
-                                        Grid.ColumnSpan="2"
+                                        Margin="20,0"
                                         HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            Margin="0"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Order ID" />
+
+                                        <Label
+                                            x:Name="lblOrderId"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Green}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CopyString_Tapped" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+
+                                <!--  Requirement ID  -->
+                                <StackLayout Grid.Row="1" ClassId="RequirementId">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            Margin="0"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Requirement ID" />
+
+                                        <Label
+                                            x:Name="lblOrderRequirementId"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Green}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CopyString_Tapped" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+
+                                <!--  Quote Reference No  -->
+                                <StackLayout Grid.Row="2" ClassId="QuoteRefeNo">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Quote Reference No" />
+
+                                        <Label
+                                            x:Name="lblOrderReferenceNo"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Green}"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CopyString_Tapped" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+
+                                <!--  Buyer Name / Address  -->
+                                <Grid Grid.Row="3" RowDefinitions="Auto,Auto,Auto,Auto">
+                                    <StackLayout
+                                        Grid.Row="0"
+                                        Margin="20,0"
                                         Orientation="Horizontal"
                                         VerticalOptions="CenterAndExpand">
-                                        <Image
-                                            HorizontalOptions="EndAndExpand"
-                                            Source="iconTickRound.png"
-                                            VerticalOptions="CenterAndExpand" />
+
                                         <Label
-                                            x:Name="lblOrderStatus"
-                                            FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Style="{StaticResource lblSemiBold}"
-                                            TextColor="{StaticResource Green}" />
-                                    </StackLayout>
-                                </Grid>
-                            </Frame>
+                                            Style="{StaticResource lblLight}"
+                                            Text="Buyer Name" />
 
-                            <!--  Accepted Grid  -->
-                            <StackLayout x:Name="StkAccept" Grid.Row="1">
-                                <Grid RowSpacing="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <!--  Order Status  -->
-                                    <StackLayout Grid.Row="0">
-                                        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
-                                        </StackLayout>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <ext:ExtPicker
-                                                x:Name="pckOrderStatus"
-                                                Grid.Column="1"
-                                                Style="{StaticResource pkPrimary}"
-                                                TabIndex="1">
-                                                <Picker.Items>
-                                                    <x:String>Complete</x:String>
-                                                    <x:String>Panding</x:String>
-                                                    <x:String>Reject</x:String>
-                                                </Picker.Items>
-                                            </ext:ExtPicker>
-                                            <ImageButton
-                                                x:Name="ImgCoutryPck"
-                                                Grid.Column="1"
-                                                Margin="10,0,0,0"
-                                                BackgroundColor="Transparent"
-                                                Clicked="ImgOrderStatusPck_Clicked"
-                                                HeightRequest="20"
-                                                HorizontalOptions="EndAndExpand"
-                                                Source="iconDownArrow.png"
-                                                VerticalOptions="CenterAndExpand"
-                                                WidthRequest="20">
-                                                <ImageButton.GestureRecognizers>
-                                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgOrderStatusPck_Clicked" />
-                                                </ImageButton.GestureRecognizers>
-                                            </ImageButton>
-                                        </Grid>
-                                        <BoxView x:Name="BoxOrderStatus" Style="{StaticResource boxHorizontal}" />
+                                        <Label
+                                            x:Name="lblOrderBuyerName"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource lblMedium}" />
                                     </StackLayout>
 
-                                    <Grid
-                                        x:Name="GrdOtherData"
-                                        Grid.Row="1"
-                                        Margin="0,15,0,0"
-                                        RowSpacing="15">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
+                                    <BoxView Grid.Row="1" Style="{StaticResource boxHorizontal}" />
 
-                                        <!--  Shipping Number  -->
-                                        <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
-                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
-                                            </StackLayout>
-                                            <ext:ExtEntry
-                                                x:Name="txtShippingNumber"
-                                                Keyboard="Text"
-                                                Style="{StaticResource entrPrimary}"
-                                                TabIndex="2" />
-                                            <BoxView x:Name="BoxShippingNumber" Style="{StaticResource boxHorizontal}" />
-                                        </StackLayout>
+                                    <StackLayout
+                                        Grid.Row="2"
+                                        Margin="20,0"
+                                        Orientation="Horizontal">
 
-                                        <!--  LR Number  -->
-                                        <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
-                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
-                                            </StackLayout>
-                                            <ext:ExtEntry
-                                                x:Name="txtLRNumber"
-                                                Keyboard="Text"
-                                                Style="{StaticResource entrPrimary}"
-                                                TabIndex="3" />
-                                            <BoxView x:Name="BoxLRNumber" Style="{StaticResource boxHorizontal}" />
-                                        </StackLayout>
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Buyer Address"
+                                            VerticalOptions="StartAndExpand" />
 
-                                        <!--  EWay Bill Number  -->
-                                        <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
-                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
-                                            </StackLayout>
-                                            <ext:ExtEntry
-                                                x:Name="txtEWayBillNumber"
-                                                Keyboard="Text"
-                                                Style="{StaticResource entrPrimary}"
-                                                TabIndex="4" />
-                                            <BoxView x:Name="BoxEWayBillNumber" Style="{StaticResource boxHorizontal}" />
-                                        </StackLayout>
+                                        <Label
+                                            x:Name="lblBuyerAddress"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            LineBreakMode="CharacterWrap"
+                                            Style="{StaticResource lblMedium}" />
+                                    </StackLayout>
 
-                                        <!--  Tracking Link  -->
-                                        <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
-                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                <Label Style="{StaticResource lblPrimary13}" Text="Tracking Link" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
-                                            </StackLayout>
-                                            <ext:ExtEntry
-                                                x:Name="txtTrackingLink"
-                                                Keyboard="Text"
-                                                Style="{StaticResource entrPrimary}"
-                                                TabIndex="5" />
-                                            <BoxView x:Name="BoxTrackingLink" Style="{StaticResource boxHorizontal}" />
-                                        </StackLayout>
-                                    </Grid>
+                                    <BoxView Grid.Row="3" Style="{StaticResource boxHorizontal}" />
+
                                 </Grid>
-                            </StackLayout>
 
-                            <!--  Delivere Grid  -->
-                            <StackLayout
-                                x:Name="StkDelivered"
+                                <!--  Seller Name  -->
+                                <StackLayout Grid.Row="4">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Seller Name" />
+
+                                        <Label
+                                            x:Name="lblOrderSellerName"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Shipping PIN Code  -->
+                                <StackLayout Grid.Row="5">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            x:Name="lblPinCodeTitle"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Shipping PIN Code" />
+
+                                        <Label
+                                            x:Name="lblOrderPinCode"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Requested Quantity  -->
+                                <StackLayout Grid.Row="6">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Requested Quantity" />
+
+                                        <Label
+                                            x:Name="lblOrderQuntity"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Unit Price  -->
+                                <StackLayout Grid.Row="7">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Unit Price" />
+
+                                        <Label
+                                            x:Name="lblOrderUnitPrice"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Net Amount  -->
+                                <StackLayout Grid.Row="8">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Net Amount" />
+
+                                        <Label
+                                            x:Name="lblOrderNetAmount"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Handling Charge  -->
+                                <StackLayout Grid.Row="9">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Handling Charges" />
+
+                                        <Label
+                                            x:Name="lblOrderHandlingCharge"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Shipping Charge  -->
+                                <StackLayout Grid.Row="10">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Shipping Charges" />
+
+                                        <Label
+                                            x:Name="lblOrderShippingCharge"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Insurance Charges  -->
+                                <StackLayout Grid.Row="11">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Insurance Charges" />
+
+                                        <Label
+                                            x:Name="lblOrderInsuranceCharge"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--  Country of origin  -->
+                                <StackLayout Grid.Row="12">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Country of origin" />
+
+                                        <Label
+                                            x:Name="lblOrderCountry"
+                                            Margin="0"
+                                            FontFamily="Poppins-Medium"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="{StaticResource Black}"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+                            </Grid>
+
+                            <Grid
                                 Grid.Row="1"
-                                IsVisible="false">
-                                <Grid Margin="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <!--  Platform Charges  -->
-                                    <Label
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Platform Charges" />
-
-                                    <Label
-                                        x:Name="lblPlatformCharges"
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}" />
-
-                                    <!--  Seller Earnings  -->
-                                    <Label
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}"
-                                        Text="Seller Earnings" />
-
-                                    <Label
-                                        x:Name="lblSellerEarnings"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight15}" />
-                                </Grid>
-
+                                Padding="20"
+                                RowSpacing="20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <!--  Accepted Frame  -->
                                 <Frame
-                                    Margin="0"
-                                    Padding="15"
-                                    BackgroundColor="Transparent"
-                                    BorderColor="{StaticResource LightGray}"
-                                    CornerRadius="5"
-                                    HasShadow="False"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="FillAndExpand">
-                                    <Grid Margin="0">
+                                    Grid.Row="0"
+                                    Padding="15,10"
+                                    Style="{StaticResource frmBlank}">
+
+                                    <Grid ColumnSpacing="15" RowSpacing="10">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <!--  Status  -->
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <!--  Invoice Number  -->
                                         <Label
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
-                                            Style="{StaticResource lblMedium}"
-                                            Text="Status:"
-                                            TextColor="{StaticResource Green}" />
+                                            Style="{StaticResource lblSemiBold}"
+                                            Text="Invoice Number" />
 
-                                        <!--  Payment Credited  -->
                                         <Label
-                                            x:Name="lblPaymentStatus"
+                                            x:Name="lblInvoiceNo"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}" />
+
+                                        <!--  Tatal Amount  -->
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
+                                            Text="Total Amount" />
+
+                                        <Label
+                                            x:Name="lblTotalAmount"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}" />
+
+                                        <!--  Expected Delivery  -->
+                                        <Label
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
+                                            Text="Expected Delivery" />
+
+                                        <Label
+                                            x:Name="lblExpectedDate"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}" />
+
+                                        <!--  Contact Seller  -->
+                                        <Label
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
+                                            Text="Contact Buyer" />
+
+                                        <Label
+                                            x:Name="lblBuyerContact"
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}" />
+
+                                        <!--  Accepted  -->
+                                        <StackLayout
+                                            x:Name="StkActivity"
+                                            Grid.Row="4"
+                                            Grid.ColumnSpan="2"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Orientation="Horizontal"
+                                            VerticalOptions="CenterAndExpand">
+                                            <Image Source="iconTickRound.png" Style="{StaticResource imgSorting}" />
+                                            <Label
+                                                x:Name="lblOrderStatus"
+                                                FontSize="15"
+                                                HorizontalOptions="StartAndExpand"
+                                                Style="{StaticResource lblMedium}"
+                                                TextColor="{StaticResource Green}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Update Status  -->
+                                <StackLayout x:Name="StkUpdateStatus" Grid.Row="1">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!--  Order Status  -->
+                                        <StackLayout Grid.Row="0">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Picker
+                                                    x:Name="pckOrderStatus"
+                                                    Grid.Column="1"
+                                                    SelectedIndexChanged="pckOrderStatus_SelectedIndexChanged"
+                                                    Style="{StaticResource pkPrimary}"
+                                                    TabIndex="1"
+                                                    Unfocused="pckOrderStatus_Unfocused" />
+                                                <ImageButton
+                                                    x:Name="ImgCoutryPck"
+                                                    Grid.Column="1"
+                                                    Margin="10,0,0,0"
+                                                    BackgroundColor="Transparent"
+                                                    Clicked="ImgOrderStatusPck_Clicked"
+                                                    HeightRequest="20"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Source="iconDownArrow.png"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    WidthRequest="20">
+                                                    <ImageButton.GestureRecognizers>
+                                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgOrderStatusPck_Clicked" />
+                                                    </ImageButton.GestureRecognizers>
+                                                </ImageButton>
+                                            </Grid>
+                                            <BoxView x:Name="BoxOrderStatus" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <Grid
+                                            Grid.Row="1"
+                                            Margin="0,15,0,0"
+                                            RowSpacing="15">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <!--  Shipping Number  -->
+                                            <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
+                                                <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                    <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
+                                                    <Label
+                                                        x:Name="lblShippingNumber"
+                                                        IsVisible="false"
+                                                        Text="*"
+                                                        TextColor="{StaticResource Red}" />
+                                                </StackLayout>
+                                                <ext:ExtEntry
+                                                    x:Name="txtShippingNumber"
+                                                    ClassId="ShippingNumber"
+                                                    Keyboard="Text"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="2"
+                                                    Unfocused="Entry_Unfocused" />
+                                                <BoxView x:Name="BoxShippingNumber" Style="{StaticResource boxHorizontal}" />
+                                            </StackLayout>
+
+                                            <!--  LR Number  -->
+                                            <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
+                                                <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                    <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
+                                                    <Label
+                                                        x:Name="lblLRNumber"
+                                                        IsVisible="false"
+                                                        Text="*"
+                                                        TextColor="{StaticResource Red}" />
+                                                </StackLayout>
+                                                <ext:ExtEntry
+                                                    x:Name="txtLRNumber"
+                                                    ClassId="LRNumber"
+                                                    Keyboard="Text"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="3"
+                                                    Unfocused="Entry_Unfocused" />
+                                                <BoxView x:Name="BoxLRNumber" Style="{StaticResource boxHorizontal}" />
+                                            </StackLayout>
+
+                                            <!--  EWay Bill Number  -->
+                                            <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
+                                                <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                    <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
+                                                    <Label
+                                                        x:Name="lblEWayBillNumber"
+                                                        IsVisible="false"
+                                                        Text="*"
+                                                        TextColor="{StaticResource Red}" />
+                                                </StackLayout>
+                                                <ext:ExtEntry
+                                                    x:Name="txtEWayBillNumber"
+                                                    ClassId="EwayNumber"
+                                                    Keyboard="Text"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="4"
+                                                    Unfocused="Entry_Unfocused" />
+                                                <BoxView x:Name="BoxEWayBillNumber" Style="{StaticResource boxHorizontal}" />
+                                            </StackLayout>
+
+                                            <!--  Tracking Link  -->
+                                            <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
+                                                <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                    <Label Style="{StaticResource lblPrimary13}" Text="Tracking Link" />
+                                                    <!--<Label Text="*" TextColor="{StaticResource Red}" />-->
+                                                </StackLayout>
+                                                <ext:ExtEntry
+                                                    x:Name="txtTrackingLink"
+                                                    Keyboard="Text"
+                                                    Style="{StaticResource entrPrimary}"
+                                                    TabIndex="5" />
+                                                <BoxView x:Name="BoxTrackingLink" Style="{StaticResource boxHorizontal}" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </Grid>
+                                </StackLayout>
+
+                                <!--  No Updation  -->
+                                <StackLayout
+                                    x:Name="StkNoUpdation"
+                                    Grid.Row="1"
+                                    IsVisible="false"
+                                    Spacing="15">
+
+                                    <Grid x:Name="GrdChargesAndEarnings" IsVisible="false">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!--  Platform Charges  -->
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Platform Charges" />
+
+                                        <Label
+                                            x:Name="lblPlatformCharges"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}" />
+
+                                        <!--  Seller Earnings  -->
+                                        <Label
                                             Grid.Row="1"
                                             Grid.Column="0"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            Text="Seller Earnings" />
 
+                                        <Label
+                                            x:Name="lblSellerEarnings"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblMedium}" />
                                     </Grid>
-                                </Frame>
-                            </StackLayout>
 
-                            <!--  Update Button  -->
-                            <Button
-                                x:Name="BtnUpdate"
-                                Grid.Row="2"
-                                Clicked="BtnUpdate_Tapped"
-                                Style="{StaticResource btnPrimary}"
-                                Text="Update" />
-                            <!--#endregion-->
+                                    <Frame
+                                        Margin="0"
+                                        Padding="15,10"
+                                        Style="{StaticResource frmBlank}">
+                                        <Grid Margin="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <!--  Status  -->
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                FontSize="15"
+                                                HorizontalOptions="StartAndExpand"
+                                                Style="{StaticResource lblSemiBold}"
+                                                Text="Status:"
+                                                TextColor="{StaticResource Green}" />
 
-                            <!--  Scan QR Button  -->
-                            <Button
-                                x:Name="BtnScanQRCode"
-                                Grid.Row="2"
-                                Clicked="BtnScanQRCode_Clicked"
-                                Style="{StaticResource btnPrimary}"
-                                Text="Scan QR Code" />
-                            <!--#endregion-->
+                                            <!--  Payment Credited  -->
+                                            <Label
+                                                x:Name="lblPaymentStatus"
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontSize="15"
+                                                HorizontalOptions="StartAndExpand"
+                                                Style="{StaticResource lblSemiBold}"
+                                                TextColor="{StaticResource Green}" />
+
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+
+                                <!--  Update Button  -->
+                                <Button
+                                    x:Name="BtnUpdate"
+                                    Grid.Row="2"
+                                    Clicked="BtnUpdate_Tapped"
+                                    Style="{StaticResource btnPrimary}"
+                                    Text="Update" />
+
+                                <!--  Scan QR Button  -->
+                                <Button
+                                    x:Name="BtnScanQRCode"
+                                    Grid.Row="2"
+                                    Clicked="BtnScanQRCode_Clicked"
+                                    Style="{StaticResource btnPrimary}"
+                                    Text="Scan QR Code" />
+                            </Grid>
+
                         </Grid>
+                    </ScrollView>
+                </RefreshView>
 
-                    </Grid>
-                </ScrollView>
-
-                <Label
+                <!--<Label
                     x:Name="lblCancelledOrder"
                     Grid.Row="1"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"
                     Style="{StaticResource lblMedium}"
-                    Text="This Order is Cancelled" />
+                    Text="This Order is Cancelled" />-->
             </Grid>
         </Grid>
     </ContentPage.Content>

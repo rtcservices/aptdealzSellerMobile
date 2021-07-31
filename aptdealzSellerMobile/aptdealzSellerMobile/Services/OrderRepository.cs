@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json.Linq;
@@ -47,7 +48,7 @@ namespace aptdealzSellerMobile.Services
             return mOrder;
         }
 
-        public async Task UpdateOrder(Order mOrder)
+        public async Task UpdateOrder(OrderUpdate mOrder)
         {
             try
             {
@@ -68,6 +69,34 @@ namespace aptdealzSellerMobile.Services
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("OrderRepository/UpdateOrder: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+
+        public async Task ScanQRCodeAndUpdateOrder(string OrderId)
+        {
+            try
+            {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                var mResponse = await orderAPI.ScanQRCodeAndUpdateOrder(OrderId);
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    SuccessfullSavedQuote(mResponse.Message);
+                }
+                else
+                {
+                    if (mResponse != null && mResponse.Message != null)
+                        Common.DisplayErrorMessage(mResponse.Message);
+                    else
+                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderRepository/ScanQRCodeAndUpdateOrder: " + ex.Message);
             }
             finally
             {

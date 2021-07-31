@@ -59,13 +59,20 @@ namespace aptdealzSellerMobile.Views.SplashScreen
 
         private void BindCarousallData()
         {
-            mCarousellImages = new List<CarousellImage>()
+            try
+            {
+                mCarousellImages = new List<CarousellImage>()
             {
                 new CarousellImage{ImageName="imgWelcomeOne.png"},
                 new CarousellImage{ImageName="imgWelcomeTwo.png"},
                 new CarousellImage{ImageName="imgWelcomeThree.png"},
             };
-            Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+                Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WelcomePage/BindCarousallData: " + ex.Message);
+            }
         }
         #endregion
 
