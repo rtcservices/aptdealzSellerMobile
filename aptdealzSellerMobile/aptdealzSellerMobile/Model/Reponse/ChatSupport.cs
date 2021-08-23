@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.Model.Reponse
 {

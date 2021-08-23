@@ -22,14 +22,17 @@
         #region [ Profile API ]       
         public const string DeactivateUser = "api/Account/DeactivateUser";
         public const string Country = "api/v{0}/Country/Get";
-        public const string Category = "api/v{0}/Category/Get";
-        public const string SubCategory = "api/v{0}/SubCategory/Get?CategoryId={1}";
-        public const string CreateCategory = "/api/v{0}/Category/Create";
-        public const string CreateSubCategory = "api/v{0}/SubCategory/Create";
         public const string FileUpload = "api/FileUpload";
         public const string GetMyProfileData = "api/v{0}/SellerManagement/GetMyProfileData";
         public const string SaveProfile = "api/v{0}/SellerManagement/Update";
         public const string GetPincodeInfo = "api/IndianPincode/GetPincodeInfo/{0}";
+        #endregion
+
+        #region [ Category API ]
+        public const string Category = "api/v{0}/Category/Get";
+        public const string SubCategory = "api/v{0}/SubCategory/Get?CategoryId={1}";
+        public const string CreateCategory = "/api/v{0}/Category/Create";
+        public const string CreateSubCategory = "api/v{0}/SubCategory/Create";
         #endregion
 
         #region [ Requirement API ]
@@ -75,6 +78,10 @@
         #region [ SupportChat API ]
         public const string GetAllMyChat = "api/v{0}/SupportChat/GetAllMyChat";
         public const string SendChatSupportMessage = "api/v{0}/SupportChat/SendChatSupportMessage";
+        #endregion
+
+        #region [ Affiliations API ]
+        public const string GetAllAffiliations = "api/v{0}/Affiliations/GetAllAffiliations";
         #endregion
     }
 }

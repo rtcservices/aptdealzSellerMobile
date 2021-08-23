@@ -4,7 +4,7 @@ using aptdealzSellerMobile.Extention;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
 using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,11 +13,11 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ResetPasswordPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private string EmailAddress;
         #endregion
 
-        #region Ctor
+        #region [ Ctor ]
         public ResetPasswordPage(string Email)
         {
             InitializeComponent();
@@ -25,7 +25,19 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         private bool Validation()
         {
             bool isValid = false;
@@ -95,7 +107,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             txtConfirmPassword.Text = txtConfirmPassword.Text.Trim();
         }
 
-        private async void ResetPassword()
+        private async Task ResetPassword()
         {
             try
             {
@@ -136,17 +148,33 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Events
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void BtnSubmit_Clicked(object sender, EventArgs e)
+        private async void BtnSubmit_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnSubmit);
-            ResetPassword();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnSubmit);
+                    await ResetPassword();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ResetPasswordPage/BtnSubmit_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgNewPassword_Tapped(object sender, EventArgs e)

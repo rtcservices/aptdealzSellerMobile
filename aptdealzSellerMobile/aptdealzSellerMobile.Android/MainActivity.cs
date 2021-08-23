@@ -199,13 +199,13 @@ namespace aptdealzSellerMobile.Droid
                 options.Put("order_id", orderId); //from response of step 3.
                 options.Put("theme.color", paymentColor);
                 options.Put("currency", payload.currency);
-                options.Put("amount", payload.amount); //pass amount in currency subunits 2000 
+                options.Put("amount", payload.amount);
                 options.Put("prefill.email", payload.email);
                 options.Put("prefill.contact", payload.contact);
 
                 checkout.Open(this, options);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 // Log.e(TAG, "Error in starting Razorpay Checkout", e);
             }

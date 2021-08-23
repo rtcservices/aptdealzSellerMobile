@@ -1,5 +1,6 @@
 ﻿using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.MasterData;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,14 +10,26 @@ namespace aptdealzSellerMobile.Views.SplashScreen
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SplashScreen : ContentPage
     {
-        #region Ctor
+        #region [ Ctor ]
         public SplashScreen()
         {
             InitializeComponent();
         }
         #endregion
 
-        #region Method
+        #region [ Method ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected async override void OnAppearing()
         {
             base.OnAppearing();

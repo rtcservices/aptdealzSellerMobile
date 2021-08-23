@@ -22,7 +22,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.GetAllGrievancesByMe + "?PageNumber={1}&PageSize={2}", (int)App.Current.Resources["Version"], PageNumber, PageSize);
 
-                        if (Status > 0)
+                        if (Status.HasValue)
                             url += "&Status=" + Status;
                         if (!Common.EmptyFiels(Title))
                             url += "&Title=" + Title;
@@ -56,17 +56,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetAllGrievances();
                                 }
                             }
                             else
@@ -126,17 +122,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetGrievancesDetailsForSeller(GrievanceId);
                                 }
                             }
                             else
@@ -196,17 +188,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || responseHttp.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await SubmitGrievanceResponseFromSeller(grievanceId, response);
                                 }
                             }
                             else
@@ -268,17 +256,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await CreateGrievanceFromSeller(mRaiseGrievance);
                                 }
                             }
                             else

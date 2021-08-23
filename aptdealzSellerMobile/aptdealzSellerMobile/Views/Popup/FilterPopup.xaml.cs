@@ -10,12 +10,12 @@ namespace aptdealzSellerMobile.Views.Popup
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FilterPopup : PopupPage
     {
-        #region Objects       
+        #region [ Objects ]       
         public event EventHandler isRefresh;
         private string PageName;
         #endregion
 
-        #region Constructor        
+        #region [ Constructor ]        
         public FilterPopup(string SortBy, string SortPageName)
         {
             InitializeComponent();
@@ -24,7 +24,7 @@ namespace aptdealzSellerMobile.Views.Popup
         }
         #endregion
 
-        #region Methos
+        #region [ Methods ]
         protected override bool OnBackgroundClicked()
         {
             base.OnBackgroundClicked();
@@ -43,34 +43,45 @@ namespace aptdealzSellerMobile.Views.Popup
             {
                 if (PageName == "Active")
                 {
+                    StkThirdType.IsVisible = true;
                     StkFourType.IsVisible = true;
-                    lblFirstType.Text = "ID";
-                    lblSecondType.Text = "Date";
-                    lblThirdType.Text = "Quotes";
-                    lblFourType.Text = "TotalPriceEstimation";
+                    lblFirstType.Text = SortByField.ID.ToString();
+                    lblSecondType.Text = SortByField.Date.ToString();
+                    lblThirdType.Text = SortByField.Quotes.ToString();
+                    lblFourType.Text = SortByField.TotalPriceEstimation.ToString();
                 }
                 else if (PageName == "Quote")
                 {
+                    StkThirdType.IsVisible = true;
                     StkFourType.IsVisible = true;
-                    lblFirstType.Text = "ID";
-                    lblSecondType.Text = "Date";
-                    lblThirdType.Text = "Amount";
-                    lblFourType.Text = "Validity";
+                    lblFirstType.Text = SortByField.ID.ToString();
+                    lblSecondType.Text = SortByField.Date.ToString();
+                    lblThirdType.Text = SortByField.Amount.ToString();
+                    lblFourType.Text = SortByField.Validity.ToString();
                 }
                 else if (PageName == "Order")
                 {
+                    StkThirdType.IsVisible = true;
                     StkFourType.IsVisible = false;
-                    lblFirstType.Text = "ID";
-                    lblSecondType.Text = "Date";
-                    lblThirdType.Text = "Amount";
+                    lblFirstType.Text = SortByField.ID.ToString();
+                    lblSecondType.Text = SortByField.Date.ToString();
+                    lblThirdType.Text = SortByField.Amount.ToString();
+                }
+                else if (PageName == "Grievances")
+                {
+                    StkFourType.IsVisible = false;
+                    StkThirdType.IsVisible = false;
+                    lblFirstType.Text = Utility.SortByField.ID.ToString();
+                    lblSecondType.Text = Utility.SortByField.Date.ToString();
                 }
                 else
                 {
+                    StkThirdType.IsVisible = true;
                     StkFourType.IsVisible = true;
-                    lblFirstType.Text = "ID";
-                    lblSecondType.Text = "Date";
-                    lblThirdType.Text = "Quotes";
-                    lblFourType.Text = "TotalPriceEstimation";
+                    lblFirstType.Text = SortByField.ID.ToString();
+                    lblSecondType.Text = SortByField.Date.ToString();
+                    lblThirdType.Text = SortByField.Quotes.ToString();
+                    lblFourType.Text = SortByField.TotalPriceEstimation.ToString();
                 }
             }
             catch (Exception ex)
@@ -127,7 +138,7 @@ namespace aptdealzSellerMobile.Views.Popup
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void StkFirstType_Tapped(object sender, EventArgs e)
         {
             try

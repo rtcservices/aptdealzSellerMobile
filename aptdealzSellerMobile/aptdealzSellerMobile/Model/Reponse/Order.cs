@@ -11,6 +11,12 @@ namespace aptdealzSellerMobile.Model.Reponse
         [JsonProperty("orderId")]
         public string OrderId { get; set; }
 
+        [JsonProperty("requirementId")]
+        public string RequirementId { get; set; }
+
+        [JsonProperty("quoteId")]
+        public string QuoteId { get; set; }
+
         [JsonProperty("orderNo")]
         public string OrderNo { get; set; }
 
@@ -134,7 +140,16 @@ namespace aptdealzSellerMobile.Model.Reponse
         [JsonProperty("productRating")]
         public int ProductRating { get; set; }
 
+        [JsonProperty("shippingAddressDetails")]
+        public ShippingAddressDetails ShippingAddressDetails { get; set; }
+
         #region [ Extra Properties ]
+        [JsonIgnore]
+        public bool isSelectGrievance { get; set; } = false;
+
+        [JsonIgnore]
+        public bool ScanQRCode { get; set; }
+
         [JsonIgnore]
         public string ExpectedDeliveryDate
         {
@@ -150,21 +165,6 @@ namespace aptdealzSellerMobile.Model.Reponse
                 }
             }
         }
-
-        [JsonIgnore]
-        public bool ScanQRCode
-        {
-            get
-            {
-                if (OrderStatus == (int)Utility.OrderStatus.Shipped)
-                    return true;
-                else if (PickupProductDirectly && OrderStatus == (int)Utility.OrderStatus.Shipped)
-                    return true;
-                else
-                    return false;
-            }
-        }
-
         [JsonIgnore]
         public string OrderPaymentStatus
         {

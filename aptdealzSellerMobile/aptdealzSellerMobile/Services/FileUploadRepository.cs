@@ -46,7 +46,7 @@ namespace aptdealzSellerMobile.Services
                             var mSellerFile = jObject.ToObject<Model.Reponse.SellerFileDocument>();
                             if (mSellerFile != null)
                             {
-                                relativePath = mSellerFile.relativePath;
+                                relativePath = mSellerFile.DocumentPath;
                             }
                         }
                     }

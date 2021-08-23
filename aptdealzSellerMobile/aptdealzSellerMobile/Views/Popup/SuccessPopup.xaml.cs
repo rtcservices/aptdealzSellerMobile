@@ -29,8 +29,8 @@ namespace aptdealzSellerMobile.Views.Popup
         #region Events
         private void FrmHome_Tapped(object sender, EventArgs e)
         {
-            isRefresh?.Invoke(true, EventArgs.Empty);
             PopupNavigation.Instance.PopAsync();
+            isRefresh?.Invoke(true, EventArgs.Empty);
         }
         #endregion
     }

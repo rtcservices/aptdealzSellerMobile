@@ -14,46 +14,63 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-
 namespace aptdealzSellerMobile.Views.Dashboard
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class QuoteDetailsPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private string QuotationId;
-        private bool isReveal = false;
         Quote mQuote;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public QuoteDetailsPage(string quoteId)
         {
-            InitializeComponent();
-            QuotationId = quoteId;
-            mQuote = new Quote();
-            GetQuotes();
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                QuotationId = quoteId;
+                mQuote = new Quote();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            GetQuotes();
         }
 
         private async Task GetQuotes()
@@ -72,8 +89,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         mQuote = jObject.ToObject<Quote>();
                         if (mQuote != null)
                         {
-                            GetQuotesDetails();
-                            GetRequirementsById();
+                            await GetQuotesDetails();
+                            await GetRequirementsById();
                         }
                     }
                 }
@@ -111,7 +128,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private async void GetQuotesDetails()
+        private async Task GetQuotesDetails()
         {
             try
             {
@@ -152,22 +169,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                 if (mQuote.IsBuyerContactRevealed)
                 {
-                    RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
-                    var jObject = (JObject)mQuote.BuyerContact;
-                    if (jObject != null)
-                    {
-                        mRevealBuyerContact = jObject.ToObject<RevealBuyerContact>();
-                    }
-
-                    if (mRevealBuyerContact != null)
-                        BtnRevealContact.Text = mRevealBuyerContact.PhoneNumber;
+                    if (mQuote.BuyerContact != null)
+                        BtnRevealContact.Text = mQuote.BuyerContact.PhoneNumber;
                 }
                 else
                 {
-                    if (!isReveal)
-                    {
-                        BtnRevealContact.Text = "Reveal Contact";
-                    }
+                    BtnRevealContact.Text = "Reveal Contact";
                 }
 
                 if (!Common.EmptyFiels(mQuote.Comments))
@@ -186,36 +193,41 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private void RevealBuyerContact()
+        private async Task RevealBuyerContact()
         {
-            if (BtnRevealContact.Text == "Reveal Contact")
+            try
             {
-                long revealRs = (long)App.Current.Resources["RevealContact"];
-                string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
-
-                var contactPopup = new Popup.PaymentPopup(message);
-                contactPopup.isRefresh += (s1, e1) =>
+                if (BtnRevealContact.Text == "Reveal Contact")
                 {
-                    bool isPay = (bool)s1;
-                    if (isPay)
-                    {
-                        if (DeviceInfo.Platform == DevicePlatform.Android)
-                        {
-                            RevealContact(mQuote.RequirementId);
-                            isReveal = true;
-                        }
-                        else
-                        {
-                            //PaidQuote(false);
-                        }
-                    }
-                };
-                PopupNavigation.Instance.PushAsync(contactPopup);
+                    long revealRs = (long)App.Current.Resources["RevealContact"];
+                    string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
 
+                    var contactPopup = new Popup.PaymentPopup(message);
+                    contactPopup.isRefresh += (s1, e1) =>
+                    {
+                        bool isPay = (bool)s1;
+                        if (isPay)
+                        {
+                            if (DeviceInfo.Platform == DevicePlatform.Android)
+                            {
+                                RevealContact(mQuote.RequirementId);
+                            }
+                            else
+                            {
+                                //PaidQuote(false);
+                            }
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(contactPopup);
+                }
+                else
+                {
+                    DependencyService.Get<IDialer>().Dial(App.Current.Resources["CountryCode"] + BtnRevealContact.Text);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                DependencyService.Get<IDialer>().Dial(App.Current.Resources["CountryCode"] + BtnRevealContact.Text);
+                Common.DisplayErrorMessage("QuoteDetailsPage/RevealBuyerContact: " + ex.Message);
             }
         }
 
@@ -251,35 +263,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                     RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
                     mRevealBuyerContact.RequirementId = RequirementId;
-                    mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)PaymentStatus.Success : (int)PaymentStatus.Failed;
-                    mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderNo;
+                    mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
+                    mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                     mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
 
-                    RequirementAPI requirementAPI = new RequirementAPI();
-                    var mResponse = await requirementAPI.RevealBuyerContact(mRevealBuyerContact);
-                    if (mResponse != null && mResponse.Succeeded)
-                    {
-                        var jObject = (JObject)mResponse.Data;
-                        if (jObject != null)
-                        {
-                            var mSellerContact = jObject.ToObject<RevealBuyerContact>();
-                            if (mSellerContact != null)
-                            {
-                                var successPopup = new Views.Popup.SuccessPopup(Constraints.ContactRevealed);
-                                await PopupNavigation.Instance.PushAsync(successPopup);
-
-                                BtnRevealContact.Text = mSellerContact.PhoneNumber;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // "Reveal Contact";
-                        if (mResponse != null)
-                            Common.DisplayErrorMessage(mResponse.Message);
-                        else
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                    }
+                    BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                    MessagingCenter.Unsubscribe<RazorResponse>(this, "PaidRevealResponse");
                 });
             }
             catch (ArgumentNullException)
@@ -292,7 +281,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteRepository/RevealContact: " + ex.Message);
+                Common.DisplayErrorMessage("QuoteDetailsPage/RevealContact: " + ex.Message);
             }
             finally
             {
@@ -300,7 +289,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private async void GetRequirementsById()
+        private async Task GetRequirementsById()
         {
             try
             {
@@ -344,16 +333,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -361,28 +350,92 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void EditSubmit_Tapped(object sender, EventArgs e)
+        private async void EditSubmit_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnEditSubmit);
-            Navigation.PushAsync(new Dashboard.ProvideQuotePage(mQuote));
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnEditSubmit);
+                    await Navigation.PushAsync(new Dashboard.ProvideQuotePage(mQuote));
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
 
         }
 
-        private void BackQuote_Tapped(object sender, EventArgs e)
+        private async void BackQuote_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnBackQuote);
-            Navigation.PopAsync();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnBackQuote);
+                    await Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("QuoteDetailsPage/BackQuote_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnRevealContact_Tapped(object sender, EventArgs e)
+        private async void BtnRevealContact_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnRevealContact);
-            RevealBuyerContact();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnRevealContact);
+                    await RevealBuyerContact();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("QuoteDetailsPage/BtnRevealContact_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)

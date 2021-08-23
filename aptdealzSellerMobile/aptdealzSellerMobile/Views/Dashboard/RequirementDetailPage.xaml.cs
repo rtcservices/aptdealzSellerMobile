@@ -3,6 +3,7 @@ using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Request;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
@@ -18,38 +19,54 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RequirementDetailPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private List<string> subcaregories;
         private string RequirementId;
-        private bool isReveal = false;
         private Requirement mRequirement;
-        private RequirementAPI requirementAPI;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public RequirementDetailPage(string redId)
         {
-            InitializeComponent();
-            RequirementId = redId;
-            requirementAPI = new RequirementAPI();
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                RequirementId = redId;
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
         #region Methods
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -60,134 +77,120 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
-                UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                var mResponse = await requirementAPI.GetRequirementDetailsWithoutQuoteDetails(RequirementId);
-                if (mResponse != null && mResponse.Succeeded)
+                mRequirement = await DependencyService.Get<IRequirementRepository>().GetRequirementById(RequirementId);
+                if (mRequirement != null)
                 {
-                    var jObject = (JObject)mResponse.Data;
-                    if (jObject != null)
+                    if (!Common.EmptyFiels(mRequirement.ProductImage))
                     {
-                        mRequirement = jObject.ToObject<Requirement>();
-                        if (mRequirement != null)
-                        {
-                            BindDetails();
-                        }
+                        imgProductImage.Source = mRequirement.ProductImage;
                     }
-                }
-                else
-                {
-                    if (mResponse != null)
-                        Common.DisplayErrorMessage(mResponse.Message);
                     else
-                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                    {
+                        imgProductImage.Source = "iconProductBanner.png";
+                    }
+
+                    lblTitle.Text = mRequirement.Title;
+                    lblRequirementId.Text = mRequirement.RequirementNo;
+                    lblDescription.Text = mRequirement.ProductDescription;
+                    lblBuyerId.Text = mRequirement.BuyerNo;
+                    lblCategory.Text = mRequirement.Category;
+                    lblQuantity.Text = mRequirement.Quantity.ToString() + " " + mRequirement.Unit;
+                    lblEstimatePrice.Text = "Rs " + mRequirement.TotalPriceEstimation.ToString();
+                    lblPreferredSource.Text = (string)mRequirement.PreferredSourceOfSupply;
+
+                    lblDeliveryDateValue.Text = mRequirement.DeliveryDate;
+                    lblLocPinCode.Text = mRequirement.DeliveryLocationPinCode;
+
+                    if (mRequirement.SubCategories != null)
+                    {
+                        subcaregories = mRequirement.SubCategories;
+                        lblSubCategory.Text = string.Join(",", subcaregories);
+                    }
+
+                    if (mRequirement.NeedInsuranceCoverage)
+                    {
+                        lblNeedInsurance.Text = "✓";
+                    }
+                    else
+                    {
+                        lblNeedInsurance.Text = "✕";
+                    }
+
+                    if (mRequirement.PreferInIndiaProducts)
+                    {
+                        lblPreferInIndiaProducts.Text = "✓";
+                    }
+                    else
+                    {
+                        lblPreferInIndiaProducts.Text = "✕";
+                    }
+
+                    if (mRequirement.PickupProductDirectly)
+                    {
+                        lblPreferSeller.Text = "✓";
+                        lblDeliveryDate.Text = "Expected Pickup Date";
+                    }
+                    else
+                    {
+                        lblPreferSeller.Text = "✕";
+                        lblDeliveryDate.Text = "Expected Delivery Date";
+                    }
+
+                    if (mRequirement.IsBuyerContactRevealed)
+                    {
+                        if (mRequirement.BuyerContact != null)
+                            BtnRevealContact.Text = mRequirement.BuyerContact.PhoneNumber;
+                    }
+                    else
+                    {
+
+                        BtnRevealContact.Text = "Reveal Contact";
+
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("RequirementDetailPage/GetRequirementsById: " + ex.Message);
-            }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
+                Common.DisplayErrorMessage("RequirementDetailPage/GetRequirementDetails: " + ex.Message);
             }
         }
 
-        private void BindDetails()
+        private async Task RevealBuyerContact()
         {
             try
             {
-                if (!Common.EmptyFiels(mRequirement.ProductImage))
+                if (BtnRevealContact.Text == "Reveal Contact")
                 {
-                    imgProductImage.Source = mRequirement.ProductImage;
-                }
-                else
-                {
-                    imgProductImage.Source = "iconProductBanner.png";
-                }
+                    long revealRs = (long)App.Current.Resources["RevealContact"];
+                    string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
 
-                lblTitle.Text = mRequirement.Title;
-                lblRequirementId.Text = mRequirement.RequirementNo;
-                lblDescription.Text = mRequirement.ProductDescription;
-                lblBuyerId.Text = mRequirement.BuyerNo;
-                lblCategory.Text = mRequirement.Category;
-                lblQuantity.Text = mRequirement.Quantity.ToString() + " " + mRequirement.Unit;
-                lblEstimatePrice.Text = "Rs " + mRequirement.TotalPriceEstimation.ToString();
-                lblPreferredSource.Text = (string)mRequirement.PreferredSourceOfSupply;
-
-                lblDeliveryDateValue.Text = mRequirement.DeliveryDate;
-                lblLocPinCode.Text = mRequirement.DeliveryLocationPinCode;
-
-                if (mRequirement.SubCategories != null)
-                {
-                    subcaregories = mRequirement.SubCategories;
-                    lblSubCategory.Text = string.Join(",", subcaregories);
-                }
-
-                if (mRequirement.NeedInsuranceCoverage)
-                {
-                    lblNeedInsurance.Text = "✓";
-                }
-                else
-                {
-                    lblNeedInsurance.Text = "✕";
-                }
-
-                if (mRequirement.PreferInIndiaProducts)
-                {
-                    lblPreferInIndiaProducts.Text = "✓";
-                }
-                else
-                {
-                    lblPreferInIndiaProducts.Text = "✕";
-                }
-
-                if (mRequirement.PickupProductDirectly)
-                {
-                    lblPreferSeller.Text = "✓";
-                    lblDeliveryDate.Text = "Expected Pickup Date";
-                }
-                else
-                {
-                    lblPreferSeller.Text = "✕";
-                    lblDeliveryDate.Text = "Expected Delivery Date";
-                }
-
-                if (mRequirement.IsBuyerContactRevealed)
-                {
-                    RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
-                    var jObject = (JObject)mRequirement.BuyerContact;
-                    if (jObject != null)
+                    var contactPopup = new Popup.PaymentPopup(message);
+                    contactPopup.isRefresh += (s1, e1) =>
                     {
-                        mRevealBuyerContact = jObject.ToObject<RevealBuyerContact>();
-                    }
+                        bool isPay = (bool)s1;
+                        if (isPay)
+                        {
+                            if (DeviceInfo.Platform == DevicePlatform.Android)
+                            {
+                                RevealContact(RequirementId);
+                            }
+                            else
+                            {
+                                //PaidQuote(false);
+                            }
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(contactPopup);
 
-                    if (mRevealBuyerContact != null)
-                        BtnRevealContact.Text = mRevealBuyerContact.PhoneNumber;
                 }
                 else
                 {
-                    if (!isReveal)
-                    {
-                        BtnRevealContact.Text = "Reveal Contact";
-                    }
+                    DependencyService.Get<IDialer>().Dial(App.Current.Resources["CountryCode"] + BtnRevealContact.Text);
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("RequirementDetailPage/GetDetails: " + ex.Message);
-            }
-        }
-
-        private void RevealBuyerContact()
-        {
-            if (BtnRevealContact.Text == "Reveal Contact")
-            {
-                RevealContact(RequirementId);
-                isReveal = true;
-            }
-            else
-            {
-                DependencyService.Get<IDialer>().Dial(App.Current.Resources["CountryCode"] + BtnRevealContact.Text);
+                Common.DisplayErrorMessage("RequirementDetailPage/RevealBuyerContact: " + ex.Message);
             }
         }
 
@@ -223,35 +226,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                     RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
                     mRevealBuyerContact.RequirementId = RequirementId;
-                    mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)PaymentStatus.Success : (int)PaymentStatus.Failed;
-                    mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderNo;
+                    mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
+                    mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                     mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
 
-                    RequirementAPI requirementAPI = new RequirementAPI();
-                    var mResponse = await requirementAPI.RevealBuyerContact(mRevealBuyerContact);
-                    if (mResponse != null && mResponse.Succeeded)
-                    {
-                        var jObject = (JObject)mResponse.Data;
-                        if (jObject != null)
-                        {
-                            var mSellerContact = jObject.ToObject<RevealBuyerContact>();
-                            if (mSellerContact != null)
-                            {
-                                var successPopup = new Views.Popup.SuccessPopup(Constraints.ContactRevealed);
-                                await PopupNavigation.Instance.PushAsync(successPopup);
-
-                                BtnRevealContact.Text = mSellerContact.PhoneNumber;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // "Reveal Contact";
-                        if (mResponse != null)
-                            Common.DisplayErrorMessage(mResponse.Message);
-                        else
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                    }
+                    BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                    MessagingCenter.Unsubscribe<RazorResponse>(this, "PaidRevealResponse");
                 });
             }
             catch (ArgumentNullException)
@@ -264,7 +244,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteRepository/RevealContact: " + ex.Message);
+                Common.DisplayErrorMessage("RequirementDetailPage/RevealContact: " + ex.Message);
             }
             finally
             {
@@ -279,9 +259,25 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("RequirementDetailPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -289,22 +285,54 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void BtnRevealContact_Tapped(object sender, EventArgs e)
+        private async void BtnRevealContact_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnRevealContact);
-            RevealBuyerContact();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnRevealContact);
+                    await RevealBuyerContact();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("RequirementDetailPage/BtnRevealContact_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnProvideQuote_Tapped(object sender, EventArgs e)
+        private async void BtnProvideQuote_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnProvideQoute);
-            Navigation.PushAsync(new ProvideQuotePage(mRequirement.RequirementId));
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnProvideQoute);
+                    await Navigation.PushAsync(new ProvideQuotePage(mRequirement.RequirementId));
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("RequirementDetailPage/BtnProvideQuote_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)

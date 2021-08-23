@@ -5,5 +5,6 @@ namespace aptdealzSellerMobile.Repository
     public interface IAuthenticationRepository
     {
         Task<bool> RefreshToken();
+        Task DoLogout();
     }
 }

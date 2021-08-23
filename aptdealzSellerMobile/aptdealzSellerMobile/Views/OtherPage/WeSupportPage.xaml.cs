@@ -1,5 +1,10 @@
-﻿using aptdealzSellerMobile.Model;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,65 +16,120 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WeSupportPage : ContentPage
     {
-        #region Objects
-        private List<CarousellImage> mCarousellImages = new List<CarousellImage>();
-        #endregion
-
-        #region Constructor
+        #region [ Constructor ]
         public WeSupportPage()
-        {
-            InitializeComponent();
-           
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
-            {
-                if (!Common.EmptyFiels(Common.NotificationCount))
-                {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
-        }
-        #endregion
-
-        #region Methods
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            BindCarousallData();
-        }
-        private void BindCarousallData()
         {
             try
             {
-                mCarousellImages = new List<CarousellImage>()
+                InitializeComponent();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    new CarousellImage{ImageName="imgMakeInIndia.png"},
-                    new CarousellImage{ImageName="imgMakeInIndia.png"},
-                    new CarousellImage{ImageName="imgMakeInIndia.png"},
-                };
-                Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("WeSupportPage/BindCarousallData: " + ex.Message);
+                Common.DisplayErrorMessage("WeSupportPage/Ctor: " + ex.Message);
             }
         }
         #endregion
 
-        #region Events
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            GetAffiliations();
+        }
+
+        private async void GetAffiliations()
+        {
+            try
+            {
+                AffiliationsAPI affiliationsAPI = new AffiliationsAPI();
+                List<Affiliations> mAffiliations = new List<Affiliations>();
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+
+                var mResponse = await affiliationsAPI.GetAllAffiliations();
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    JArray result = (JArray)mResponse.Data;
+                    var affiliations = result.ToObject<List<Affiliations>>();
+                    if (affiliations != null && affiliations.Count > 0)
+                    {
+                        GrdList.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        Indicators.ItemsSource = cvWelcome.ItemsSource = affiliations.ToList();
+                    }
+                    else
+                    {
+                        GrdList.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    GrdList.IsVisible = false;
+                    lblNoRecord.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WeSupportPage/GetAffiliations: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+        #endregion
+
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("WeSupportPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -77,10 +137,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)

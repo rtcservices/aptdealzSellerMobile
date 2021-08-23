@@ -1,14 +1,11 @@
 ﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,33 +17,51 @@ namespace aptdealzSellerMobile.Views.OtherPage
     {
         #region Objects
         private Grievance mGrievance;
-        private string ErrorMessage = string.Empty;
         private string GrievanceId;
         #endregion
 
         #region Constructor
         public GrievanceDetailPage(string GrievanceId)
         {
-            InitializeComponent();
-            this.GrievanceId = GrievanceId;
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                this.GrievanceId = GrievanceId;
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("GrievanceDetailsPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
         #region Methods
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -64,9 +79,44 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     lblOrderId.Text = mGrievance.OrderNo;
                     lblOrderDate.Text = mGrievance.OrderDate.ToString("dd/MM/yyyy");
                     lblGrievanceDate.Text = mGrievance.Created.ToString("dd/MM/yyyy");
-                    lblBuyeName.Text = mGrievance.GrievanceFromUserName;
-                    lblGrievanceType.Text = mGrievance.GrievanceTypeDescr;
-                    lblStatus.Text = mGrievance.StatusDescr;
+                    lblBuyeName.Text = mGrievance.BuyerName;
+                    lblGrievanceType.Text = mGrievance.GrievanceTypeDescr.ToCamelCase();
+                    lblStatus.Text = mGrievance.StatusDescr.ToCamelCase();
+                    if (Common.EmptyFiels(mGrievance.IssueDescription))
+                    {
+                        lblDescription.Text = "No description found";
+                    }
+                    else
+                    {
+                        lblDescription.Text = mGrievance.IssueDescription;
+                    }
+
+                    if (mGrievance.GrievanceResponses != null && mGrievance.GrievanceResponses.Count > 0)
+                    {
+                        foreach (var grievanceResponses in mGrievance.GrievanceResponses)
+                        {
+                            if (grievanceResponses.ResponseFromUserId != Settings.UserId)
+                            {
+                                //User Data
+                                grievanceResponses.IsContact = false;
+                                grievanceResponses.IsUser = true;
+                            }
+
+                            string baseURL = (string)App.Current.Resources["BaseURL"];
+                            grievanceResponses.ResponseFromUserProfileImage = baseURL + grievanceResponses.ResponseFromUserProfileImage.Replace(baseURL, "");
+                        }
+                        lstResponse.IsVisible = true;
+                        lblNoRecord.IsVisible = false;
+                        lstResponse.ItemsSource = mGrievance.GrievanceResponses.ToList();
+                        lstResponse.HeightRequest = mGrievance.GrievanceResponses.Count * 95;
+                    }
+                    else
+                    {
+                        lstResponse.ItemsSource = null;
+                        lstResponse.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+
                     AttachDocumentList();
                 }
             }
@@ -80,29 +130,11 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
-                GrievanceAPI grievanceAPI = new GrievanceAPI();
-                UserDialogs.Instance.ShowLoading(Constraints.Loading);
-
-
                 if (!Common.EmptyFiels(txtMessage.Text))
                 {
-                    var mResponse = await grievanceAPI.SubmitGrievanceResponseFromSeller(GrievanceId, txtMessage.Text);
-                    if (mResponse != null && mResponse.Succeeded)
-                    {
-                        txtMessage.Text = string.Empty;
-                        if ((bool)mResponse.Data)
-                            Common.DisplaySuccessMessage(mResponse.Message);
-                        else
-                            Common.DisplayErrorMessage(mResponse.Message);
-                        await GetGrievancesDetails();
-                    }
-                    else
-                    {
-                        if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
-                            Common.DisplayErrorMessage(mResponse.Message);
-                        else
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                    }
+                    await DependencyService.Get<IGrievanceRepository>().SubmitGrievanceResponse(GrievanceId, txtMessage.Text);
+                    txtMessage.Text = string.Empty;
+                    await GetGrievancesDetails();
                 }
                 else
                 {
@@ -120,90 +152,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
 
         }
-
-        //private RaiseGrievance FillGrievance()
-        //{
-        //    try
-        //    {
-        //        RaiseGrievance mRaiseGrievance = new RaiseGrievance();
-        //        mRaiseGrievance.OrderId = OrderId;
-        //        if (pkType.SelectedIndex != -1)
-        //        {
-        //            mRaiseGrievance.GrievanceType = GetGrievanceType(pkType.SelectedItem.ToString());
-        //        }
-        //        else
-        //        {
-        //            FrmType.BorderColor = (Color)App.Current.Resources["LightRed"];
-        //            ErrorMessage = Constraints.Required_ComplainType;
-        //            return null;
-        //        }
-
-        //        if (documentList != null && documentList.Count > 0)
-        //        {
-        //            mRaiseGrievance.Documents = documentList;
-        //        }
-        //        if (!Common.EmptyFiels(txtDescription.Text))
-        //        {
-        //            mRaiseGrievance.IssueDescription = txtDescription.Text;
-        //        }
-        //        if (!Common.EmptyFiels(txtSolution.Text))
-        //        {
-        //            mRaiseGrievance.PreferredSolution = txtSolution.Text;
-        //        }
-        //        return mRaiseGrievance;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (ex.Message != null)
-        //        {
-        //            ErrorMessage = ex.Message;
-        //        }
-        //        return null;
-        //    }
-        //}
-
-        //public async Task CreateGrievance()
-        //{
-        //    try
-        //    {
-        //        GrievanceAPI grievanceAPI = new GrievanceAPI();
-        //        UserDialogs.Instance.ShowLoading(Constraints.Loading);
-
-        //        var mRaiseGrievance = FillGrievance();
-        //        if (mRaiseGrievance != null)
-        //        {
-        //            var mResponse = await grievanceAPI.CreateGrievanceFromBuyer(mRaiseGrievance);
-        //            if (mResponse != null && mResponse.Succeeded)
-        //            {
-        //                Common.DisplaySuccessMessage(mResponse.Message);
-        //                await Navigation.PushAsync(new GrievancesPage());
-        //            }
-        //            else
-        //            {
-        //                if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
-        //                    Common.DisplayErrorMessage(mResponse.Message);
-        //                else
-        //                    Common.DisplayErrorMessage(Constraints.Something_Wrong);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (ErrorMessage == null)
-        //            {
-        //                ErrorMessage = Constraints.Something_Wrong;
-        //            }
-        //            Common.DisplayErrorMessage(ErrorMessage);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Common.DisplayErrorMessage("RaiseGrievancePage/CreateGrievance: " + ex.Message);
-        //    }
-        //    finally
-        //    {
-        //        UserDialogs.Instance.HideLoading();
-        //    }
-        //}
 
         private void AttachDocumentList()
         {
@@ -235,9 +183,25 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("GrievanceDetailPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -245,16 +209,32 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         private async void BtnSubmit_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnSubmit);
-            await SubmitGrievanceResponse();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnSubmit);
+                    await SubmitGrievanceResponse();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("GrievanceDetailPage/BtnSubmit_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)
@@ -281,7 +261,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 BoxMessage.BackgroundColor = (Color)App.Current.Resources["LightGray"];
             }
         }
-        #endregion
 
         private void CopyString_Tapped(object sender, EventArgs e)
         {
@@ -306,6 +285,12 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 Common.DisplayErrorMessage("GrievanceDetailsPage/CopyString_Tapped: " + ex.Message);
             }
+        }
+        #endregion
+
+        private void lstResponse_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            lstResponse.SelectedItem = null;
         }
     }
 }

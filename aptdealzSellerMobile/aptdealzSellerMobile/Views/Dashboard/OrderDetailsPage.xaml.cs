@@ -1,6 +1,4 @@
-﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.Extention;
-using aptdealzSellerMobile.Model.Reponse;
+﻿using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -9,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,38 +15,57 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OrderDetailsPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private Order mOrder;
         private List<string> mOrderStatusList;
         private string OrderId;
-        private bool isShipped = false;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public OrderDetailsPage(string orderId)
         {
-            InitializeComponent();
-            mOrder = new Order();
-            mOrderStatusList = new List<string>();
-            OrderId = orderId;
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                mOrder = new Order();
+                mOrderStatusList = new List<string>();
+                OrderId = orderId;
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount");
+                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -61,6 +77,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
+                mOrderStatusList.Clear();
                 mOrderStatusList.Add(OrderStatus.Pending.ToString());
                 mOrderStatusList.Add(OrderStatus.Accepted.ToString());
                 mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
@@ -84,14 +101,15 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 mOrder = await DependencyService.Get<IOrderRepository>().GetOrderDetails(OrderId);
                 if (mOrder != null)
                 {
+                    #region [ Details ]
                     if (mOrder.PickupProductDirectly)
                         lblPinCodeTitle.Text = "Product Pickup PIN Code";
                     else
                         lblPinCodeTitle.Text = "Shipping PIN Code";
 
-                    #region [ Details ]
                     lblOrderId.Text = mOrder.OrderNo;
                     lblOrderRequirementId.Text = mOrder.RequirementNo;
+                    lblRequirementTitle.Text = mOrder.Title;
                     lblOrderReferenceNo.Text = mOrder.QuoteNo;
                     lblOrderBuyerName.Text = mOrder.BuyerContact.Name;
                     lblOrderSellerName.Text = mOrder.SellerContact.Name;
@@ -117,44 +135,109 @@ namespace aptdealzSellerMobile.Views.Dashboard
                                                          + mOrder.BuyerAddressDetails.Street + "\n"
                                                          + mOrder.BuyerAddressDetails.City + ", " + mOrder.BuyerAddressDetails.PinCode + "\n"
                                                          + mOrder.BuyerAddressDetails.Landmark + ", " + mOrder.BuyerAddressDetails.Country;
+
+
+                    if (mOrder.ShippingAddressDetails != null &&
+                        (!Common.EmptyFiels(mOrder.ShippingAddressDetails.Building) ||
+                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.Street) ||
+                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.City) ||
+                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.PinCode) ||
+                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.Landmark) ||
+                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.State) ||
+                        mOrder.ShippingAddressDetails.Country > 0))
+                    {
+                        lblShippingAddress.Text = mOrder.ShippingAddressDetails.Building + "\n"
+                                                          + mOrder.ShippingAddressDetails.Street + ", " + mOrder.ShippingAddressDetails.City + "\n"
+                                                          + mOrder.ShippingAddressDetails.State + " " + mOrder.ShippingAddressDetails.PinCode + "\n"
+                                                          + mOrder.ShippingAddressDetails.Landmark + ", " + mOrder.ShippingAddressDetails.Country;
+                    }
+                    else
+                    {
+                        lblShippingAddress.Text = "No shipping address found";
+                    }
+                    #endregion
+
+                    #region [ Shipping Details ]
+                    if (!Common.EmptyFiels(mOrder.ShipperNumber))
+                    {
+                        txtShippingNumber.Text = mOrder.ShipperNumber;
+                    }
+                    if (!Common.EmptyFiels(mOrder.LrNumber))
+                    {
+                        txtLRNumber.Text = mOrder.LrNumber;
+                    }
+                    if (!Common.EmptyFiels(mOrder.BillNumber))
+                    {
+                        txtEWayBillNumber.Text = mOrder.BillNumber;
+                    }
+                    if (!Common.EmptyFiels(mOrder.TrackingLink))
+                    {
+                        txtTrackingLink.Text = mOrder.TrackingLink;
+                    }
                     #endregion
 
                     #region [ Status Buttons ]
                     if (mOrder.PickupProductDirectly)  //Pickup from seller
                     {
                         BtnScanQRCode.IsVisible = true;
+                        BtnRaiseGrievance.IsVisible = true;
                         BtnUpdate.IsVisible = false;
-                        StkUpdateStatus.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
                     }
 
                     if (mOrder.OrderStatus == (int)OrderStatus.ReadyForPickup)
                     {
                         BtnScanQRCode.IsVisible = true;
+                        BtnRaiseGrievance.IsVisible = true;
                         BtnUpdate.IsVisible = false;
-                        StkUpdateStatus.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
                     }
-                    else if (mOrder.OrderStatus == (int)OrderStatus.Delivered || mOrder.OrderStatus == (int)OrderStatus.Completed)
+                    else if (mOrder.OrderStatus == (int)OrderStatus.Delivered)
+                    {
+                        GrdUpdateStatus.IsVisible = true;
+                        txtShippingNumber.IsReadOnly = true;
+                        txtLRNumber.IsReadOnly = true;
+                        txtEWayBillNumber.IsReadOnly = true;
+                        txtTrackingLink.IsReadOnly = true;
+                        GrdChargesAndEarnings.IsVisible = true;
+
+                        BtnRaiseGrievance.IsVisible = false;
+                        StkNoUpdation.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        BtnScanQRCode.IsVisible = false;
+                    }
+                    else if (mOrder.OrderStatus == (int)OrderStatus.Completed)
                     {
                         StkNoUpdation.IsVisible = true;
                         GrdChargesAndEarnings.IsVisible = true;
+
+                        BtnRaiseGrievance.IsVisible = false;
                         BtnUpdate.IsVisible = false;
-                        StkUpdateStatus.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
                         BtnScanQRCode.IsVisible = false;
                     }
                     else if (mOrder.OrderStatus == (int)OrderStatus.CancelledFromBuyer)
                     {
                         BtnScanQRCode.IsVisible = false;
                         BtnUpdate.IsVisible = false;
-                        StkUpdateStatus.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
+                        BtnRaiseGrievance.IsVisible = false;
+                    }
+                    else if (mOrder.OrderStatus == (int)OrderStatus.Shipped)
+                    {
+                        BtnRaiseGrievance.IsVisible = true;
+                        BtnScanQRCode.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        GrdUpdateStatus.IsVisible = true;
                     }
                     else //Update Status
                     {
-                        BtnScanQRCode.IsVisible = false;
+                        BtnScanQRCode.IsVisible = false; BtnRaiseGrievance.IsVisible = false;
                         BtnUpdate.IsVisible = true;
-                        StkUpdateStatus.IsVisible = true;
+                        GrdUpdateStatus.IsVisible = true;
                     }
                     #endregion
                 }
@@ -175,28 +258,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     Common.DisplayErrorMessage(Constraints.Required_OrderStatus);
                     BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 }
-                else if (isShipped)
-                {
-                    if (Common.EmptyFiels(txtShippingNumber.Text))
-                    {
-                        Common.DisplayErrorMessage(Constraints.Required_ShippingNumber);
-                        BoxShippingNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                    }
-                    else if (Common.EmptyFiels(txtLRNumber.Text))
-                    {
-                        Common.DisplayErrorMessage(Constraints.Required_LRNumber);
-                        BoxLRNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                    }
-                    else if (Common.EmptyFiels(txtEWayBillNumber.Text))
-                    {
-                        Common.DisplayErrorMessage(Constraints.Required_EWayBillNumber);
-                        BoxEWayBillNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
                 else
                 {
                     isValid = true;
@@ -209,34 +270,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             return isValid;
         }
 
-        private void UnfocussedFields(Entry entry = null)
-        {
-            try
-            {
-                if (entry != null)
-                {
-                    if (entry.ClassId == "ShippingNumber")
-                    {
-                        BoxShippingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "LRNumber")
-                    {
-                        BoxLRNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                    else if (entry.ClassId == "EwayNumber")
-                    {
-                        BoxEWayBillNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("OrderDetailsPage/UnfocussedFields: " + ex.Message);
-            }
-        }
-
-
-        private async void UpdateOrder()
+        private async Task UpdateOrder()
         {
             try
             {
@@ -267,13 +301,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     }
 
                     await DependencyService.Get<IOrderRepository>().UpdateOrder(mOrderUpdate);
+                    BtnUpdate.IsEnabled = false;
                     txtShippingNumber.Text = string.Empty;
                     txtLRNumber.Text = string.Empty;
                     txtEWayBillNumber.Text = string.Empty;
                     txtTrackingLink.Text = string.Empty;
-                    BoxShippingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    BoxLRNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-                    BoxEWayBillNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
                     await GetOrderDetails();
                 }
             }
@@ -284,15 +316,31 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(image: ImgMenu);
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderDetailsPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -300,10 +348,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         private void ImgOrderStatusPck_Clicked(object sender, EventArgs e)
@@ -316,90 +364,177 @@ namespace aptdealzSellerMobile.Views.Dashboard
             Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
-        private void BtnScanQRCode_Clicked(object sender, EventArgs e)
+        private async void BtnScanQRCode_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnScanQRCode);
-            Navigation.PushAsync(new QrCodeScanPage());
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnScanQRCode);
+                    await Navigation.PushAsync(new QrCodeScanPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderDetailsPage/BtnScanQRCode_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnUpdate_Tapped(object sender, EventArgs e)
+        private async void BtnUpdate_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnUpdate);
-            UpdateOrder();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnUpdate);
+                    await UpdateOrder();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderDetailsPage/BtnUpdate_Tapped: " + ex.Message);
+                }
+                //finally
+                //{
+                //    Tab.IsEnabled = true;
+                //}
+            }
         }
 
         private async void RefreshView_Refreshing(object sender, EventArgs e)
         {
-            rfView.IsRefreshing = true;
-            OrderStatusList();
-            await GetOrderDetails();
-            rfView.IsRefreshing = false;
+            try
+            {
+                rfView.IsRefreshing = true;
+                await GetOrderDetails();
+                rfView.IsRefreshing = false;
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/RefreshView_Refreshing: " + ex.Message);
+            }
         }
 
         private void pckOrderStatus_Unfocused(object sender, FocusEventArgs e)
         {
-            if (pckOrderStatus.SelectedIndex != -1)
-            {
-                BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["LightGray"];
-            }
-        }
-
-        private void Entry_Unfocused(object sender, FocusEventArgs e)
-        {
-            var entry = (ExtEntry)sender;
-            if (!Common.EmptyFiels(entry.Text))
-            {
-                UnfocussedFields(entry: entry);
-            }
-        }
-        #endregion
-
-        private void CopyString_Tapped(object sender, EventArgs e)
-        {
             try
             {
-                var stackLayout = (StackLayout)sender;
-                if (!Common.EmptyFiels(stackLayout.ClassId))
+                if (pckOrderStatus.SelectedIndex != -1)
                 {
-                    if (stackLayout.ClassId == "OrderId")
-                    {
-                        string message = Constraints.CopiedOrderId;
-                        Common.CopyText(lblOrderId, message);
-                    }
-                    else if (stackLayout.ClassId == "RequirementId")
-                    {
-                        string message = Constraints.CopiedRequirementId;
-                        Common.CopyText(lblOrderRequirementId, message);
-                    }
-                    else if (stackLayout.ClassId == "QuoteRefeNo")
-                    {
-                        string message = Constraints.CopiedQuoteRefNo;
-                        Common.CopyText(lblOrderReferenceNo, message);
-                    }
+                    BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["LightGray"];
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("OrderDetailsPage/CopyString_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("OrderDetailsPage/pckOrderStatus_Unfocused: " + ex.Message);
+            }
+        }
+
+        private async void CopyString_Tapped(object sender, EventArgs e)
+        {
+            var stackLayoutTab = (StackLayout)sender;
+            if (stackLayoutTab.IsEnabled)
+            {
+                try
+                {
+                    stackLayoutTab.IsEnabled = false;
+                    if (!Common.EmptyFiels(stackLayoutTab.ClassId))
+                    {
+                        if (stackLayoutTab.ClassId == "OrderId")
+                        {
+                            string message = Constraints.CopiedOrderId;
+                            Common.CopyText(lblOrderId, message);
+                        }
+                        else if (stackLayoutTab.ClassId == "RequirementId")
+                        {
+                            if (!Common.EmptyFiels(mOrder.RequirementId))
+                            {
+                                string message = Constraints.CopiedRequirementId;
+                                Common.CopyText(lblOrderRequirementId, message);
+                                await Navigation.PushAsync(new RequirementDetailPage(mOrder.RequirementId));
+                            }
+                        }
+                        else if (stackLayoutTab.ClassId == "QuoteRefeNo")
+                        {
+                            if (!Common.EmptyFiels(mOrder.QuoteId))
+                            {
+                                string message = Constraints.CopiedQuoteRefNo;
+                                Common.CopyText(lblOrderReferenceNo, message);
+                                await Navigation.PushAsync(new QuoteDetailsPage(mOrder.QuoteId));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderDetailsPage/CopyString_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    stackLayoutTab.IsEnabled = true;
+                }
             }
         }
 
         private void pckOrderStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Common.GetOrderStatus(pckOrderStatus.SelectedItem.ToString()) == (int)OrderStatus.Shipped)
+            try
             {
-                isShipped = true;
-                lblShippingNumber.IsVisible = true;
-                lblLRNumber.IsVisible = true;
-                lblEWayBillNumber.IsVisible = true;
+                if (pckOrderStatus.SelectedIndex == -1)
+                    return;
+
+                if (Common.GetOrderStatus(pckOrderStatus.SelectedItem.ToString()) == (int)OrderStatus.Shipped)
+                {
+                    GrdShippingDetails.IsVisible = true;
+                }
+                else
+                {
+                    GrdShippingDetails.IsVisible = false;
+                }
+
+                if (pckOrderStatus.SelectedIndex != Common.GetOrderIndex(mOrder.OrderStatus))
+                {
+                    BtnUpdate.IsEnabled = true;
+                }
+                else
+                {
+                    BtnUpdate.IsEnabled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                isShipped = false;
-                lblShippingNumber.IsVisible = false;
-                lblLRNumber.IsVisible = false;
-                lblEWayBillNumber.IsVisible = false;
+                Common.DisplayErrorMessage("OrderDetailsPage/pckOrderStatus_SelectedIndexChanged: " + ex.Message);
             }
         }
+
+        private async void BtnRaiseGrievance_Clicked(object sender, EventArgs e)
+        {
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnRaiseGrievance);
+                    await Navigation.PushAsync(new RaiseGrievancePage(OrderId));
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderDetailsPage/BtnRaiseGrievance_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
+        }
+        #endregion
     }
 }

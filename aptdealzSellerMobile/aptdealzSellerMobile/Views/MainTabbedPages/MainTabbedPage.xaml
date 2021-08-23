@@ -30,10 +30,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--#region HOME TAB-->
+                <!--#region [ HOME ]-->
                 <Grid
                     x:Name="stkHome"
                     Grid.Column="0"
+                    ClassId="Home"
                     HorizontalOptions="FillAndExpand"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
@@ -56,15 +57,16 @@
                         Style="{StaticResource lblLight}"
                         Text="Home" />
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Home_Tapped" />
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tab_Tapped" />
                     </Grid.GestureRecognizers>
                 </Grid>
                 <!--#endregion-->
 
-                <!--#region Quotes TAB-->
+                <!--#region [ Requirements ]-->
                 <Grid
-                    x:Name="stkRequirements"
+                    x:Name="stkQuotes"
                     Grid.Column="1"
+                    ClassId="Quotes"
                     HorizontalOptions="FillAndExpand"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
@@ -72,7 +74,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image
-                        x:Name="imgRequirements"
+                        x:Name="imgQuotes"
                         Grid.Row="0"
                         HeightRequest="30"
                         HorizontalOptions="CenterAndExpand"
@@ -80,22 +82,23 @@
                         VerticalOptions="CenterAndExpand"
                         WidthRequest="40" />
                     <Label
-                        x:Name="lblRequirements"
+                        x:Name="lblQuotes"
                         Grid.Row="1"
                         Margin="0,0,0,5"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource lblLight}"
                         Text="Quotes" />
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Quotes_Tapped" />
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tab_Tapped" />
                     </Grid.GestureRecognizers>
                 </Grid>
                 <!--#endregion-->
 
-                <!--#region Order Tab-->
+                <!--#region [ Order ]-->
                 <Grid
                     x:Name="stkOrders"
                     Grid.Column="2"
+                    ClassId="Orders"
                     HorizontalOptions="FillAndExpand"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
@@ -118,15 +121,16 @@
                         Style="{StaticResource lblLight}"
                         Text="Orders" />
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Orders_Tapped" />
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tab_Tapped" />
                     </Grid.GestureRecognizers>
                 </Grid>
                 <!--#endregion-->
 
-                <!--#region Account Tab-->
+                <!--#region [ Account ]-->
                 <Grid
                     x:Name="stkAccount"
                     Grid.Column="3"
+                    ClassId="Account"
                     HorizontalOptions="FillAndExpand"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
@@ -149,7 +153,7 @@
                         Style="{StaticResource lblLight}"
                         Text="Account" />
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Account_Tapped" />
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tab_Tapped" />
                     </Grid.GestureRecognizers>
                 </Grid>
                 <!--#endregion-->

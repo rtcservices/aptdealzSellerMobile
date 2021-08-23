@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.Utility;
+﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -121,7 +122,7 @@ namespace aptdealzSellerMobile.Model.Request
         public List<object> ReceivedQuotes { get; set; }
 
         [JsonProperty("buyerContact")]
-        public object BuyerContact { get; set; }
+        public BuyerContact BuyerContact { get; set; }
 
         [JsonProperty("isBuyerContactRevealed")]
         public bool IsBuyerContactRevealed { get; set; }

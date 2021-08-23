@@ -12,20 +12,20 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class QrCodeScanPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private ZXingScannerView zxing;
         private ZXingDefaultOverlay overlay;
-        //public EventHandler isRefresh;
         #endregion
 
+        #region [ Ctor ]
         public QrCodeScanPage()
         {
             InitializeComponent();
             StartScanning();
-
         }
+        #endregion
 
-        #region Method
+        #region [ Method ]
         private void StartScanning()
         {
             try
@@ -87,9 +87,9 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     Margin = new Thickness(10, 10, 0, 0),
                     Source = Constraints.Arrow_Back_Left,
                 };
-                image.Clicked += delegate
+                image.Clicked += async delegate
                 {
-                    Navigation.PopAsync();
+                    await Navigation.PopAsync();
                 };
 
                 grid.Children.Add(image);

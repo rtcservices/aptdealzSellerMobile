@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace aptdealzSellerMobile.Interfaces
+﻿namespace aptdealzSellerMobile.Interfaces
 {
     public interface ICloseAppOnBackButton
     {

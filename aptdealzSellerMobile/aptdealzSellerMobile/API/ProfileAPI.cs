@@ -101,17 +101,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetMyProfileData();
                                 }
                             }
                             else
@@ -226,17 +222,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await DeactiviateUser(userId);
                                 }
                             }
                             else
@@ -321,14 +313,14 @@ namespace aptdealzSellerMobile.API
         #endregion
 
         #region [ PUT ]
-        public async Task<Response> SaveProfile(SellerDetails mSellerDetails)
+        public async Task<Response> SaveProfile(SellerDetails mSellerDetail)
         {
             Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
                 {
-                    var requestJson = JsonConvert.SerializeObject(mSellerDetails);
+                    var requestJson = JsonConvert.SerializeObject(mSellerDetail);
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
                         string url = string.Format(EndPointURL.SaveProfile, (int)App.Current.Resources["Version"]);
@@ -356,17 +348,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await SaveProfile(mSellerDetails);
                                 }
                             }
                             else
@@ -380,7 +368,7 @@ namespace aptdealzSellerMobile.API
                 {
                     if (await Common.InternetConnection())
                     {
-                        await SaveProfile(mSellerDetails);
+                        await SaveProfile(mSellerDetail);
                     }
                 }
             }

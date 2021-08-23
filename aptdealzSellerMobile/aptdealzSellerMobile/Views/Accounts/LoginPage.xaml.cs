@@ -5,6 +5,7 @@ using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,18 +15,30 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private bool isEmail = false;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public LoginPage()
         {
             InitializeComponent();
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override bool OnBackButtonPressed()
         {
             base.OnBackButtonPressed();
@@ -120,7 +133,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             txtPassword.Text = txtPassword.Text.Trim();
         }
 
-        private async void AuthenticateUser()
+        private async Task AuthenticateUser()
         {
             try
             {
@@ -210,21 +223,69 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Events
-        private void StkSignup_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private async void StkSignup_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new SignupPage());
+            var Tab = (StackLayout)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new SignupPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("LoginPage/StkSignup_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void ForgotPassword_Click(object sender, EventArgs e)
+        private async void ForgotPassword_Click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ForgotPasswordPage());
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new ForgotPasswordPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("LoginPage/ForgotPassword_Click: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnLogin_Tapped(object sender, EventArgs e)
+        private async void BtnLogin_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnLogin);
-            AuthenticateUser();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnLogin);
+                    await AuthenticateUser();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("LoginPage/BtnLogin_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgPassword_Tapped(object sender, EventArgs e)

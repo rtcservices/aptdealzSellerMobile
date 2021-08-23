@@ -44,30 +44,13 @@
                     ColumnDefinitions="*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="30" />
+                        <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                         <Frame
-                            x:Name="frmNotification"  HasShadow="False"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Orange}"
-                            CornerRadius="10"
-                            HeightRequest="20"
-                            HorizontalOptions="CenterAndExpand"
+                            x:Name="frmNotification"
                             IsVisible="false"
-                            VerticalOptions="StartAndExpand"
-                            WidthRequest="20" />
-                        <Label
-                            x:Name="lblNotificationCount"  FontSize="15"
-                            Margin="10,5,0,0"
-                            HorizontalOptions="CenterAndExpand"
-                            Style="{StaticResource lblMedium}"
-                            VerticalOptions="Start" />
+                            Style="{StaticResource frmNotification}">
+                            <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                        </Frame>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                         </Grid.GestureRecognizers>
@@ -111,6 +94,7 @@
                         Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
+                        x:Name="lblHeader"
                         Grid.Column="1"
                         Style="{StaticResource lblHeader}"
                         Text="Order for Supplying" />
@@ -178,17 +162,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            x:Name="FrmSortBy"
-                            Grid.Column="0"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="0" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
@@ -196,77 +170,47 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
-                                    Source="iconSortASC.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Source="iconSortDSC.png"
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Sort by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight}"
+                                    Text="Sort by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmSortBy_Tapped" />
                             </Frame.GestureRecognizers>
                         </Frame>
 
-                        <Frame
-                            x:Name="FrmFilterBy"
-                            Grid.Column="1"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="1" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
                                 ColumnSpacing="0">
                                 <Image
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
                                     Source="iconFilter.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     x:Name="lblFilterBy"
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Filter by"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight}"
+                                    Text="Filter by" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmFilterBy_Tapped" />
                             </Frame.GestureRecognizers>
                         </Frame>
 
-                        <Frame
-                            x:Name="FrmStatusBy"
-                            Grid.Column="2"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="2" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
@@ -284,12 +228,10 @@
                                     x:Name="lblStatus"
                                     Grid.Column="1"
                                     Margin="0,5,0,0"
-                                    FontFamily="Poppins"
                                     FontSize="12"
                                     HorizontalOptions="CenterAndExpand"
-                                    Text="Status"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource lblLight}"
+                                    Text="Status" />
                             </Grid>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatusBy_Tapped" />
@@ -388,6 +330,17 @@
                                             IsVisible="{Binding ScanQRCode}"
                                             Style="{StaticResource btnNormal}"
                                             Text="Scan QR Code" />
+
+                                        <Button
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Padding="10,0"
+                                            Clicked="BtnSelect_Tapped"
+                                            HeightRequest="35"
+                                            HorizontalOptions="StartAndExpand"
+                                            IsVisible="{Binding isSelectGrievance}"
+                                            Style="{StaticResource btnNormal}"
+                                            Text="Select" />
                                     </Grid>
                                     <BoxView Style="{StaticResource boxHorizontalGreen}" />
                                     <Grid.GestureRecognizers>
@@ -402,13 +355,11 @@
                 <Label
                     x:Name="lblNoRecord"
                     Grid.Row="2"
-                    FontFamily="Poppins-Medium"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"
-                    Text="No Order found"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblMedium}"
+                    Text="No Order found" />
             </Grid>
         </Grid>
     </ContentView.Content>

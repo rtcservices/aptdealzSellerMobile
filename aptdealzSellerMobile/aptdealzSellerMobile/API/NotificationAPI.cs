@@ -4,7 +4,6 @@ using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -48,17 +47,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetAllNotificationsForUser();
                                 }
                             }
                             else
@@ -118,17 +113,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetNotificationsCountForUser();
                                 }
                             }
                             else
@@ -165,7 +156,7 @@ namespace aptdealzSellerMobile.API
                     string requestJson = "{\"NotificationId\":\"" + NotificationId + "\"}";
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
-                        string url = string.Format(EndPointURL.SetUserNoficiationAsRead, (int)App.Current.Resources["Version"],NotificationId);
+                        string url = string.Format(EndPointURL.SetUserNoficiationAsRead, (int)App.Current.Resources["Version"], NotificationId);
                         var responseHttp = await hcf.PostAsync(url, requestJson);
                         var responseJson = await responseHttp.Content.ReadAsStringAsync();
                         if (responseHttp.IsSuccessStatusCode)
@@ -190,17 +181,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || responseHttp.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await SetUserNoficiationAsRead(NotificationId);
                                 }
                             }
                             else

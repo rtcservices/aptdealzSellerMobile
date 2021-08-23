@@ -9,12 +9,12 @@ namespace aptdealzSellerMobile.Views.Popup
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StatusPopup : PopupPage
     {
-        #region Objects
+        #region [ Objects ]
         public event EventHandler isRefresh;
         private string PageName;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public StatusPopup(int? StatusBy, string StatusPageName = null)
         {
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace aptdealzSellerMobile.Views.Popup
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
         protected override bool OnBackgroundClicked()
         {
             base.OnBackgroundClicked();
@@ -61,30 +61,52 @@ namespace aptdealzSellerMobile.Views.Popup
                 if (viewSource == null)
                     return;
 
-                if (viewSource == (int)QuoteStatus.Submitted || viewSource == (int)GrievancesStatus.Pending)
+                ClearSource();
+                if (PageName != "Grievances")
                 {
-                    ClearSource();
-                    imgFirstType.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == (int)QuoteStatus.Accepted || viewSource == (int)GrievancesStatus.Open)
-                {
-                    ClearSource();
-                    imgSecondType.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == (int)QuoteStatus.Rejected || viewSource == (int)GrievancesStatus.Closed)
-                {
-                    ClearSource();
-                    imgThirdType.Source = Constraints.Redio_Selected;
-                }
-                else if (viewSource == (int)QuoteStatus.All || viewSource == (int)GrievancesStatus.All)
-                {
-                    ClearSource();
-                    imgFourType.Source = Constraints.Redio_Selected;
+                    if (viewSource == (int)QuoteStatus.Submitted)
+                    {
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)QuoteStatus.Accepted)
+                    {
+                        imgSecondType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)QuoteStatus.Rejected)
+                    {
+                        imgThirdType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)QuoteStatus.All)
+                    {
+                        imgFourType.Source = Constraints.Redio_Selected;
+                    }
+                    else
+                    {
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
                 }
                 else
                 {
-                    ClearSource();
-                    imgFirstType.Source = Constraints.Redio_Selected;
+                    if (viewSource == (int)GrievancesStatus.Pending)
+                    {
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)GrievancesStatus.Open)
+                    {
+                        imgSecondType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)GrievancesStatus.Closed)
+                    {
+                        imgThirdType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)GrievancesStatus.All)
+                    {
+                        imgFourType.Source = Constraints.Redio_Selected;
+                    }
+                    else
+                    {
+                        imgFirstType.Source = Constraints.Redio_Selected;
+                    }
                 }
             }
             catch (Exception ex)
@@ -102,7 +124,7 @@ namespace aptdealzSellerMobile.Views.Popup
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void StkFirstType_Tapped(object sender, EventArgs e)
         {
             try

@@ -57,19 +57,16 @@
 
                 <StackLayout
                     Grid.Row="1"
-                    Margin="30,40"
+                    Margin="20,40"
                     BackgroundColor="{StaticResource White}"
                     HorizontalOptions="CenterAndExpand"
                     Orientation="Horizontal"
                     Spacing="15"
                     VerticalOptions="CenterAndExpand">
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpOne"
@@ -88,12 +85,9 @@
                     </Frame>
 
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpTwo"
@@ -112,12 +106,9 @@
                     </Frame>
 
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpThree"
@@ -136,12 +127,9 @@
                     </Frame>
 
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpFour"
@@ -160,12 +148,9 @@
                     </Frame>
 
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpFive"
@@ -184,14 +169,9 @@
                     </Frame>
 
                     <Frame
-                        Margin="0"
-                        Padding="0"
                         BackgroundColor="{StaticResource LightGray}"
-                        CornerRadius="5"
-                        HasShadow="False"
                         HeightRequest="45"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand"
+                        Style="{StaticResource frmBlank}"
                         WidthRequest="45">
                         <ext:ExtEntry
                             x:Name="TxtOtpSix"

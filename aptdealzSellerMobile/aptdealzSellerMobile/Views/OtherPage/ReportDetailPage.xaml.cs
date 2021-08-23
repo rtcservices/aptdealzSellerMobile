@@ -1,5 +1,6 @@
 ﻿using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
 using aptdealzSellerMobile.Views.Popup;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -14,41 +15,74 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReportDetailPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private List<ReportDetail> mReportDetails = new List<ReportDetail>();
-        private string filterBy = "";
+        private string filterBy = SortByField.Date.ToString();
         private string title = string.Empty;
-        private bool? sortBy = null;
+        private bool? isAssending = false;
         private readonly int pageSize = 10;
         private int pageNo;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public ReportDetailPage()
         {
-            InitializeComponent();
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
             BindShippingData();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            base.OnBackButtonPressed();
+            try
+            {
+                Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/OnBackButtonPressed: " + ex.Message);
+            }
+            return true;
         }
 
         private void BindShippingData()
@@ -137,7 +171,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgExpand_Tapped(object sender, EventArgs e)
         {
             try
@@ -197,9 +231,25 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ReportDetailPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -210,7 +260,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         private void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
@@ -239,25 +289,42 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Frame)sender;
+            if (Tab.IsEnabled)
             {
-                FilterPopup sortByPopup = new FilterPopup("", "");
-                sortByPopup.isRefresh += (s1, e1) =>
+                try
                 {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
+                    Tab.IsEnabled = false;
+                    FilterPopup sortByPopup = new FilterPopup("", "");
+                    sortByPopup.isRefresh += (s1, e1) =>
                     {
-                        filterBy = result;
-                        lblFilterBy.Text = filterBy;
-                        pageNo = 1;
-                        BindShippingData();
-                    }
-                };
-                await PopupNavigation.Instance.PushAsync(sortByPopup);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("ReportDetailPage/FrmFilterBy_Tapped: " + ex.Message);
+                        string result = s1.ToString();
+                        if (!Common.EmptyFiels(result))
+                        {
+                            filterBy = result;
+                            if (filterBy == SortByField.ID.ToString())
+                            {
+                                lblFilterBy.Text = filterBy;
+                            }
+                            else
+                            {
+                                lblFilterBy.Text = filterBy.ToCamelCase();
+                            }
+                            pageNo = 1;
+                            // mOrders.Clear();
+                            BindShippingData();
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(sortByPopup);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ReportDetailPage/FrmFilterBy_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 

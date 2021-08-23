@@ -8,10 +8,12 @@ namespace aptdealzSellerMobile.Utility
 {
     public class FileSelection
     {
+        #region [ Objects ]
         public static string fileName = string.Empty;
         public static byte[] fileByte = null;
         public static string fileExtension = string.Empty;
         public static string relativePath;
+        #endregion
 
         public static async Task FilePickup()
         {

@@ -2,7 +2,7 @@
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Utility;
 using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,14 +11,26 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForgotPasswordPage : ContentPage
     {
-        #region Constructor
+        #region [ Constructor ]
         public ForgotPasswordPage()
         {
             InitializeComponent();
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         private bool Validation()
         {
             bool isValid = false;
@@ -45,7 +57,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             return isValid;
         }
 
-        private async void SendOtpByEmail()
+        private async Task SendOtpByEmail()
         {
             try
             {
@@ -81,32 +93,48 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Events
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void ResetPassword_Tapped(object sender, EventArgs e)
+        private async void ResetPassword_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
             {
-                Common.BindAnimation(button: btnResetPassword);
-                SendOtpByEmail();
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("ForgotPasswordPage/ResetPassword_Tapped: " + ex.Message);
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: btnResetPassword);
+                    await SendOtpByEmail();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ForgotPasswordPage/ResetPassword_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 
         private void txtEmail_Unfocused(object sender, FocusEventArgs e)
         {
-            var entry = (Extention.ExtEntry)sender;
-            if (!Common.EmptyFiels(entry.Text))
+            try
             {
-                BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                var entry = (Extention.ExtEntry)sender;
+                if (!Common.EmptyFiels(entry.Text))
+                {
+                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ForgotPasswordPage/txtEmail_Unfocused: " + ex.Message);
             }
         }
         #endregion

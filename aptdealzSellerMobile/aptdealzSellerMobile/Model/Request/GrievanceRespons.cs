@@ -25,5 +25,13 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("createdDate")]
         public DateTime CreatedDate { get; set; }
+
+        #region [ Extra Properties ]     
+        [JsonIgnore]
+        public bool IsContact { get; set; } = true;
+
+        [JsonIgnore]
+        public bool IsUser { get; set; } = false;
+        #endregion
     }
 }

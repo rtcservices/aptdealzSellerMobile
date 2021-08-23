@@ -21,7 +21,7 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignupPage : ContentPage, INotifyPropertyChanged
     {
-        #region Properties
+        #region [ Properties ]
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -41,7 +41,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Objects
+        #region [ Objects ]
         private bool isChecked = false;
         private List<Country> mCountries;
         private List<Category> mCategories;
@@ -53,7 +53,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         private string ErrorMessage = string.Empty;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public SignupPage()
         {
             InitializeComponent();
@@ -61,7 +61,19 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -113,7 +125,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             try
             {
-                mCategories = await DependencyService.Get<ICategoryRepository>().GetCategory();
+                mCategories = await DependencyService.Get<IProfileRepository>().GetCategory();
                 if (mCategories != null && mCategories.Count > 0)
                 {
                     pkCategory.ItemsSource = mCategories.Select(x => x.Name).ToList();
@@ -135,7 +147,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             try
             {
-                mSubCategories = await DependencyService.Get<ICategoryRepository>().GetSubCategory(categoryId);
+                mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
                 pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
             }
             catch (Exception ex)
@@ -166,7 +178,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 if (Common.EmptyFiels(txtFullName.Text) || Common.EmptyFiels(txtPassword.Text)
                         || Common.EmptyFiels(txtEmail.Text) || Common.EmptyFiels(txtPhoneNumber.Text)
                         || Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
-                        || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtLandmark.Text)
+                        || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text) || Common.EmptyFiels(txtLandmark.Text)
                         || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtDescription.Text)
                         || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
                         || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
@@ -218,6 +230,10 @@ namespace aptdealzSellerMobile.Views.Accounts
                 else if (Common.EmptyFiels(txtCity.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_City);
+                }
+                else if (Common.EmptyFiels(txtState.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_State);
                 }
                 else if (Common.EmptyFiels(txtPinCode.Text))
                 {
@@ -304,21 +320,26 @@ namespace aptdealzSellerMobile.Views.Accounts
                         isValid = true;
                     }
                 }
-                else if (!Common.IsValidGSTPIN(txtGstNumber.Text) && !Common.IsValidPAN(txtPan.Text))
-                {
-                    string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
-                    if (panFromGSTIN != txtPan.Text)
-                    {
-                        Common.DisplayErrorMessage(Constraints.InValid_PAN_GSTIN);
-                    }
-                    else
-                    {
-                        isValid = true;
-                    }
-                }
                 else
                 {
                     isValid = true;
+                }
+
+                if (isValid)
+                {
+                    if (Common.IsValidGSTPIN(txtGstNumber.Text) && Common.IsValidPAN(txtPan.Text))
+                    {
+                        string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
+                        if (panFromGSTIN != txtPan.Text)
+                        {
+                            Common.DisplayErrorMessage(Constraints.InValid_PAN_GSTIN);
+                            isValid = false;
+                        }
+                        else
+                        {
+                            isValid = true;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -403,6 +424,11 @@ namespace aptdealzSellerMobile.Views.Accounts
                 if (Common.EmptyFiels(txtCity.Text))
                 {
                     BoxCity.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                }
+
+                if (Common.EmptyFiels(txtState.Text))
+                {
+                    BoxState.BackgroundColor = (Color)App.Current.Resources["LightRed"];
                 }
 
                 if (Common.EmptyFiels(txtPinCode.Text))
@@ -631,6 +657,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 txtBuildingNumber.Text = txtBuildingNumber.Text.Trim();
                 txtStreet.Text = txtStreet.Text.Trim();
                 txtCity.Text = txtCity.Text.Trim();
+                txtState.Text = txtState.Text.Trim();
                 txtLandmark.Text = txtLandmark.Text.Trim();
                 #endregion
 
@@ -666,6 +693,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 mRegister.PhoneNumber = txtPhoneNumber.Text;
                 mRegister.AlternativePhoneNumber = txtAltPhoneNumber.Text;
                 mRegister.Password = txtPassword.Text;
+                mRegister.PinCode = txtPinCode.Text;
 
                 if (documentList.Count != 0)
                 {
@@ -682,6 +710,10 @@ namespace aptdealzSellerMobile.Views.Accounts
                 if (!Common.EmptyFiels(txtCity.Text))
                 {
                     mRegister.City = txtCity.Text;
+                }
+                if (!Common.EmptyFiels(txtState.Text))
+                {
+                    mRegister.State = txtState.Text;
                 }
                 if (!Common.EmptyFiels(txtLandmark.Text))
                 {
@@ -761,7 +793,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             return mRegister;
         }
 
-        private async void RegisterUser()
+        private async Task RegisterUser()
         {
             try
             {
@@ -823,13 +855,13 @@ namespace aptdealzSellerMobile.Views.Accounts
             try
             {
                 var successPopup = new Popup.SuccessPopup(messageString);
-                successPopup.isRefresh += (s1, e1) =>
+                successPopup.isRefresh += async (s1, e1) =>
                 {
                     bool res = (bool)s1;
                     if (res)
                     {
                         ClearPropeties();
-                        Navigation.PopAsync();
+                        await Navigation.PopAsync();
                     }
                 };
 
@@ -856,6 +888,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 txtBuildingNumber.Text = string.Empty;
                 txtStreet.Text = string.Empty;
                 txtCity.Text = string.Empty;
+                txtState.Text = string.Empty;
                 txtLandmark.Text = string.Empty;
                 txtDescription.Text = string.Empty;
                 pkCategory.SelectedIndex = -1;
@@ -879,11 +912,11 @@ namespace aptdealzSellerMobile.Views.Accounts
         #endregion
         #endregion
 
-        #region Events
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         private void ImgPassword_Tapped(object sender, EventArgs e)
@@ -999,13 +1032,45 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private void StkLogin_Tapped(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new LoginPage());
+            var Tab = (StackLayout)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    App.Current.MainPage = new NavigationPage(new LoginPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("SignupPage/StkSignup_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnSubmit_Clicked(object sender, EventArgs e)
+        private async void BtnSubmit_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnSubmit);
-            RegisterUser();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnSubmit);
+                    await RegisterUser();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("SignupPage/BtnSubmit_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         #region [ Category / SubCategory ]
@@ -1163,43 +1228,69 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region [ Unfocused ]
         private void Entry_Unfocused(object sender, FocusEventArgs e)
         {
-            var entry = (ExtEntry)sender;
-            if (!Common.EmptyFiels(entry.Text))
+            try
             {
-                UnfocussedFields(entry: entry);
+                var entry = (ExtEntry)sender;
+                if (!Common.EmptyFiels(entry.Text))
+                {
+                    UnfocussedFields(entry: entry);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/Entry_Unfocused: " + ex.Message);
             }
         }
 
         private void AutoSuggestBox_Unfocused(object sender, FocusEventArgs e)
         {
-            var autoSuggestBox = (ExtAutoSuggestBox)sender;
-            if (!Common.EmptyFiels(autoSuggestBox.Text))
+            try
             {
-                UnfocussedFields(autoSuggestBox: autoSuggestBox);
+                var autoSuggestBox = (ExtAutoSuggestBox)sender;
+                if (!Common.EmptyFiels(autoSuggestBox.Text))
+                {
+                    UnfocussedFields(autoSuggestBox: autoSuggestBox);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/AutoSuggestBox_Unfocused: " + ex.Message);
             }
         }
 
         private void Editor_Unfocused(object sender, FocusEventArgs e)
         {
-            var editor = (Editor)sender;
-            if (!Common.EmptyFiels(editor.Text))
+            try
             {
-                UnfocussedFields(editor: editor);
+                var editor = (Editor)sender;
+                if (!Common.EmptyFiels(editor.Text))
+                {
+                    UnfocussedFields(editor: editor);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/Editor_Unfocused: " + ex.Message);
             }
         }
 
         private void Picker_Unfocused(object sender, FocusEventArgs e)
         {
-            var picker = (Picker)sender;
-            if (picker.SelectedIndex != -1)
+            try
             {
-                UnfocussedFields(picker: picker);
+                var picker = (Picker)sender;
+                if (picker.SelectedIndex != -1)
+                {
+                    UnfocussedFields(picker: picker);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/Picker_Unfocused: " + ex.Message);
             }
         }
         #endregion
 
         #endregion
-
-
     }
 }

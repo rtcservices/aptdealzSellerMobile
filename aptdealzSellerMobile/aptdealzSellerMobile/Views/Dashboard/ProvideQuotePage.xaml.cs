@@ -21,7 +21,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProvideQuotePage : ContentPage, INotifyPropertyChanged
     {
-        #region Properties
+        #region [ Properties ]
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -42,7 +42,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Objects
+        #region [ Objects ]
         private string RequirementId;
         bool isFirstLoad = true;
         private string ErrorMessage = string.Empty;
@@ -51,49 +51,98 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private RequestQuote mRequestQuote;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public ProvideQuotePage(string requirementId)
         {
-            InitializeComponent();
-            lblTotalAmount.Text = "Rs 0";
-            RequirementId = requirementId;
-            mQuote = new Quote();
-            mRequestQuote = new RequestQuote();
-            GetRequirementsById();
-           
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                lblTotalAmount.Text = "Rs 0";
+                RequirementId = requirementId;
+                mQuote = new Quote();
+                mRequestQuote = new RequestQuote();
+
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/Ctor: " + ex.Message);
+            }
         }
 
         public ProvideQuotePage(Quote mQuote)
         {
-            InitializeComponent();
-            lblTotalAmount.Text = "Rs 0";
-            this.mQuote = mQuote;
-            RequirementId = this.mQuote.RequirementId;
-            mRequestQuote = new RequestQuote();
-            GetRequirementsById();
-            BindQuoteDetails();
+            try
+            {
+                InitializeComponent();
+                lblTotalAmount.Text = "Rs 0";
+                this.mQuote = mQuote;
+                RequirementId = this.mQuote.RequirementId;
+                mRequestQuote = new RequestQuote();
+                GetRequirementsById();
+                BindQuoteDetails();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                {
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            dpValidityDate.NullableDate = null;
             dpValidityDate.MinimumDate = DateTime.Today;
+            if (mQuote.ValidityDate == DateTime.MinValue)
+            {
+                dpValidityDate.NullableDate = null;
+            }
+            else
+            {
+                dpValidityDate.NullableDate = mQuote.ValidityDate;
+                dpValidityDate.Date = mQuote.ValidityDate;
+            }
+            GetRequirementsById();
         }
 
         #region [ Binding ]
@@ -399,7 +448,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             return mRequestQuote;
         }
 
-        private async void SaveQuote()
+        private async Task SaveQuote()
         {
             try
             {
@@ -462,18 +511,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             try
             {
                 var successPopup = new Popup.SuccessPopup(MessageString);
-                successPopup.isRefresh += (s1, e1) =>
+                successPopup.isRefresh += async (s1, e1) =>
                 {
                     bool res = (bool)s1;
                     if (res)
                     {
                         if (!Common.EmptyFiels(mRequestQuote.QuoteId))
                         {
-                            Navigation.PopAsync();
+                            await Navigation.PopAsync();
                         }
                         else
                         {
-                            Navigation.PushAsync(new MainTabbedPage("Submitted"));
+                            await Navigation.PushAsync(new MainTabbedPage("Submitted"));
                         }
                         ClearPropeties();
                     }
@@ -538,15 +587,31 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ProvideQuotePage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -554,22 +619,31 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void BtnSubmitQuote_Clicked(object sender, EventArgs e)
+        private async void BtnSubmitQuote_Clicked(object sender, EventArgs e)
         {
-            try
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
             {
-                Common.BindAnimation(button: BtnSubmitQuote);
-                SaveQuote();
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("ProvideQuotePage/Submit_QuoteTapped: " + ex.Message);
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnSubmitQuote);
+                    await SaveQuote();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ProvideQuotePage/Submit_QuoteTapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 

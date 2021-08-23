@@ -44,30 +44,13 @@
                     ColumnDefinitions="*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="30" />
+                        <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                         <Frame
-                            x:Name="frmNotification"  HasShadow="False"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Orange}"
-                            CornerRadius="10"
-                            HeightRequest="20"
-                            HorizontalOptions="CenterAndExpand"
+                            x:Name="frmNotification"
                             IsVisible="false"
-                            VerticalOptions="StartAndExpand"
-                            WidthRequest="20" />
-                        <Label
-                            x:Name="lblNotificationCount"  FontSize="15"
-                            Margin="10,5,0,0"
-                            HorizontalOptions="CenterAndExpand"
-                            Style="{StaticResource lblMedium}"
-                            VerticalOptions="Start" />
+                            Style="{StaticResource frmNotification}">
+                            <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                        </Frame>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                         </Grid.GestureRecognizers>
@@ -125,14 +108,8 @@
 
                     <Frame
                         x:Name="FrmSearchBy"
-                        Grid.Row="0"
-                        Margin="0"
-                        Padding="0"
-                        BackgroundColor="Transparent"
                         BorderColor="Transparent"
-                        CornerRadius="5"
-                        HasShadow="False"
-                        IsClippedToBounds="True">
+                        Style="{StaticResource frmBlank}">
 
                         <Grid BackgroundColor="Transparent">
                             <Grid.ColumnDefinitions>
@@ -173,17 +150,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            x:Name="FrmSortBy"
-                            Grid.Column="0"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="0" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
@@ -191,11 +158,8 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
-                                    Source="iconSortASC.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Source="iconSortDSC.png"
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     Grid.Column="1"
@@ -210,28 +174,15 @@
                             </Frame.GestureRecognizers>
                         </Frame>
 
-                        <Frame
-                            x:Name="FrmFilterBy"
-                            Grid.Column="1"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="1" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
                                 ColumnSpacing="0">
                                 <Image
                                     Grid.Column="0"
-                                    Margin="0"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
                                     Source="iconFilter.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     x:Name="lblFilterBy"
@@ -247,29 +198,15 @@
                             </Frame.GestureRecognizers>
                         </Frame>
 
-                        <Frame
-                            x:Name="FrmStatusBy"
-                            Grid.Column="2"
-                            Margin="0"
-                            Padding="0"
-                            BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
-                            CornerRadius="5"
-                            HasShadow="False"
-                            HorizontalOptions="EndAndExpand"
-                            IsClippedToBounds="True">
+                        <Frame Grid.Column="2" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
                                 ColumnSpacing="2">
                                 <Image
                                     Grid.Column="0"
-                                    Margin="0"
-                                    Aspect="AspectFit"
-                                    HeightRequest="20"
-                                    HorizontalOptions="CenterAndExpand"
                                     Source="iconStatus.png"
-                                    VerticalOptions="CenterAndExpand" />
+                                    Style="{StaticResource imgSorting}" />
 
                                 <Label
                                     x:Name="lblStatus"
@@ -321,23 +258,20 @@
                                             <!--  Quote Number  -->
                                             <Label
                                                 Grid.Row="0"
-                                                FontFamily="Poppins-Medium"
                                                 FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
-                                                Text="{Binding QuoteNo}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand" />
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding QuoteNo}" />
 
                                             <!--  Quote Amount  -->
                                             <Label
                                                 Grid.Row="0"
-                                                FontFamily="Poppins-Medium"
                                                 FontSize="15"
                                                 HorizontalOptions="EndAndExpand"
                                                 IsVisible="{Binding OldDetail, Mode=TwoWay}"
+                                                Style="{StaticResource lblMedium}"
                                                 Text="{Binding TotalQuoteAmount, StringFormat='RS {0:}'}"
-                                                TextColor="{StaticResource Green}"
-                                                VerticalOptions="CenterAndExpand" />
+                                                TextColor="{StaticResource Green}" />
 
                                             <!--  Req Title  -->
                                             <Label
@@ -350,13 +284,11 @@
                                             <!--  Requerment Number  -->
                                             <Label
                                                 Grid.Row="1"
-                                                FontFamily="Poppins-Medium"
                                                 FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Text="{Binding RequirementNo}"
-                                                TextColor="{StaticResource Black}"
-                                                VerticalOptions="CenterAndExpand" />
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding RequirementNo}" />
 
                                             <!--  Req Title  -->
                                             <Label
@@ -385,13 +317,12 @@
                                             <!--  Quote Amount  -->
                                             <Label
                                                 Grid.Row="4"
-                                                FontFamily="Poppins-Medium"
                                                 FontSize="15"
                                                 HorizontalOptions="EndAndExpand"
                                                 IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                Style="{StaticResource lblMedium}"
                                                 Text="{Binding TotalQuoteAmount, StringFormat='RS {0:}'}"
-                                                TextColor="{StaticResource Green}"
-                                                VerticalOptions="CenterAndExpand" />
+                                                TextColor="{StaticResource Green}" />
                                         </Grid>
 
                                         <!--  DoenArrow  -->
@@ -423,13 +354,11 @@
                 <Label
                     x:Name="lblNoRecord"
                     Grid.Row="2"
-                    FontFamily="Poppins-Medium"
                     FontSize="15"
                     HorizontalOptions="CenterAndExpand"
                     IsVisible="false"
-                    Text="No Quotes found"
-                    TextColor="{StaticResource Black}"
-                    VerticalOptions="CenterAndExpand" />
+                    Style="{StaticResource lblMedium}"
+                    Text="No Quotes found" />
             </Grid>
         </Grid>
     </ContentView.Content>

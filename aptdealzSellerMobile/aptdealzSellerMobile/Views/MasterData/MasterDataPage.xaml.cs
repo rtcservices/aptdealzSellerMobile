@@ -20,7 +20,7 @@ namespace aptdealzSellerMobile.Views.MasterData
             {
                 if (App.stoppableTimer == null)
                 {
-                    App.stoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(5), () =>
+                    App.stoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(10), () =>
                     {
                         GetNotificationCount();
                     });
@@ -64,7 +64,7 @@ namespace aptdealzSellerMobile.Views.MasterData
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("NotificationPage/GetNotificationCount: " + ex.Message);
+                Common.DisplayErrorMessage("MasterDataPage/GetNotificationCount: " + ex.Message);
             }
         }
     }

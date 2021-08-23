@@ -5,6 +5,7 @@ using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
 using dotMorten.Xamarin.Forms;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -22,7 +23,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AccountView : ContentView, INotifyPropertyChanged
     {
-        #region Properties
+        #region [ Properties ]
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -42,7 +43,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         }
         #endregion
 
-        #region Objects   
+        #region [ Objects ]   
         private ProfileAPI profileAPI;
         private SellerDetails mSellerDetail;
         private BillingAddress mBillingAddress;
@@ -53,42 +54,53 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private List<string> selectedSubCategory;
         private List<string> documentList;
 
-        private string newCategory;
         private string relativePath = string.Empty;
         private string relativeDocumentPath = string.Empty;
         private string ErrorMessage = string.Empty;
+
         private bool isFirstLoad = true;
-        private bool isUpdatPhoto = false;
+        private bool isUpdatePhoto = false;
         private bool isDeleteSubCategory = true;
         private bool isAddBillingAddress = false;
         private bool isEditBillingAddress = false;
         private bool isDeleteBillingAddress = false;
+        private bool isUpdateProfile = false;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public AccountView()
         {
-            InitializeComponent();
-            BtnUpdate.IsEnabled = false;
-            BindObjects();
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                BtnUpdate.IsEnabled = false;
+                BindObjects();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount");
+                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+
+        #region [ Get / Bind Data ]
         private async void BindObjects()
         {
             profileAPI = new ProfileAPI();
@@ -98,22 +110,30 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             selectedSubCategory = new List<string>();
             documentList = new List<string>();
 
-            await Task.Run(() =>
-             {
-                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
-             });
+            //await Task.Run(() =>
+            // {
+            //     UserDialogs.Instance.ShowLoading(Constraints.Loading);
+            // });
             await GetCategory();
             await GetCountries();
             await GetProfile();
-            UserDialogs.Instance.HideLoading();
+            CapitalizeWord();
+            //UserDialogs.Instance.HideLoading();
         }
 
-        #region [ Get / Bind Data ]
+        private void CapitalizeWord()
+        {
+            txtGstNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtPan.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtBankName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtIfsc.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+        }
+
         private async Task GetCategory()
         {
             try
             {
-                mCategories = await DependencyService.Get<ICategoryRepository>().GetCategory();
+                mCategories = await DependencyService.Get<IProfileRepository>().GetCategory();
                 if (mCategories != null || mCategories.Count > 0)
                 {
                     pkCategory.ItemsSource = mCategories.Select(x => x.Name).ToList();
@@ -122,25 +142,85 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (pkCategory.SelectedItem != null)
                 {
                     var categoryId = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).FirstOrDefault()?.CategoryId;
-                    GetSubCategoryByCategoryId(categoryId);
+                    await GetSubCategoryByCategoryId(categoryId);
                 }
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/BindCategoriesList: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/GetCategory: " + ex.Message);
             }
         }
 
-        private async void GetSubCategoryByCategoryId(string categoryId)
+        private async Task GetSubCategoryByCategoryId(string categoryId)
         {
             try
             {
-                mSubCategories = await DependencyService.Get<ICategoryRepository>().GetSubCategory(categoryId);
+                mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
                 pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("AccountView/GetSubCategoryByCategoryId: " + ex.Message);
+            }
+        }
+
+        private async Task CreateSubCategory(bool isNewSubCategory = false)
+        {
+            try
+            {
+                string CategoryId = "";
+
+                if (pkCategory.SelectedIndex > -1)
+                {
+                    mCategories = await DependencyService.Get<IProfileRepository>().GetCategory();
+                    var mCategory = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).FirstOrDefault();
+                    if (mCategory != null)
+                    {
+                        CategoryId = mCategory.CategoryId;
+                    }
+                }
+
+                if (isNewSubCategory)
+                {
+                    if (selectedSubCategory != null && selectedSubCategory.Count > 0)
+                    {
+                        foreach (var subCategory in selectedSubCategory)
+                        {
+                            if (!Common.EmptyFiels(subCategory) && !Common.EmptyFiels(CategoryId))
+                            {
+                                await DependencyService.Get<IProfileRepository>().CreateSubCategoryByCategoryId(subCategory, CategoryId);
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    if (!Common.EmptyFiels(txtOtherSubCategory.Text) && !Common.EmptyFiels(CategoryId))
+                    {
+                        await DependencyService.Get<IProfileRepository>().CreateSubCategoryByCategoryId(txtOtherSubCategory.Text, CategoryId);
+                    }
+                }
+
+                await GetSubCategoryByCategoryId(CategoryId);
+
+                if (mSubCategories != null)
+                {
+                    if (selectedSubCategory.Where(x => x == txtOtherSubCategory.Text).Count() == 0)
+                    {
+                        selectedSubCategory = mSubCategories.Select(x => x.Name).ToList();
+                        pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                        pkSubCategory.SelectedItem = txtOtherSubCategory.Text;
+                        txtOtherSubCategory.Text = string.Empty;
+                    }
+
+                    wlSubCategory.ItemsSource = selectedSubCategory.ToList();
+                }
+                HasUpdateProfileDetail();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/CreateSubCategory: " + ex.Message);
             }
         }
 
@@ -163,7 +243,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                if (Common.mSellerDetails == null || Common.EmptyFiels(Common.mSellerDetails.SellerId))
+                if (Common.mSellerDetails == null || Common.EmptyFiels(Common.mSellerDetails.SellerId) || isUpdateProfile)
                 {
                     var mResponse = await profileAPI.GetMyProfileData();
                     if (mResponse != null && mResponse.Succeeded)
@@ -172,6 +252,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         if (jObject != null)
                         {
                             mSellerDetail = jObject.ToObject<Model.Request.SellerDetails>();
+                            Common.mSellerDetails = mSellerDetail;
                         }
                     }
                     else
@@ -195,7 +276,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void BindProfileDetails(SellerDetails mSellerDetail)
+        private async void BindProfileDetails(SellerDetails mSellerDetail)
         {
             try
             {
@@ -264,6 +345,13 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 #endregion
 
                 #region Company Profile
+
+                if (selectedSubCategory != null)
+                {
+                    selectedSubCategory = mSellerDetail.CompanyProfile.SubCategories;
+                    wlSubCategory.ItemsSource = selectedSubCategory.ToList();
+                }
+
                 if (mSellerDetail.CompanyProfile.Category != null)
                 {
                     var category = mCategories.Where(x => x.Name == mSellerDetail.CompanyProfile.Category).FirstOrDefault()?.Name;
@@ -274,14 +362,22 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     }
                     else
                     {
-                        txtOtherCategory.Text = category;
-                    }
-                }
+                        txtOtherCategory.Text = mSellerDetail.CompanyProfile?.Category;
+                        //
+                        mCategories = await DependencyService.Get<IProfileRepository>().CreateCategory(txtOtherCategory.Text);
+                        if (mCategories != null)
+                        {
+                            var lastAddedCategory = mCategories.Select(x => x.Name).ToList();
+                            if (lastAddedCategory.Any(x => x.ToLower().Trim() == txtOtherCategory.Text.ToLower().Trim()))
+                            {
+                                pkCategory.ItemsSource = lastAddedCategory.ToList();
+                                pkCategory.SelectedItem = txtOtherCategory.Text;
 
-                if (selectedSubCategory != null)
-                {
-                    selectedSubCategory = mSellerDetail.CompanyProfile.SubCategories;
-                    wlSubCategory.ItemsSource = selectedSubCategory.ToList();
+                                txtOtherCategory.Text = string.Empty;
+                                await CreateSubCategory(true);
+                            }
+                        }
+                    }
                 }
 
                 txtDescription.Text = mSellerDetail.CompanyProfile.Description;
@@ -605,7 +701,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     isUpdate = true;
                 else if (isDeleteSubCategory)
                     isUpdate = true;
-                else if (isUpdatPhoto)
+                else if (isUpdatePhoto)
                     isUpdate = true;
                 else
                     isUpdate = false;
@@ -926,7 +1022,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                #region Profile
+                #region Profile Image
                 if (!Common.EmptyFiels(relativePath))
                 {
                     string baseURL = (string)App.Current.Resources["BaseURL"];
@@ -935,6 +1031,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 #endregion
 
                 #region User Details            
+                mSellerDetail.UserId = Settings.UserId;
                 mSellerDetail.FullName = txtFullName.Text;
                 mSellerDetail.Email = txtEmail.Text;
                 mSellerDetail.PhoneNumber = txtPhoneNumber.Text;
@@ -1071,11 +1168,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (Validations())
                 {
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    //if (!Common.EmptyFiels(txtPinCode.Text))
-                    //{
-                    //    if (!await PinCodeValidation())
-                    //        return;
-                    //}
 
                     FieldsTrim();
                     var mSellerDetails = FillProfileDetails();
@@ -1085,11 +1177,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         var mResponse = await profileAPI.SaveProfile(mSellerDetails);
                         if (mResponse != null && mResponse.Succeeded)
                         {
-                            GetProfile();
+                            isUpdateProfile = true;
+                            await GetProfile();
+
                             isAddBillingAddress = false;
                             isDeleteBillingAddress = false;
                             isEditBillingAddress = false;
                             isDeleteSubCategory = false;
+                            isUpdatePhoto = false;
                             var updateId = mResponse.Data;
                             if (updateId != null)
                             {
@@ -1121,19 +1216,18 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void SuccessfullUpdate(string MessageString)
+        private async void SuccessfullUpdate(string MessageString)
         {
             try
             {
                 var successPopup = new Popup.SuccessPopup(MessageString);
-                PopupNavigation.Instance.PushAsync(successPopup);
+                await PopupNavigation.Instance.PushAsync(successPopup);
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("AccountView/SuccessfullUpdate: " + ex.Message);
             }
         }
-        #endregion
 
         private void ClearBillingAddress()
         {
@@ -1146,56 +1240,35 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             pkNationality.Text = string.Empty;
             mBillingAddress = null;
         }
-
-        private async void DoLogout()
-        {
-            try
-            {
-                var isClose = await App.Current.MainPage.DisplayAlert(Constraints.Logout, Constraints.AreYouSureWantLogout, Constraints.Yes, Constraints.No);
-                if (isClose)
-                {
-                    AuthenticationAPI authenticationAPI = new AuthenticationAPI();
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    var mResponse = await authenticationAPI.Logout(Settings.RefreshToken, Settings.LoginTrackingKey);
-                    if (mResponse != null && mResponse.Succeeded)
-                    {
-                        Common.DisplaySuccessMessage(mResponse.Message);
-                    }
-                    else
-                    {
-                        if (mResponse != null && !mResponse.Message.Contains("TrackingKey"))
-                            Common.DisplayErrorMessage(mResponse.Message);
-                    }
-
-                    Settings.EmailAddress = string.Empty;
-                    Settings.UserToken = string.Empty;
-                    Settings.RefreshToken = string.Empty;
-                    Settings.LoginTrackingKey = string.Empty;
-
-                    App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/DoLogout: " + ex.Message);
-            }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
-            }
-        }
+        #endregion
         #endregion
 
-        #region Events    
+        #region [ Events ]    
         #region [ Header Navigation ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("AccountView/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -1223,13 +1296,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 Common.BindAnimation(image: ImgCamera);
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 ImageConvertion.SelectedImagePath = imgUser;
+                //ImageConvertion.SelectedXFImagePath = imgUser;
                 ImageConvertion.SetNullSource((int)FileUploadCategory.ProfilePicture);
                 await ImageConvertion.SelectImage();
 
                 if (ImageConvertion.SelectedImageByte != null)
                 {
                     relativePath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfilePicture);
-                    isUpdatPhoto = true;
+                    isUpdatePhoto = true;
                     HasUpdateProfileDetail();
                 }
             }
@@ -1256,7 +1330,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     if (documentList == null)
                         documentList = new List<string>();
-
+                    isUpdatePhoto = true;
                     documentList.Add(relativeDocumentPath);
                     AddDocuments();
                     HasUpdateProfileDetail();
@@ -1336,16 +1410,16 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         #endregion
 
         #region [ Category-SubCategory ]
-        private void pkCategory_SelectedIndexChanged(object sender, EventArgs e)
+        private async void pkCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (pkCategory.SelectedIndex > -1 && pkCategory.SelectedItem != null)
                 {
-                    newCategory = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).Select(x => x.CategoryId).FirstOrDefault();
-                    if (newCategory != null)
+                    var newCategoryId = mCategories.Where(x => x.Name == pkCategory.SelectedItem.ToString()).Select(x => x.CategoryId).FirstOrDefault();
+                    if (newCategoryId != null)
                     {
-                        GetSubCategoryByCategoryId(newCategory);
+                        await GetSubCategoryByCategoryId(newCategoryId);
                     }
                 }
             }
@@ -1396,23 +1470,25 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private async void txtOtherCategory_Completed(object sender, EventArgs e)
+        private async void txtOtherCategory_Unfocused(object sender, FocusEventArgs e)
         {
             try
             {
                 if (!Common.EmptyFiels(txtOtherCategory.Text))
                 {
-                    mCategories = await DependencyService.Get<ICategoryRepository>().CreateCategory(txtOtherCategory.Text);
+                    mCategories = await DependencyService.Get<IProfileRepository>().CreateCategory(txtOtherCategory.Text);
                     if (mCategories != null)
                     {
+                        selectedSubCategory = new List<string>();
+                        wlSubCategory.ItemsSource = selectedSubCategory.ToList();
+
                         var lastAddedCategory = mCategories.Select(x => x.Name).ToList();
                         if (lastAddedCategory.Any(x => x.ToLower().Trim() == txtOtherCategory.Text.ToLower().Trim()))
                         {
-                            newCategory = mCategories.Where(x => x.Name == txtOtherCategory.Text).FirstOrDefault()?.CategoryId;
                             pkCategory.ItemsSource = lastAddedCategory.ToList();
                             pkCategory.SelectedItem = txtOtherCategory.Text;
+
                             txtOtherCategory.Text = string.Empty;
-                            GetSubCategoryByCategoryId(newCategory);
                         }
                     }
                 }
@@ -1423,31 +1499,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private async void txtOtherSubCategory_Completed(object sender, EventArgs e)
+        private async void txtOtherSubCategory_Unfocused(object sender, FocusEventArgs e)
         {
-            try
-            {
-                if (!Common.EmptyFiels(txtOtherSubCategory.Text))
-                {
-                    mSubCategories = await DependencyService.Get<ICategoryRepository>().CreateSubCategory(txtOtherSubCategory.Text, newCategory);
-                    if (mSubCategories != null)
-                    {
-                        if (selectedSubCategory.Where(x => x == txtOtherSubCategory.Text).Count() == 0)
-                        {
-                            selectedSubCategory = mSubCategories.Select(x => x.Name).ToList();
-                            pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
-                            pkSubCategory.SelectedItem = txtOtherSubCategory.Text;
-                            txtOtherSubCategory.Text = string.Empty;
-                        }
-
-                        wlSubCategory.ItemsSource = selectedSubCategory.ToList();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/txtOtherSubCategory_Completed: " + ex.Message);
-            }
+            await CreateSubCategory();
         }
         #endregion
 
@@ -1564,6 +1618,11 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             await PinCodeValidation();
         }
+
+        private void lstBilling_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            lstBilling.SelectedItem = null;
+        }
         #endregion
 
         #region [ Unfocus ]
@@ -1654,9 +1713,26 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             UpdateProfile();
         }
 
-        private void Logout_Tapped(object sender, EventArgs e)
+        private async void Logout_Tapped(object sender, EventArgs e)
         {
-            DoLogout();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnLogout);
+                    await DependencyService.Get<IAuthenticationRepository>().DoLogout();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("AccountView/Logout_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void RefreshView_Refreshing(object sender, EventArgs e)
@@ -1666,12 +1742,27 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             rfView.IsRefreshing = false;
         }
 
-        private void BtnDeactivateAccount_Clicked(object sender, EventArgs e)
+        private async void BtnDeactivateAccount_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnDeactivateAccount);
-            Navigation.PushAsync(new OtherPage.DeactivateAccountPage());
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnDeactivateAccount);
+                    await Navigation.PushAsync(new OtherPage.DeactivateAccountPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("AccountView/BtnDeactivateAccount: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
-        #endregion
 
         private void CopyString_Tapped(object sender, EventArgs e)
         {
@@ -1682,8 +1773,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("OrderDetailsPage/StkOrderId_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/CopyString_Tapped: " + ex.Message);
             }
         }
+        #endregion
     }
 }

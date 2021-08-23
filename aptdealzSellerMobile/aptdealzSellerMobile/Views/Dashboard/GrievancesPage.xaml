@@ -47,30 +47,13 @@
                     ColumnDefinitions="*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="30" />
+                        <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                         <Frame
-                            x:Name="frmNotification"  HasShadow="False"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Orange}"
-                            CornerRadius="10"
-                            HeightRequest="20"
-                            HorizontalOptions="CenterAndExpand"
+                            x:Name="frmNotification"
                             IsVisible="false"
-                            VerticalOptions="StartAndExpand"
-                            WidthRequest="20" />
-                        <Label
-                            x:Name="lblNotificationCount"  FontSize="15"
-                            Margin="10,5,0,0"
-                            HorizontalOptions="CenterAndExpand"
-                            Style="{StaticResource lblMedium}"
-                            VerticalOptions="Start" />
+                            Style="{StaticResource frmNotification}">
+                            <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                        </Frame>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                         </Grid.GestureRecognizers>
@@ -93,7 +76,7 @@
             </Grid>
             <!--#endregion-->
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -103,21 +86,46 @@
                 <!--  Back Arrow  -->
                 <Grid
                     Grid.Row="0"
-                    Margin="5,5,5,0"
+                    Margin="5,5,15,0"
                     ColumnDefinitions="Auto,*"
                     ColumnSpacing="0">
-                    <ImageButton
-                        x:Name="ImgBack"
+                    <StackLayout
                         Grid.Column="0"
-                        Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
-                        Style="{StaticResource ImgBtnPrimary}" />
-                    <Label
+                        Orientation="Horizontal"
+                        Spacing="0">
+                        <ImageButton
+                            x:Name="ImgBack"
+                            Clicked="ImgBack_Tapped"
+                            Source="iconBackArrow.png"
+                            Style="{StaticResource ImgBtnPrimary}" />
+                        <Label Style="{StaticResource lblHeader}" Text="Grievances" />
+                    </StackLayout>
+
+                    <Frame
                         Grid.Column="1"
-                        Style="{StaticResource lblHeader}"
-                        Text="Grievances" />
+                        Padding="7"
+                        HorizontalOptions="EndAndExpand"
+                        Style="{StaticResource frmBlank}">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image
+                                Grid.Column="0"
+                                Source="iconAdd.png"
+                                Style="{StaticResource imgSorting}" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontSize="13"
+                                HorizontalOptions="CenterAndExpand"
+                                Style="{StaticResource lblLight}"
+                                Text="Add New" />
+                        </Grid>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmAdd_Tapped" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
                 </Grid>
 
+                <!--  Filtering  -->
                 <Grid
                     Grid.Row="1"
                     Padding="15,0"
@@ -130,13 +138,8 @@
                     <Frame
                         x:Name="FrmSearchBy"
                         Grid.Row="0"
-                        Margin="0"
-                        Padding="0"
-                        BackgroundColor="Transparent"
                         BorderColor="Transparent"
-                        CornerRadius="5"
-                        HasShadow="False"
-                        IsClippedToBounds="True">
+                        Style="{StaticResource frmBlank}">
 
                         <Grid BackgroundColor="Transparent">
                             <Grid.ColumnDefinitions>
@@ -156,7 +159,6 @@
                                 Placeholder="Search"
                                 Style="{StaticResource entrPrimary}"
                                 TextChanged="entrSearch_TextChanged" />
-
 
                             <ImageButton
                                 x:Name="BtnClose"
@@ -185,7 +187,7 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Source="iconSortASC.png"
+                                    Source="iconSortDSC.png"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -256,7 +258,7 @@
                     Grid.Row="2"
                     IsPullToRefreshEnabled="True"
                     ItemAppearing="lstGrievance_ItemAppearing"
-                    ItemSelected="lstGrievance_ItemSelected"
+                    ItemTapped="lstGrievance_ItemTapped"
                     Refreshing="lstGrievance_Refreshing"
                     Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>
@@ -270,7 +272,7 @@
 
                                     <Grid
                                         Grid.Row="0"
-                                        Margin="20,10"
+                                        Padding="20"
                                         ColumnDefinitions="*,Auto">
 
                                         <Grid Grid.Column="0" RowDefinitions="Auto,Auto">
@@ -292,11 +294,11 @@
 
                                         <Frame
                                             Grid.Column="1"
-                                            Style="{StaticResource frmGrayBorder}"
+                                            Padding="10,5"
+                                            Style="{StaticResource frmBlank}"
                                             VerticalOptions="StartAndExpand">
                                             <Label
                                                 Grid.Row="1"
-                                                Margin="10,0"
                                                 FontSize="15"
                                                 HorizontalOptions="CenterAndExpand"
                                                 LineBreakMode="WordWrap"
@@ -304,15 +306,13 @@
                                                 Text="{Binding StatusDescr}"
                                                 TextColor="{StaticResource Green}" />
                                         </Frame>
-
                                     </Grid>
-
                                     <BoxView Style="{StaticResource boxHorizontalGreen}" />
+
                                     <Grid.GestureRecognizers>
                                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GrdViewGrievances_Tapped" />
                                     </Grid.GestureRecognizers>
                                 </Grid>
-
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

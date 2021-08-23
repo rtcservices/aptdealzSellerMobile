@@ -47,17 +47,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await GetAllMyChat();
                                 }
                             }
                             else
@@ -119,17 +115,13 @@ namespace aptdealzSellerMobile.API
                         }
                         else
                         {
-                            if (responseJson.Contains("TokenExpired"))
+                            if (responseJson.Contains("TokenExpired") || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 var isRefresh = await DependencyService.Get<IAuthenticationRepository>().RefreshToken();
                                 if (!isRefresh)
                                 {
                                     Common.DisplayErrorMessage(Constraints.Session_Expired);
                                     App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                                }
-                                else
-                                {
-                                    await SendChatSupportMessage(message);
                                 }
                             }
                             else

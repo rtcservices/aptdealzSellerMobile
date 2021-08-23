@@ -47,30 +47,13 @@
                         ColumnDefinitions="*,*"
                         HorizontalOptions="EndAndExpand">
                         <Grid>
-                            <Image
-                                Margin="0"
-                                HeightRequest="30"
-                                HorizontalOptions="CenterAndExpand"
-                                Source="iconNotification.png"
-                                VerticalOptions="CenterAndExpand"
-                                WidthRequest="30" />
+                            <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                             <Frame
-                                x:Name="frmNotification"  HasShadow="False"
-                                Margin="10,5,0,0"
-                                Padding="0"
-                                BackgroundColor="{StaticResource Orange}"
-                                CornerRadius="10"
-                                HeightRequest="20"
-                                HorizontalOptions="CenterAndExpand"
+                                x:Name="frmNotification"
                                 IsVisible="false"
-                                VerticalOptions="StartAndExpand"
-                                WidthRequest="20" />
-                            <Label
-                                x:Name="lblNotificationCount"  FontSize="15"
-                                Margin="10,5,0,0"
-                                HorizontalOptions="CenterAndExpand"
-                                Style="{StaticResource lblMedium}"
-                                VerticalOptions="Start" />
+                                Style="{StaticResource frmNotification}">
+                                <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                            </Frame>
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                             </Grid.GestureRecognizers>
@@ -123,7 +106,6 @@
                         <Label
                             x:Name="lblReqId"
                             Grid.Column="1"
-                            FontFamily="Poppins-Medium"
                             FontSize="13"
                             HorizontalOptions="EndAndExpand"
                             LineBreakMode="WordWrap"
@@ -137,20 +119,11 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <ScrollView Grid.Row="0" Style="{StaticResource scrPrimary}">
-                            <Grid Padding="20,10,20,0" RowSpacing="15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <!--  Charges  -->
-                                <Grid Grid.Row="0" RowSpacing="0">
+                        <ContentView Grid.Row="0" IsClippedToBounds="True">
+                            <ScrollView Style="{StaticResource scrPrimary}">
+                                <Grid Padding="20,10,20,0" RowSpacing="15">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -158,199 +131,204 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <!--  Quantity  -->
+                                    <!--  Charges  -->
+                                    <Grid Grid.Row="0" RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!--  Quantity  -->
+                                        <StackLayout
+                                            Grid.Row="1"
+                                            Margin="0,15,0,0"
+                                            Spacing="{OnPlatform Android=0,
+                                                                 iOS=5}">
+
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Quantity" />
+                                            <ext:ExtEntry
+                                                x:Name="txtQuantity"
+                                                IsReadOnly="True"
+                                                Style="{StaticResource entrPrimary}" />
+                                            <BoxView Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <!--  Unit Price  -->
+                                        <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="Unit Price" />
+                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                            </StackLayout>
+                                            <ext:ExtEntry
+                                                x:Name="txtUnitPrice"
+                                                ClassId="UnitPrice"
+                                                Keyboard="Numeric"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="1"
+                                                Unfocused="Entry_Unfocused" />
+                                            <BoxView x:Name="BoxUnitPrice" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <!--  Handlling Charge  -->
+                                        <StackLayout
+                                            Grid.Row="2"
+                                            Margin="0,15,0,0"
+                                            Spacing="{OnPlatform Android=0,
+                                                                 iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Handling Charges" />
+                                            <ext:ExtEntry
+                                                x:Name="txtHandlingCharge"
+                                                ClassId="HandlingCharge"
+                                                Keyboard="Numeric"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="2"
+                                                Unfocused="Entry_Unfocused" />
+                                            <BoxView Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <!--  Shipping Charge  -->
+                                        <StackLayout
+                                            x:Name="StkShippingCharge"
+                                            Grid.Row="3"
+                                            Margin="0,15,0,0"
+                                            Spacing="{OnPlatform Android=0,
+                                                                 iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Shipping Charges" />
+                                            <ext:ExtEntry
+                                                x:Name="txtShippingCharge"
+                                                ClassId="ShippingCharge"
+                                                Keyboard="Numeric"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="3"
+                                                Unfocused="Entry_Unfocused" />
+                                            <BoxView Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <!--  Insurance Charge  -->
+                                        <StackLayout
+                                            x:Name="StkInsuranceCharge"
+                                            Grid.Row="4"
+                                            Margin="0,15,0,0"
+                                            Spacing="{OnPlatform Android=0,
+                                                                 iOS=5}">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Insurance Charges" />
+                                            <ext:ExtEntry
+                                                x:Name="txtInsuranceCharge"
+                                                ClassId="InsuranceCharge"
+                                                Keyboard="Numeric"
+                                                Style="{StaticResource entrPrimary}"
+                                                TabIndex="4"
+                                                Unfocused="Entry_Unfocused" />
+                                            <BoxView Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+                                    </Grid>
+
+                                    <!--  Shipping PIN Code  -->
                                     <StackLayout
+                                        x:Name="StkPinCode"
                                         Grid.Row="1"
-                                        Margin="0,15,0,0"
                                         Spacing="{OnPlatform Android=0,
                                                              iOS=5}">
-
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Quantity" />
+                                        <Label
+                                            x:Name="lblPinCode"
+                                            Style="{StaticResource lblPrimary13}"
+                                            Text="Shipping PIN Code" />
                                         <ext:ExtEntry
-                                            x:Name="txtQuantity"
-                                            IsReadOnly="True"
-                                            Style="{StaticResource entrPrimary}" />
-                                        <BoxView Style="{StaticResource boxHorizontal}" />
+                                            x:Name="txtShippingPinCode"
+                                            Keyboard="Numeric"
+                                            Style="{StaticResource entrPrimary}"
+                                            TabIndex="5"
+                                            Unfocused="txtShippingPinCode_Unfocused" />
+                                        <BoxView x:Name="BoxPinCode" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
 
-                                    <!--  Unit Price  -->
-                                    <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
+                                    <!--  Quote Validity Date  -->
+                                    <StackLayout Grid.Row="2" Spacing="7">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="Unit Price" />
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Quote Validity Date" />
                                             <Label Text="*" TextColor="{StaticResource Red}" />
                                         </StackLayout>
-                                        <ext:ExtEntry
-                                            x:Name="txtUnitPrice"
-                                            ClassId="UnitPrice"
-                                            Keyboard="Numeric"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="1"
-                                            Unfocused="Entry_Unfocused" />
-                                        <BoxView x:Name="BoxUnitPrice" Style="{StaticResource boxHorizontal}" />
+                                        <ext:ExtDatePicker
+                                            x:Name="dpValidityDate"
+                                            Grid.Column="0"
+                                            Margin="0,5"
+                                            BackgroundColor="Transparent"
+                                            FontFamily="Poppins"
+                                            FontSize="15"
+                                            Format="dd/MM/yyyy"
+                                            HorizontalOptions="FillAndExpand"
+                                            TabIndex="6"
+                                            TextColor="{StaticResource Black}"
+                                            Unfocused="dpValidityDate_Unfocused" />
+                                        <BoxView x:Name="BoxValidityDate" Style="{StaticResource boxHorizontal}" />
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ValidityDate_Tapped" />
+                                        </StackLayout.GestureRecognizers>
                                     </StackLayout>
 
-                                    <!--  Handlling Charge  -->
-                                    <StackLayout
-                                        Grid.Row="2"
-                                        Margin="0,15,0,0"
-                                        Spacing="{OnPlatform Android=0,
-                                                             iOS=5}">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Handling Charges" />
-                                        <ext:ExtEntry
-                                            x:Name="txtHandlingCharge"
-                                            ClassId="HandlingCharge"
-                                            Keyboard="Numeric"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="2"
-                                            Unfocused="Entry_Unfocused" />
-                                        <BoxView Style="{StaticResource boxHorizontal}" />
+                                    <!--  Country of origin  -->
+                                    <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
+                                        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Country of origin" />
+                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                        </StackLayout>
+
+                                        <ext:ExtAutoSuggestBox
+                                            x:Name="pckCountry"
+                                            Margin="0,0"
+                                            ClassId="Country"
+                                            HorizontalOptions="FillAndExpand"
+                                            ItemsSource="{Binding mCountriesData, Mode=TwoWay, Source={x:Reference page1}}"
+                                            PlaceholderTextColor="{StaticResource Gray}"
+                                            QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                            SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                            TabIndex="8"
+                                            Text="{Binding countryText, Source={x:Reference page1}}"
+                                            TextChanged="AutoSuggestBox_TextChanged"
+                                            TextColor="{StaticResource Black}"
+                                            Unfocused="pckCountry_Unfocused" />
+                                        <BoxView x:Name="BoxCountry" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
 
-                                    <!--  Shipping Charge  -->
-                                    <StackLayout
-                                        x:Name="StkShippingCharge"
-                                        Grid.Row="3"
-                                        Margin="0,15,0,0"
-                                        Spacing="{OnPlatform Android=0,
-                                                             iOS=5}">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Shipping Charges" />
-                                        <ext:ExtEntry
-                                            x:Name="txtShippingCharge"
-                                            ClassId="ShippingCharge"
-                                            Keyboard="Numeric"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="3"
-                                            Unfocused="Entry_Unfocused" />
-                                        <BoxView Style="{StaticResource boxHorizontal}" />
-                                    </StackLayout>
+                                    <!--  Total Quote Amount  -->
+                                    <Grid Grid.Row="4" HorizontalOptions="FillAndExpand">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                            Grid.Column="0"
+                                            FontSize="15"
+                                            HorizontalOptions="FillAndExpand"
+                                            Style="{StaticResource lblMedium}"
+                                            Text="Total Quote Amount" />
+                                        <Label
+                                            x:Name="lblTotalAmount"
+                                            Grid.Column="1"
+                                            FontSize="17"
+                                            HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
+                                            Text="" />
+                                    </Grid>
 
-                                    <!--  Insurance Charge  -->
-                                    <StackLayout
-                                        x:Name="StkInsuranceCharge"
-                                        Grid.Row="4"
-                                        Margin="0,15,0,0"
-                                        Spacing="{OnPlatform Android=0,
-                                                             iOS=5}">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Insurance Charges" />
-                                        <ext:ExtEntry
-                                            x:Name="txtInsuranceCharge"
-                                            ClassId="InsuranceCharge"
-                                            Keyboard="Numeric"
-                                            Style="{StaticResource entrPrimary}"
-                                            TabIndex="4"
-                                            Unfocused="Entry_Unfocused" />
+                                    <!--  Comments  -->
+                                    <StackLayout Grid.Row="5" Spacing="{OnPlatform Android=0, iOS=7}">
+                                        <Label Style="{StaticResource lblPrimary13}" Text="Comments :" />
+                                        <Editor
+                                            x:Name="edtrComment"
+                                            Margin="0"
+                                            AutoSize="TextChanges"
+                                            Keyboard="Text"
+                                            Style="{StaticResource edPrimary}"
+                                            TabIndex="9" />
                                         <BoxView Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
                                 </Grid>
-
-                                <!--  Shipping PIN Code  -->
-                                <StackLayout
-                                    x:Name="StkPinCode"
-                                    Grid.Row="1"
-                                    Spacing="{OnPlatform Android=0,
-                                                         iOS=5}">
-                                    <Label
-                                        x:Name="lblPinCode"
-                                        Style="{StaticResource lblPrimary13}"
-                                        Text="Shipping PIN Code" />
-                                    <ext:ExtEntry
-                                        x:Name="txtShippingPinCode"
-                                        Keyboard="Numeric"
-                                        Style="{StaticResource entrPrimary}"
-                                        TabIndex="5"
-                                        Unfocused="txtShippingPinCode_Unfocused" />
-                                    <BoxView x:Name="BoxPinCode" Style="{StaticResource boxHorizontal}" />
-                                </StackLayout>
-
-                                <!--  Quote Validity Date  -->
-                                <StackLayout Grid.Row="2" Spacing="7">
-                                    <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Quote Validity Date" />
-                                        <Label Text="*" TextColor="{StaticResource Red}" />
-                                    </StackLayout>
-                                    <ext:ExtDatePicker
-                                        x:Name="dpValidityDate"
-                                        Grid.Column="0"
-                                        Margin="0,5"
-                                        BackgroundColor="Transparent"
-                                        FontFamily="Poppins"
-                                        FontSize="15"
-                                        Format="dd/MM/yyyy"
-                                        HorizontalOptions="FillAndExpand"
-                                        TabIndex="6"
-                                        TextColor="{StaticResource Black}"
-                                        Unfocused="dpValidityDate_Unfocused" />
-                                    <BoxView x:Name="BoxValidityDate" Style="{StaticResource boxHorizontal}" />
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ValidityDate_Tapped" />
-                                    </StackLayout.GestureRecognizers>
-                                </StackLayout>
-
-                                <!--  Country of origin  -->
-                                <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
-                                    <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                        <Label Style="{StaticResource lblPrimary13}" Text="Country of origin" />
-                                        <Label Text="*" TextColor="{StaticResource Red}" />
-                                    </StackLayout>
-
-                                    <ext:ExtAutoSuggestBox
-                                        x:Name="pckCountry"
-                                        Margin="0,0"
-                                        ClassId="Country"
-                                        HorizontalOptions="FillAndExpand"
-                                        ItemsSource="{Binding mCountriesData, Mode=TwoWay, Source={x:Reference page1}}"
-                                        PlaceholderTextColor="{StaticResource Gray}"
-                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                        SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                                        TabIndex="8"
-                                        Text="{Binding countryText, Source={x:Reference page1}}"
-                                        TextChanged="AutoSuggestBox_TextChanged"
-                                        TextColor="{StaticResource Black}"
-                                        Unfocused="pckCountry_Unfocused" />
-                                    <BoxView x:Name="BoxCountry" Style="{StaticResource boxHorizontal}" />
-                                </StackLayout>
-
-                                <!--  Total Quote Amount  -->
-                                <Grid Grid.Row="4" HorizontalOptions="FillAndExpand">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        Grid.Column="0"
-                                        FontFamily="Poppins-Medium"
-                                        FontSize="{OnPlatform Android=17,
-                                                              iOS=18}"
-                                        HorizontalOptions="FillAndExpand"
-                                        Text="Total Quote Amount"
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-                                    <Label
-                                        x:Name="lblTotalAmount"
-                                        Grid.Column="1"
-                                        FontFamily="Poppins-SemiBold"
-                                        FontSize="{OnPlatform Android=17,
-                                                              iOS=18}"
-                                        HorizontalOptions="EndAndExpand"
-                                        Text=""
-                                        TextColor="{StaticResource Black}"
-                                        VerticalOptions="CenterAndExpand" />
-                                </Grid>
-
-                                <!--  Comments  -->
-                                <StackLayout Grid.Row="5" Spacing="{OnPlatform Android=0, iOS=7}">
-                                    <Label Style="{StaticResource lblPrimary13}" Text="Comments :" />
-                                    <Editor
-                                        x:Name="edtrComment"
-                                        Margin="10"
-                                        AutoSize="TextChanges"
-                                        Keyboard="Text"
-                                        Style="{StaticResource edPrimary}"
-                                        TabIndex="9" />
-                                    <BoxView Style="{StaticResource boxHorizontal}" />
-                                </StackLayout>
-                            </Grid>
-                        </ScrollView>
+                            </ScrollView>
+                        </ContentView>
 
                         <!--  Submit Button  -->
                         <Button

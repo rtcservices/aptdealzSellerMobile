@@ -33,8 +33,8 @@ namespace aptdealzSellerMobile.Views.Popup
         {
             try
             {
-                isRefresh?.Invoke(true, EventArgs.Empty);
                 PopupNavigation.Instance.PopAsync();
+                isRefresh?.Invoke(true, EventArgs.Empty);
             }
             catch (Exception ex)
             {
@@ -46,8 +46,8 @@ namespace aptdealzSellerMobile.Views.Popup
         {
             try
             {
-                isRefresh?.Invoke(false, EventArgs.Empty);
                 PopupNavigation.Instance.PopAsync();
+                isRefresh?.Invoke(false, EventArgs.Empty);
             }
             catch (Exception ex)
             {

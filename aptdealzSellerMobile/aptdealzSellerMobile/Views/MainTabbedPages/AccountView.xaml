@@ -6,6 +6,7 @@
     xmlns:Layouts="clr-namespace:AiForms.Layouts;assembly=AiForms.Layouts"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffImageTranformer="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
     xmlns:panCake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     x:Name="page1"
     BackgroundColor="{StaticResource White}"
@@ -48,32 +49,13 @@
                     ColumnDefinitions="*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="30" />
+                        <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                         <Frame
                             x:Name="frmNotification"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Orange}"
-                            CornerRadius="10"
-                            HasShadow="False"
-                            HeightRequest="20"
-                            HorizontalOptions="CenterAndExpand"
                             IsVisible="false"
-                            VerticalOptions="StartAndExpand"
-                            WidthRequest="20" />
-                        <Label
-                            x:Name="lblNotificationCount"
-                            Margin="10,5,0,0"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Style="{StaticResource lblMedium}"
-                            VerticalOptions="Start" />
+                            Style="{StaticResource frmNotification}">
+                            <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                        </Frame>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                         </Grid.GestureRecognizers>
@@ -146,27 +128,30 @@
                                         HorizontalOptions="CenterAndExpand"
                                         RowSpacing="0"
                                         VerticalOptions="CenterAndExpand">
-                                        <Frame
+                                        <ffImage:CachedImage
+                                            x:Name="imgUser"
                                             Margin="0"
-                                            Padding="0"
-                                            BackgroundColor="Transparent"
-                                            BorderColor="Transparent"
-                                            CornerRadius="50"
-                                            HasShadow="False"
+                                            Aspect="Fill"
+                                            ErrorPlaceholder="iconUserAccount.png"
                                             HeightRequest="100"
-                                            IsClippedToBounds="True"
+                                            HorizontalOptions="CenterAndExpand"
+                                            LoadingPlaceholder="iconUserAccount.png"
+                                            VerticalOptions="CenterAndExpand"
                                             WidthRequest="100">
-                                            <ffImage:CachedImage
-                                                x:Name="imgUser"
-                                                Margin="0"
-                                                Aspect="Fill"
-                                                ErrorPlaceholder="iconUserAccount.png"
-                                                HeightRequest="100"
-                                                HorizontalOptions="CenterAndExpand"
-                                                LoadingPlaceholder="iconUserAccount.png"
-                                                VerticalOptions="CenterAndExpand"
-                                                WidthRequest="100" />
-                                        </Frame>
+                                            <ffImage:CachedImage.Transformations>
+                                                <ffImageTranformer:CircleTransformation BorderHexColor="#006027" BorderSize="20" />
+                                            </ffImage:CachedImage.Transformations>
+                                        </ffImage:CachedImage>
+
+                                        <!--<Image
+                                            x:Name="imgUser"
+                                            Margin="0"
+                                            Aspect="Fill"
+                                            HeightRequest="100"
+                                            HorizontalOptions="CenterAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            WidthRequest="100" />-->
+
                                         <Image
                                             x:Name="ImgCamera"
                                             Margin="0"
@@ -466,25 +451,20 @@
                                         x:Name="BtnAddMore"
                                         Grid.Row="7"
                                         Margin="0,20,0,0"
-                                        Padding="10"
-                                        BackgroundColor="Transparent"
-                                        BorderColor="{StaticResource Green}"
+                                        Padding="10,0"
                                         BorderWidth="1"
                                         Clicked="BtnAddMore_Clicked"
-                                        CornerRadius="5"
-                                        FontFamily="Poppins-SemiBold"
-                                        FontSize="15"
-                                        HeightRequest="40"
+                                        HeightRequest="45"
                                         HorizontalOptions="CenterAndExpand"
-                                        Text="Add More Address"
-                                        TextColor="{StaticResource Green}"
-                                        VerticalOptions="Center" />
+                                        Style="{StaticResource btnBorder}"
+                                        Text="Add More Address" />
 
                                     <!--  List of Address  -->
                                     <ListView
                                         x:Name="lstBilling"
                                         Grid.Row="8"
                                         IsVisible="false"
+                                        ItemTapped="lstBilling_ItemTapped"
                                         Style="{StaticResource lstPrimary}"
                                         VerticalOptions="StartAndExpand">
                                         <ListView.ItemTemplate>
@@ -558,12 +538,11 @@
                                     BackgroundColor="{StaticResource DarkGray}"
                                     HeightRequest="50">
                                     <Label
-                                        FontFamily="Poppins-SemiBold"
                                         FontSize="17"
                                         HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblSemiBold}"
                                         Text="Company Profile"
-                                        TextColor="White"
-                                        VerticalOptions="CenterAndExpand" />
+                                        TextColor="White" />
                                     <Image
                                         x:Name="ImgDownDownCompanyProfile"
                                         HeightRequest="20"
@@ -640,7 +619,7 @@
                                                 Placeholder="If Other, specify"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="12"
-                                                Unfocused="txtOtherCategory_Completed" />
+                                                Unfocused="txtOtherCategory_Unfocused" />
                                         </Frame>
                                     </Grid>
 
@@ -676,7 +655,7 @@
                                                 ReturnType="Done"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="14"
-                                                Unfocused="txtOtherSubCategory_Completed" />
+                                                Unfocused="txtOtherSubCategory_Unfocused" />
                                         </Frame>
                                     </Grid>
 
@@ -712,13 +691,10 @@
                                                                     </Grid.ColumnDefinitions>
                                                                     <Label
                                                                         Grid.Column="0"
-                                                                        FontFamily="Poppins"
                                                                         HorizontalOptions="FillAndExpand"
                                                                         HorizontalTextAlignment="Center"
-                                                                        Text="{Binding .}"
-                                                                        TextColor="{StaticResource Black}"
-                                                                        VerticalOptions="CenterAndExpand"
-                                                                        VerticalTextAlignment="Center" />
+                                                                        Style="{StaticResource lblLight}"
+                                                                        Text="{Binding .}" />
 
                                                                     <Button
                                                                         x:Name="BtnDeleteSubCategory"
@@ -773,11 +749,10 @@
                                         <Label
                                             Grid.Row="1"
                                             Grid.Column="1"
-                                            FontFamily="Poppins-SemiBold"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
                                             Text="Years"
-                                            TextColor="{StaticResource Black}"
                                             VerticalOptions="EndAndExpand" />
 
                                         <BoxView
@@ -817,12 +792,11 @@
                                     BackgroundColor="{StaticResource DarkGray}"
                                     HeightRequest="50">
                                     <Label
-                                        FontFamily="Poppins-SemiBold"
                                         FontSize="17"
                                         HorizontalOptions="StartAndExpand"
+                                        Style="{StaticResource lblSemiBold}"
                                         Text="Bank Information"
-                                        TextColor="White"
-                                        VerticalOptions="CenterAndExpand" />
+                                        TextColor="{StaticResource White}" />
                                     <Image
                                         x:Name="ImgDropDownBankInfo"
                                         HeightRequest="20"
@@ -929,11 +903,9 @@
 
                                     <StackLayout Grid.Row="5" Spacing="0">
                                         <Label
-                                            FontFamily="Poppins-Medium"
                                             FontSize="15"
-                                            Text="Attach Scanned Docs"
-                                            TextColor="{StaticResource Black}"
-                                            VerticalOptions="CenterAndExpand" />
+                                            Style="{StaticResource lblMedium}"
+                                            Text="Attach Scanned Docs" />
 
                                         <Grid HeightRequest="50">
                                             <Grid.ColumnDefinitions>
@@ -1003,29 +975,25 @@
                                 <Button
                                     x:Name="BtnLogout"
                                     Grid.Row="1"
-                                    Margin="0"
-                                    Padding="10"
+                                    Padding="10,0"
                                     BackgroundColor="Transparent"
                                     Clicked="Logout_Tapped"
-                                    FontFamily="Poppins-Medium"
-                                    FontSize="15"
+                                    HeightRequest="45"
                                     HorizontalOptions="CenterAndExpand"
+                                    Style="{StaticResource btnNormal}"
                                     Text="Logout"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    TextColor="{StaticResource Black}" />
                                 <Button
                                     x:Name="BtnDeactivateAccount"
                                     Grid.Row="2"
-                                    Margin="0"
-                                    Padding="10"
+                                    Padding="10,0"
                                     BackgroundColor="Transparent"
                                     Clicked="BtnDeactivateAccount_Clicked"
-                                    FontFamily="Poppins-Medium"
-                                    FontSize="15"
+                                    HeightRequest="45"
                                     HorizontalOptions="CenterAndExpand"
+                                    Style="{StaticResource btnNormal}"
                                     Text="Deactivate Account"
-                                    TextColor="{StaticResource Black}"
-                                    VerticalOptions="CenterAndExpand" />
+                                    TextColor="{StaticResource Black}" />
                             </Grid>
                         </Grid>
                     </ScrollView>

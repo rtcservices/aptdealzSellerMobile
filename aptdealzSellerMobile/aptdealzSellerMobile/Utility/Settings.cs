@@ -8,6 +8,7 @@ namespace aptdealzSellerMobile.Utility
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        #region [ Properties ]
         public string emailAddress;
         public string EmailAddress
         {
@@ -91,6 +92,7 @@ namespace aptdealzSellerMobile.Utility
                 PropertyChanged(this, new PropertyChangedEventArgs("IsViewWelcomeScreen"));
             }
         }
+        #endregion
     }
 
     public class Settings
@@ -100,6 +102,7 @@ namespace aptdealzSellerMobile.Utility
             get { return CrossSettings.Current; }
         }
 
+        #region [ Keys ]
         private const string EmailAddressKey = "email_address_key";
         private const string fcm_tokenKey = "fcm_token_key";
         private const string UserTokenKey = "userToken_key";
@@ -107,9 +110,11 @@ namespace aptdealzSellerMobile.Utility
         private const string RefreshTokenKey = "refreshToken_key";
         private const string LoginTrackingKey_Key = "loginTrackingKey_key";
         private const string IsViewWelcomeScreen_Key = "IsViewWelcomeScreen_Key";
+        #endregion
 
         private static readonly string SettingsDefault = string.Empty;
         private static readonly bool SettingsBoolDefault = true;
+
         public static string EmailAddress
         {
             get { return AppSettings.GetValueOrDefault(EmailAddressKey, SettingsDefault); }

@@ -1,5 +1,5 @@
 ﻿using aptdealzSellerMobile.Utility;
-using aptdealzSellerMobile.Views.MasterData;
+using aptdealzSellerMobile.Views.Dashboard;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,36 +9,59 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutAptDealzView : ContentView
     {
-        #region Constructor
+        #region [ Constructor ]
         public AboutAptDealzView()
         {
             InitializeComponent();
-           
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
-                {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                    {
+                        if (!Common.EmptyFiels(Common.NotificationCount))
+                        {
+                            lblNotificationCount.Text = count;
+                            frmNotification.IsVisible = true;
+                        }
+                        else
+                        {
+                            frmNotification.IsVisible = false;
+                            lblNotificationCount.Text = string.Empty;
+                        }
+                    });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AboutAptDealzView/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("AboutAptDealzView/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)

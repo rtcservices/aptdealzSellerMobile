@@ -2,6 +2,7 @@
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,34 +16,53 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactSupportPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         SupportChatAPI supportChatAPI;
         private List<ChatSupport> mMessageList;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public ContactSupportPage()
         {
-            InitializeComponent();
-            supportChatAPI = new SupportChatAPI();
-            mMessageList = new List<ChatSupport>();
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                supportChatAPI = new SupportChatAPI();
+                mMessageList = new List<ChatSupport>();
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ContactSupportPage/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Method
+        #region [ Method ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -61,8 +81,14 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 }
                 else
                 {
-                    mResponse = await supportChatAPI.SendChatSupportMessage(txtMessage.Text);
-
+                    if (!Common.EmptyFiels(txtMessage.Text))
+                    {
+                        mResponse = await supportChatAPI.SendChatSupportMessage(txtMessage.Text);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
                 if (mResponse != null && mResponse.Succeeded)
@@ -107,6 +133,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 }
                 else
                 {
+                    lstChar.IsVisible = false;
                     lblNoRecord.IsVisible = true;
                     if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
                         lblNoRecord.Text = mResponse.Message;
@@ -126,7 +153,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
@@ -137,15 +164,31 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ContactSupportPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private async void BtnSend_Clicked(object sender, EventArgs e)

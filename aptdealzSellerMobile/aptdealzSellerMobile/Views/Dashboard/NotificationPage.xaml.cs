@@ -1,6 +1,5 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -17,22 +16,41 @@ namespace aptdealzSellerMobile.Views.Dashboard
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NotificationPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private List<NotificationData> mNotificationsList;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public NotificationPage()
         {
             InitializeComponent();
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            GetNotification();
+            try
+            {
+                base.OnAppearing();
+                GetNotification();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("NotificationPage/Appearing: " + ex.Message);
+            }
         }
 
         protected override bool OnBackButtonPressed()
@@ -44,7 +62,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("MainTabbedPage/OnBackButtonPressed: " + ex.Message);
+                Common.DisplayErrorMessage("NotificationPage/OnBackButtonPressed: " + ex.Message);
             }
             return true;
         }
@@ -52,6 +70,13 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private async Task GetNotification()
         {
             NotificationAPI notificationAPI = new NotificationAPI();
+            if (!Common.EmptyFiels(Settings.UserToken))
+            {
+                if (Common.EmptyFiels(Common.Token))
+                {
+                    Common.Token = Settings.UserToken;
+                }
+            }
             try
             {
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
@@ -112,15 +137,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(image: ImgMenu);
-        }
-
-        private void ImgNotification_Tapped(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new NotificationPage());
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -138,22 +158,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
-
-        private async void ImgClose_Tapped(object sender, EventArgs e)
-        {
-            try
-            {
-                var ImageButtonExp = (ImageButton)sender;
-                var notificationData = ImageButtonExp.BindingContext as NotificationData;
-                await SetNoficiationAsRead(notificationData.NotificationId);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("NotificationPage/ImgClose_Tapped: " + ex.Message);
-            }
-        }
-
-        private void lstNotification_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+                
+        private void lstNotification_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             lstNotification.SelectedItem = null;
         }
@@ -173,34 +179,60 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private void GrdList_Tapped(object sender, EventArgs e)
+        private async void ImgClose_Tapped(object sender, EventArgs e)
         {
             try
             {
-                var GridExp = (Grid)sender;
-                var mNotification = GridExp.BindingContext as NotificationData;
-                if (mNotification.NavigationScreen == (int)NavigationScreen.RequirementDetails)
-                {
-                    Navigation.PushAsync(new RequirementDetailPage(mNotification.ParentKeyId));
-                }
-                else if (mNotification.NavigationScreen == (int)NavigationScreen.QuoteDetails)
-                {
-                    Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mNotification.ParentKeyId));
-                }
-                else if (mNotification.NavigationScreen == (int)NavigationScreen.OrderDetails)
-                {
-                    Navigation.PushAsync(new OrderDetailsPage(mNotification.ParentKeyId));
-                }
-                else if (mNotification.NavigationScreen == (int)NavigationScreen.GrievanceDetails)
-                {
-                    Navigation.PushAsync(new OtherPage.GrievanceDetailPage(mNotification.ParentKeyId));
-                }
+                var ImageButtonExp = (ImageButton)sender;
+                var notificationData = ImageButtonExp.BindingContext as NotificationData;
+                await SetNoficiationAsRead(notificationData.NotificationId);
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("NotificationPage/GrdList_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("NotificationPage/ImgClose_Tapped: " + ex.Message);
             }
         }
-        #endregion
+
+        private async void GrdList_Tapped(object sender, EventArgs e)
+        {
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    var mNotification = Tab.BindingContext as NotificationData;
+
+                    if (mNotification.NavigationScreen == (int)NavigationScreen.RequirementDetails)
+                    {
+                        await Navigation.PushAsync(new RequirementDetailPage(mNotification.ParentKeyId));
+                    }
+                    else if (mNotification.NavigationScreen == (int)NavigationScreen.QuoteDetails)
+                    {
+                        await Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mNotification.ParentKeyId));
+                    }
+                    else if (mNotification.NavigationScreen == (int)NavigationScreen.OrderDetails)
+                    {
+                        await Navigation.PushAsync(new OrderDetailsPage(mNotification.ParentKeyId));
+                    }
+                    else if (mNotification.NavigationScreen == (int)NavigationScreen.GrievanceDetails)
+                    {
+                        await Navigation.PushAsync(new OtherPage.GrievanceDetailPage(mNotification.ParentKeyId));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("NotificationPage/GrdList_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+
+            }
+
+
+        }
+        #endregion       
     }
 }

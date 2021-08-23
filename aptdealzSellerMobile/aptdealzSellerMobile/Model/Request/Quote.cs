@@ -101,10 +101,10 @@ namespace aptdealzSellerMobile.Model.Request
         public bool IsSellerContactRevealed { get; set; }
 
         [JsonProperty("sellerContact")]
-        public object SellerContact { get; set; }
+        public SellerContact SellerContact { get; set; }
 
         [JsonProperty("buyerContact")]
-        public object BuyerContact { get; set; }
+        public BuyerContact BuyerContact { get; set; }
 
         [JsonProperty("created")]
         public DateTime Created { get; set; }
@@ -112,7 +112,7 @@ namespace aptdealzSellerMobile.Model.Request
         [JsonProperty("unit")]
         public string Unit { get; set; }
 
-        #region Extra
+        #region [ Extra properties ] 
         [JsonIgnore]
         private Color _GridBg { get; set; } = Color.Transparent;
         [JsonIgnore]

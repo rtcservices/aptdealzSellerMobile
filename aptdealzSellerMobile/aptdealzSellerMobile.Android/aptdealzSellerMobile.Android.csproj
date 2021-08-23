@@ -127,6 +127,9 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
       <Version>2.4.11.982</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Auth">
       <Version>71.1605.4</Version>
     </PackageReference>
@@ -463,7 +466,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

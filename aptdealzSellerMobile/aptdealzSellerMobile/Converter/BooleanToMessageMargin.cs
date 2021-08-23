@@ -5,7 +5,6 @@ using Xamarin.Forms.Xaml;
 
 namespace aptdealzSellerMobile.Converter
 {
-
     public class BooleanToMessageMargin : IValueConverter, IMarkupExtension
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -33,5 +32,4 @@ namespace aptdealzSellerMobile.Converter
             return this;
         }
     }
-
 }

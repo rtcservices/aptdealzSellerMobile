@@ -1,6 +1,5 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
@@ -11,7 +10,7 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,41 +19,51 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OrderSupplyingView : ContentView
     {
-        #region Objects
+        #region [ Objects ]
         public event EventHandler isRefreshScanQR;
-        public List<Order> mOrders = new List<Order>();
-        private string filterBy = "";
+        public List<Order> mOrders;
+        private string filterBy = SortByField.Date.ToString();
         private string title = string.Empty;
         private int? statusBy = null;
-        private bool? sortBy = null;
+        private bool? isAssending = false;
+        private bool isGrievance = false;
         private readonly int pageSize = 10;
         private int pageNo;
         #endregion
 
-        #region Cunstructor
-        public OrderSupplyingView()
+        #region [ Cunstructor ]
+        public OrderSupplyingView(bool isGrievance = false)
         {
-            InitializeComponent();
-            pageNo = 1;
-            GetOrders(statusBy, title, filterBy, sortBy);
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+                pageNo = 1;
+                mOrders = new List<Order>();
+                this.isGrievance = isGrievance;
+                GetOrders(statusBy, title, filterBy, isAssending);
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderSupplyingView/Ctor: " + ex.Message);
+            }
         }
         #endregion
 
-        #region Method
+        #region [ Method ]
         private async void GetOrders(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = true)
         {
             try
@@ -76,6 +85,24 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                     foreach (var mOrder in orders)
                     {
+                        if (isGrievance)
+                        {
+                            lblHeader.Text = "Raise Grievances";
+                            mOrder.ScanQRCode = false;
+                            mOrder.isSelectGrievance = true;
+                        }
+                        else
+                        {
+                            lblHeader.Text = "Order for Supplying";
+                            mOrder.isSelectGrievance = false;
+                            if (mOrder.OrderStatus == (int)Utility.OrderStatus.Shipped)
+                                mOrder.ScanQRCode = true;
+                            else if (mOrder.PickupProductDirectly && mOrder.OrderStatus == (int)Utility.OrderStatus.Shipped)
+                                mOrder.ScanQRCode = true;
+                            else
+                                mOrder.ScanQRCode = false;
+                        }
+
                         if (mOrders.Where(x => x.OrderId == mOrder.OrderId).Count() == 0)
                             mOrders.Add(mOrder);
                     }
@@ -121,7 +148,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
@@ -132,15 +159,41 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderSupplyingView/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
-            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
+            try
+            {
+                Common.BindAnimation(imageButton: ImgBack);
+                if (isGrievance)
+                    await Navigation.PopAsync();
+                else
+                    Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderSupplyingView/ImgNotification_Tapped: " + ex.Message);
+            }
         }
 
         private void FrmSortBy_Tapped(object sender, EventArgs e)
@@ -150,16 +203,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
                 {
                     ImgSort.Source = Constraints.Sort_DSC;
-                    sortBy = false;
+                    isAssending = false;
                 }
                 else
                 {
                     ImgSort.Source = Constraints.Sort_ASC;
-                    sortBy = true;
+                    isAssending = true;
                 }
 
                 pageNo = 1;
-                GetOrders(statusBy, title, filterBy, sortBy);
+                mOrders.Clear();
+                GetOrders(statusBy, title, filterBy, isAssending);
             }
             catch (Exception ex)
             {
@@ -167,51 +221,78 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void FrmStatusBy_Tapped(object sender, EventArgs e)
+        private async void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Frame)sender;
+            if (Tab.IsEnabled)
             {
-                var statusPopup = new OrderStatusPopup(statusBy);
-                statusPopup.isRefresh += (s1, e1) =>
+                try
                 {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
+                    Tab.IsEnabled = false;
+                    var statusPopup = new OrderStatusPopup(statusBy);
+                    statusPopup.isRefresh += (s1, e1) =>
                     {
-                        lblStatus.Text = result.ToCamelCase();
-                        statusBy = Common.GetOrderStatus(result);
-                        pageNo = 1;
-                        GetOrders(statusBy, title, filterBy, sortBy);
-                    }
-                };
-                PopupNavigation.Instance.PushAsync(statusPopup);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("OrderSupplyingView/FrmStatusBy_Tapped: " + ex.Message);
+                        string result = s1.ToString();
+                        if (!Common.EmptyFiels(result))
+                        {
+                            lblStatus.Text = result.ToCamelCase();
+                            statusBy = Common.GetOrderStatus(result);
+                            pageNo = 1;
+                            mOrders.Clear();
+                            GetOrders(statusBy, title, filterBy, isAssending);
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(statusPopup);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderSupplyingView/FrmStatusBy_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 
-        private void FrmFilterBy_Tapped(object sender, EventArgs e)
+        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Frame)sender;
+            if (Tab.IsEnabled)
             {
-                var sortby = new FilterPopup(filterBy, "Order");
-                sortby.isRefresh += (s1, e1) =>
+                try
                 {
-                    string result = s1.ToString();
-                    if (!Common.EmptyFiels(result))
+                    Tab.IsEnabled = false;
+                    var sortby = new FilterPopup(filterBy, "Order");
+                    sortby.isRefresh += (s1, e1) =>
                     {
-                        filterBy = result;
-                        lblFilterBy.Text = filterBy;
-                        pageNo = 1;
-                        GetOrders(statusBy, title, filterBy, sortBy);
-                    }
-                };
-                PopupNavigation.Instance.PushAsync(sortby);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("OrderSupplyingView/FrmFilterBy_Tapped: " + ex.Message);
+                        string result = s1.ToString();
+                        if (!Common.EmptyFiels(result))
+                        {
+                            filterBy = result;
+                            if (filterBy == SortByField.ID.ToString())
+                            {
+                                lblFilterBy.Text = filterBy;
+                            }
+                            else
+                            {
+                                lblFilterBy.Text = filterBy.ToCamelCase();
+                            }
+                            pageNo = 1;
+                            mOrders.Clear();
+                            GetOrders(statusBy, title, filterBy, isAssending);
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(sortby);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderSupplyingView/FrmFilterBy_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 
@@ -246,11 +327,13 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 pageNo = 1;
                 if (!Common.EmptyFiels(entrSearch.Text))
                 {
-                    GetOrders(statusBy, entrSearch.Text, filterBy, sortBy, false);
+                    GetOrders(statusBy, entrSearch.Text, filterBy, isAssending, false);
                 }
                 else
                 {
-                    GetOrders(statusBy, title, filterBy, sortBy);
+                    pageNo = 1;
+                    mOrders.Clear();
+                    GetOrders(statusBy, title, filterBy, isAssending);
                 }
             }
             catch (Exception ex)
@@ -264,17 +347,26 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
-        private void GrdList_Tapped(object sender, EventArgs e)
+        private async void GrdList_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
             {
-                var GridExp = (Grid)sender;
-                var mOrder = GridExp.BindingContext as Order;
-                Navigation.PushAsync(new OrderDetailsPage(mOrder.OrderId));
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("OrderSupplyingview/GrdList_Tapped: " + ex.Message);
+                try
+                {
+                    Tab.IsEnabled = false;
+                    var mOrder = Tab.BindingContext as Order;
+                    await Navigation.PushAsync(new OrderDetailsPage(mOrder.OrderId));
+                }
+
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderSupplyingview/GrdList_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
 
@@ -298,7 +390,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                         if (this.mOrders.Count() >= totalAspectedRow)
                         {
-                            GetOrders(statusBy, title, filterBy, sortBy, false);
+                            GetOrders(statusBy, title, filterBy, isAssending, false);
                         }
                     }
                     else
@@ -325,7 +417,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 lstOrderSupplyings.IsRefreshing = true;
                 pageNo = 1;
                 mOrders.Clear();
-                GetOrders(statusBy, title, filterBy, sortBy);
+                GetOrders(statusBy, title, filterBy, isAssending);
                 lstOrderSupplyings.IsRefreshing = false;
             }
             catch (Exception ex)
@@ -334,15 +426,46 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void BtnQRScan_Clicked(object sender, EventArgs e)
+        private async void BtnQRScan_Clicked(object sender, EventArgs e)
         {
-            try
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
             {
-                Navigation.PushAsync(new QrCodeScanPage());
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new QrCodeScanPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderSupplyingView/BindList: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
-            catch (Exception ex)
+        }
+
+        private async void BtnSelect_Tapped(object sender, EventArgs e)
+        {
+            var ButtonExp = (Button)sender;
+            if (ButtonExp.IsEnabled)
             {
-                Common.DisplayErrorMessage("OrderSupplyingView/BindList: " + ex.Message);
+                try
+                {
+                    ButtonExp.IsEnabled = false;
+                    var mOrder = ButtonExp.BindingContext as Order;
+                    await Navigation.PushAsync(new RaiseGrievancePage(mOrder.OrderId));
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("OrderView/BtnSelect_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    ButtonExp.IsEnabled = true;
+                }
             }
         }
         #endregion

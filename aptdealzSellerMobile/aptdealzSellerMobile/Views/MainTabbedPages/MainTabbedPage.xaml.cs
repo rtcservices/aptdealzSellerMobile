@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.API;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
@@ -12,12 +13,12 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainTabbedPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private string selectedView;
         private bool isNavigate = false;
         #endregion
 
-        #region Constuctor
+        #region [ Constuctor ]
         public MainTabbedPage(string OpenView, bool isNavigate = false)
         {
             InitializeComponent();
@@ -28,7 +29,19 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         }
         #endregion
 
-        #region Methods  
+        #region [ Methods ]  
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         protected override bool OnBackButtonPressed()
         {
             base.OnBackButtonPressed();
@@ -39,7 +52,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     if (selectedView == "Requirements" || selectedView == "Submitted"
                         || selectedView == "Supplying" || selectedView == "AccountProfile"
                         || selectedView == "QrCodeScan" || selectedView == "AptDealz"
-                        || selectedView == "Policies"
+                        || selectedView == "Policies" || selectedView == "RaiseGrievances"
                         )
                     {
                         isNavigate = true;
@@ -104,66 +117,57 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
+                UnselectTab();
                 if (view == "Home")
                 {
-                    UnselectTab();
                     imgHome.Source = Constraints.Img_Home_Activ;
                     lblHome.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new HomeView());
                 }
                 else if (view == "Requirements")
                 {
-                    UnselectTab();
                     imgHome.Source = Constraints.Img_Home_Activ;
                     lblHome.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new RequirementsView());
                 }
                 else if (view == "Submitted")
                 {
-                    UnselectTab();
-                    imgRequirements.Source = Constraints.Img_Quote_Active;
-                    lblRequirements.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgQuotes.Source = Constraints.Img_Quote_Active;
+                    lblQuotes.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new QuoteView());
                 }
                 else if (view == "Supplying")
                 {
-                    UnselectTab();
                     imgOrders.Source = Constraints.Img_Order_Active;
                     lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new OrderSupplyingView());
                 }
+                else if (view == "RaiseGrievances")
+                {
+                    grdMain.Children.Add(new OrderSupplyingView(true));
+                }
                 else if (view == "AccountProfile")
                 {
-                    UnselectTab();
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
                     imgAccount.Source = Constraints.Img_Account_Active;
                     lblAccount.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new AccountView());
+                    UserDialogs.Instance.HideLoading();
                 }
-                //else if (view == "QrCodeScan")
-                //{
-                //    UnselectTab();
-                //    imgOrders.Source = Constraints.Img_Order_Active;
-                //    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
-                //    grdMain.Children.Add(new QrCodeScanView());
-                //}
                 else if (view == "AptDealz")
                 {
-                    UnselectTab();
                     grdMain.Children.Add(new AboutAptDealzView());
                 }
                 else if (view == "Policies")
                 {
-                    UnselectTab();
                     grdMain.Children.Add(new TermsAndPoliciesView());
                 }
                 else
                 {
-                    UnselectTab();
                     imgHome.Source = Constraints.Img_Home_Activ;
                     lblHome.TextColor = (Color)App.Current.Resources["Orange"];
                     grdMain.Children.Add(new HomeView());
                 }
-
                 selectedView = view;
             }
             catch (Exception ex)
@@ -175,39 +179,60 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void UnselectTab()
         {
             grdMain.Children.Clear();
+
             imgHome.Source = Constraints.Img_Home;
-            imgRequirements.Source = Constraints.Img_Quote;
+            imgQuotes.Source = Constraints.Img_Quote;
             imgOrders.Source = Constraints.Img_Order;
             imgAccount.Source = Constraints.Img_Account;
+
             lblHome.TextColor = (Color)App.Current.Resources["Black"];
-            lblRequirements.TextColor = (Color)App.Current.Resources["Black"];
+            lblQuotes.TextColor = (Color)App.Current.Resources["Black"];
             lblOrders.TextColor = (Color)App.Current.Resources["Black"];
             lblAccount.TextColor = (Color)App.Current.Resources["Black"];
         }
         #endregion
 
-        #region Events
-        private void Home_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private void Tab_Tapped(object sender, EventArgs e)
         {
-            BindViews("Home");
-        }
-
-        private void Quotes_Tapped(object sender, EventArgs e)
-        {
-            this.isNavigate = true;
-            BindViews("Submitted");
-        }
-
-        private void Orders_Tapped(object sender, EventArgs e)
-        {
-            this.isNavigate = true;
-            BindViews("Supplying");
-        }
-
-        private void Account_Tapped(object sender, EventArgs e)
-        {
-            this.isNavigate = true;
-            BindViews("AccountProfile");
+            var grid = (Grid)sender;
+            if (grid.IsEnabled)
+            {
+                try
+                {
+                    grid.IsEnabled = false;
+                    if (!Common.EmptyFiels(grid.ClassId))
+                    {
+                        if (grid.ClassId == "Home")
+                        {
+                            BindViews("Home");
+                        }
+                        else if (grid.ClassId == "Quotes")
+                        {
+                            this.isNavigate = true;
+                            BindViews("Submitted");
+                        }
+                        else if (grid.ClassId == "Orders")
+                        {
+                            this.isNavigate = true;
+                            BindViews("Supplying");
+                        }
+                        else if (grid.ClassId == "Account")
+                        {
+                            this.isNavigate = true;
+                            BindViews("AccountProfile");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("MainTabbedPage/Tab_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    grid.IsEnabled = true;
+                }
+            }
         }
         #endregion
     }

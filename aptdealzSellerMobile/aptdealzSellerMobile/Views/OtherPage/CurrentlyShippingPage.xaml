@@ -46,32 +46,13 @@
                     ColumnDefinitions="*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
-                        <Image
-                            Margin="0"
-                            HeightRequest="30"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="iconNotification.png"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="30" />
+                        <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
                         <Frame
                             x:Name="frmNotification"
-                            Margin="10,5,0,0"
-                            Padding="0"
-                            BackgroundColor="{StaticResource Orange}"
-                            CornerRadius="10"
-                            HasShadow="False"
-                            HeightRequest="20"
-                            HorizontalOptions="CenterAndExpand"
                             IsVisible="false"
-                            VerticalOptions="StartAndExpand"
-                            WidthRequest="20" />
-                        <Label
-                            x:Name="lblNotificationCount"
-                            Margin="10,5,0,0"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Style="{StaticResource lblMedium}"
-                            VerticalOptions="Start" />
+                            Style="{StaticResource frmNotification}">
+                            <Label x:Name="lblNotificationCount" Style="{StaticResource lblNotification}" />
+                        </Frame>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgNotification_Tapped" />
                         </Grid.GestureRecognizers>
@@ -131,13 +112,8 @@
                     <Frame
                         x:Name="FrmSearchBy"
                         Grid.Row="0"
-                        Margin="0"
-                        Padding="0"
-                        BackgroundColor="Transparent"
                         BorderColor="Transparent"
-                        CornerRadius="5"
-                        HasShadow="False"
-                        IsClippedToBounds="True">
+                        Style="{StaticResource frmBlank}">
 
                         <Grid BackgroundColor="Transparent">
                             <Grid.ColumnDefinitions>
@@ -178,10 +154,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            x:Name="FrmSortBy"
-                            Grid.Column="0"
-                            Style="{StaticResource frmBlank}">
+                        <Frame Grid.Column="0" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"
@@ -189,7 +162,7 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Source="iconSortASC.png"
+                                    Source="iconSortDSC.png"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -205,10 +178,7 @@
                             </Frame.GestureRecognizers>
                         </Frame>
 
-                        <Frame
-                            x:Name="FrmFilterBy"
-                            Grid.Column="1"
-                            Style="{StaticResource frmBlank}">
+                        <Frame Grid.Column="1" Style="{StaticResource frmBlank}">
                             <Grid
                                 Margin="5"
                                 ColumnDefinitions="Auto,*"

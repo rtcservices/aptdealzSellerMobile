@@ -1,16 +1,13 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace aptdealzSellerMobile.Services
 {
-    class NotificationRepository : INotificationRepository
+    public class NotificationRepository : INotificationRepository
     {
         NotificationAPI notificationAPI = new NotificationAPI();
 

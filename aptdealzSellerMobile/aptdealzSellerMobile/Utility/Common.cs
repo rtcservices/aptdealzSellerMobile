@@ -351,6 +351,13 @@ namespace aptdealzSellerMobile.Utility
         Failed = 3
     }
 
+    public enum RevealContactStatus
+    {
+        Pending = 1,
+        Success = 2,
+        Failure = 3
+    }
+
     public enum OrderStatus
     {
         Pending = 1,
@@ -365,10 +372,10 @@ namespace aptdealzSellerMobile.Utility
 
     public enum GrievancesStatus
     {
-        Pending = 1,
-        Open = 2,
-        Closed = 3,
-        All = 4
+        Pending = 0,
+        Open = 1,
+        Closed = 2,
+        All = 3
     }
 
     public enum GrievancesType

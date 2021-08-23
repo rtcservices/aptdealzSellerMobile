@@ -6,18 +6,22 @@ namespace aptdealzSellerMobile.Utility
 {
     public class StoppableTimer
     {
+        #region [ Objects ]
         private readonly TimeSpan timespan;
         private readonly Action callback;
-
         private CancellationTokenSource cancellation;
+        #endregion
 
+        #region [ Ctor ]
         public StoppableTimer(TimeSpan timespan, Action callback)
         {
             this.timespan = timespan;
             this.callback = callback;
             this.cancellation = new CancellationTokenSource();
         }
+        #endregion
 
+        #region [ Methods ]
         public void Start()
         {
             CancellationTokenSource cts = this.cancellation; // safe copy
@@ -39,5 +43,6 @@ namespace aptdealzSellerMobile.Utility
         {
 
         }
+        #endregion
     }
 }

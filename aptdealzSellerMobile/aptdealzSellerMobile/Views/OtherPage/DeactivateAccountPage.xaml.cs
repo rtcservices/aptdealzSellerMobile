@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.Dashboard;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,72 +12,74 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeactivateAccountPage : ContentPage
     {
-        #region Constructor
+        #region [ Constructor ]
         public DeactivateAccountPage()
-        {
-            InitializeComponent();
-
-            MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
-            {
-                if (!Common.EmptyFiels(Common.NotificationCount))
-                {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
-                }
-                else
-                {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
-                }
-            });
-        }
-        #endregion
-
-        #region Methods
-        private async void DeactivateAccount()
         {
             try
             {
-                var result = await DisplayAlert(Constraints.Alert, Constraints.AreYouSureWantDeactivateAccount, Constraints.Yes, Constraints.No);
-                if (result)
+                InitializeComponent();
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
-                    ProfileAPI profileAPI = new ProfileAPI();
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    var mResponse = await profileAPI.DeactiviateUser(Settings.UserId);
-                    if (mResponse != null && mResponse.Succeeded)
+                    if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
                     }
                     else
                     {
-                        if (mResponse != null)
-                            Common.DisplayErrorMessage(mResponse.Message);
-                        else
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
                     }
-                }
+                });
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("DeactivateAccountPage/DeactivateAccount: " + ex.Message);
-            }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
+                Common.DisplayErrorMessage("DeactivateAccountPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
         #endregion
 
-        #region Events
+        #region [ Methods ]
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+        #endregion
+
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(image: ImgMenu);
             //Common.OpenMenu();
         }
 
-        private void ImgNotification_Tapped(object sender, EventArgs e)
+        private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Dashboard.NotificationPage());
+            var Tab = (Grid)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    await Navigation.PushAsync(new NotificationPage());
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("DeactivateAccountPage/ImgNotification_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -83,15 +87,32 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void BtnDeactivation_Clicked(object sender, EventArgs e)
+        private async void BtnDeactivation_Clicked(object sender, EventArgs e)
         {
-            DeactivateAccount();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(button: BtnDeactivation);
+                    await DependencyService.Get<IProfileRepository>().DeactivateAccount();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("DeactivateAccountPage/BtnDeactivation_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)

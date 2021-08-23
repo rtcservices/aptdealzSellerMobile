@@ -125,8 +125,10 @@
         public const string Required_IFSC = "Please enter IFSC code!";
         public const string Required_Category = "Please enter category!";
         public const string Required_Subcategory = "Please enter sub category!";
+
         public const string Required_NewPassword = "Please enter new password!";
         public const string Required_ConfirmPassword = "Please enter confirm password!";
+
         public const string Required_UnitPrice = "Please enter unit price!";
         public const string Required_QuoteValidityDate = "Please enter quote validity date!";
         public const string Required_OrderStatus = "Please select order status!";
@@ -136,6 +138,7 @@
         public const string Required_TrackingLink = "Please enter tracking link!";
 
         public const string Required_Response = "Please enter your message!";
+        public const string Required_ComplainType = "Please select complaint type!";
         #endregion
 
         #region [ Success ]

@@ -3,6 +3,7 @@ using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,13 +12,13 @@ namespace aptdealzSellerMobile.Views.Accounts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EnterOtpPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private string EmailAddress;
         private string OTPString;
         private AuthenticationAPI authenticationAPI;
         #endregion
 
-        #region Constructor
+        #region [ Constructor ]
         public EnterOtpPage(string Email)
         {
             InitializeComponent();
@@ -27,7 +28,19 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Methods        
+        #region [ Methods ]    
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Dispose();
+        }
+
         private void ResendButtonEnable()
         {
             try
@@ -80,7 +93,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             return isValid;
         }
 
-        private async void SubmitOTP()
+        private async Task SubmitOTP()
         {
             try
             {
@@ -125,7 +138,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
-        private async void ResentOTP()
+        private async Task ResentOTP()
         {
             try
             {
@@ -156,22 +169,37 @@ namespace aptdealzSellerMobile.Views.Accounts
         }
         #endregion
 
-        #region Events
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        #region [ Events ]
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
             Common.BindAnimation(imageButton: ImgBack);
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
-        private void BtnSubmit_Tapped(object sender, EventArgs e)
+        private async void BtnSubmit_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnSubmit);
-            SubmitOTP();
+            var Tab = (Button)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false; Common.BindAnimation(button: BtnSubmit);
+                   await SubmitOTP();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("EnterOtpPage/BtnSubmit_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
-        private void BtnResentOtp_Tapped(object sender, EventArgs e)
+        private async void BtnResentOtp_Tapped(object sender, EventArgs e)
         {
-            ResentOTP();
+           await ResentOTP();
         }
 
         private void TxtOtpOne_TextChanged(object sender, TextChangedEventArgs e)

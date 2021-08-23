@@ -15,15 +15,16 @@ namespace aptdealzSellerMobile.Utility
 {
     public class ImageConvertion
     {
-        #region Properties
+        #region [ Objects ]
         public static string profileImageBase64 { get; set; }
         public static FFImageLoading.Forms.CachedImage SelectedImagePath { get; set; }
+        public static Image SelectedXFImagePath { get; set; }
         public static string NullImagePath { get; set; }
 
         public static byte[] SelectedImageByte = null;
         #endregion
 
-        #region Methods
+        #region [ Methods ]
         public static byte[] CompressImage(byte[] imgBytes)
         {
             byte[] CompressimageBytes = null;
@@ -99,11 +100,22 @@ namespace aptdealzSellerMobile.Utility
                 memoryStream.Dispose();
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    SelectedImagePath.Source = ImageSource.FromStream(() =>
+                    if (SelectedImagePath != null)
                     {
-                        var stream = file.GetStream();
-                        return stream;
-                    });
+                        SelectedImagePath.Source = ImageSource.FromStream(() =>
+                        {
+                            var stream = file.GetStream();
+                            return stream;
+                        });
+                    }
+                    else
+                    {
+                        SelectedXFImagePath.Source = ImageSource.FromStream(() =>
+                        {
+                            var stream = file.GetStream();
+                            return stream;
+                        });
+                    }
                 });
 
                 SelectedImageByte = ImageBytes;
@@ -164,9 +176,11 @@ namespace aptdealzSellerMobile.Utility
                             {
                                 SaveToAlbum = true,
                                 CompressionQuality = 50,
-                                CustomPhotoSize = 50,
                                 DefaultCamera = CameraDevice.Rear,
                                 AllowCropping = true,
+                                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
+                                //CustomPhotoSize = 50,
+                                CustomPhotoSize = 20
                             });
 
                             if (file == null)
@@ -231,10 +245,15 @@ namespace aptdealzSellerMobile.Utility
                     }
                     finally { UserDialogs.Instance.HideLoading(); }
                 }
-                else if (SelectedImagePath.Source == null)
+                else if (SelectedImagePath != null && SelectedImagePath.Source == null)
                 {
                     SelectedImagePath.Source = NullImagePath;
                 }
+                else if (SelectedXFImagePath != null && SelectedXFImagePath.Source == null)
+                {
+                    SelectedXFImagePath.Source = NullImagePath;
+                }
+
 
                 try
                 {
