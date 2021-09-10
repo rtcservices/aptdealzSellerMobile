@@ -1,6 +1,6 @@
 ﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Interfaces;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
@@ -49,8 +49,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             {
                 if (!Common.EmptyFiels(selectedView))
                 {
-                    if (selectedView == "Requirements" || selectedView == "Submitted"
-                        || selectedView == "Supplying" || selectedView == "AccountProfile"
+                    if (selectedView == "Requirements" || selectedView == "Quotes"
+                        || selectedView == "Orders" || selectedView == "Account"
                         || selectedView == "QrCodeScan" || selectedView == "AptDealz"
                         || selectedView == "Policies" || selectedView == "RaiseGrievances"
                         )
@@ -89,23 +89,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                ProfileAPI profileAPI = new ProfileAPI();
-                var mResponse = await profileAPI.GetMyProfileData();
-                if (mResponse != null && mResponse.Succeeded)
-                {
-                    var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
-                    if (jObject != null)
-                    {
-                        Common.mSellerDetails = jObject.ToObject<Model.Request.SellerDetails>();
-                    }
-                }
-                else
-                {
-                    if (mResponse != null)
-                        Common.DisplayErrorMessage(mResponse.Message);
-                    else
-                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                }
+                await DependencyService.Get<IProfileRepository>().GetMyProfileData();
             }
             catch (Exception ex)
             {
@@ -120,37 +104,37 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 UnselectTab();
                 if (view == "Home")
                 {
-                    imgHome.Source = Constraints.Img_Home_Activ;
-                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgHome.Source = Constraints.ImgHomeActive;
+                    lblHome.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new HomeView());
                 }
                 else if (view == "Requirements")
                 {
-                    imgHome.Source = Constraints.Img_Home_Activ;
-                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgHome.Source = Constraints.ImgHomeActive;
+                    lblHome.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new RequirementsView());
                 }
-                else if (view == "Submitted")
+                else if (view == "Quotes")
                 {
-                    imgQuotes.Source = Constraints.Img_Quote_Active;
-                    lblQuotes.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgQuotes.Source = Constraints.ImgQuoteActive;
+                    lblQuotes.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new QuoteView());
                 }
-                else if (view == "Supplying")
+                else if (view == "Orders")
                 {
-                    imgOrders.Source = Constraints.Img_Order_Active;
-                    lblOrders.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgOrders.Source = Constraints.ImgOrderActive;
+                    lblOrders.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new OrderSupplyingView());
                 }
                 else if (view == "RaiseGrievances")
                 {
                     grdMain.Children.Add(new OrderSupplyingView(true));
                 }
-                else if (view == "AccountProfile")
+                else if (view == "Account")
                 {
                     UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                    imgAccount.Source = Constraints.Img_Account_Active;
-                    lblAccount.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgAccount.Source = Constraints.ImgAccountActive;
+                    lblAccount.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new AccountView());
                     UserDialogs.Instance.HideLoading();
                 }
@@ -164,8 +148,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 }
                 else
                 {
-                    imgHome.Source = Constraints.Img_Home_Activ;
-                    lblHome.TextColor = (Color)App.Current.Resources["Orange"];
+                    imgHome.Source = Constraints.ImgHomeActive;
+                    lblHome.TextColor = (Color)App.Current.Resources["appColor5"];
                     grdMain.Children.Add(new HomeView());
                 }
                 selectedView = view;
@@ -180,15 +164,15 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             grdMain.Children.Clear();
 
-            imgHome.Source = Constraints.Img_Home;
-            imgQuotes.Source = Constraints.Img_Quote;
-            imgOrders.Source = Constraints.Img_Order;
-            imgAccount.Source = Constraints.Img_Account;
+            imgHome.Source = Constraints.ImgHome;
+            imgQuotes.Source = Constraints.ImgQuote;
+            imgOrders.Source = Constraints.ImgOrder;
+            imgAccount.Source = Constraints.ImgAccount;
 
-            lblHome.TextColor = (Color)App.Current.Resources["Black"];
-            lblQuotes.TextColor = (Color)App.Current.Resources["Black"];
-            lblOrders.TextColor = (Color)App.Current.Resources["Black"];
-            lblAccount.TextColor = (Color)App.Current.Resources["Black"];
+            lblHome.TextColor = (Color)App.Current.Resources["appColor4"];
+            lblQuotes.TextColor = (Color)App.Current.Resources["appColor4"];
+            lblOrders.TextColor = (Color)App.Current.Resources["appColor4"];
+            lblAccount.TextColor = (Color)App.Current.Resources["appColor4"];
         }
         #endregion
 
@@ -205,22 +189,34 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     {
                         if (grid.ClassId == "Home")
                         {
-                            BindViews("Home");
+                            if (selectedView != "Home")
+                            {
+                                BindViews("Home");
+                            }
                         }
                         else if (grid.ClassId == "Quotes")
                         {
-                            this.isNavigate = true;
-                            BindViews("Submitted");
+                            if (selectedView != "Quotes")
+                            {
+                                this.isNavigate = true;
+                                BindViews("Quotes");
+                            }
                         }
                         else if (grid.ClassId == "Orders")
                         {
-                            this.isNavigate = true;
-                            BindViews("Supplying");
+                            if (selectedView != "Orders")
+                            {
+                                this.isNavigate = true;
+                                BindViews("Orders");
+                            }
                         }
                         else if (grid.ClassId == "Account")
                         {
-                            this.isNavigate = true;
-                            BindViews("AccountProfile");
+                            if (selectedView != "Account")
+                            {
+                                this.isNavigate = true;
+                                BindViews("Account");
+                            }
                         }
                     }
                 }

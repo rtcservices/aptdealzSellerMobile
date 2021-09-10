@@ -7,7 +7,7 @@
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     x:Name="page1"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <ext:ExtKeyboard>
@@ -160,7 +160,7 @@
                                         <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="Unit Price" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                                <Label Text="*" TextColor="{StaticResource appColor2}" />
                                             </StackLayout>
                                             <ext:ExtEntry
                                                 x:Name="txtUnitPrice"
@@ -249,7 +249,7 @@
                                     <StackLayout Grid.Row="2" Spacing="7">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Quote Validity Date" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtDatePicker
                                             x:Name="dpValidityDate"
@@ -261,7 +261,7 @@
                                             Format="dd/MM/yyyy"
                                             HorizontalOptions="FillAndExpand"
                                             TabIndex="6"
-                                            TextColor="{StaticResource Black}"
+                                            TextColor="{StaticResource appColor4}"
                                             Unfocused="dpValidityDate_Unfocused" />
                                         <BoxView x:Name="BoxValidityDate" Style="{StaticResource boxHorizontal}" />
                                         <StackLayout.GestureRecognizers>
@@ -273,7 +273,7 @@
                                     <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Country of origin" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
 
                                         <ext:ExtAutoSuggestBox
@@ -282,13 +282,13 @@
                                             ClassId="Country"
                                             HorizontalOptions="FillAndExpand"
                                             ItemsSource="{Binding mCountriesData, Mode=TwoWay, Source={x:Reference page1}}"
-                                            PlaceholderTextColor="{StaticResource Gray}"
+                                            PlaceholderTextColor="{StaticResource appColor7}"
                                             QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                                             SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                                             TabIndex="8"
                                             Text="{Binding countryText, Source={x:Reference page1}}"
                                             TextChanged="AutoSuggestBox_TextChanged"
-                                            TextColor="{StaticResource Black}"
+                                            TextColor="{StaticResource appColor4}"
                                             Unfocused="pckCountry_Unfocused" />
                                         <BoxView x:Name="BoxCountry" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>

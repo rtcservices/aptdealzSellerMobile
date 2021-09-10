@@ -57,6 +57,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         public SignupPage()
         {
             InitializeComponent();
+            CapitalizeWord();
             BindObjects();
         }
         #endregion
@@ -98,6 +99,19 @@ namespace aptdealzSellerMobile.Views.Accounts
             UserDialogs.Instance.HideLoading();
         }
 
+        private void CapitalizeWord()
+        {
+            txtFullName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtPassword.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+
+            txtStreet.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtCity.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtState.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtLandmark.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+
+            txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtSupplyArea.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+        }
         private void BindDocumentList()
         {
             try
@@ -181,14 +195,12 @@ namespace aptdealzSellerMobile.Views.Accounts
                         || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text) || Common.EmptyFiels(txtLandmark.Text)
                         || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtDescription.Text)
                         || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
-                        || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
+                        || Common.EmptyFiels(txtGstNumber.Text.ToUpper()) || Common.EmptyFiels(txtPan.Text.ToUpper())
                         || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
                         || Common.EmptyFiels(txtIfsc.Text))
                 {
-                    Common.DisplayErrorMessage(Constraints.Required_All);
-
                     RequiredFields();
-                    return false;
+                    isValid = false;
                 }
 
                 if (Common.EmptyFiels(txtFullName.Text))
@@ -272,19 +284,19 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     Common.DisplayErrorMessage(Constraints.Required_SupplyArea);
                 }
-                else if (Common.EmptyFiels(txtGstNumber.Text))
+                else if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_GST);
                 }
-                else if (!Common.IsValidGSTPIN(txtGstNumber.Text))
+                else if (!Common.IsValidGSTPIN(txtGstNumber.Text.ToUpper()))
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_GST);
                 }
-                else if (Common.EmptyFiels(txtPan.Text))
+                else if (Common.EmptyFiels(txtPan.Text.ToUpper()))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_PAN);
                 }
-                else if (!Common.IsValidPAN(txtPan.Text))
+                else if (!Common.IsValidPAN(txtPan.Text.ToUpper()))
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_PAN);
                 }
@@ -327,10 +339,10 @@ namespace aptdealzSellerMobile.Views.Accounts
 
                 if (isValid)
                 {
-                    if (Common.IsValidGSTPIN(txtGstNumber.Text) && Common.IsValidPAN(txtPan.Text))
+                    if (Common.IsValidGSTPIN(txtGstNumber.Text.ToUpper()) && Common.IsValidPAN(txtPan.Text.ToUpper()))
                     {
                         string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
-                        if (panFromGSTIN != txtPan.Text)
+                        if (panFromGSTIN.ToUpper() != txtPan.Text.ToUpper())
                         {
                             Common.DisplayErrorMessage(Constraints.InValid_PAN_GSTIN);
                             isValid = false;
@@ -393,107 +405,107 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Common.EmptyFiels(txtFullName.Text))
                 {
-                    BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxFullName.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtPassword.Text))
                 {
-                    BoxPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxPassword.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtEmail.Text))
                 {
-                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtPhoneNumber.Text))
                 {
-                    BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtBuildingNumber.Text))
                 {
-                    BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtStreet.Text))
                 {
-                    BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxStreet.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtCity.Text))
                 {
-                    BoxCity.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxCity.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtState.Text))
                 {
-                    BoxState.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxState.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtPinCode.Text))
                 {
-                    BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxPinCode.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtLandmark.Text))
                 {
-                    BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxLandmark.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(pkNationality.Text))
                 {
-                    BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxNationality.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtDescription.Text))
                 {
-                    BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxDescription.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (pkCategory.SelectedIndex == -1)
                 {
-                    BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxCategory.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (selectedSubCategory.Count == 0 && pkSubCategory.SelectedIndex == -1)
                 {
-                    BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtExperience.Text))
                 {
-                    BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxExperience.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtSupplyArea.Text))
                 {
-                    BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtGstNumber.Text))
+                if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
                 {
-                    BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtPan.Text))
+                if (Common.EmptyFiels(txtPan.Text.ToUpper()))
                 {
-                    BoxPan.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxPan.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtBankAccount.Text))
                 {
-                    BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtBankName.Text))
                 {
-                    BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxBankName.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtIfsc.Text))
                 {
-                    BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxIfsc.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
             }
             catch (Exception ex)
@@ -510,67 +522,67 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     if (entry.ClassId == "FullName")
                     {
-                        BoxFullName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxFullName.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Password")
                     {
-                        BoxPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxPassword.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Email")
                     {
-                        BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxEmail.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "PhoneNumber")
                     {
-                        BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxPhoneNumber.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "BuildingNumber")
                     {
-                        BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxBuildingNumber.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Street")
                     {
-                        BoxStreet.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxStreet.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "City")
                     {
-                        BoxCity.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxCity.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "PinCode")
                     {
-                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Landmark")
                     {
-                        BoxLandmark.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxLandmark.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Experience")
                     {
-                        BoxExperience.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxExperience.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "SupplyArea")
                     {
-                        BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "GstNumber")
                     {
-                        BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "Pan")
                     {
-                        BoxPan.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxPan.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "BankAccount")
                     {
-                        BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxBankAccount.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "BankName")
                     {
-                        BoxBankName.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxBankName.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "IFSC")
                     {
-                        BoxIfsc.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxIfsc.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                 }
 
@@ -578,7 +590,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     if (autoSuggestBox.ClassId == "Nationality")
                     {
-                        BoxNationality.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxNationality.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                 }
 
@@ -586,7 +598,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     if (editor.ClassId == "Description")
                     {
-                        BoxDescription.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxDescription.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                 }
 
@@ -594,11 +606,11 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     if (picker.ClassId == "Category")
                     {
-                        BoxCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxCategory.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (picker.ClassId == "SubCategory")
                     {
-                        BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxSubCategory.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                 }
             }
@@ -619,17 +631,17 @@ namespace aptdealzSellerMobile.Views.Accounts
                     isValid = await DependencyService.Get<IProfileRepository>().ValidPincode(PinCode);
                     if (isValid)
                     {
-                        boxView.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        boxView.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else
                     {
-                        boxView.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                        boxView.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                     }
                 }
                 else
                 {
                     Common.DisplayErrorMessage(Constraints.Required_PinCode);
-                    boxView.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    boxView.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                 }
             }
             catch (Exception ex)
@@ -668,8 +680,8 @@ namespace aptdealzSellerMobile.Views.Accounts
                 #endregion
 
                 #region Bank Information
-                txtGstNumber.Text = txtGstNumber.Text.Trim();
-                txtPan.Text = txtPan.Text.Trim();
+                txtGstNumber.Text = txtGstNumber.Text.ToUpper().Trim();
+                txtPan.Text = txtPan.Text.ToUpper().Trim();
                 txtBankAccount.Text = txtBankAccount.Text.Trim();
                 txtBankName.Text = txtBankName.Text.Trim();
                 txtIfsc.Text = txtIfsc.Text.Trim();
@@ -764,13 +776,13 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     mRegister.AreaOfSupply = txtSupplyArea.Text;
                 }
-                if (!Common.EmptyFiels(txtGstNumber.Text))
+                if (!Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
                 {
-                    mRegister.Gstin = txtGstNumber.Text;
+                    mRegister.Gstin = txtGstNumber.Text.ToUpper();
                 }
-                if (!Common.EmptyFiels(txtPan.Text))
+                if (!Common.EmptyFiels(txtPan.Text.ToUpper()))
                 {
-                    mRegister.Pan = txtPan.Text;
+                    mRegister.Pan = txtPan.Text.ToUpper();
                 }
                 if (!Common.EmptyFiels(txtBankAccount.Text))
                 {

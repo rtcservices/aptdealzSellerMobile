@@ -74,15 +74,6 @@ namespace aptdealzSellerMobile.Views.Popup
                     lblFirstType.Text = Utility.SortByField.ID.ToString();
                     lblSecondType.Text = Utility.SortByField.Date.ToString();
                 }
-                else
-                {
-                    StkThirdType.IsVisible = true;
-                    StkFourType.IsVisible = true;
-                    lblFirstType.Text = SortByField.ID.ToString();
-                    lblSecondType.Text = SortByField.Date.ToString();
-                    lblThirdType.Text = SortByField.Quotes.ToString();
-                    lblFourType.Text = SortByField.TotalPriceEstimation.ToString();
-                }
             }
             catch (Exception ex)
             {

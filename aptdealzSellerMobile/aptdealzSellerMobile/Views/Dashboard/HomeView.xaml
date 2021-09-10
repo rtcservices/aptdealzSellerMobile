@@ -6,7 +6,7 @@
     xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid RowSpacing="0">
@@ -37,7 +37,6 @@
                 <ImageButton
                     x:Name="BtnLogo"
                     Grid.Column="1"
-                    Clicked="BtnLogo_Clicked"
                     Style="{StaticResource imgLogo}" />
 
                 <Grid
@@ -103,8 +102,8 @@
                             <Frame
                                 Margin="6,0,6,12"
                                 Padding="0"
-                                BackgroundColor="{StaticResource LightGray}"
-                                BorderColor="{StaticResource Gray}"
+                                BackgroundColor="{StaticResource appColor8}"
+                                BorderColor="{StaticResource appColor7}"
                                 CornerRadius="10"
                                 HasShadow="False"
                                 HeightRequest="100"

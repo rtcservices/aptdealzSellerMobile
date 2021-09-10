@@ -220,19 +220,19 @@ namespace aptdealzSellerMobile.Model.Request
             {
                 if (Status == RequirementStatus.Completed.ToString())
                 {
-                    return (Color)App.Current.Resources["Green"];
+                    return (Color)App.Current.Resources["appColor1"];
                 }
                 else if (Status == RequirementStatus.Rejected.ToString())
                 {
-                    return (Color)App.Current.Resources["Red"];
+                    return (Color)App.Current.Resources["appColor2"];
                 }
                 else if (Status == RequirementStatus.Inactive.ToString())
                 {
-                    return (Color)App.Current.Resources["Orange"];
+                    return (Color)App.Current.Resources["appColor5"];
                 }
                 else
                 {
-                    return (Color)App.Current.Resources["Black"];
+                    return (Color)App.Current.Resources["appColor4"];
                 }
             }
         }

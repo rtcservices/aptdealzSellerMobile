@@ -9,7 +9,7 @@
     xmlns:ffImageTranformer="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
     xmlns:panCake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     x:Name="page1"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -116,7 +116,7 @@
                                 Margin="20,0"
                                 Padding="0"
                                 BackgroundColor="Transparent"
-                                BorderColor="{StaticResource LightGray}"
+                                BorderColor="{StaticResource appColor8}"
                                 CornerRadius="10"
                                 HasShadow="False"
                                 IsClippedToBounds="True">
@@ -168,7 +168,7 @@
                                     </Grid>
 
                                     <panCake:PancakeView
-                                        BackgroundColor="{StaticResource Green}"
+                                        BackgroundColor="{StaticResource appColor1}"
                                         CornerRadius="0,10,10,0"
                                         HorizontalOptions="EndAndExpand"
                                         VerticalOptions="StartAndExpand">
@@ -217,7 +217,7 @@
                                             x:Name="lblSellerId"
                                             FontSize="15"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                         <BoxView Style="{StaticResource boxHorizontal}" />
                                         <StackLayout.GestureRecognizers>
                                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CopyString_Tapped" />
@@ -227,7 +227,7 @@
                                     <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Full Name" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtFullName"
@@ -243,7 +243,7 @@
 
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Email Id" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtEmail"
@@ -258,7 +258,7 @@
 
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Phone Number" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtPhoneNumber"
@@ -288,14 +288,14 @@
                                     x:Name="GrdBillingAddress"
                                     Grid.Row="1"
                                     Padding="15,0"
-                                    BackgroundColor="{StaticResource DarkGray}"
+                                    BackgroundColor="{StaticResource appColor9}"
                                     HeightRequest="50">
                                     <Label
                                         FontSize="17"
                                         HorizontalOptions="StartAndExpand"
                                         Style="{StaticResource lblSemiBold}"
                                         Text="Billing Address"
-                                        TextColor="White" />
+                                        TextColor="{StaticResource appColor6}" />
                                     <Image
                                         x:Name="ImgDropDownBilling"
                                         HeightRequest="20"
@@ -331,7 +331,7 @@
                                     <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Building Number" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtBuildingNumber"
@@ -347,7 +347,7 @@
                                     <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Street" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtStreet"
@@ -363,7 +363,7 @@
                                     <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="City" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtCity"
@@ -379,7 +379,7 @@
                                     <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="State" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtState"
@@ -395,7 +395,7 @@
                                     <StackLayout Grid.Row="4" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Pincode" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtPinCode"
@@ -411,7 +411,7 @@
                                     <StackLayout Grid.Row="5" Spacing="{OnPlatform Android=0, iOS=3}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Nationality" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtAutoSuggestBox
                                             x:Name="pkNationality"
@@ -419,13 +419,13 @@
                                             ClassId="BANationality"
                                             HorizontalOptions="FillAndExpand"
                                             ItemsSource="{Binding mCountriesData, Mode=TwoWay, Source={x:Reference page1}}"
-                                            PlaceholderTextColor="{StaticResource Gray}"
+                                            PlaceholderTextColor="{StaticResource appColor7}"
                                             QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                                             SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                                             TabIndex="10"
                                             Text="{Binding countryText, Source={x:Reference page1}}"
                                             TextChanged="AutoSuggestBox_TextChanged"
-                                            TextColor="{StaticResource Black}"
+                                            TextColor="{StaticResource appColor4}"
                                             Unfocused="AutoSuggestBox_Unfocused" />
                                         <BoxView x:Name="BoxNationality" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
@@ -434,7 +434,7 @@
                                     <StackLayout Grid.Row="6" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Landmark" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtLandmark"
@@ -473,7 +473,7 @@
                                                     <Frame
                                                         Margin="0,10"
                                                         Padding="5"
-                                                        BackgroundColor="{StaticResource LightGray}"
+                                                        BackgroundColor="{StaticResource appColor8}"
                                                         CornerRadius="5"
                                                         HasShadow="False"
                                                         HorizontalOptions="FillAndExpand"
@@ -519,7 +519,7 @@
                                                                     FontSize="15"
                                                                     HeightRequest="40"
                                                                     Text="X"
-                                                                    TextColor="{StaticResource Black}"
+                                                                    TextColor="{StaticResource appColor4}"
                                                                     WidthRequest="40" />
                                                             </StackLayout>
                                                         </Grid>
@@ -535,14 +535,14 @@
                                     x:Name="GrdCompnyProfile"
                                     Grid.Row="3"
                                     Padding="15,0"
-                                    BackgroundColor="{StaticResource DarkGray}"
+                                    BackgroundColor="{StaticResource appColor9}"
                                     HeightRequest="50">
                                     <Label
                                         FontSize="17"
                                         HorizontalOptions="StartAndExpand"
                                         Style="{StaticResource lblSemiBold}"
                                         Text="Company Profile"
-                                        TextColor="White" />
+                                        TextColor="{StaticResource appColor6}" />
                                     <Image
                                         x:Name="ImgDownDownCompanyProfile"
                                         HeightRequest="20"
@@ -576,7 +576,7 @@
 
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Description" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <Editor
                                             x:Name="txtDescription"
@@ -597,7 +597,7 @@
                                         <StackLayout Grid.Row="0">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="Category" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                                <Label Text="*" TextColor="{StaticResource appColor2}" />
                                             </StackLayout>
                                             <Picker
                                                 x:Name="pkCategory"
@@ -632,7 +632,7 @@
                                         <StackLayout Grid.Row="0">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="Sub Category" />
-                                                <Label Text="*" TextColor="{StaticResource Red}" />
+                                                <Label Text="*" TextColor="{StaticResource appColor2}" />
                                             </StackLayout>
                                             <Picker
                                                 x:Name="pkSubCategory"
@@ -678,7 +678,7 @@
                                                                 Grid.Column="0"
                                                                 Margin="0"
                                                                 Padding="15,0,0,0"
-                                                                BackgroundColor="{StaticResource LightGray}"
+                                                                BackgroundColor="{StaticResource appColor8}"
                                                                 BorderColor="Transparent"
                                                                 CornerRadius="5"
                                                                 HasShadow="False"
@@ -706,7 +706,7 @@
                                                                         FontFamily="Poppins"
                                                                         HorizontalOptions="End"
                                                                         Text="X"
-                                                                        TextColor="{StaticResource Black}"
+                                                                        TextColor="{StaticResource appColor4}"
                                                                         VerticalOptions="CenterAndExpand"
                                                                         WidthRequest="40" />
                                                                 </Grid>
@@ -734,7 +734,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Experience" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtExperience"
@@ -765,7 +765,7 @@
                                     <StackLayout Grid.Row="5" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Area of Supply" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtSupplyArea"
@@ -789,14 +789,14 @@
                                     x:Name="GrdBankInformation"
                                     Grid.Row="5"
                                     Padding="15,0"
-                                    BackgroundColor="{StaticResource DarkGray}"
+                                    BackgroundColor="{StaticResource appColor9}"
                                     HeightRequest="50">
                                     <Label
                                         FontSize="17"
                                         HorizontalOptions="StartAndExpand"
                                         Style="{StaticResource lblSemiBold}"
                                         Text="Bank Information"
-                                        TextColor="{StaticResource White}" />
+                                        TextColor="{StaticResource appColor6}" />
                                     <Image
                                         x:Name="ImgDropDownBankInfo"
                                         HeightRequest="20"
@@ -829,7 +829,7 @@
 
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="GST Number" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtGstNumber"
@@ -844,7 +844,7 @@
                                     <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="PAN" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtPan"
@@ -859,7 +859,7 @@
                                     <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Bank Account Number" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtBankAccount"
@@ -874,7 +874,7 @@
                                     <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Bank Name" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtBankName"
@@ -890,7 +890,7 @@
 
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="IFSC" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtIfsc"
@@ -918,7 +918,7 @@
                                                 Grid.Column="0"
                                                 Style="{StaticResource lblLight}"
                                                 Text="No Docs found"
-                                                TextColor="{StaticResource DarkGray}" />
+                                                TextColor="{StaticResource appColor9}" />
 
                                             <!--  List Of Documents  -->
                                             <CollectionView
@@ -982,7 +982,7 @@
                                     HorizontalOptions="CenterAndExpand"
                                     Style="{StaticResource btnNormal}"
                                     Text="Logout"
-                                    TextColor="{StaticResource Black}" />
+                                    TextColor="{StaticResource appColor4}" />
                                 <Button
                                     x:Name="BtnDeactivateAccount"
                                     Grid.Row="2"
@@ -993,7 +993,7 @@
                                     HorizontalOptions="CenterAndExpand"
                                     Style="{StaticResource btnNormal}"
                                     Text="Deactivate Account"
-                                    TextColor="{StaticResource Black}" />
+                                    TextColor="{StaticResource appColor4}" />
                             </Grid>
                         </Grid>
                     </ScrollView>

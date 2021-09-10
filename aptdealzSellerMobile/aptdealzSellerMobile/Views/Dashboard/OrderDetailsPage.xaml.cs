@@ -29,6 +29,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 InitializeComponent();
                 mOrder = new Order();
                 mOrderStatusList = new List<string>();
+
+                txtEWayBillNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtLRNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtShippingNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+               
                 OrderId = orderId;
 
                 MessagingCenter.Unsubscribe<string>(this, "NotificationCount");
@@ -256,7 +261,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 if (pckOrderStatus.SelectedIndex == -1)
                 {
                     Common.DisplayErrorMessage(Constraints.Required_OrderStatus);
-                    BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
                 else
                 {
@@ -428,7 +433,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             {
                 if (pckOrderStatus.SelectedIndex != -1)
                 {
-                    BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    BoxOrderStatus.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                 }
             }
             catch (Exception ex)

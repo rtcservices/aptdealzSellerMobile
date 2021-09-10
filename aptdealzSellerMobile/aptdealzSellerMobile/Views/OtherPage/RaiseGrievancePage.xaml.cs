@@ -7,9 +7,7 @@ using aptdealzSellerMobile.Views.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -35,7 +33,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 this.OrderId = OrderId;
                 mComplaintTypeList = new List<string>();
                 documentList = new List<string>();
-
+                txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtSolution.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
                 BindComplaintType();
                 GetOrderDetails();
 
@@ -147,7 +146,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 }
                 else
                 {
-                    FrmType.BorderColor = (Color)App.Current.Resources["LightRed"];
+                    FrmType.BorderColor = (Color)App.Current.Resources["appColor3"];
                     ErrorMessage = Constraints.Required_ComplainType;
                     return null;
                 }
@@ -190,8 +189,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     if (mResponse != null && mResponse.Succeeded)
                     {
                         Common.DisplaySuccessMessage(mResponse.Message);
-                        await Navigation.PushAsync(new GrievancesPage());
-                        //await Navigation.PopToRootAsync();
+                        Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
                     }
                     else
                     {
@@ -327,7 +325,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 var picker = (Picker)sender;
                 if (picker.SelectedIndex != -1)
                 {
-                    FrmType.BorderColor = (Color)App.Current.Resources["LightGray"];
+                    FrmType.BorderColor = (Color)App.Current.Resources["appColor8"];
                 }
             }
             catch (Exception ex)

@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid>
@@ -156,7 +156,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -184,7 +184,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -209,7 +209,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </StackLayout>
 
                                     <BoxView Style="{StaticResource boxHorizontal}" />
@@ -462,7 +462,7 @@
                                     <Frame
                                         Grid.Row="0"
                                         Padding="15,10"
-                                        BackgroundColor="{StaticResource LightGray}"
+                                        BackgroundColor="{StaticResource appColor8}"
                                         Style="{StaticResource frmBlank}">
                                         <StackLayout Orientation="Vertical">
                                             <Label
@@ -483,7 +483,7 @@
                                     <Frame
                                         Grid.Row="1"
                                         Padding="15,10"
-                                        BackgroundColor="{StaticResource LightGray}"
+                                        BackgroundColor="{StaticResource appColor8}"
                                         Style="{StaticResource frmBlank}">
                                         <StackLayout Orientation="Vertical">
                                             <Label
@@ -602,7 +602,7 @@
                                                 FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
                                                 Style="{StaticResource lblMedium}"
-                                                TextColor="{StaticResource Green}" />
+                                                TextColor="{StaticResource appColor1}" />
                                         </StackLayout>
                                     </Grid>
                                 </Frame>
@@ -621,7 +621,7 @@
                                     <StackLayout Grid.Row="0">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Order Status" />
-                                            <Label Text="*" TextColor="{StaticResource Red}" />
+                                            <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -669,15 +669,6 @@
                                         <!--  Shipping Number  -->
                                         <StackLayout Grid.Row="0" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <Label Style="{StaticResource lblPrimary13}" Text="Shipping Number" />
-                                            <!--<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                    <Label
-                                                        x:Name="lblShippingNumber"
-                                                        IsVisible="false"
-                                                        Text="*"
-                                                        TextColor="{StaticResource Red}" />
-                                                </StackLayout>
-                                                    ClassId="ShippingNumber"
-                                                    Unfocused="Entry_Unfocused"-->
                                             <ext:ExtEntry
                                                 x:Name="txtShippingNumber"
                                                 ClassId="ShippingNumber"
@@ -690,14 +681,7 @@
                                         <!--  LR Number  -->
                                         <StackLayout Grid.Row="1" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <Label Style="{StaticResource lblPrimary13}" Text="LR Number" />
-                                            <!--<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                    <Label
-                                                        x:Name="lblLRNumber"
-                                                        IsVisible="false"
-                                                        Text="*"
-                                                        TextColor="{StaticResource Red}" />
-                                                </StackLayout>
-                                                 ClassId="LRNumber"-->
+
                                             <ext:ExtEntry
                                                 x:Name="txtLRNumber"
                                                 Keyboard="Text"
@@ -709,14 +693,6 @@
                                         <!--  EWay Bill Number  -->
                                         <StackLayout Grid.Row="2" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <Label Style="{StaticResource lblPrimary13}" Text="EWay Bill Number" />
-                                            <!--<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                    <Label
-                                                        x:Name="lblEWayBillNumber"
-                                                        IsVisible="false"
-                                                        Text="*"
-                                                        TextColor="{StaticResource Red}" />
-                                                </StackLayout>
-                                                 ClassId="EwayNumber"-->
                                             <ext:ExtEntry
                                                 x:Name="txtEWayBillNumber"
                                                 Keyboard="Text"
@@ -805,7 +781,7 @@
                                                 HorizontalOptions="StartAndExpand"
                                                 Style="{StaticResource lblSemiBold}"
                                                 Text="Status:"
-                                                TextColor="{StaticResource Green}" />
+                                                TextColor="{StaticResource appColor1}" />
 
                                             <!--  Payment Credited  -->
                                             <Label
@@ -815,7 +791,7 @@
                                                 FontSize="15"
                                                 HorizontalOptions="StartAndExpand"
                                                 Style="{StaticResource lblSemiBold}"
-                                                TextColor="{StaticResource Green}" />
+                                                TextColor="{StaticResource appColor1}" />
 
                                         </Grid>
                                     </Frame>
@@ -839,8 +815,9 @@
                                 <!--  Update Button  -->
                                 <Button
                                     x:Name="BtnUpdate"
-                                    Grid.Row="0" IsEnabled="False"
+                                    Grid.Row="0"
                                     Clicked="BtnUpdate_Tapped"
+                                    IsEnabled="False"
                                     Style="{StaticResource btnPrimary}"
                                     Text="Update" />
 

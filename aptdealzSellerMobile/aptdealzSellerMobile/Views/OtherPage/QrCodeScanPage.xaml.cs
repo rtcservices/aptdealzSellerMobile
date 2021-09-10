@@ -85,7 +85,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     BackgroundColor = Color.Transparent,
                     Padding = new Thickness(0, 10),
                     Margin = new Thickness(10, 10, 0, 0),
-                    Source = Constraints.Arrow_Back_Left,
+                    Source = "iconBackArrow.png",
                 };
                 image.Clicked += async delegate
                 {

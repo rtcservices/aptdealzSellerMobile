@@ -63,7 +63,7 @@
         #endregion
 
         #region [ Grievance API ]
-        public const string GetAllGrievancesByMe = "api/v{0}/Grievance/GetAllGrievancesByMe";
+        public const string GetAllGrievancesByMe = "api/v{0}/Grievance/GetAllGrievancesBySeller";
         public const string GetGrievancesDetailsForSeller = "api/v{0}/Grievance/GetGrievancesDetailsForSeller/{1}";
         public const string SubmitGrievanceResponseFromSeller = "api/v{0}/Grievance/SubmitGrievanceResponseFromSeller";
         public const string CreateGrievanceFromSeller = "api/v{0}/Grievance/CreateGrievanceFromSeller";

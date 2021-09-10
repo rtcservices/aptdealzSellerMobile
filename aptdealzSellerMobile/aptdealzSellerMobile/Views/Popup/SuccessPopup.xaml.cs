@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
+﻿using aptdealzSellerMobile.Utility;
+using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
 using Xamarin.Forms.Xaml;
@@ -13,10 +14,27 @@ namespace aptdealzSellerMobile.Views.Popup
         #endregion
 
         #region Constructor
-        public SuccessPopup(string ReqMessage)
+        public SuccessPopup(string ReqMessage, bool isSuccess = true)
         {
-            InitializeComponent();
-            lblMessage.Text = ReqMessage;
+            try
+            {
+                InitializeComponent();
+                lblMessage.Text = ReqMessage;
+                if (!isSuccess)
+                {
+                    lblSuccess.Text = "Fail";
+                    ImgReaction.Source = Constraints.Img_Sad;
+                }
+                else
+                {
+                    lblSuccess.Text = "Success";
+                    ImgReaction.Source = Constraints.Img_Smile;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SuccessPopup/Ctor: " + ex.Message);
+            }
         }
         #endregion
 

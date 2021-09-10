@@ -184,7 +184,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 try
                 {
                     Tab.IsEnabled = false; Common.BindAnimation(button: BtnSubmit);
-                   await SubmitOTP();
+                    await SubmitOTP();
                 }
                 catch (Exception ex)
                 {
@@ -199,7 +199,7 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private async void BtnResentOtp_Tapped(object sender, EventArgs e)
         {
-           await ResentOTP();
+            await ResentOTP();
         }
 
         private void TxtOtpOne_TextChanged(object sender, TextChangedEventArgs e)
@@ -245,7 +245,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             if (!Common.EmptyFiels(TxtOtpSix.Text))
             {
                 TxtOtpSix.Unfocus();
-                BtnSubmit.BackgroundColor = (Color)App.Current.Resources["Green"];
+                BtnSubmit.BackgroundColor = (Color)App.Current.Resources["appColor1"];
             }
             else
                 TxtOtpFive.Focus();

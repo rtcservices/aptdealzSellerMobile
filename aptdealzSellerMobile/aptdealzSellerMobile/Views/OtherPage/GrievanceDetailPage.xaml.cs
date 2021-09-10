@@ -27,7 +27,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 InitializeComponent();
                 this.GrievanceId = GrievanceId;
-
+                txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
                 MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
@@ -138,7 +138,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 }
                 else
                 {
-                    BoxMessage.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxMessage.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                     Common.DisplayErrorMessage(Constraints.Required_Response);
                 }
             }
@@ -258,7 +258,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             if (!Common.EmptyFiels(txtMessage.Text))
             {
-                BoxMessage.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxMessage.BackgroundColor = (Color)App.Current.Resources["appColor8"];
             }
         }
 

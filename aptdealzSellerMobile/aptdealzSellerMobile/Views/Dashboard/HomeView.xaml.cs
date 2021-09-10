@@ -51,9 +51,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 HomeMenus = new List<HomeMenu>()
                 {
                     new HomeMenu() { MenuImage = "iconViewReq.png",UiName = "View\nRequirements", MenuName = "Requirements"},
-                    new HomeMenu() { MenuImage = "iconSubmitedQuotes.png",UiName = "Quotes\nSubmitted", MenuName = "Submitted"},
-                    new HomeMenu() { MenuImage = "iconSupplying.png",UiName = "Orders For\nSupplying", MenuName = "Supplying"},
-                    new HomeMenu() { MenuImage = "imgProfile.png",UiName = "Account /\nProfile", MenuName = "AccountProfile"},
+                    new HomeMenu() { MenuImage = "iconSubmitedQuotes.png",UiName = "Quotes\nSubmitted", MenuName = "Quotes"},
+                    new HomeMenu() { MenuImage = "iconSupplying.png",UiName = "Orders For\nSupplying", MenuName = "Orders"},
+                    new HomeMenu() { MenuImage = "imgProfile.png",UiName = "Account /\nProfile", MenuName = "Account"},
                     new HomeMenu() { MenuImage = "imgNotifications.png", UiName = "Notifications", MenuName = "Notifications"},
                     new HomeMenu() { MenuImage = "imgGrievances.png", UiName = "Grievances", MenuName = "Grievances"},
                     new HomeMenu() { MenuImage = "imgAboutAptDealz.png", UiName = "About\nAptDealz", MenuName = "AptDealz"},
@@ -152,11 +152,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     MenuTab.IsEnabled = true;
                 }
             }
-        }
-
-        private void BtnLogo_Clicked(object sender, EventArgs e)
-        {
-            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
         #endregion
     }

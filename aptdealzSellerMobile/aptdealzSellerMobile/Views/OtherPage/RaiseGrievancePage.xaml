@@ -7,7 +7,7 @@
     xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
 
@@ -132,7 +132,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             LineBreakMode="WordWrap"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </Grid>
 
                                     <Grid
@@ -154,7 +154,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             LineBreakMode="WordWrap"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </Grid>
 
                                     <Grid
@@ -176,7 +176,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             LineBreakMode="WordWrap"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </Grid>
                                 </Grid>
                             </Frame>
@@ -212,7 +212,7 @@
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Seller Name"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -388,14 +388,14 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Total Amount"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                         <Label
                                             x:Name="lblTotalAmount"
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -409,7 +409,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Order Status"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                         <Label
                                             x:Name="lblOrderStatus"
@@ -417,7 +417,7 @@
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Shipped"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -461,7 +461,7 @@
                                                 Title="Type"
                                                 Grid.Column="0"
                                                 Style="{StaticResource pkPrimary}"
-                                                TitleColor="{StaticResource Black}"
+                                                TitleColor="{StaticResource appColor4}"
                                                 Unfocused="Picker_Unfocused" />
 
                                             <ImageButton
@@ -480,13 +480,13 @@
 
                                 <Frame
                                     Grid.Row="2"
-                                    BackgroundColor="{StaticResource LightGray}"
+                                    BackgroundColor="{StaticResource appColor8}"
                                     Style="{StaticResource frmBlank}">
                                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="0">
                                         <Frame
                                             Margin="5"
                                             Padding="5"
-                                            BackgroundColor="{StaticResource LightGray}"
+                                            BackgroundColor="{StaticResource appColor8}"
                                             CornerRadius="{OnPlatform Android=5,
                                                                       iOS=10}"
                                             HasShadow="False"
@@ -514,7 +514,7 @@
 
                                         <BoxView
                                             Grid.Column="2"
-                                            BackgroundColor="{StaticResource White}"
+                                            BackgroundColor="{StaticResource appColor6}"
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="FillAndExpand"
                                             WidthRequest="1" />
@@ -536,7 +536,7 @@
                                     Margin="0"
                                     Padding="0"
                                     BackgroundColor="Transparent"
-                                    BorderColor="{StaticResource LightGray}"
+                                    BorderColor="{StaticResource appColor8}"
                                     CornerRadius="5"
                                     HasShadow="False">
                                     <Editor

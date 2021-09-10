@@ -76,6 +76,13 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
                 {
                     Control.Gravity = Android.Views.GravityFlags.CenterVertical;
                 }
+
+                if (Control != null)
+                {
+                    Control.ImeOptions = Android.Views.InputMethods.ImeAction.Done;
+                    //Control.InputType = Android.Text.InputTypes.ClassText | Android.Text.InputTypes.TextVariationVisiblePassword | Android.Text.InputTypes.TextFlagMultiLine;
+                    //Control.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+                }
             }
             catch (Exception ex)
             {

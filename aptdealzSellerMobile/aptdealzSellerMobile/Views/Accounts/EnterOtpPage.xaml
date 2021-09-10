@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -58,13 +58,13 @@
                 <StackLayout
                     Grid.Row="1"
                     Margin="20,40"
-                    BackgroundColor="{StaticResource White}"
+                    BackgroundColor="{StaticResource appColor6}"
                     HorizontalOptions="CenterAndExpand"
                     Orientation="Horizontal"
                     Spacing="15"
                     VerticalOptions="CenterAndExpand">
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -78,14 +78,14 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpOne_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -99,14 +99,14 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpTwo_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -120,14 +120,14 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpThree_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -141,14 +141,14 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpFour_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -162,14 +162,14 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpFive_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource LightGray}"
+                        BackgroundColor="{StaticResource appColor8}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -183,7 +183,7 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpSix_TextChanged"
-                            TextColor="{StaticResource Black}"
+                            TextColor="{StaticResource appColor4}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
                     </Frame>
@@ -193,7 +193,7 @@
                     x:Name="BtnSubmit"
                     Grid.Row="2"
                     Margin="20,10"
-                    BackgroundColor="{StaticResource Gray}"
+                    BackgroundColor="{StaticResource appColor7}"
                     Clicked="BtnSubmit_Tapped"
                     CornerRadius="5"
                     Style="{StaticResource btnPrimary}"
@@ -205,7 +205,7 @@
                     Clicked="BtnResentOtp_Tapped"
                     Style="{StaticResource btnPrimary}"
                     Text="Resend OTP"
-                    TextColor="{StaticResource Black}" />
+                    TextColor="{StaticResource appColor4}" />
             </Grid>
 
         </Grid>

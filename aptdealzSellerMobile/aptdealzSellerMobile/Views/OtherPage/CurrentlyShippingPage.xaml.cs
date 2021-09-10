@@ -164,7 +164,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                         else
                         {
                             selectedImage.ArrowImage = Constraints.Arrow_Down;
-                            selectedImage.GridBg = (Color)App.Current.Resources["LightGray"];
+                            selectedImage.GridBg = (Color)App.Current.Resources["appColor8"];
                             selectedImage.MoreDetail = true;
                             selectedImage.OldDetail = false;
                         }
@@ -172,7 +172,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     if (response.ArrowImage == Constraints.Arrow_Right)
                     {
                         response.ArrowImage = Constraints.Arrow_Down;
-                        response.GridBg = (Color)App.Current.Resources["LightGray"];
+                        response.GridBg = (Color)App.Current.Resources["appColor8"];
                         response.MoreDetail = true;
                         response.OldDetail = false;
                     }

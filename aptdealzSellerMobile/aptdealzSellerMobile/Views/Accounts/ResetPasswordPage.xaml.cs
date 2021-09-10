@@ -87,12 +87,12 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Common.EmptyFiels(txtNewPassword.Text))
                 {
-                    BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
                 if (Common.EmptyFiels(txtConfirmPassword.Text))
                 {
-                    BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
             }
             catch (Exception ex)
@@ -230,11 +230,11 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     if (entry.ClassId == "NewPassword")
                     {
-                        BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxNewPassword.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else if (entry.ClassId == "ConfirmPassword")
                     {
-                        BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxConfirmPassword.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                 }
             }

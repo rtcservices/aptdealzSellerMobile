@@ -2,13 +2,17 @@
 {
     public class Constraints
     {
+        public const string Str_RevealContact = "Reveal Contact";
+        public const string Str_NotRevealContact = "Contact was not revealed";
+        public const string RP_UserName = "rzp_test_PUJtE9p3XLuGe8";
+        public const string RP_Password = "42HIrjeUTXOHNC84Ldl3aDzL";
+        public const string RP_RevealPayNow = "RevealPayNow";
+        public const string RP_PaidRevealResponse = "PaidRevealResponse";
+
         #region [ Images ]
         public const string Password_Hide = "iconHidePass.png";
         public const string Password_Visible = "iconVisiblepass.png";
 
-        public const string Arrow_Back_Left = "iconBackWhiteArrow.png";
-
-        public const string Arrow_Left = "iconLeftArrow.png";
         public const string Arrow_Up = "iconUpArrow.png";
         public const string Arrow_Right = "iconRightArrow.png";
         public const string Arrow_Down = "iconDownArrow.png";
@@ -19,25 +23,22 @@
         public const string CheckBox_UnChecked = "iconUncheck.png";
         public const string CheckBox_Checked = "iconCheck.png";
 
-        public const string Switch_Off = "iconSwitchOff.png";
-        public const string Switch_On = "iconSwitchOn.png";
-
         public const string Redio_UnSelected = "iconRadioUnselect.png";
         public const string Redio_Selected = "iconRadioSelect.png";
 
         public const string Img_Show = "iconShowGray.png";
         public const string Img_Hide = "iconHide.png";
-
+        public const string Img_Sad = "iconSad.png";
+        public const string Img_Smile = "iconSmile.png";
         public const string Img_Contact = "imgContact.jpg";
-        public const string Img_Buyer = "imgBuyer.png";
-        public const string Img_Home = "iconHome.png";
-        public const string Img_Quote = "iconQuotes.png";
-        public const string Img_Order = "iconOrders.png";
-        public const string Img_Account = "iconAccount.png";
-        public const string Img_Home_Activ = "iconHomeActive.png";
-        public const string Img_Quote_Active = "iconQuotesActive.png";
-        public const string Img_Order_Active = "iconOrdersActive.png";
-        public const string Img_Account_Active = "iconAccountActive.png";
+        public const string ImgHome = "iconHome.png";
+        public const string ImgQuote = "iconQuotes.png";
+        public const string ImgOrder = "iconOrders.png";
+        public const string ImgAccount = "iconAccount.png";
+        public const string ImgHomeActive = "iconHomeActive.png";
+        public const string ImgQuoteActive = "iconQuotesActive.png";
+        public const string ImgOrderActive = "iconOrdersActive.png";
+        public const string ImgAccountActive = "iconAccountActive.png";
         #endregion
 
         #region [ Error Message ]

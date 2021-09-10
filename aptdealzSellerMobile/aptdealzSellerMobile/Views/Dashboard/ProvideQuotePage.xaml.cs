@@ -285,15 +285,15 @@ namespace aptdealzSellerMobile.Views.Dashboard
             {
                 if (Common.EmptyFiels(txtUnitPrice.Text))
                 {
-                    BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
                 if (dpValidityDate.NullableDate == null)
                 {
-                    BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
                 if (Common.EmptyFiels(pckCountry.Text))
                 {
-                    BoxCountry.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxCountry.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
             }
             catch (Exception ex)
@@ -385,11 +385,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     isValid = await DependencyService.Get<IProfileRepository>().ValidPincode(txtShippingPinCode.Text);
                     if (isValid)
                     {
-                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                     }
                     else
                     {
-                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                        BoxPinCode.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                     }
 
                 }
@@ -522,7 +522,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         }
                         else
                         {
-                            await Navigation.PushAsync(new MainTabbedPage("Submitted"));
+                            await Navigation.PushAsync(new MainTabbedPage("Quotes"));
                         }
                         ClearPropeties();
                     }
@@ -728,7 +728,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             var entry = (Extention.ExtEntry)sender;
             if (!Common.EmptyFiels(entry.Text))
             {
-                BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxUnitPrice.BackgroundColor = (Color)App.Current.Resources["appColor8"];
             }
         }
 
@@ -737,7 +737,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             var autoSuggestBox = (Extention.ExtAutoSuggestBox)sender;
             if (!Common.EmptyFiels(autoSuggestBox.Text))
             {
-                BoxCountry.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxCountry.BackgroundColor = (Color)App.Current.Resources["appColor8"];
             }
         }
 
@@ -746,7 +746,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             var date = (Extention.ExtDatePicker)sender;
             if (date.NullableDate != null)
             {
-                BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                BoxValidityDate.BackgroundColor = (Color)App.Current.Resources["appColor8"];
             }
         }
         #endregion

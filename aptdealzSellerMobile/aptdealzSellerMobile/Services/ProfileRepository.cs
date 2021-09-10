@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using System;
@@ -173,6 +174,41 @@ namespace aptdealzSellerMobile.Services
                 Common.DisplayErrorMessage("ProfileRepository/ValidPincode: " + ex.Message);
             }
             return isValid;
+        }
+
+        public async Task<SellerDetails> GetMyProfileData()
+        {
+            SellerDetails mSellerDetails = new SellerDetails();
+            try
+            {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                var mResponse = await profileAPI.GetMyProfileData();
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
+                    if (jObject != null)
+                    {
+                        mSellerDetails = jObject.ToObject<SellerDetails>();
+                        Common.mSellerDetails = mSellerDetails;
+                    }
+                }
+                else
+                {
+                    if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                        Common.DisplayErrorMessage(mResponse.Message);
+                    else
+                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProfileRepository/GetMyProfileData: " + ex.Message);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+            return mSellerDetails;
         }
 
         public async Task DeactivateAccount()

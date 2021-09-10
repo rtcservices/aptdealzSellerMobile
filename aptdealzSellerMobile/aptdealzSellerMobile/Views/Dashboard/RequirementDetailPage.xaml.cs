@@ -5,10 +5,12 @@ using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.OtherPage;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -23,6 +25,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private List<string> subcaregories;
         private string RequirementId;
         private Requirement mRequirement;
+        private string ProductImageUrl = string.Empty;
         #endregion
 
         #region [ Constructor ]
@@ -54,7 +57,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
         public void Dispose()
         {
             GC.Collect();
@@ -83,6 +86,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     if (!Common.EmptyFiels(mRequirement.ProductImage))
                     {
                         imgProductImage.Source = mRequirement.ProductImage;
+                        ProductImageUrl = mRequirement.ProductImage;
                     }
                     else
                     {
@@ -144,7 +148,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     else
                     {
 
-                        BtnRevealContact.Text = "Reveal Contact";
+                        BtnRevealContact.Text = Constraints.Str_RevealContact;
 
                     }
                 }
@@ -159,25 +163,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
-                if (BtnRevealContact.Text == "Reveal Contact")
+                if (BtnRevealContact.Text == Constraints.Str_RevealContact)
                 {
                     long revealRs = (long)App.Current.Resources["RevealContact"];
                     string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
 
                     var contactPopup = new Popup.PaymentPopup(message);
-                    contactPopup.isRefresh += (s1, e1) =>
+                    contactPopup.isRefresh += async (s1, e1) =>
                     {
                         bool isPay = (bool)s1;
                         if (isPay)
                         {
-                            if (DeviceInfo.Platform == DevicePlatform.Android)
-                            {
-                                RevealContact(RequirementId);
-                            }
-                            else
-                            {
-                                //PaidQuote(false);
-                            }
+                            await RevealContact(RequirementId);
                         }
                     };
                     await PopupNavigation.Instance.PushAsync(contactPopup);
@@ -194,7 +191,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        public void RevealContact(string RequirementId)
+        public async Task RevealContact(string RequirementId)
         {
             try
             {
@@ -205,34 +202,89 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 payload.receipt = RequirementId; // quoteid
                 payload.email = Common.mSellerDetails.Email;
                 payload.contact = Common.mSellerDetails.PhoneNumber;
-                MessagingCenter.Send<RazorPayload>(payload, "RevealPayNow");
-                MessagingCenter.Subscribe<RazorResponse>(this, "PaidRevealResponse", async (razorResponse) =>
+                if (DeviceInfo.Platform == DevicePlatform.Android)
                 {
-                    if (razorResponse != null && !razorResponse.isPaid)
+                    MessagingCenter.Send<RazorPayload>(payload, Constraints.RP_RevealPayNow);
+                    MessagingCenter.Subscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse, async (razorResponse) =>
                     {
-                        string message = "Payment failed ";
+                        if (razorResponse != null && !razorResponse.isPaid)
+                        {
+                            string message = "Payment failed ";
 
-                        if (!Common.EmptyFiels(razorResponse.OrderId))
-                            message += "OrderId: " + razorResponse.OrderId + " ";
+                            if (!Common.EmptyFiels(razorResponse.OrderId))
+                                message += "OrderId: " + razorResponse.OrderId + " ";
 
-                        if (!Common.EmptyFiels(razorResponse.PaymentId))
-                            message += "PaymentId: " + razorResponse.PaymentId + " ";
+                            if (!Common.EmptyFiels(razorResponse.PaymentId))
+                                message += "PaymentId: " + razorResponse.PaymentId + " ";
 
-                        if (message != null)
-                            Common.DisplayErrorMessage(message);
+                            if (message != null)
+                                Common.DisplayErrorMessage(message);
+                        }
+
+                        UserDialogs.Instance.ShowLoading(Constraints.Loading);
+
+                        RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
+                        mRevealBuyerContact.RequirementId = RequirementId;
+                        mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
+                        mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
+                        mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+
+                        BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                        MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
+                    });
+                }
+                else
+                {
+                    RequestPayLoad mPayLoad = new RequestPayLoad()
+                    {
+                        amount = payload.amount,
+                        currency = payload.currency,
+                        accept_partial = false,
+                        description = Constraints.Str_RevealContact,
+                        customer = new Customer()
+                        {
+                            contact = Common.mSellerDetails.PhoneNumber,
+                            email = Common.mSellerDetails.Email,
+                            name = Common.mSellerDetails.FullName
+                        },
+                        callback_method = "get",
+                        callback_url = "https://purple-field-04c774300.azurestaticapps.net/login",
+                    };
+                    RazorPayUtility razorPayUtility = new RazorPayUtility();
+                    var urls = await razorPayUtility.PayViaRazor(payload, mPayLoad, Constraints.RP_UserName, Constraints.RP_Password);
+                    if (urls != null && urls.Count > 0)
+                    {
+                        var url = urls.FirstOrDefault();
+                        var orderId = urls.LastOrDefault();
+                        var checkoutPage = new CheckOutPage(url);
+                        checkoutPage.PaidEvent += async (s1, e1) =>
+                        {
+                            MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
+
+                            RazorResponse razorResponse = new RazorResponse();
+                            var keyValuePairs = (Dictionary<string, string>)s1;
+                            if (keyValuePairs != null)
+                            {
+                                razorResponse.isPaid = true;
+                                razorResponse.PaymentId = keyValuePairs.Where(x => x.Key == "razorpay_payment_id").FirstOrDefault().Value;
+                                razorResponse.OrderId = keyValuePairs.Where(x => x.Key == "razorpay_payment_link_reference_id").FirstOrDefault().Value;
+                                razorResponse.Signature = keyValuePairs.Where(x => x.Key == "razorpay_signature").FirstOrDefault().Value;
+                            }
+                            else
+                            {
+                                razorResponse.isPaid = false;
+                                razorResponse.OrderId = orderId;
+                            }
+                            RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
+                            mRevealBuyerContact.RequirementId = RequirementId;
+                            mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
+                            mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
+                            mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+                            BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                        };
+                        await Navigation.PushAsync(checkoutPage);
                     }
-
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
-
-                    RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
-                    mRevealBuyerContact.RequirementId = RequirementId;
-                    mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
-                    mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
-                    mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
-
-                    BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
-                    MessagingCenter.Unsubscribe<RazorResponse>(this, "PaidRevealResponse");
-                });
+                }
             }
             catch (ArgumentNullException)
             {
@@ -253,7 +305,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
@@ -372,10 +424,21 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        //private void BtnReject_Tapped(object sender, EventArgs e)
-        //{
-        //    Common.BindAnimation(button: BtnReject);
-        //}
+        private async void FrmProductImage_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Common.EmptyFiels(ProductImageUrl))
+                {
+                    var successPopup = new Popup.ShowImagePopup(ProductImageUrl);
+                    await PopupNavigation.Instance.PushAsync(successPopup);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ViewRequirememntPage/FrmProductImage_Tapped: " + ex.Message);
+            }
+        }
         #endregion
     }
 }

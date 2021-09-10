@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
@@ -138,7 +138,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -166,7 +166,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
 
@@ -266,7 +266,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
                                             Text="Requested Quantity"
-                                            TextColor="{StaticResource Black}"
+                                            TextColor="{StaticResource appColor4}"
                                             VerticalOptions="CenterAndExpand" />
 
                                         <Label
@@ -411,7 +411,7 @@
                                         <Label
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            Text="Country of origin" />
+                                            Text="Country of Origin" />
 
                                         <Label
                                             x:Name="lblQuoteCountry"
@@ -515,6 +515,14 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblSemiBold}"
                                             Text="Contact Buyer" />
+                                        <Label
+                                            x:Name="lblSellerContact"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            FontSize="15"
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblSemiBold}"
+                                            TextColor="{StaticResource appColor1}" />
                                         <Button
                                             x:Name="BtnRevealContact"
                                             Grid.Row="2"
@@ -544,14 +552,14 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblSemiBold}"
                                             Text="Status:"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                         <Label
                                             x:Name="lblStatus"
                                             Grid.Row="1"
                                             FontSize="15"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblSemiBold}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </Grid>
                                 </Frame>
                                 <!--#endregion-->

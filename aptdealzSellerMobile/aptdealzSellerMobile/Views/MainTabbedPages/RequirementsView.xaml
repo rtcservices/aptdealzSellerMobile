@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid RowSpacing="0">
@@ -165,7 +165,7 @@
                             Margin="0"
                             Padding="0"
                             BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
+                            BorderColor="{StaticResource appColor8}"
                             CornerRadius="5"
                             HasShadow="False"
                             HorizontalOptions="EndAndExpand"
@@ -202,7 +202,7 @@
                             Margin="0"
                             Padding="0"
                             BackgroundColor="Transparent"
-                            BorderColor="{StaticResource LightGray}"
+                            BorderColor="{StaticResource appColor8}"
                             CornerRadius="5"
                             HasShadow="False"
                             HorizontalOptions="EndAndExpand"
@@ -310,7 +310,7 @@
                                                 IsVisible="{Binding HideDetail, Mode=TwoWay}"
                                                 Style="{StaticResource lblMedium}"
                                                 Text="{Binding TotalPriceEstimation, StringFormat='RS {0:}'}"
-                                                TextColor="{StaticResource Green}" />
+                                                TextColor="{StaticResource appColor1}" />
 
                                             <!--  Date  -->
                                             <Label

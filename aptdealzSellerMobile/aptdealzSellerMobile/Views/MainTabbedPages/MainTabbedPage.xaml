@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -21,7 +21,7 @@
 
             <Grid
                 Grid.Row="2"
-                BackgroundColor="White"
+                BackgroundColor="{StaticResource appColor6}"
                 ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -53,6 +53,7 @@
                         x:Name="lblHome"
                         Grid.Row="1"
                         Margin="0,0,0,5"
+                        FontSize="12"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource lblLight}"
                         Text="Home" />
@@ -85,6 +86,7 @@
                         x:Name="lblQuotes"
                         Grid.Row="1"
                         Margin="0,0,0,5"
+                        FontSize="12"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource lblLight}"
                         Text="Quotes" />
@@ -117,6 +119,7 @@
                         x:Name="lblOrders"
                         Grid.Row="1"
                         Margin="0,0,0,5"
+                        FontSize="12"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource lblLight}"
                         Text="Orders" />
@@ -149,6 +152,7 @@
                         x:Name="lblAccount"
                         Grid.Row="1"
                         Margin="0,0,0,5"
+                        FontSize="12"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource lblLight}"
                         Text="Account" />

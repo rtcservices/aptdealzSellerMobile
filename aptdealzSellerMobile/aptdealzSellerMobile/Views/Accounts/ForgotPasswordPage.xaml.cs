@@ -38,7 +38,7 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Common.EmptyFiels(txtEmail.Text))
                 {
-                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightRed"];
+                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                     Common.DisplayErrorMessage(Constraints.Required_Email);
                 }
                 else if (!txtEmail.Text.IsValidEmail())
@@ -129,7 +129,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 var entry = (Extention.ExtEntry)sender;
                 if (!Common.EmptyFiels(entry.Text))
                 {
-                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["LightGray"];
+                    BoxEmail.BackgroundColor = (Color)App.Current.Resources["appColor8"];
                 }
             }
             catch (Exception ex)

@@ -283,7 +283,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (mRequirement != null && mRequirement.ArrowImage == Constraints.Arrow_Right)
                 {
                     mRequirement.ArrowImage = Constraints.Arrow_Down;
-                    mRequirement.GridBg = (Color)App.Current.Resources["LightGray"];
+                    mRequirement.GridBg = (Color)App.Current.Resources["appColor8"];
                     mRequirement.MoreDetail = true;
                     mRequirement.HideDetail = false;
                     mRequirement.NameFont = 15;

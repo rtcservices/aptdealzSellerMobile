@@ -7,8 +7,8 @@
     <Frame
         Margin="35,0"
         Padding="0"
-        BackgroundColor="{StaticResource White}"
-        BorderColor="{StaticResource White}"
+        BackgroundColor="{StaticResource appColor6}"
+        BorderColor="{StaticResource appColor6}"
         CornerRadius="10"
         HasShadow="False"
         HorizontalOptions="FillAndExpand"
@@ -21,20 +21,20 @@
             RowSpacing="25">
 
             <Image
+                x:Name="ImgReaction"
                 Grid.Row="0"
                 HeightRequest="70"
                 HorizontalOptions="CenterAndExpand"
-                Source="iconSmile.png"
                 VerticalOptions="CenterAndExpand"
                 WidthRequest="70" />
 
             <Label
+                x:Name="lblSuccess"
                 Grid.Row="1"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 Style="{StaticResource lblMedium}"
-                Text="Success"
-                TextColor="{StaticResource Green}" />
+                TextColor="{StaticResource appColor1}" />
 
             <Label
                 x:Name="lblMessage"
@@ -45,7 +45,7 @@
                 LineBreakMode="WordWrap"
                 Style="{StaticResource lblLight}"
                 Text=""
-                TextColor="{StaticResource Green}" />
+                TextColor="{StaticResource appColor1}" />
 
             <Button
                 Grid.Row="3"

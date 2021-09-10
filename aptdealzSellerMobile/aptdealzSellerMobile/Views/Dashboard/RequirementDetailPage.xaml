@@ -7,7 +7,7 @@
     xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -136,6 +136,9 @@
                                     HorizontalOptions="FillAndExpand"
                                     LoadingPlaceholder="iconProductBanner.png"
                                     VerticalOptions="FillAndExpand" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmProductImage_Tapped" />
+                                </Frame.GestureRecognizers>
                             </Frame>
 
                             <Grid Grid.Row="1" RowSpacing="10">
@@ -170,7 +173,7 @@
                                                 x:Name="lblRequirementId"
                                                 HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource lblLight}"
-                                                TextColor="{StaticResource Green}" />
+                                                TextColor="{StaticResource appColor1}" />
                                         </StackLayout>
 
                                         <BoxView Style="{StaticResource boxHorizontal}" />
@@ -205,7 +208,7 @@
                                             x:Name="lblBuyerId"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </StackLayout>
 
                                     <BoxView Style="{StaticResource boxHorizontal}" />
@@ -244,7 +247,7 @@
                                         <Label
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            Text="Sub-category" />
+                                            Text="Sub-Category" />
 
                                         <Label
                                             x:Name="lblSubCategory"
@@ -371,7 +374,7 @@
                                             x:Name="lblNeedInsurance"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                     </StackLayout>
                                     <BoxView Style="{StaticResource boxHorizontal}" />
@@ -393,7 +396,7 @@
                                             x:Name="lblPreferInIndiaProducts"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </StackLayout>
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
@@ -408,7 +411,7 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
                                             Text="Pickup Product Directly From Seller"
-                                            TextColor="{StaticResource Black}"
+                                            TextColor="{StaticResource appColor4}"
                                             VerticalOptions="CenterAndExpand" />
 
                                         <Label
@@ -416,7 +419,7 @@
                                             FontSize="15"
                                             HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource lblMedium}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
                                     </StackLayout>
 
                                     <BoxView Style="{StaticResource boxHorizontal}" />

@@ -20,7 +20,6 @@ using Newtonsoft.Json;
 using Org.Json;
 using Plugin.FirebasePushNotification;
 using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -64,10 +63,10 @@ namespace aptdealzSellerMobile.Droid
             LoadApplication(new App());
             //CreateNotificationFromIntent(Intent);
 
-            MessagingCenter.Subscribe<RazorPayload>(this, "RevealPayNow", (payload) =>
+            MessagingCenter.Subscribe<RazorPayload>(this, Constraints.RP_RevealPayNow, (payload) =>
             {
-                string username = "rzp_test_PUJtE9p3XLuGe8";
-                string password = "42HIrjeUTXOHNC84Ldl3aDzL";
+                string username = Constraints.RP_UserName;
+                string password = Constraints.RP_Password;
                 PayViaRazor(payload, username, password);
             });
         }
@@ -124,7 +123,7 @@ namespace aptdealzSellerMobile.Droid
                 Signature = p2.Signature,
                 isPaid = false
             };
-            MessagingCenter.Send<RazorResponse>(mRazorResponse, "PaidRevealResponse");
+            MessagingCenter.Send<RazorResponse>(mRazorResponse, Constraints.RP_PaidRevealResponse);
         }
 
         public void OnPaymentSuccess(string p0, PaymentData p1)
@@ -136,7 +135,7 @@ namespace aptdealzSellerMobile.Droid
                 Signature = p1.Signature,
                 isPaid = true
             };
-            MessagingCenter.Send<RazorResponse>(mRazorResponse, "PaidRevealResponse");
+            MessagingCenter.Send<RazorResponse>(mRazorResponse, Constraints.RP_PaidRevealResponse);
         }
 
         public async void PayViaRazor(RazorPayload payload, string username, string password)

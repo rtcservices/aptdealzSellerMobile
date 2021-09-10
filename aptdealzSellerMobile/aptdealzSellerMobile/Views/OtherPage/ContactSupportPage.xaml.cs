@@ -29,7 +29,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 InitializeComponent();
                 supportChatAPI = new SupportChatAPI();
                 mMessageList = new List<ChatSupport>();
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+
+                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); 
+                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -69,27 +72,12 @@ namespace aptdealzSellerMobile.Views.OtherPage
             GetMessages();
         }
 
-        private async Task GetMessages(bool isGetChatList = true)
+        private async Task GetMessages()
         {
             try
             {
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
-                var mResponse = new Response();
-                if (isGetChatList)
-                {
-                    mResponse = await supportChatAPI.GetAllMyChat();
-                }
-                else
-                {
-                    if (!Common.EmptyFiels(txtMessage.Text))
-                    {
-                        mResponse = await supportChatAPI.SendChatSupportMessage(txtMessage.Text);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
+                var mResponse = await supportChatAPI.GetAllMyChat();
 
                 if (mResponse != null && mResponse.Succeeded)
                 {
@@ -151,6 +139,35 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
 
         }
+
+        private async Task SentMessage()
+        {
+            try
+            {
+                if (!Common.EmptyFiels(txtMessage.Text))
+                {
+                    var mResponse = await supportChatAPI.SendChatSupportMessage(txtMessage.Text);
+                    if (mResponse != null && mResponse.Succeeded)
+                    {
+                        txtMessage.Text = string.Empty;
+                        await GetMessages();
+                    }
+                    else
+                    {
+                        lstChar.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                        if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                            lblNoRecord.Text = mResponse.Message;
+                        else
+                            lblNoRecord.Text = Constraints.Something_Wrong;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ContactSupportPage/SentMessage: " + ex.Message);
+            }
+        }
         #endregion
 
         #region [ Events ]
@@ -193,8 +210,24 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void BtnSend_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: BtnSend);
-            await GetMessages(false);
+            var Tab = (ImageButton)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    Common.BindAnimation(imageButton: BtnSend);
+                    await SentMessage();
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ContactSupportPage/BtnSend_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
         }
 
         private void BtnLogo_Clicked(object sender, EventArgs e)

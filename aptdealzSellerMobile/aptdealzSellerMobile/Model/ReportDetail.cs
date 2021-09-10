@@ -18,15 +18,15 @@ namespace aptdealzSellerMobile.Model
             {
                 if (Status == "Cleared")
                 {
-                    return (Color)App.Current.Resources["Green"];
+                    return (Color)App.Current.Resources["appColor1"];
                 }
                 else if (Status == "Pending")
                 {
-                    return (Color)App.Current.Resources["Red"];
+                    return (Color)App.Current.Resources["appColor2"];
                 }
                 else
                 {
-                    return (Color)App.Current.Resources["Black"];
+                    return (Color)App.Current.Resources["appColor4"];
                 }
             }
         }

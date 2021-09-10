@@ -6,7 +6,7 @@
     xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
 
     <Grid
-        BackgroundColor="{StaticResource White}"
+        BackgroundColor="{StaticResource appColor6}"
         HorizontalOptions="FillAndExpand"
         RowDefinitions="Auto,Auto,Auto"
         RowSpacing="0"

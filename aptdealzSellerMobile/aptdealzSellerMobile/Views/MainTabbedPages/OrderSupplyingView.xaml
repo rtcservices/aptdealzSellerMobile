@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="{StaticResource White}"
+    BackgroundColor="{StaticResource appColor6}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -292,7 +292,7 @@
                                             HorizontalTextAlignment="End"
                                             Style="{StaticResource lblMedium}"
                                             Text="{Binding PaidAmount, StringFormat='RS {0:}'}"
-                                            TextColor="{StaticResource Green}" />
+                                            TextColor="{StaticResource appColor1}" />
 
                                         <!--  Status  -->
                                         <Label
