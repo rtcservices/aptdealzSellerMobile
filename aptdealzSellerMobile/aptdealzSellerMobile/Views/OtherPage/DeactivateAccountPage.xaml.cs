@@ -1,6 +1,4 @@
-﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Repository;
+﻿using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
@@ -19,7 +17,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 InitializeComponent();
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -84,7 +82,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -102,7 +100,16 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 {
                     Tab.IsEnabled = false;
                     Common.BindAnimation(button: BtnDeactivation);
-                    await DependencyService.Get<IProfileRepository>().DeactivateAccount();
+                    if (!Common.EmptyFiels(txtReason.Text))
+                    {
+                        BoxReason.BackgroundColor = (Color)App.Current.Resources["appColor8"];
+                        await DependencyService.Get<IProfileRepository>().DeactivateAccount();
+                    }
+                    else
+                    {
+                        BoxReason.BackgroundColor = (Color)App.Current.Resources["appColor3"];
+                        Common.DisplayErrorMessage(Constraints.Required_Reason);
+                    }
                 }
                 catch (Exception ex)
                 {

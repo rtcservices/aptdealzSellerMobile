@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -28,8 +26,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             base.OnDisappearing();
             if (!isSuccess)
             {
-                if (PaidEvent != null)
-                    PaidEvent(null, EventArgs.Empty);
+                PaidEvent?.Invoke(null, EventArgs.Empty);
             }
         }
 

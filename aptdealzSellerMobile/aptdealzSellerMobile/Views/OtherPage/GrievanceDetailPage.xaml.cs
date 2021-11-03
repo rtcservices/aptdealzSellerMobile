@@ -3,9 +3,12 @@ using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
+using Rg.Plugins.Popup.Services;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +18,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GrievanceDetailPage : ContentPage
     {
-        #region Objects
+        #region [ Objects ]
         private Grievance mGrievance;
         private string GrievanceId;
         #endregion
@@ -27,8 +30,12 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 InitializeComponent();
                 this.GrievanceId = GrievanceId;
-                txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                    txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -49,7 +56,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         }
         #endregion
 
-        #region Methods
+        #region [ Methods ]
         public void Dispose()
         {
             GC.Collect();
@@ -77,11 +84,43 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 {
                     lblGrievanceId.Text = mGrievance.GrievanceNo;
                     lblOrderId.Text = mGrievance.OrderNo;
-                    lblOrderDate.Text = mGrievance.OrderDate.ToString("dd/MM/yyyy");
-                    lblGrievanceDate.Text = mGrievance.Created.ToString("dd/MM/yyyy");
+                    lblOrderDate.Text = mGrievance.OrderDate.ToString(Constraints.Str_DateFormate);
+                    lblGrievanceDate.Text = mGrievance.Created.ToString(Constraints.Str_DateFormate);
                     lblBuyeName.Text = mGrievance.BuyerName;
-                    lblGrievanceType.Text = mGrievance.GrievanceTypeDescr.ToCamelCase();
+
+                    string GrievanceTypeDescr = "";
+                    if (mGrievance.GrievanceType > -1)
+                    {
+                        switch (mGrievance.GrievanceType)
+                        {
+                            case (int)GrievancesType.Order_Related:
+                                GrievanceTypeDescr = GrievancesType.Order_Related.ToString().Replace("_", " ");
+                                break;
+                            case (int)GrievancesType.Delayed_Delivery:
+                                GrievanceTypeDescr = GrievancesType.Delayed_Delivery.ToString().Replace("_", " ");
+                                break;
+                            case (int)GrievancesType.Payment_Related:
+                                GrievanceTypeDescr = GrievancesType.Payment_Related.ToString().Replace("_", " ");
+                                break;
+                            case (int)GrievancesType.Manufacture_Defect:
+                                GrievanceTypeDescr = GrievancesType.Manufacture_Defect.ToString().Replace("_", " ");
+                                break;
+                            case (int)GrievancesType.Incomplete_Product_Delivery:
+                                GrievanceTypeDescr = GrievancesType.Incomplete_Product_Delivery.ToString().Replace("_", " ");
+                                break;
+                            case (int)GrievancesType.Wrong_Order:
+                                GrievanceTypeDescr = GrievancesType.Wrong_Order.ToString().Replace("_", " ");
+                                break;
+                            default:
+                                GrievanceTypeDescr = GrievancesType.Order_Related.ToString().Replace("_", " ");
+                                break;
+                        }
+                    }
+
+                    lblGrievanceType.Text = GrievanceTypeDescr.ToCamelCase();
                     lblStatus.Text = mGrievance.StatusDescr.ToCamelCase();
+                    lblSolution.Text = mGrievance.PreferredSolution;
+
                     if (Common.EmptyFiels(mGrievance.IssueDescription))
                     {
                         lblDescription.Text = "No description found";
@@ -118,6 +157,19 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     }
 
                     AttachDocumentList();
+
+                    GrdMessage.IsVisible = mGrievance.EnableResponseFromUser;
+                    if (mGrievance.EnableResponseFromUser)
+                    {
+                        if (mGrievance.Status == (int)GrievancesStatus.Closed)
+                        {
+                            GrdMessage.IsVisible = false;
+                        }
+                        else
+                        {
+                            GrdMessage.IsVisible = true;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -177,7 +229,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         }
         #endregion
 
-        #region Events
+        #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
 
@@ -206,7 +258,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -286,11 +338,33 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 Common.DisplayErrorMessage("GrievanceDetailsPage/CopyString_Tapped: " + ex.Message);
             }
         }
-        #endregion
 
         private void lstResponse_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             lstResponse.SelectedItem = null;
         }
+
+        private async void ImgDocument_Clicked(object sender, EventArgs e)
+        {
+            var imgButton = (ImageButton)sender;
+            if (imgButton.IsEnabled)
+            {
+                try
+                {
+                    imgButton.IsEnabled = false;
+                    var url = imgButton.BindingContext as string;
+                    await GenerateWebView.GenerateView(url);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("GrievancesPage/ImgDocument_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    imgButton.IsEnabled = true;
+                }
+            }
+        }
+        #endregion
     }
 }

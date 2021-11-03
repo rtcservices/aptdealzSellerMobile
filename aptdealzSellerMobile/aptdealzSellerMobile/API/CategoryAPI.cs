@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
@@ -33,16 +34,18 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                                mCategory = null;
+                                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                                Common.ClearAllData();
                             }
                         }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable
+                                || response.StatusCode == System.Net.HttpStatusCode.InternalServerError
+                                || responseJson.Contains(Constraints.Str_AccountDeactivated) && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                         {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
+                            mCategory = null;
+                            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                            Common.ClearAllData();
                         }
                         else
                         {
@@ -60,6 +63,7 @@ namespace aptdealzSellerMobile.API
             }
             catch (Exception ex)
             {
+                mCategory = null;
                 Common.DisplayErrorMessage("ProfileAPI/GetCategory: " + ex.Message);
             }
             return mCategory;
@@ -86,16 +90,18 @@ namespace aptdealzSellerMobile.API
                             var errorString = JsonConvert.DeserializeObject<string>(responseJson);
                             if (errorString == Constraints.Session_Expired)
                             {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+                                mSubCategory = null;
+                                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                                Common.ClearAllData();
                             }
                         }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable
+                                || response.StatusCode == System.Net.HttpStatusCode.InternalServerError
+                                || responseJson.Contains(Constraints.Str_AccountDeactivated) && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                         {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
+                            mSubCategory = null;
+                            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                            Common.ClearAllData();
                         }
                         else
                         {
@@ -113,6 +119,7 @@ namespace aptdealzSellerMobile.API
             }
             catch (Exception ex)
             {
+                mSubCategory = null;
                 Common.DisplayErrorMessage("ProfileAPI/GetSubCategory: " + ex.Message);
             }
             return mSubCategory;
@@ -133,31 +140,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.CreateCategory, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                        {
-                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
-                            if (errorString == Constraints.Session_Expired)
-                            {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                            }
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
-                        {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
-                        }
-                        else
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }
                 }
                 else
@@ -171,7 +154,7 @@ namespace aptdealzSellerMobile.API
             catch (Exception ex)
             {
                 mResponse.Succeeded = false;
-                mResponse.Errors = ex.Message;
+                mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("CategoryAPI/CreateCategory: " + ex.Message);
             }
             return mResponse;
@@ -190,31 +173,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.CreateSubCategory, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                        {
-                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
-                            if (errorString == Constraints.Session_Expired)
-                            {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                            }
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
-                        {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
-                        }
-                        else
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }
                 }
                 else
@@ -228,7 +187,7 @@ namespace aptdealzSellerMobile.API
             catch (Exception ex)
             {
                 mResponse.Succeeded = false;
-                mResponse.Errors = ex.Message;
+                mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("CategoryAPI/CreateSubCategory: " + ex.Message);
             }
             return mResponse;

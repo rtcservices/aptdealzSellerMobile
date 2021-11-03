@@ -2,6 +2,7 @@
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -10,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -36,7 +38,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 InitializeComponent();
                 RequirementId = redId;
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -147,9 +149,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     }
                     else
                     {
-
                         BtnRevealContact.Text = Constraints.Str_RevealContact;
-
                     }
                 }
             }
@@ -163,22 +163,45 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
+                long revealRs = 0;
+                decimal amount = 0;
+
                 if (BtnRevealContact.Text == Constraints.Str_RevealContact)
                 {
-                    long revealRs = (long)App.Current.Resources["RevealContact"];
-                    string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
-
-                    var contactPopup = new Popup.PaymentPopup(message);
-                    contactPopup.isRefresh += async (s1, e1) =>
+                    RequirementAPI requirementAPI = new RequirementAPI();
+                    var mResponse = await requirementAPI.GetAmountToBePaidToRevealBuyerContact(mRequirement.RequirementId);
+                    if (mResponse != null && mResponse.Succeeded)
                     {
-                        bool isPay = (bool)s1;
-                        if (isPay)
+                        var jObject = (JObject)mResponse.Data;
+                        if (jObject != null)
                         {
-                            await RevealContact(RequirementId);
+                            var mAmount = jObject.ToObject<Data>();
+                            if (mAmount != null)
+                                amount = mAmount.amount;
                         }
-                    };
-                    await PopupNavigation.Instance.PushAsync(contactPopup);
 
+                        revealRs = (long)App.Current.Resources["RevealContact"];
+                        long.TryParse(amount.ToString(), out revealRs);
+                        string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
+
+                        var contactPopup = new Popup.PaymentPopup(message);
+                        contactPopup.isRefresh += async (s1, e1) =>
+                        {
+                            bool isPay = (bool)s1;
+                            if (isPay)
+                            {
+                                await RevealContact(RequirementId, revealRs);
+                            }
+                        };
+                        await PopupNavigation.Instance.PushAsync(contactPopup);
+                    }
+                    else
+                    {
+                        if (mResponse != null)
+                            Common.DisplayErrorMessage(mResponse.Message);
+                        else
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                    }
                 }
                 else
                 {
@@ -191,13 +214,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        public async Task RevealContact(string RequirementId)
+        public async Task RevealContact(string RequirementId, long revealRs)
         {
             try
             {
-                long amount = (long)App.Current.Resources["RevealContact"];
                 RazorPayload payload = new RazorPayload();
-                payload.amount = amount * 100;
+                payload.amount = revealRs * 100;
                 payload.currency = (string)App.Current.Resources["Currency"];
                 payload.receipt = RequirementId; // quoteid
                 payload.email = Common.mSellerDetails.Email;
@@ -334,7 +356,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -426,17 +448,29 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void FrmProductImage_Tapped(object sender, EventArgs e)
         {
-            try
+            var Tab = (Frame)sender;
+            if (Tab.IsEnabled)
             {
-                if (!Common.EmptyFiels(ProductImageUrl))
+                try
                 {
-                    var successPopup = new Popup.ShowImagePopup(ProductImageUrl);
-                    await PopupNavigation.Instance.PushAsync(successPopup);
+                    Tab.IsEnabled = false;
+                    if (!Common.EmptyFiels(ProductImageUrl))
+                    {
+                        var base64File = ImageConvertion.ConvertImageURLToBase64(ProductImageUrl);
+                        string extension = Path.GetExtension(ProductImageUrl).ToLower();
+
+                        var successPopup = new Popup.DisplayDocumentPopup(base64File, extension);
+                        await PopupNavigation.Instance.PushAsync(successPopup);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("ViewRequirememntPage/FrmProductImage_Tapped: " + ex.Message);
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("RequirementDetailPage/FrmProductImage_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
             }
         }
         #endregion

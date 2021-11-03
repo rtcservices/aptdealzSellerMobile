@@ -67,21 +67,33 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
                 gd.SetColor(Android.Graphics.Color.Transparent);
                 editText.Background = gd;
 
-                var maxLenght = e.NewElement?.MaxLength;
-                if (maxLenght == 1)
-                {
-                    Control.Gravity = Android.Views.GravityFlags.Center;
-                }
-                else
-                {
-                    Control.Gravity = Android.Views.GravityFlags.CenterVertical;
-                }
-
                 if (Control != null)
                 {
-                    Control.ImeOptions = Android.Views.InputMethods.ImeAction.Done;
-                    //Control.InputType = Android.Text.InputTypes.ClassText | Android.Text.InputTypes.TextVariationVisiblePassword | Android.Text.InputTypes.TextFlagMultiLine;
-                    //Control.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+                    var maxLenght = e.NewElement?.MaxLength;
+                    if (maxLenght == 1)
+                    {
+                        Control.Gravity = Android.Views.GravityFlags.Center;
+                    }
+                    else
+                    {
+                        Control.Gravity = Android.Views.GravityFlags.CenterVertical;
+                    }
+
+                    //disable emoji
+                    var keyboard = e.NewElement?.Keyboard;
+                    if (keyboard != Keyboard.Numeric)
+                    {
+                        Control.ImeOptions = Android.Views.InputMethods.ImeAction.Done;
+                        Control.InputType = Android.Text.InputTypes.ClassText | Android.Text.InputTypes.TextVariationVisiblePassword | Android.Text.InputTypes.TextFlagMultiLine;
+                        Control.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+                    }
+
+                    var password = e.NewElement?.IsPassword;
+                    if (password != null && password == true)
+                    {
+                        Control.InputType = Android.Text.InputTypes.TextVariationPassword | Android.Text.InputTypes.ClassText;
+                        editText.InputType = Android.Text.InputTypes.TextVariationPassword | Android.Text.InputTypes.ClassText;
+                    }
                 }
             }
             catch (Exception ex)
@@ -132,16 +144,22 @@ namespace aptdealzSellerMobile.Droid.CustomRenderers
                 if (!string.IsNullOrEmpty(fontFamily))
                 {
                     var label = (TextView)Control; // for example
-#pragma warning disable CS0618 // Type or member is obsolete
                     Typeface font = Typeface.CreateFromAsset(Forms.Context.Assets, fontFamily + ".otf");
-#pragma warning restore CS0618 // Type or member is obsolete
                     label.Typeface = font;
                 }
                 var nativeedittextfield = (Android.Widget.EditText)this.Control;
                 GradientDrawable gd = new GradientDrawable();
                 nativeedittextfield.Background = gd;
 
-                Control.SetPadding(0, 0, 0, 0);
+                if (Control != null)
+                {
+                    Control.SetPadding(0, 0, 0, 0);
+                    Control.Gravity = Android.Views.GravityFlags.Start;
+
+                    Control.ImeOptions = Android.Views.InputMethods.ImeAction.Done;
+                    Control.InputType = Android.Text.InputTypes.ClassText | Android.Text.InputTypes.TextVariationVisiblePassword | Android.Text.InputTypes.TextFlagMultiLine;
+                    Control.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+                }
             }
             catch (Exception ex)
             {

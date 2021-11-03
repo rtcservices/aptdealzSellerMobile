@@ -45,17 +45,18 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Common.EmptyFiels(txtNewPassword.Text) || Common.EmptyFiels(txtConfirmPassword.Text))
                 {
-                    Common.DisplayErrorMessage(Constraints.Required_All);
                     RequiredFields();
                     isValid = false;
                 }
-                else if (Common.EmptyFiels(txtNewPassword.Text))
+
+                if (Common.EmptyFiels(txtNewPassword.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_NewPassword);
                 }
                 else if (!txtNewPassword.Text.IsValidPassword())
                 {
-                    Common.DisplayErrorMessage(Constraints.InValid_NewPassword);
+                    DisplayAlert(Constraints.Alert, String.Format("The {0} must be at least {1} characters long and should have atleast one capital leter, special character ({2}) and digit.", "Password", 8, "#$^+=!*()@%&"), Constraints.Ok);
+                    //Common.DisplayErrorMessage(Constraints.InValid_NewPassword);
                 }
                 else if (Common.EmptyFiels(txtConfirmPassword.Text))
                 {
@@ -63,7 +64,8 @@ namespace aptdealzSellerMobile.Views.Accounts
                 }
                 else if (!txtConfirmPassword.Text.IsValidPassword())
                 {
-                    Common.DisplayErrorMessage(Constraints.InValid_ConfirmPassword);
+                    DisplayAlert(Constraints.Alert, String.Format("The {0} must be at least {1} characters long and should have atleast one capital leter, special character ({2}) and digit.", "Password", 8, "#$^+=!*()@%&"), Constraints.Ok);
+                    //Common.DisplayErrorMessage(Constraints.InValid_ConfirmPassword);
                 }
                 else if (txtNewPassword.Text != txtConfirmPassword.Text)
                 {

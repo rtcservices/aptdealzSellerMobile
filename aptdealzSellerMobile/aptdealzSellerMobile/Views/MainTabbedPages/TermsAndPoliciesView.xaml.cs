@@ -1,4 +1,7 @@
-﻿using aptdealzSellerMobile.Utility;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
 using Xamarin.Forms;
@@ -16,7 +19,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
             try
             {
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                    {
                        if (!Common.EmptyFiels(Common.NotificationCount))
                        {
@@ -29,6 +32,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                            lblNotificationCount.Text = string.Empty;
                        }
                    });
+
+                GetPrivacyPolicyTermsAndConditions();
             }
             catch (Exception ex)
             {
@@ -36,6 +41,36 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
         #endregion
+
+        async void GetPrivacyPolicyTermsAndConditions()
+        {
+            try
+            {
+                UserDialogs.Instance.ShowLoading("Loading...");
+                AppSettingsAPI appSettingsAPI = new AppSettingsAPI();
+                var mResponse = await appSettingsAPI.GetPrivacyPolicyTermsAndConditions();
+                UserDialogs.Instance.HideLoading();
+
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    var jObject = (Newtonsoft.Json.Linq.JObject)mResponse.Data;
+                    if (jObject != null)
+                    {
+                        var mTermsAndPolicy = jObject.ToObject<TermsAndPolicy>();
+                        if (mTermsAndPolicy != null)
+                        {
+                            lblTerms.Text = mTermsAndPolicy.tandC;
+                            lblPolicy.Text = mTermsAndPolicy.privacyPolicy;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
 
         #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
@@ -66,7 +101,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private void ImgBack_Tapped(object sender, EventArgs e)

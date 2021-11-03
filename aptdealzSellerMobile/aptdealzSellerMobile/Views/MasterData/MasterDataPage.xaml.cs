@@ -12,22 +12,29 @@ namespace aptdealzSellerMobile.Views.MasterData
     {
         public MasterDataPage(bool isNotification = false)
         {
-            InitializeComponent();
-            BindNavigation(isNotification);
-
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += delegate
+            try
             {
-                if (App.stoppableTimer == null)
+                InitializeComponent();
+                BindNavigation(isNotification);
+
+                BackgroundWorker backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += delegate
                 {
-                    App.stoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(10), () =>
+                    if (App.stoppableTimer == null)
                     {
-                        GetNotificationCount();
-                    });
-                }
-                App.stoppableTimer.Start();
-            };
-            backgroundWorker.RunWorkerAsync();
+                        App.stoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(3), () =>
+                        {
+                            GetNotificationCount();
+                        });
+                    }
+                    App.stoppableTimer.Start();
+                };
+                backgroundWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("MasterDataPage/Constructor: " + ex.Message);
+            }
         }
 
         void BindNavigation(bool isNotification = false)
@@ -59,7 +66,7 @@ namespace aptdealzSellerMobile.Views.MasterData
                 if (!Common.EmptyFiels(notificationCount))
                 {
                     Common.NotificationCount = notificationCount;
-                    MessagingCenter.Send<string>(Common.NotificationCount, "NotificationCount");
+                    MessagingCenter.Send<string>(Common.NotificationCount, Constraints.Str_NotificationCount);
                 }
             }
             catch (Exception ex)

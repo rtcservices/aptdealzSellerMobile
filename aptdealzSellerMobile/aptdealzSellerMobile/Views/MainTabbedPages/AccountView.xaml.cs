@@ -46,11 +46,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         #region [ Objects ]   
         private ProfileAPI profileAPI;
         private SellerDetails mSellerDetail;
-        private BillingAddress mBillingAddress;
 
         private List<Category> mCategories;
         private List<SubCategory> mSubCategories;
-        private List<BillingAddress> mBillingAddresses;
         private List<string> selectedSubCategory;
         private List<string> documentList;
 
@@ -61,9 +59,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private bool isFirstLoad = true;
         private bool isUpdatePhoto = false;
         private bool isDeleteSubCategory = true;
-        private bool isAddBillingAddress = false;
-        private bool isEditBillingAddress = false;
-        private bool isDeleteBillingAddress = false;
         private bool isUpdateProfile = false;
         #endregion
 
@@ -76,8 +71,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 BtnUpdate.IsEnabled = false;
                 BindObjects();
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount");
-                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -106,37 +101,34 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             profileAPI = new ProfileAPI();
             mCategories = new List<Category>();
             mSubCategories = new List<SubCategory>();
-            mBillingAddresses = new List<BillingAddress>();
             selectedSubCategory = new List<string>();
             documentList = new List<string>();
 
-            //await Task.Run(() =>
-            // {
-            //     UserDialogs.Instance.ShowLoading(Constraints.Loading);
-            // });
             await GetCategory();
             await GetCountries();
             await GetProfile();
             CapitalizeWord();
-            //UserDialogs.Instance.HideLoading();
         }
 
         private void CapitalizeWord()
         {
-            txtFullName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                txtFullName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-            txtStreet.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtCity.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtState.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtLandmark.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtStreet.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtCity.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtState.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtLandmark.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-            txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtSupplyArea.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtSupplyArea.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-            txtGstNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtPan.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtBankName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtIfsc.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtGstNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtPan.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtBankName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtIfsc.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            }
         }
 
         private async Task GetCategory()
@@ -165,8 +157,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
-                pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                if (!Common.EmptyFiels(categoryId))
+                {
+                    mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
+                    if (mSubCategories != null)
+                    {
+                        pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -253,16 +251,20 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                if (Common.mSellerDetails == null || Common.EmptyFiels(Common.mSellerDetails.UserId) || isUpdateProfile)
+                if (Common.mSellerDetails == null || Common.EmptyFiels(Common.mSellerDetails.SellerId) || isUpdateProfile)
                 {
                     mSellerDetail = await DependencyService.Get<IProfileRepository>().GetMyProfileData();
+                    Common.mSellerDetails = mSellerDetail;
                 }
                 else
                 {
                     mSellerDetail = Common.mSellerDetails;
                 }
 
-                GetProfileDetails(mSellerDetail);
+                if (Common.mSellerDetails != null && !Common.EmptyFiels(Common.mSellerDetails.SellerId))
+                {
+                    GetProfileDetails(Common.mSellerDetails);
+                }
             }
             catch (Exception ex)
             {
@@ -274,60 +276,33 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                #region Profile
-                if (!Common.EmptyFiels(mSellerDetail.ProfilePhoto))
+                if (mSellerDetail != null)
                 {
-                    string baseURL = (string)App.Current.Resources["BaseURL"];
-                    mSellerDetail.ProfilePhoto = baseURL + mSellerDetail.ProfilePhoto.Replace(baseURL, "");
-                    imgUser.Source = mSellerDetail.ProfilePhoto;
-                }
-                else
-                {
-                    imgUser.Source = "iconUserAccount.png";
-                }
-                #endregion
-
-                #region User Details
-                lblSellerId.Text = mSellerDetail.SellerNo;
-                txtFullName.Text = mSellerDetail.FullName;
-                txtEmail.Text = mSellerDetail.Email;
-                txtPhoneNumber.Text = mSellerDetail.PhoneNumber;
-                if (!Common.EmptyFiels((string)mSellerDetail.AlternativePhoneNumber))
-                {
-                    txtAltPhoneNumber.Text = (string)mSellerDetail.AlternativePhoneNumber;
-                }
-                #endregion
-
-                #region Billing Address
-                if (mSellerDetail.BillingAddresses != null && mSellerDetail.BillingAddresses.Count > 0)
-                {
-                    mBillingAddresses = mSellerDetail.BillingAddresses;
-                    if (mBillingAddresses.Count == 0)
+                    #region Profile
+                    if (!Common.EmptyFiels(mSellerDetail.ProfilePhoto))
                     {
-                        lstBilling.IsVisible = false;
-                        lstBilling.HeightRequest = 0;
+                        string baseURL = (string)App.Current.Resources["BaseURL"];
+                        mSellerDetail.ProfilePhoto = baseURL + mSellerDetail.ProfilePhoto.Replace(baseURL, "");
+                        imgUser.Source = mSellerDetail.ProfilePhoto;
                     }
                     else
                     {
-                        lstBilling.IsVisible = true;
-                        lstBilling.ItemsSource = mBillingAddresses.ToList();
-                        lstBilling.HeightRequest = mBillingAddresses.Count * 120;
+                        imgUser.Source = "iconUserAccount.png";
                     }
+                    #endregion
 
-                    var efBAddress = mBillingAddresses.FirstOrDefault();
-                    if (efBAddress == null)
+                    #region User Details
+                    lblSellerId.Text = mSellerDetail.SellerNo;
+                    txtFullName.Text = mSellerDetail.FullName;
+                    txtEmail.Text = mSellerDetail.Email;
+                    txtPhoneNumber.Text = mSellerDetail.PhoneNumber;
+                    if (!Common.EmptyFiels((string)mSellerDetail.AlternativePhoneNumber))
                     {
-                        txtBuildingNumber.Text = mSellerDetail.Building;
-                        txtStreet.Text = mSellerDetail.Street;
-                        txtCity.Text = mSellerDetail.City;
-                        txtState.Text = mSellerDetail.State;
-                        txtPinCode.Text = mSellerDetail.PinCode;
-                        txtLandmark.Text = mSellerDetail.Landmark;
-                        pkNationality.Text = mSellerDetail.Nationality;
+                        txtAltPhoneNumber.Text = (string)mSellerDetail.AlternativePhoneNumber;
                     }
-                }
-                else
-                {
+                    #endregion
+
+                    #region Billing Address
                     txtBuildingNumber.Text = mSellerDetail.Building;
                     txtStreet.Text = mSellerDetail.Street;
                     txtCity.Text = mSellerDetail.City;
@@ -335,66 +310,66 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     txtPinCode.Text = mSellerDetail.PinCode;
                     txtLandmark.Text = mSellerDetail.Landmark;
                     pkNationality.Text = mSellerDetail.Nationality;
-                }
-                #endregion
+                    #endregion
 
-                #region Company Profile
+                    #region Company Profile
 
-                if (selectedSubCategory != null)
-                {
-                    selectedSubCategory = mSellerDetail.CompanyProfile.SubCategories;
-                    wlSubCategory.ItemsSource = selectedSubCategory.ToList();
-                }
-
-                if (mSellerDetail.CompanyProfile.Category != null)
-                {
-                    var category = mCategories.Where(x => x.Name == mSellerDetail.CompanyProfile.Category).FirstOrDefault()?.Name;
-
-                    if (!Common.EmptyFiels(category))
+                    if (selectedSubCategory != null)
                     {
-                        pkCategory.SelectedItem = category;
+                        selectedSubCategory = mSellerDetail.CompanyProfile.SubCategories;
+                        wlSubCategory.ItemsSource = selectedSubCategory.ToList();
                     }
-                    else
-                    {
-                        txtOtherCategory.Text = mSellerDetail.CompanyProfile?.Category;
-                        //
-                        mCategories = await DependencyService.Get<IProfileRepository>().CreateCategory(txtOtherCategory.Text);
-                        if (mCategories != null)
-                        {
-                            var lastAddedCategory = mCategories.Select(x => x.Name).ToList();
-                            if (lastAddedCategory.Any(x => x.ToLower().Trim() == txtOtherCategory.Text.ToLower().Trim()))
-                            {
-                                pkCategory.ItemsSource = lastAddedCategory.ToList();
-                                pkCategory.SelectedItem = txtOtherCategory.Text;
 
-                                txtOtherCategory.Text = string.Empty;
-                                await CreateSubCategory(true);
+                    if (mSellerDetail.CompanyProfile.Category != null)
+                    {
+                        var category = mCategories.Where(x => x.Name == mSellerDetail.CompanyProfile.Category).FirstOrDefault()?.Name;
+
+                        if (!Common.EmptyFiels(category))
+                        {
+                            pkCategory.SelectedItem = category;
+                        }
+                        else
+                        {
+                            txtOtherCategory.Text = mSellerDetail.CompanyProfile?.Category;
+                            //
+                            mCategories = await DependencyService.Get<IProfileRepository>().CreateCategory(txtOtherCategory.Text);
+                            if (mCategories != null)
+                            {
+                                var lastAddedCategory = mCategories.Select(x => x.Name).ToList();
+                                if (lastAddedCategory.Any(x => x.ToLower().Trim() == txtOtherCategory.Text.ToLower().Trim()))
+                                {
+                                    pkCategory.ItemsSource = lastAddedCategory.ToList();
+                                    pkCategory.SelectedItem = txtOtherCategory.Text;
+
+                                    txtOtherCategory.Text = string.Empty;
+                                    await CreateSubCategory(true);
+                                }
                             }
                         }
                     }
+
+                    txtDescription.Text = mSellerDetail.CompanyProfile.Description;
+                    txtExperience.Text = mSellerDetail.CompanyProfile.Experience;
+                    txtSupplyArea.Text = mSellerDetail.CompanyProfile.AreaOfSupply;
+                    #endregion
+
+                    #region Bank Information
+                    txtGstNumber.Text = mSellerDetail.BankInformation.Gstin.ToUpper();
+                    txtPan.Text = mSellerDetail.BankInformation.Pan.ToUpper();
+                    txtBankAccount.Text = mSellerDetail.BankInformation.BankAccountNumber;
+                    txtBankName.Text = mSellerDetail.BankInformation.Branch;
+                    txtIfsc.Text = mSellerDetail.BankInformation.Ifsc;
+                    #endregion
+
+                    #region Document List
+                    documentList = mSellerDetail.Documents;
+                    AddDocuments();
+                    #endregion 
                 }
-
-                txtDescription.Text = mSellerDetail.CompanyProfile.Description;
-                txtExperience.Text = mSellerDetail.CompanyProfile.Experience;
-                txtSupplyArea.Text = mSellerDetail.CompanyProfile.AreaOfSupply;
-                #endregion
-
-                #region Bank Information
-                txtGstNumber.Text = mSellerDetail.BankInformation.Gstin.ToUpper();
-                txtPan.Text = mSellerDetail.BankInformation.Pan.ToUpper();
-                txtBankAccount.Text = mSellerDetail.BankInformation.BankAccountNumber;
-                txtBankName.Text = mSellerDetail.BankInformation.Branch;
-                txtIfsc.Text = mSellerDetail.BankInformation.Ifsc;
-                #endregion
-
-                #region Document List
-                documentList = mSellerDetail.Documents;
-                AddDocuments();
-                #endregion
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/BindProfileDetails: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/GetProfileDetails: " + ex.Message);
             }
         }
 
@@ -417,7 +392,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("AccountView/BindDocumentList: " + ex.Message);
+                Common.DisplayErrorMessage("AccountView/AddDocuments: " + ex.Message);
             }
         }
         #endregion
@@ -432,7 +407,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         || Common.EmptyFiels(txtPhoneNumber.Text) || Common.EmptyFiels(txtDescription.Text)
                         || pkCategory.SelectedIndex == -1 || selectedSubCategory == null
                         || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
-                        || Common.EmptyFiels(txtGstNumber.Text.ToUpper()) || Common.EmptyFiels(txtPan.Text.ToUpper())
+                        || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
                         || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
                         || Common.EmptyFiels(txtIfsc.Text))
                 {
@@ -440,7 +415,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     isValid = false;
                 }
 
-                if (mBillingAddresses.Count == 0)
+                if (Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
+                           || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text)
+                           || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtPinCode.Text)
+                           || Common.EmptyFiels(txtLandmark.Text))
                 {
                     return BillingAddressValidations();
                 }
@@ -481,7 +459,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     Common.DisplayErrorMessage(Constraints.Required_SupplyArea);
                 }
-                else if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
+                else if (Common.EmptyFiels(txtGstNumber.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_GST);
                 }
@@ -489,7 +467,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_GST);
                 }
-                else if (Common.EmptyFiels(txtPan.Text.ToUpper()))
+                else if (Common.EmptyFiels(txtPan.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_PAN);
                 }
@@ -531,7 +509,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
                 if (isValid)
                 {
-                    if (Common.IsValidGSTPIN(txtGstNumber.Text.ToUpper()) && Common.IsValidPAN(txtPan.Text.ToUpper()))
+                    if (Common.IsValidGSTPIN(txtGstNumber.Text) && Common.IsValidPAN(txtPan.Text))
                     {
                         string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
                         if (panFromGSTIN.ToUpper() != txtPan.Text.ToUpper())
@@ -545,7 +523,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -560,56 +537,38 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
             try
             {
-                if (mBillingAddresses.Count == 0)
+                RequiredBillingFields();
+                if (Common.EmptyFiels(txtBuildingNumber.Text))
                 {
-                    if (Common.EmptyFiels(txtBuildingNumber.Text) || Common.EmptyFiels(txtStreet.Text)
-                           || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text)
-                           || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtPinCode.Text)
-                           || Common.EmptyFiels(txtLandmark.Text))
-                    {
-                        RequiredBillingFields();
-                        if (Common.EmptyFiels(txtBuildingNumber.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_BuildingNumber);
-                        }
-                        else if (Common.EmptyFiels(txtStreet.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_Street);
-                        }
-                        else if (Common.EmptyFiels(txtCity.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_City);
-                        }
-                        else if (Common.EmptyFiels(txtState.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_State);
-                        }
-                        else if (Common.EmptyFiels(pkNationality.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_Nationality);
-                        }
-                        else if (Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower()).Count() == 0)
-                        {
-                            Common.DisplayErrorMessage(Constraints.InValid_Nationality);
-                        }
-                        else if (Common.EmptyFiels(txtLandmark.Text))
-                        {
-                            Common.DisplayErrorMessage(Constraints.Required_Landmark);
-                        }
-                        else if (Common.EmptyFiels(txtPinCode.Text))
-                        {
-                            isValid = PinCodeValidation().Result;
-                        }
-                        else
-                        {
-                            isValid = true;
-                        }
-                    }
-                    else
-                    {
-                        isValid = true;
-
-                    }
+                    Common.DisplayErrorMessage(Constraints.Required_BuildingNumber);
+                }
+                else if (Common.EmptyFiels(txtStreet.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Street);
+                }
+                else if (Common.EmptyFiels(txtCity.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_City);
+                }
+                else if (Common.EmptyFiels(txtState.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_State);
+                }
+                else if (Common.EmptyFiels(pkNationality.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Nationality);
+                }
+                else if (Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower()).Count() == 0)
+                {
+                    Common.DisplayErrorMessage(Constraints.InValid_Nationality);
+                }
+                else if (Common.EmptyFiels(txtLandmark.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Landmark);
+                }
+                else if (Common.EmptyFiels(txtPinCode.Text))
+                {
+                    isValid = PinCodeValidation().Result;
                 }
                 else
                 {
@@ -658,7 +617,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     isUpdate = true;
                 else if (mSellerDetail.CompanyProfile.AreaOfSupply != txtSupplyArea.Text)
                     isUpdate = true;
-                else if (mSellerDetail.BankInformation.Gstin != txtGstNumber.Text.ToUpper())
+                else if (mSellerDetail.BankInformation.Gstin.ToUpper() != txtGstNumber.Text.ToUpper())
                     isUpdate = true;
                 else if (mSellerDetail.BankInformation.Pan.ToUpper() != txtPan.Text.ToUpper())
                     isUpdate = true;
@@ -674,23 +633,19 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     isUpdate = true;
                 else if (mSellerDetail.CompanyProfile.SubCategories != selectedSubCategory)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.BuildingNumber != txtBuildingNumber.Text)
+                else if (mSellerDetail.Building != txtBuildingNumber.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Street != txtStreet.Text)
+                else if (mSellerDetail.Street != txtStreet.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.City != txtCity.Text)
+                else if (mSellerDetail.City != txtCity.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.State != txtState.Text)
+                else if (mSellerDetail.State != txtState.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.PinCode != txtPinCode.Text)
+                else if (mSellerDetail.PinCode != txtPinCode.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Nationality != pkNationality.Text)
+                else if (mSellerDetail.Nationality != pkNationality.Text)
                     isUpdate = true;
-                else if (isEditBillingAddress && mBillingAddress != null && mBillingAddress.Landmark != txtLandmark.Text)
-                    isUpdate = true;
-                else if (isAddBillingAddress)
-                    isUpdate = true;
-                else if (isDeleteBillingAddress)
+                else if (mSellerDetail.Landmark != txtLandmark.Text)
                     isUpdate = true;
                 else if (isDeleteSubCategory)
                     isUpdate = true;
@@ -698,9 +653,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     isUpdate = true;
                 else
                     isUpdate = false;
-                //else if (isUploadDoc)
-                //    isUpdate = true;
-
                 BtnUpdate.IsEnabled = isUpdate;
             }
             catch (Exception ex)
@@ -793,12 +745,12 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
+                if (Common.EmptyFiels(txtGstNumber.Text))
                 {
                     BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtPan.Text.ToUpper()))
+                if (Common.EmptyFiels(txtPan.Text))
                 {
                     BoxPan.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
@@ -1035,8 +987,15 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 #endregion
 
                 #region Billing Address
-                AddBillingAddress();
-                mSellerDetail.BillingAddresses = mBillingAddresses;
+                //AddBillingAddress();
+                //mSellerDetail.BillingAddresses = mBillingAddresses;
+                mSellerDetail.Building = txtBuildingNumber.Text;
+                mSellerDetail.Street = txtStreet.Text;
+                mSellerDetail.City = txtCity.Text;
+                mSellerDetail.State = txtState.Text;
+                mSellerDetail.PinCode = txtPinCode.Text;
+                mSellerDetail.Landmark = txtLandmark.Text;
+                mSellerDetail.Nationality = pkNationality.Text;
                 #endregion
 
                 #region Company Profile
@@ -1087,73 +1046,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             return mSellerDetail;
         }
 
-        private void AddBillingAddress()
-        {
-            try
-            {
-                if (BillingAddressValidations())
-                {
-                    int id = (mBillingAddresses.Count == 0) ? 0 : mBillingAddresses.Max(x => x.Id);
-                    if (id == 0)
-                        id = 1;
-                    else
-                        id++;
-
-                    bool isAdd = false;
-
-                    if (mBillingAddress == null)
-                    {
-                        isAdd = true;
-                        mBillingAddress = new BillingAddress();
-                        mBillingAddress.Id = id;
-                    }
-
-                    if (!Common.EmptyFiels(txtBuildingNumber.Text) && !Common.EmptyFiels(txtStreet.Text)
-                     && !Common.EmptyFiels(txtCity.Text) && !Common.EmptyFiels(txtState.Text)
-                     && !Common.EmptyFiels(txtPinCode.Text) && !Common.EmptyFiels(txtLandmark.Text)
-                     && !Common.EmptyFiels(pkNationality.Text))
-                    {
-                        mBillingAddress.BuildingNumber = txtBuildingNumber.Text;
-                        mBillingAddress.Street = txtStreet.Text;
-                        mBillingAddress.City = txtCity.Text;
-                        mBillingAddress.State = txtState.Text;
-                        mBillingAddress.PinCode = txtPinCode.Text;
-                        mBillingAddress.Landmark = txtLandmark.Text;
-                        mBillingAddress.Nationality = pkNationality.Text;
-                        mBillingAddress.CountryId = (int)(Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
-
-                        if (isAdd)
-                        {
-                            mBillingAddresses.Add(mBillingAddress);
-                        }
-
-                        isAddBillingAddress = true;
-                        ClearBillingAddress();
-                    }
-                }
-
-                mBillingAddress = null;
-
-                if (mBillingAddresses.Count == 0)
-                {
-                    lstBilling.IsVisible = false;
-                    lstBilling.HeightRequest = 0;
-                }
-                else
-                {
-                    lstBilling.IsVisible = true;
-                    lstBilling.ItemsSource = mBillingAddresses.ToList();
-                    lstBilling.HeightRequest = mBillingAddresses.Count * 120;
-                }
-
-                HasUpdateProfileDetail();
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/AddBillingAddress: " + ex.Message);
-            }
-        }
-
         private async void UpdateProfile()
         {
             try
@@ -1173,10 +1065,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                             isUpdateProfile = true;
                             await GetProfile();
 
-                            isAddBillingAddress = false;
-                            isDeleteBillingAddress = false;
-                            isEditBillingAddress = false;
-                            isDeleteSubCategory = false;
                             isUpdatePhoto = false;
                             var updateId = mResponse.Data;
                             if (updateId != null)
@@ -1221,18 +1109,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 Common.DisplayErrorMessage("AccountView/SuccessfullUpdate: " + ex.Message);
             }
         }
-
-        private void ClearBillingAddress()
-        {
-            txtBuildingNumber.Text = string.Empty;
-            txtStreet.Text = string.Empty;
-            txtCity.Text = string.Empty;
-            txtState.Text = string.Empty;
-            txtPinCode.Text = string.Empty;
-            txtLandmark.Text = string.Empty;
-            pkNationality.Text = string.Empty;
-            mBillingAddress = null;
-        }
         #endregion
         #endregion
 
@@ -1266,7 +1142,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private void ImgBack_Tapped(object sender, EventArgs e)
@@ -1521,83 +1397,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void BtnAddMore_Clicked(object sender, EventArgs e)
-        {
-            lstBilling.IsVisible = true;
-            AddBillingAddress();
-        }
-
-        private void BtnEdit_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var btn = (ImageButton)sender;
-                mBillingAddress = (BillingAddress)btn.BindingContext;
-                if (mBillingAddress != null)
-                {
-                    txtBuildingNumber.Text = mBillingAddress.BuildingNumber;
-                    txtStreet.Text = mBillingAddress.Street;
-                    txtCity.Text = mBillingAddress.City;
-                    txtState.Text = (string)mBillingAddress.State;
-                    txtPinCode.Text = (string)mBillingAddress.PinCode;
-                    txtLandmark.Text = mBillingAddress.Landmark;
-                    pkNationality.Text = (string)mBillingAddress.Nationality;
-                    isEditBillingAddress = true;
-                }
-
-                if (mBillingAddresses.Count == 0)
-                {
-                    lstBilling.IsVisible = false;
-                    lstBilling.HeightRequest = 0;
-                }
-                else
-                {
-                    lstBilling.IsVisible = true;
-                    lstBilling.ItemsSource = mBillingAddresses.ToList();
-                    lstBilling.HeightRequest = mBillingAddresses.Count * 120;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/BtnEditAddress: " + ex.Message);
-            }
-        }
-
-        private async void BtnDeleteBillding_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var isDelete = await App.Current.MainPage.DisplayAlert(Constraints.Alert, Constraints.AreYouSureWantDelete, Constraints.Yes, Constraints.No);
-                if (isDelete)
-                {
-                    isDeleteBillingAddress = true;
-                    var btn = (Button)sender;
-                    var mBillingAddress = (BillingAddress)btn.BindingContext;
-                    if (mBillingAddress != null && mBillingAddresses != null && mBillingAddresses.Count > 0)
-                    {
-                        mBillingAddresses.Remove(mBillingAddress);
-                    }
-
-                    if (mBillingAddresses.Count == 0)
-                    {
-                        lstBilling.IsVisible = false;
-                        lstBilling.HeightRequest = 0;
-                    }
-                    else
-                    {
-                        lstBilling.IsVisible = true;
-                        lstBilling.ItemsSource = mBillingAddresses.ToList();
-                        lstBilling.HeightRequest = mBillingAddresses.Count * 120;
-                    }
-                    HasUpdateProfileDetail();
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("AccountView/BtnDeleteBillding: " + ex.Message);
-            }
-        }
-
         private void BillingAddressEntry_Unfocused(object sender, FocusEventArgs e)
         {
             var entry = (ExtEntry)sender;
@@ -1610,11 +1409,6 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private async void BillingPincode_Unfocused(object sender, FocusEventArgs e)
         {
             await PinCodeValidation();
-        }
-
-        private void lstBilling_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            lstBilling.SelectedItem = null;
         }
         #endregion
 
@@ -1767,6 +1561,28 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("AccountView/CopyString_Tapped: " + ex.Message);
+            }
+        }
+
+        private async void ImgDocument_Clicked(object sender, EventArgs e)
+        {
+            var imgButton = (ImageButton)sender;
+            if (imgButton.IsEnabled)
+            {
+                try
+                {
+                    imgButton.IsEnabled = false;
+                    var url = imgButton.BindingContext as string;
+                    await GenerateWebView.GenerateView(url);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("AccountView/ImgDocument_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    imgButton.IsEnabled = true;
+                }
             }
         }
         #endregion

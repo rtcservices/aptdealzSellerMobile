@@ -101,17 +101,21 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private void CapitalizeWord()
         {
-            txtFullName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtPassword.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            txtPassword.IsPassword = true;
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                txtFullName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-            txtStreet.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtCity.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtState.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtLandmark.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtStreet.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtCity.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtState.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtLandmark.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-            txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtSupplyArea.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtDescription.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                txtSupplyArea.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+            }
         }
+
         private void BindDocumentList()
         {
             try
@@ -161,8 +165,14 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             try
             {
-                mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
-                pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                if (!Common.EmptyFiels(categoryId))
+                {
+                    mSubCategories = await DependencyService.Get<IProfileRepository>().GetSubCategory(categoryId);
+                    if (mSubCategories != null)
+                    {
+                        pkSubCategory.ItemsSource = mSubCategories.Select(x => x.Name).ToList();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -195,7 +205,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                         || Common.EmptyFiels(txtCity.Text) || Common.EmptyFiels(txtState.Text) || Common.EmptyFiels(txtLandmark.Text)
                         || Common.EmptyFiels(pkNationality.Text) || Common.EmptyFiels(txtDescription.Text)
                         || Common.EmptyFiels(txtExperience.Text) || Common.EmptyFiels(txtSupplyArea.Text)
-                        || Common.EmptyFiels(txtGstNumber.Text.ToUpper()) || Common.EmptyFiels(txtPan.Text.ToUpper())
+                        || Common.EmptyFiels(txtGstNumber.Text) || Common.EmptyFiels(txtPan.Text)
                         || Common.EmptyFiels(txtBankAccount.Text) || Common.EmptyFiels(txtBankName.Text)
                         || Common.EmptyFiels(txtIfsc.Text))
                 {
@@ -284,7 +294,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     Common.DisplayErrorMessage(Constraints.Required_SupplyArea);
                 }
-                else if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
+                else if (Common.EmptyFiels(txtGstNumber.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_GST);
                 }
@@ -292,7 +302,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_GST);
                 }
-                else if (Common.EmptyFiels(txtPan.Text.ToUpper()))
+                else if (Common.EmptyFiels(txtPan.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_PAN);
                 }
@@ -300,7 +310,6 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     Common.DisplayErrorMessage(Constraints.InValid_PAN);
                 }
-
                 else if (Common.EmptyFiels(txtBankAccount.Text))
                 {
                     Common.DisplayErrorMessage(Constraints.Required_Bank_Account);
@@ -339,7 +348,7 @@ namespace aptdealzSellerMobile.Views.Accounts
 
                 if (isValid)
                 {
-                    if (Common.IsValidGSTPIN(txtGstNumber.Text.ToUpper()) && Common.IsValidPAN(txtPan.Text.ToUpper()))
+                    if (Common.IsValidGSTPIN(txtGstNumber.Text) && Common.IsValidPAN(txtPan.Text))
                     {
                         string panFromGSTIN = txtGstNumber.Text.Substring(2, 10);
                         if (panFromGSTIN.ToUpper() != txtPan.Text.ToUpper())
@@ -483,12 +492,12 @@ namespace aptdealzSellerMobile.Views.Accounts
                     BoxSupplyArea.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
+                if (Common.EmptyFiels(txtGstNumber.Text))
                 {
                     BoxGstNumber.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
 
-                if (Common.EmptyFiels(txtPan.Text.ToUpper()))
+                if (Common.EmptyFiels(txtPan.Text))
                 {
                     BoxPan.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
@@ -711,30 +720,14 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     mRegister.Documents = documentList;
                 }
-                if (!Common.EmptyFiels(txtBuildingNumber.Text))
-                {
-                    mRegister.Building = txtBuildingNumber.Text;
-                }
-                if (!Common.EmptyFiels(txtStreet.Text))
-                {
-                    mRegister.Street = txtStreet.Text;
-                }
-                if (!Common.EmptyFiels(txtCity.Text))
-                {
-                    mRegister.City = txtCity.Text;
-                }
-                if (!Common.EmptyFiels(txtState.Text))
-                {
-                    mRegister.State = txtState.Text;
-                }
-                if (!Common.EmptyFiels(txtLandmark.Text))
-                {
-                    mRegister.Landmark = txtLandmark.Text;
-                }
-                if (!Common.EmptyFiels(pkNationality.Text))
-                {
-                    mRegister.CountryId = (int)(mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
-                }
+
+                mRegister.Building = txtBuildingNumber.Text;
+                mRegister.Street = txtStreet.Text;
+                mRegister.City = txtCity.Text;
+                mRegister.State = txtState.Text;
+                mRegister.Landmark = txtLandmark.Text;
+                mRegister.CountryId = (int)(mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault()?.CountryId);
+
                 if (!Common.EmptyFiels(App.latitude.ToString()))
                 {
                     mRegister.Latitude = App.latitude;
@@ -743,11 +736,8 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     mRegister.Longitude = App.longitude;
                 }
-                if (!Common.EmptyFiels(txtDescription.Text))
-                {
-                    mRegister.Description = txtDescription.Text;
-                }
 
+                mRegister.Description = txtDescription.Text;
                 if (!Common.EmptyFiels(txtOtherCategory.Text))
                 {
                     mRegister.Category = txtOtherCategory.Text;
@@ -765,37 +755,15 @@ namespace aptdealzSellerMobile.Views.Accounts
                 {
                     selectedSubCategory.Add(txtOtherSubCategory.Text);
                 }
-
                 mRegister.SubCategories = selectedSubCategory;
+                mRegister.Experience = txtExperience.Text;
+                mRegister.AreaOfSupply = txtSupplyArea.Text;
 
-                if (!Common.EmptyFiels(txtExperience.Text))
-                {
-                    mRegister.Experience = txtExperience.Text;
-                }
-                if (!Common.EmptyFiels(txtSupplyArea.Text))
-                {
-                    mRegister.AreaOfSupply = txtSupplyArea.Text;
-                }
-                if (!Common.EmptyFiels(txtGstNumber.Text.ToUpper()))
-                {
-                    mRegister.Gstin = txtGstNumber.Text.ToUpper();
-                }
-                if (!Common.EmptyFiels(txtPan.Text.ToUpper()))
-                {
-                    mRegister.Pan = txtPan.Text.ToUpper();
-                }
-                if (!Common.EmptyFiels(txtBankAccount.Text))
-                {
-                    mRegister.BankAccountNumber = txtBankAccount.Text;
-                }
-                if (!Common.EmptyFiels(txtBankName.Text))
-                {
-                    mRegister.Branch = txtBankName.Text;
-                }
-                if (!Common.EmptyFiels(txtIfsc.Text))
-                {
-                    mRegister.Ifsc = txtIfsc.Text;
-                }
+                mRegister.Gstin = txtGstNumber.Text.ToUpper();
+                mRegister.Pan = txtPan.Text.ToUpper();
+                mRegister.BankAccountNumber = txtBankAccount.Text;
+                mRegister.Branch = txtBankName.Text;
+                mRegister.Ifsc = txtIfsc.Text;
             }
             catch (Exception ex)
             {
@@ -1085,6 +1053,28 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
 
+        private async void ImgDocument_Clicked(object sender, EventArgs e)
+        {
+            var imgButton = (ImageButton)sender;
+            if (imgButton.IsEnabled)
+            {
+                try
+                {
+                    imgButton.IsEnabled = false;
+                    var url = imgButton.BindingContext as string;
+                    await GenerateWebView.GenerateView(url);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("SignupPage/ImgDocument_Clicked: " + ex.Message);
+                }
+                finally
+                {
+                    imgButton.IsEnabled = true;
+                }
+            }
+        }
+
         #region [ Category / SubCategory ]
         private void BtnCategory_Clicked(object sender, EventArgs e)
         {
@@ -1302,7 +1292,6 @@ namespace aptdealzSellerMobile.Views.Accounts
             }
         }
         #endregion
-
         #endregion
     }
 }

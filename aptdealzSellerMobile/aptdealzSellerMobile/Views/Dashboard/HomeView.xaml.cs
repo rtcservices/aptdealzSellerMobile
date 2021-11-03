@@ -21,7 +21,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 InitializeComponent();
                 BindMenus();
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -76,7 +76,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #region [ Events ]
         private void ImgMenu_Tapped(object sender, EventArgs e)
         {
-            //Common.OpenMenu();
+            Navigation.PushAsync(new SettingsPage());
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
@@ -102,6 +102,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
 
         }
 

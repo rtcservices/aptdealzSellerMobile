@@ -1,4 +1,5 @@
 ﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
@@ -10,7 +11,7 @@ namespace aptdealzSellerMobile.API
 {
     public class RegisterAPI
     {
-        #region [POST]
+        #region [ POST ]
         public async Task<Response> IsUniquePhoneNumber(Model.Request.UniquePhoneNumber mUniquePhoneNumber)
         {
             Response mResponse = new Response();
@@ -23,31 +24,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.IsUniquePhoneNumber, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                        {
-                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
-                            if (errorString == Constraints.Session_Expired)
-                            {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                            }
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
-                        {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
-                        }
-                        else
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }
                 }
                 else
@@ -61,7 +38,7 @@ namespace aptdealzSellerMobile.API
             catch (Exception ex)
             {
                 mResponse.Succeeded = false;
-                mResponse.Errors = ex.Message;
+                mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("RegisterAPI/IsUniquePhoneNumber: " + ex.Message);
             }
             return mResponse;
@@ -79,31 +56,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.IsUniqueEmail, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                        {
-                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
-                            if (errorString == Constraints.Session_Expired)
-                            {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                            }
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
-                        {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
-                        }
-                        else
-                        {
-                            mResponse = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }
                 }
                 else
@@ -117,7 +70,7 @@ namespace aptdealzSellerMobile.API
             catch (Exception ex)
             {
                 mResponse.Succeeded = false;
-                mResponse.Errors = ex.Message;
+                mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("RegisterAPI/IsUniqueEmail: " + ex.Message);
             }
             return mResponse;
@@ -125,7 +78,7 @@ namespace aptdealzSellerMobile.API
 
         public async Task<Response> Register(Model.Request.Register mRequestRegister)
         {
-            Response mResponseRegister = new Response();
+            Response mResponse = new Response();
             try
             {
                 if (CrossConnectivity.Current.IsConnected)
@@ -135,31 +88,7 @@ namespace aptdealzSellerMobile.API
                     {
                         string url = string.Format(EndPointURL.Register, (int)App.Current.Resources["Version"]);
                         var response = await hcf.PostAsync(url, requestJson);
-                        var responseJson = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            mResponseRegister = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                        {
-                            var errorString = JsonConvert.DeserializeObject<string>(responseJson);
-                            if (errorString == Constraints.Session_Expired)
-                            {
-                                App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
-                            }
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
-                        {
-                            Common.DisplayErrorMessage(Constraints.ServiceUnavailable);
-                        }
-                        else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            Common.DisplayErrorMessage(Constraints.Something_Wrong_Server);
-                        }
-                        else
-                        {
-                            mResponseRegister = JsonConvert.DeserializeObject<Response>(responseJson);
-                        }
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }
                 }
                 else
@@ -172,11 +101,11 @@ namespace aptdealzSellerMobile.API
             }
             catch (Exception ex)
             {
-                mResponseRegister.Succeeded = false;
-                mResponseRegister.Errors = ex.Message;
+                mResponse.Succeeded = false;
+                mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("RegisterAPI/Register: " + ex.Message);
             }
-            return mResponseRegister;
+            return mResponse;
         }
         #endregion
     }

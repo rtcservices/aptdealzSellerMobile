@@ -55,6 +55,7 @@
         public const string UpdateOrder = "api/v{0}/Order/Update";
         public const string GetShippedOrdersForSeller = "api/v{0}/Order/GetShippedOrdersForSeller";
         public const string ScanQRCodeAndUpdateOrder = "api​/v{0}​/Order​/ScanQRCodeAndUpdateOrder";
+        public const string GetCompletedOrdersAgainstSeller = "api​/v{0}​/Order/GetCompletedOrdersAgainstSeller";
         #endregion
 
         #region [ RateAndReview API ]
@@ -73,6 +74,7 @@
         public const string GetAllNotificationsForUser = "api/v{0}/Notifications/GetAllNotificationsForUser";
         public const string GetNotificationsCountForUser = "api/v{0}/Notifications/GetNotificationsCountForUser";
         public const string SetUserNoficiationAsRead = "api/v{0}/Notifications/SetUserNoficiationAsRead/{1}";
+        public const string SetUserNoficiationAsReadAndDelete = "/api/v{0}/Notifications/SetUserNoficiationAsReadAndDelete/{1}";
         #endregion
 
         #region [ SupportChat API ]
@@ -82,6 +84,14 @@
 
         #region [ Affiliations API ]
         public const string GetAllAffiliations = "api/v{0}/Affiliations/GetAllAffiliations";
+        #endregion
+
+        #region MyRegion
+        public const string GetAmountToBePaidToRevealSellerContact = "api​/v{0}​/Requirement​/GetAmountToBePaidToRevealSellerContact";
+        public const string GetPrivacyPolicyTermsAndConditions = "api/v{0}/AppSettings/GetPrivacyPolicyTermsAndConditions";
+        public const string GetFAQ = "api/v{0}/AppSettings/GetFAQ";
+        public const string GetAppPromoBar = "api/v{0}/AppSettings/GetAppPromoBar";
+        public const string AboutAptdealzSellerApp = "api/v{0}/AppSettings/AboutAptdealzSellerApp";
         #endregion
     }
 }

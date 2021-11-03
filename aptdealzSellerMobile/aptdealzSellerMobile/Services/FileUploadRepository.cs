@@ -24,6 +24,11 @@ namespace aptdealzSellerMobile.Services
                         base64String = Convert.ToBase64String(ImageConvertion.SelectedImageByte);
                         fileName = Guid.NewGuid().ToString() + ".png";
                     }
+                    else if (ImageConvertion.SelectedImageByte != null)
+                    {
+                        base64String = Convert.ToBase64String(ImageConvertion.SelectedImageByte);
+                        fileName = Guid.NewGuid().ToString() + ".png";
+                    }
                     else
                     {
                         base64String = Convert.ToBase64String(FileSelection.fileByte);
@@ -46,7 +51,7 @@ namespace aptdealzSellerMobile.Services
                             var mSellerFile = jObject.ToObject<Model.Reponse.SellerFileDocument>();
                             if (mSellerFile != null)
                             {
-                                relativePath = mSellerFile.DocumentPath;
+                                relativePath = mSellerFile.FileUri;
                             }
                         }
                     }

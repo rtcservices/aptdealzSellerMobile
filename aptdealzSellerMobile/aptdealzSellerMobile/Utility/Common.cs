@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Views.MasterData;
 using System;
@@ -18,6 +19,7 @@ namespace aptdealzSellerMobile.Utility
         public static List<Country> mCountries { get; set; }
         public static string Token { get; set; }
         public static string NotificationCount { get; set; }
+        public static string PreviousNotificationCount { get; set; }
         #endregion
 
         #region [ Regex Properties ]
@@ -26,6 +28,7 @@ namespace aptdealzSellerMobile.Utility
         private static Regex RegexPincode { get; set; } = new Regex(@"^[0-9]{6}$");
         private static Regex RegexGST { get; set; } = new Regex(@"[0-9]{2}[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}");
         private static Regex RegexPAN { get; set; } = new Regex("([A-Z]){5}([0-9]){4}([A-Z]){1}$");
+        private static Regex RegexURL { get; set; } = new Regex("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
         #endregion       
 
         #region [ Display Messages ]
@@ -192,6 +195,11 @@ namespace aptdealzSellerMobile.Utility
             return (RegexPAN.IsMatch($"{value}"));
         }
 
+        public static bool IsValidURL(this string value)
+        {
+            return (RegexURL.IsMatch($"{value}"));
+        }
+
         public static int GetOrderStatus(string orderStatus)
         {
             orderStatus = orderStatus.Replace(" ", "");
@@ -295,6 +303,19 @@ namespace aptdealzSellerMobile.Utility
                 Common.DisplayErrorMessage("Common/CopyText: " + ex.Message);
             }
         }
+
+        public static void ClearAllData()
+        {
+            Settings.EmailAddress = string.Empty;
+            Settings.UserToken = string.Empty;
+            Settings.RefreshToken = string.Empty;
+            Settings.UserId = string.Empty;
+            Settings.LoginTrackingKey = string.Empty;
+            //Settings.fcm_token = string.Empty; don't empty this token
+            App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
+            if (App.stoppableTimer != null)
+                App.stoppableTimer.Stop();
+        }
         #endregion
     }
 
@@ -369,9 +390,12 @@ namespace aptdealzSellerMobile.Utility
 
     public enum GrievancesType
     {
-        OrderRelated,
-        DelayedDelivery,
-        PaymentRelated
+        Order_Related,
+        Delayed_Delivery,
+        Payment_Related,
+        Manufacture_Defect,
+        Incomplete_Product_Delivery,
+        Wrong_Order
     }
 
     public enum GrievancesFrom
@@ -388,6 +412,7 @@ namespace aptdealzSellerMobile.Utility
         QuoteDetails,
         OrderDetails,
         GrievanceDetails,
+        SupportChatDetails
     }
     #endregion
 }

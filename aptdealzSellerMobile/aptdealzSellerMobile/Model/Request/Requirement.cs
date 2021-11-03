@@ -244,7 +244,7 @@ namespace aptdealzSellerMobile.Model.Request
             {
                 if (ExpectedDeliveryDate != null && ExpectedDeliveryDate != DateTime.MinValue)
                 {
-                    return ExpectedDeliveryDate.Date.ToString("dd/MM/yyyy");
+                    return ExpectedDeliveryDate.Date.ToString(Constraints.Str_DateFormate);
                 }
                 else
                 {

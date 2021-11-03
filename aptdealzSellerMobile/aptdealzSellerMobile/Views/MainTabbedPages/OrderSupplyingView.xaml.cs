@@ -42,7 +42,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 this.isGrievance = isGrievance;
                 GetOrders(statusBy, title, filterBy, isAssending);
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -156,7 +156,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)

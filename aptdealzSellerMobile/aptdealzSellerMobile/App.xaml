@@ -18,6 +18,9 @@
         <x:Int64 x:Key="RevealContact">1</x:Int64>
         <!--#endregion-->
 
+        <x:Double x:Key="Font15">15</x:Double>
+        <x:Double x:Key="Font14">14</x:Double>
+
         <!--#region [ Colors ]-->
         <Color x:Key="ErrorBackground">#ff4d4f</Color>
         <Color x:Key="SuccessBackground">#52c41a</Color>
@@ -31,6 +34,7 @@
         <Color x:Key="appColor7">#bbbbbb</Color>
         <Color x:Key="appColor8">#F0F0F0</Color>
         <Color x:Key="appColor9">#8C8B8B</Color>
+        <Color x:Key="appColor10">#60006027</Color>
         <!--#endregion-->
 
         <!--#region [ Button ]-->

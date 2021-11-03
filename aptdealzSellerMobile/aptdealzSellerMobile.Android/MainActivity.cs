@@ -30,7 +30,7 @@ using Xamarin.Forms;
 
 namespace aptdealzSellerMobile.Droid
 {
-    [Activity(Label = "aptdealzSellerMobile", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+    [Activity(Label = "Aptdealz Bidder", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IPaymentResultWithDataListener
     {
         #region [ Properties ]
@@ -58,7 +58,7 @@ namespace aptdealzSellerMobile.Droid
             Rg.Plugins.Popup.Popup.Init(this);
 
             CameraPermission();
-            GetPermission();
+           // GetPermission();
 
             LoadApplication(new App());
             //CreateNotificationFromIntent(Intent);

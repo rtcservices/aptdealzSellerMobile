@@ -11,7 +11,7 @@ namespace aptdealzSellerMobile.Model.Reponse
         public string Street { get; set; }
 
         [JsonProperty("state")]
-        public object State { get; set; }
+        public string State { get; set; }
 
         [JsonProperty("city")]
         public string City { get; set; }

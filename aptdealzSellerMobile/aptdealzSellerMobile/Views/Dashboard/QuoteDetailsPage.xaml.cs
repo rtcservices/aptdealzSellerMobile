@@ -2,6 +2,7 @@
 using aptdealzSellerMobile.API;
 using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
@@ -35,7 +36,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 QuotationId = quoteId;
                 mQuote = new Quote();
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -161,7 +162,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 }
 
                 lblQuoteCountry.Text = countryName;
-                lblValidityDate.Text = mQuote.ValidityDate.Date.ToString("dd/MM/yyyy");
+                lblValidityDate.Text = mQuote.ValidityDate.Date.ToString(Constraints.Str_DateFormate);
                 lblStatus.Text = mQuote.Status;
 
                 if (!Common.EmptyFiels(mQuote.ShippingPinCode))
@@ -169,35 +170,39 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     lblQuotePinCode.Text = mQuote.ShippingPinCode;
                 }
 
-                //if (mQuote.IsBuyerContactRevealed)
-                //{
-                //    if (mQuote.BuyerContact != null)
-                //        BtnRevealContact.Text = mQuote.BuyerContact.PhoneNumber;
-                //}
-                //else
-                //{
-                //    BtnRevealContact.Text = Constraints.Str_RevealContact;
-                //}
-
+                #region [ Reveal Contact ]
                 if (mQuote.Status == QuoteStatus.Accepted.ToString())
                 {
                     BtnRevealContact.IsVisible = false;
-                    lblSellerContact.IsVisible = true;
+                    lblBuyerContact.IsVisible = true;
                     if (mQuote.BuyerContact != null)
                     {
-                        lblSellerContact.Text = mQuote.BuyerContact.PhoneNumber;
+                        lblBuyerContact.Text = mQuote.BuyerContact.PhoneNumber;
                     }
                     else
                     {
-                        lblSellerContact.Text = Constraints.Str_NotRevealContact;
+                        lblBuyerContact.Text = Constraints.Str_NotRevealContact;
                     }
                 }
                 else
                 {
-                    BtnRevealContact.Text = Constraints.Str_RevealContact;
-                    BtnRevealContact.IsVisible = true;
-                    lblSellerContact.IsVisible = false;
+                    if (mQuote.IsBuyerContactRevealed)
+                    {
+                        lblBuyerContact.IsVisible = true;
+                        BtnRevealContact.IsVisible = false;
+                        if (mQuote.BuyerContact != null)
+                            lblBuyerContact.Text = mQuote.BuyerContact.PhoneNumber;
+                        else
+                            lblBuyerContact.Text = Constraints.Str_NotRevealContact;
+                    }
+                    else
+                    {
+                        lblBuyerContact.IsVisible = false;
+                        BtnRevealContact.IsVisible = true;
+                        BtnRevealContact.Text = Constraints.Str_RevealContact;
+                    }
                 }
+                #endregion
 
                 if (!Common.EmptyFiels(mQuote.Comments))
                 {
@@ -219,21 +224,45 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
+                long revealRs = 0;
                 if (BtnRevealContact.Text == Constraints.Str_RevealContact)
                 {
-                    long revealRs = (long)App.Current.Resources["RevealContact"];
-                    string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
+                    decimal amount = 0;
 
-                    var contactPopup = new Popup.PaymentPopup(message);
-                    contactPopup.isRefresh += async (s1, e1) =>
+                    RequirementAPI requirementAPI = new RequirementAPI();
+                    var mResponse = await requirementAPI.GetAmountToBePaidToRevealSellerContact(mQuote.QuoteId);
+                    if (mResponse != null && mResponse.Succeeded)
                     {
-                        bool isPay = (bool)s1;
-                        if (isPay)
+                        var jObject = (JObject)mResponse.Data;
+                        if (jObject != null)
                         {
-                            await RevealContact(mQuote.RequirementId);
+                            var mAmount = jObject.ToObject<Data>();
+                            if (mAmount != null)
+                                amount = mAmount.amount;
                         }
-                    };
-                    await PopupNavigation.Instance.PushAsync(contactPopup);
+
+                        revealRs = (long)App.Current.Resources["RevealContact"];
+                        long.TryParse(amount.ToString(), out revealRs);
+                        string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
+
+                        var contactPopup = new Popup.PaymentPopup(message);
+                        contactPopup.isRefresh += async (s1, e1) =>
+                        {
+                            bool isPay = (bool)s1;
+                            if (isPay)
+                            {
+                                await RevealContact(mQuote.RequirementId, revealRs);
+                            }
+                        };
+                        await PopupNavigation.Instance.PushAsync(contactPopup);
+                    }
+                    else
+                    {
+                        if (mResponse != null)
+                            Common.DisplayErrorMessage(mResponse.Message);
+                        else
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                    }
                 }
                 else
                 {
@@ -246,13 +275,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        public async Task RevealContact(string RequirementId)
+        public async Task RevealContact(string RequirementId, long revealRs)
         {
             try
             {
-                long amount = (long)App.Current.Resources["RevealContact"];
                 RazorPayload payload = new RazorPayload();
-                payload.amount = amount * 100;
+                payload.amount = revealRs * 100;
                 payload.currency = (string)App.Current.Resources["Currency"];
                 payload.receipt = RequirementId; // quoteid
                 payload.email = Common.mSellerDetails.Email;
@@ -418,7 +446,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)

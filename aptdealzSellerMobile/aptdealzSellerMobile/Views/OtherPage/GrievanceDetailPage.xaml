@@ -21,21 +21,10 @@
             <!--#region Header(NavigationBar)-->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
-                <Image
-                    Grid.Column="0"
-                    Margin="20,0,0,0"
-                    HeightRequest="30"
-                    HorizontalOptions="StartAndExpand"
-                    Source="IconMenu.png"
-                    VerticalOptions="CenterAndExpand">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
-                    </Image.GestureRecognizers>
-                </Image>
 
                 <ImageButton
                     x:Name="BtnLogo"
@@ -46,7 +35,7 @@
                 <Grid
                     Grid.Column="2"
                     Margin="0,0,10,0"
-                    ColumnDefinitions="*,*"
+                    ColumnDefinitions="*,*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
                         <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
@@ -73,6 +62,20 @@
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
+
+                    <Image
+                        Grid.Column="2"
+                        Margin="0,0,0,0"
+                        HeightRequest="30"
+                        HorizontalOptions="StartAndExpand"
+                        Source="iconGear.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
                 </Grid>
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
@@ -290,13 +293,18 @@
                                             </CollectionView.ItemsLayout>
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Image
+                                                    <ImageButton
+                                                        x:Name="ImgDocument"
+                                                        Margin="0"
+                                                        Padding="0"
                                                         Aspect="AspectFit"
-                                                        HeightRequest="30"
+                                                        BackgroundColor="Transparent"
+                                                        Clicked="ImgDocument_Clicked"
+                                                        HeightRequest="40"
                                                         HorizontalOptions="StartAndExpand"
                                                         Source="iconFiles.png"
                                                         VerticalOptions="CenterAndExpand"
-                                                        WidthRequest="30" />
+                                                        WidthRequest="40" />
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
@@ -308,7 +316,7 @@
                             <Grid
                                 Grid.Row="1"
                                 Padding="20,20,20,0"
-                                RowDefinitions="Auto,Auto"
+                                RowDefinitions="Auto,Auto,Auto"
                                 RowSpacing="0">
                                 <!--  Description  -->
                                 <Frame
@@ -321,10 +329,41 @@
                                         Style="{StaticResource lblLight}" />
                                 </Frame>
 
+                                <!--  Preferred Solution  -->
+                                <Grid
+                                    Grid.Row="1"
+                                    Margin="0,10,0,0"
+                                    RowDefinitions="Auto,Auto">
+                                    <Label
+                                        Grid.Column="0"
+                                        HorizontalOptions="StartAndExpand"
+                                        LineBreakMode="WordWrap"
+                                        Style="{StaticResource lblLight}"
+                                        Text="Preferred Solution" />
+
+                                    <Frame
+                                        Grid.Row="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        BackgroundColor="Transparent"
+                                        BorderColor="{StaticResource appColor8}"
+                                        CornerRadius="5"
+                                        HasShadow="False">
+
+                                        <Label
+                                            x:Name="lblSolution"
+                                            Margin="10"
+                                            HorizontalOptions="FillAndExpand"
+                                            Style="{StaticResource edPrimary}" />
+                                    </Frame>
+
+                                </Grid>
+
+
                                 <!--  List of Response  -->
                                 <ListView
                                     x:Name="lstResponse"
-                                    Grid.Row="1"
+                                    Grid.Row="2"
                                     ItemTapped="lstResponse_ItemTapped"
                                     Style="{StaticResource lstPrimary}">
                                     <ListView.ItemTemplate>
@@ -422,7 +461,7 @@
                                 <!--  No Record Label  -->
                                 <Label
                                     x:Name="lblNoRecord"
-                                    Grid.Row="1"
+                                    Grid.Row="2"
                                     Margin="0,10"
                                     FontSize="15"
                                     HorizontalOptions="CenterAndExpand"
@@ -432,8 +471,10 @@
                             </Grid>
 
                             <Grid
+                                x:Name="GrdMessage"
                                 Grid.Row="2"
                                 Padding="20,0,20,20"
+                                IsVisible="false"
                                 RowDefinitions="Auto,Auto"
                                 RowSpacing="15"
                                 VerticalOptions="EndAndExpand">

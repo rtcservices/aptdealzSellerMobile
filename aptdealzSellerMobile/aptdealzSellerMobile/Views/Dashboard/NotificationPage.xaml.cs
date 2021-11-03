@@ -24,6 +24,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         public NotificationPage()
         {
             InitializeComponent();
+            mNotificationsList = new List<NotificationData>();
         }
         #endregion
 
@@ -95,6 +96,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         }
                         else
                         {
+                            lstNotification.ItemsSource = null;
                             lstNotification.IsVisible = false;
                             lblNoRecord.IsVisible = true;
                         }
@@ -102,7 +104,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 }
                 else
                 {
+                    lstNotification.ItemsSource = null;
                     lblNoRecord.IsVisible = true;
+                    lstNotification.IsVisible = false;
                     if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
                         lblNoRecord.Text = mResponse.Message;
                     else
@@ -135,6 +139,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 Common.DisplayErrorMessage("NotificationPage/GetNotification: " + ex.Message);
             }
         }
+
+        private async Task SetUserNoficiationAsReadAndDelete(string NotificationId)
+        {
+            try
+            {
+                var isReded = await DependencyService.Get<INotificationRepository>().SetUserNoficiationAsReadAndDelete(NotificationId);
+                if (isReded)
+                {
+                    mNotificationsList.Clear();
+                    await GetNotification();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("NotificationPage/SetUserNoficiationAsReadAndDelete: " + ex.Message);
+            }
+        }
         #endregion
 
         #region [ Events ]
@@ -145,6 +166,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
 
         }
 
@@ -158,7 +180,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
-                
+
         private void lstNotification_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             lstNotification.SelectedItem = null;
@@ -184,8 +206,14 @@ namespace aptdealzSellerMobile.Views.Dashboard
             try
             {
                 var ImageButtonExp = (ImageButton)sender;
-                var notificationData = ImageButtonExp.BindingContext as NotificationData;
-                await SetNoficiationAsRead(notificationData.NotificationId);
+                if (ImageButtonExp != null)
+                {
+                    var notificationData = ImageButtonExp.BindingContext as NotificationData;
+                    if (notificationData != null && !Common.EmptyFiels(notificationData.NotificationId))
+                    {
+                        await SetUserNoficiationAsReadAndDelete(notificationData.NotificationId);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -202,22 +230,30 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 {
                     Tab.IsEnabled = false;
                     var mNotification = Tab.BindingContext as NotificationData;
+                    if (mNotification != null && !Common.EmptyFiels(mNotification.NotificationId))
+                    {
+                        await SetNoficiationAsRead(mNotification.NotificationId);
 
-                    if (mNotification.NavigationScreen == (int)NavigationScreen.RequirementDetails)
-                    {
-                        await Navigation.PushAsync(new RequirementDetailPage(mNotification.ParentKeyId));
-                    }
-                    else if (mNotification.NavigationScreen == (int)NavigationScreen.QuoteDetails)
-                    {
-                        await Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mNotification.ParentKeyId));
-                    }
-                    else if (mNotification.NavigationScreen == (int)NavigationScreen.OrderDetails)
-                    {
-                        await Navigation.PushAsync(new OrderDetailsPage(mNotification.ParentKeyId));
-                    }
-                    else if (mNotification.NavigationScreen == (int)NavigationScreen.GrievanceDetails)
-                    {
-                        await Navigation.PushAsync(new OtherPage.GrievanceDetailPage(mNotification.ParentKeyId));
+                        if (mNotification.NavigationScreen == (int)NavigationScreen.RequirementDetails)
+                        {
+                            await Navigation.PushAsync(new RequirementDetailPage(mNotification.ParentKeyId));
+                        }
+                        else if (mNotification.NavigationScreen == (int)NavigationScreen.QuoteDetails)
+                        {
+                            await Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mNotification.ParentKeyId));
+                        }
+                        else if (mNotification.NavigationScreen == (int)NavigationScreen.OrderDetails)
+                        {
+                            await Navigation.PushAsync(new OrderDetailsPage(mNotification.ParentKeyId));
+                        }
+                        else if (mNotification.NavigationScreen == (int)NavigationScreen.GrievanceDetails)
+                        {
+                            await Navigation.PushAsync(new OtherPage.GrievanceDetailPage(mNotification.ParentKeyId));
+                        }
+                        else if (mNotification.NavigationScreen == (int)NavigationScreen.SupportChatDetails)
+                        {
+                            await Navigation.PushAsync(new OtherPage.ContactSupportPage());
+                        }
                     }
                 }
                 catch (Exception ex)

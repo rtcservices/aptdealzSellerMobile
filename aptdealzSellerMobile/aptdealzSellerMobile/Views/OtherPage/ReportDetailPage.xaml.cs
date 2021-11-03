@@ -1,7 +1,11 @@
-﻿using aptdealzSellerMobile.Model;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Model;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using aptdealzSellerMobile.Views.Popup;
+using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
@@ -16,8 +20,9 @@ namespace aptdealzSellerMobile.Views.OtherPage
     public partial class ReportDetailPage : ContentPage
     {
         #region [ Objects ]
-        private List<ReportDetail> mReportDetails = new List<ReportDetail>();
+        public List<Order> mOrders;
         private string filterBy = SortByField.Date.ToString();
+        private int? statusBy = null;
         private string title = string.Empty;
         private bool? isAssending = false;
         private readonly int pageSize = 10;
@@ -30,8 +35,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
             try
             {
                 InitializeComponent();
+                pageNo = 1;
+                mOrders = new List<Order>();
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -44,6 +51,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
                         lblNotificationCount.Text = string.Empty;
                     }
                 });
+
+                BindShippingData(statusBy, title, filterBy, isAssending);
             }
             catch (Exception ex)
             {
@@ -68,7 +77,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindShippingData();
         }
 
         protected override bool OnBackButtonPressed()
@@ -85,62 +93,56 @@ namespace aptdealzSellerMobile.Views.OtherPage
             return true;
         }
 
-        private void BindShippingData()
+        private async void BindShippingData(int? StatusBy = null, string Title = "", string FilterBy = "", bool? SortBy = null, bool isLoader = true)
         {
             try
             {
-                lstReportDetails.ItemsSource = null;
-
-                mReportDetails = new List<ReportDetail>()
-            {
-                new ReportDetail
+                try
                 {
-                    InvoiceId="INV#121",
-                    Status="Cleared",
-                    Amount=25000,
-                    EarningAmount=20900,
-                    InvoiceDate="12-01-2021",
+                    OrderAPI orderAPI = new OrderAPI();
+                    if (isLoader)
+                    {
+                        UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                    }
+                    var mResponse = await orderAPI.GetCompletedOrdersAgainstSeller(StatusBy, Title, FilterBy, SortBy, pageNo, pageSize);
+                    if (mResponse != null && mResponse.Succeeded)
+                    {
+                        JArray result = (JArray)mResponse.Data;
+                        var orders = result.ToObject<List<Order>>();
+                        if (pageNo == 1)
+                        {
+                            mOrders.Clear();
+                        }
 
-                },
-                new ReportDetail
+                        foreach (var mOrder in orders)
+                        {
+                            mOrder.isSelectGrievance = false;
+                            if (mOrder.OrderStatus == (int)Utility.OrderStatus.Shipped)
+                                mOrder.ScanQRCode = true;
+                            else if (mOrder.PickupProductDirectly && mOrder.OrderStatus == (int)Utility.OrderStatus.Shipped)
+                                mOrder.ScanQRCode = true;
+                            else
+                                mOrder.ScanQRCode = false;
+
+                            if (mOrders.Where(x => x.OrderId == mOrder.OrderId).Count() == 0)
+                                mOrders.Add(mOrder);
+                        }
+                        BindList(mOrders);
+                    }
+                    else
+                    {
+                        lstReportDetails.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                    }
+                }
+                catch (Exception ex)
                 {
-                    InvoiceId="INV#122",
-                    Status="Pending",
-                    Amount=1100,
-                    EarningAmount=1500,
-                    InvoiceDate="12-01-2021",
-
-                },
-                new ReportDetail
+                    Common.DisplayErrorMessage("ReportDetailPage/GetOrders: " + ex.Message);
+                }
+                finally
                 {
-                    InvoiceId="INV#123",
-                    Status="Cleared",
-                    Amount=3200,
-                    EarningAmount=3400,
-                    InvoiceDate="12-01-2021",
-
-                },
-                new ReportDetail
-                {
-                    InvoiceId="INV#124",
-                    Status="Cleared",
-                    Amount=2500,
-                    EarningAmount=2500,
-                    InvoiceDate="12-01-2021",
-
-                },
-                  new ReportDetail
-                {
-                    InvoiceId="INV#125",
-                    Status="Pending",
-                    Amount=3000,
-                    EarningAmount=3000,
-                    InvoiceDate="12-01-2021",
-
-                },
-            };
-
-                lstReportDetails.ItemsSource = mReportDetails.ToList();
+                    UserDialogs.Instance.HideLoading();
+                }
             }
             catch (Exception ex)
             {
@@ -148,15 +150,15 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
         }
 
-        private void BindList(List<ReportDetail> mReportDetailList)
+        private void BindList(List<Order> mOrderList)
         {
             try
             {
-                if (mReportDetailList != null && mReportDetailList.Count > 0)
+                if (mOrderList != null && mOrderList.Count > 0)
                 {
                     lstReportDetails.IsVisible = true;
                     lblNoRecord.IsVisible = false;
-                    lstReportDetails.ItemsSource = mReportDetailList.ToList();
+                    lstReportDetails.ItemsSource = mOrderList.ToList();
                 }
                 else
                 {
@@ -183,10 +185,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     setHight.ForceUpdateSize();
                 }
 
-                var response = (ReportDetail)selectGrid.BindingContext;
+                var response = (Order)selectGrid.BindingContext;
                 if (response != null)
                 {
-                    foreach (var selectedImage in mReportDetails)
+                    foreach (var selectedImage in mOrders)
                     {
                         if (selectedImage.ArrowImage == Constraints.Arrow_Right)
                         {
@@ -254,7 +256,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private void ImgBack_Tapped(object sender, EventArgs e)
@@ -270,16 +272,17 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
                 {
                     ImgSort.Source = Constraints.Sort_DSC;
-                    //sortBy = false;
+                    isAssending = false;
                 }
                 else
                 {
                     ImgSort.Source = Constraints.Sort_ASC;
-                    //sortBy = true;
+                    isAssending = true;
                 }
 
                 pageNo = 1;
-                BindShippingData();
+                mOrders.Clear();
+                BindShippingData(statusBy, title, filterBy, isAssending);
             }
             catch (Exception ex)
             {
@@ -311,7 +314,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
                                 lblFilterBy.Text = filterBy.ToCamelCase();
                             }
                             pageNo = 1;
-                            BindShippingData();
+                            mOrders.Clear();
+                            BindShippingData(statusBy, title, filterBy, isAssending);
                         }
                     };
                     await PopupNavigation.Instance.PushAsync(sortByPopup);
@@ -332,7 +336,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
             try
             {
                 entrSearch.Text = string.Empty;
-                BindList(mReportDetails);
+                BindList(mOrders);
             }
             catch (Exception ex)
             {
@@ -344,15 +348,16 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
+                pageNo = 1;
                 if (!Common.EmptyFiels(entrSearch.Text))
                 {
-                    var ReportSearch = mReportDetails.Where(x =>
-                                                        x.InvoiceId.ToLower().Contains(entrSearch.Text.ToLower())).ToList();
-                    BindList(ReportSearch);
+                    BindShippingData(statusBy, entrSearch.Text, filterBy, isAssending, false);
                 }
                 else
                 {
-                    BindList(mReportDetails);
+                    pageNo = 1;
+                    mOrders.Clear();
+                    BindShippingData(statusBy, title, filterBy, isAssending);
                 }
             }
             catch (Exception ex)
@@ -369,6 +374,96 @@ namespace aptdealzSellerMobile.Views.OtherPage
         private void lstReportDetails_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             lstReportDetails.SelectedItem = null;
+        }
+
+        private async void FrmStatusBy_Tapped(object sender, EventArgs e)
+        {
+            var Tab = (Frame)sender;
+            if (Tab.IsEnabled)
+            {
+                try
+                {
+                    Tab.IsEnabled = false;
+                    var statusPopup = new OrderStatusPopup(statusBy);
+                    statusPopup.isRefresh += (s1, e1) =>
+                    {
+                        string result = s1.ToString();
+                        if (!Common.EmptyFiels(result))
+                        {
+                            lblStatus.Text = result.ToCamelCase();
+                            statusBy = Common.GetOrderStatus(result);
+                            pageNo = 1;
+                            mOrders.Clear();
+                            BindShippingData(statusBy, title, filterBy, isAssending);
+                        }
+                    };
+                    await PopupNavigation.Instance.PushAsync(statusPopup);
+                }
+                catch (Exception ex)
+                {
+                    Common.DisplayErrorMessage("ReportDetailPage/FrmStatusBy_Tapped: " + ex.Message);
+                }
+                finally
+                {
+                    Tab.IsEnabled = true;
+                }
+            }
+        }
+
+        private void lstReportDetails_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+            try
+            {
+                if (this.mOrders.Count < 10)
+                    return;
+                if (this.mOrders.Count == 0)
+                    return;
+
+                var lastrequirement = this.mOrders[this.mOrders.Count - 1];
+                var lastAppearing = (Order)e.Item;
+                if (lastAppearing != null)
+                {
+                    if (lastrequirement == lastAppearing)
+                    {
+                        var totalAspectedRow = pageSize * pageNo;
+                        pageNo += 1;
+
+                        if (this.mOrders.Count() >= totalAspectedRow)
+                        {
+                            BindShippingData(statusBy, title, filterBy, isAssending, false);
+                        }
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    }
+                }
+                else
+                {
+                    UserDialogs.Instance.HideLoading();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/ItemAppearing: " + ex.Message);
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+
+        private void lstReportDetails_Refreshing(object sender, EventArgs e)
+        {
+            try
+            {
+                lstReportDetails.IsRefreshing = true;
+                pageNo = 1;
+                mOrders.Clear();
+                BindShippingData(statusBy, title, filterBy, isAssending);
+                lstReportDetails.IsRefreshing = false;
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/Refreshing: " + ex.Message);
+            }
         }
         #endregion
     }

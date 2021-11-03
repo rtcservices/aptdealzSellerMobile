@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\ReportDetail.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.514" />
     <PackageReference Include="AiForms.Layouts" Version="1.1.0" />
     <PackageReference Include="CarouselView.FormsPlugin" Version="6.0.0" />
@@ -19,6 +23,7 @@
     <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Plugin.FirebasePushNotification" Version="3.3.10" />
+    <PackageReference Include="Plugin.LocalNotification" Version="5.0.6" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.11" />
@@ -43,6 +48,9 @@
     <Compile Update="Views\Dashboard\UpdateOrderDetailPagePage.xaml.cs">
       <DependentUpon>UpdateOrderDetailPagee.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Popup\DisplayDocumentPopup.xaml.cs">
+      <DependentUpon>DisplayDocumentPopup.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +67,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Accounts\SignupPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Dashboard\FaqHelpView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Dashboard\GrievancesPage.xaml">
@@ -127,6 +138,9 @@
     <EmbeddedResource Update="Views\OtherPage\ReportDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\OtherPage\SettingsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\OtherPage\WeSupportPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -142,7 +156,7 @@
     <EmbeddedResource Update="Views\Popup\PaymentPopup.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Popup\ShowImagePopup.xaml">
+    <EmbeddedResource Update="Views\Popup\DisplayDocumentPopup.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Popup\StatusPopup.xaml">

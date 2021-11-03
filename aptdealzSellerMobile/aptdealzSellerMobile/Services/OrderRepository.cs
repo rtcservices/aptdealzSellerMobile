@@ -91,7 +91,7 @@ namespace aptdealzSellerMobile.Services
                     if (mResponse != null && mResponse.Message != null)
                         Common.DisplayErrorMessage(mResponse.Message);
                     else
-                        Common.DisplayErrorMessage(Constraints.Something_Wrong);
+                        Common.DisplayErrorMessage("Invalid QRCode");
                 }
             }
             catch (Exception ex)

@@ -143,6 +143,12 @@ namespace aptdealzSellerMobile.Model.Reponse
         [JsonProperty("shippingAddressDetails")]
         public ShippingAddressDetails ShippingAddressDetails { get; set; }
 
+        [JsonProperty("isCancellationPeriodOver")]
+        public bool IsCancellationPeriodOver { get; set; }
+        [JsonProperty("createdDate")]
+        public string CreatedDate { get; set; }
+
+
         #region [ Extra Properties ]
         [JsonIgnore]
         public bool isSelectGrievance { get; set; } = false;
@@ -150,21 +156,21 @@ namespace aptdealzSellerMobile.Model.Reponse
         [JsonIgnore]
         public bool ScanQRCode { get; set; }
 
-        [JsonIgnore]
-        public string ExpectedDeliveryDate
-        {
-            get
-            {
-                if (ExpectedDelivery != null && ExpectedDelivery != DateTime.MinValue)
-                {
-                    return ExpectedDelivery.Date.ToString("dd/MM/yyyy");
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-        }
+        //[JsonIgnore]
+        //public string ExpectedDeliveryDate
+        //{
+        //    get
+        //    {
+        //        if (ExpectedDelivery != null && ExpectedDelivery != DateTime.MinValue)
+        //        {
+        //            return ExpectedDelivery.Date.ToString(Constraints.Str_DateFormate);
+        //        }
+        //        else
+        //        {
+        //            return string.Empty;
+        //        }
+        //    }
+        //}
         [JsonIgnore]
         public string OrderPaymentStatus
         {
@@ -224,6 +230,26 @@ namespace aptdealzSellerMobile.Model.Reponse
         {
             get { return _GridBg; }
             set { _GridBg = value; PropertyChangedEventArgs("GridBg"); }
+        }
+
+        [JsonIgnore]
+        public Color StatusColor
+        {
+            get
+            {
+                if (Status == (int)Utility.OrderStatus.Completed)
+                {
+                    return (Color)App.Current.Resources["appColor1"];
+                }
+                else if (Status == (int)Utility.OrderStatus.Pending)
+                {
+                    return (Color)App.Current.Resources["appColor2"];
+                }
+                else
+                {
+                    return (Color)App.Current.Resources["appColor4"];
+                }
+            }
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

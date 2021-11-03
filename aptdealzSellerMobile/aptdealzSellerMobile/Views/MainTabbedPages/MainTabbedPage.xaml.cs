@@ -142,6 +142,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     grdMain.Children.Add(new AboutAptDealzView());
                 }
+                else if (view == "FAQHelp")
+                {
+                    grdMain.Children.Add(new FaqHelpView());
+                }
                 else if (view == "Policies")
                 {
                     grdMain.Children.Add(new TermsAndPoliciesView());

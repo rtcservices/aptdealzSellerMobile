@@ -70,11 +70,14 @@ namespace aptdealzSellerMobile.Views.Accounts
             {
                 if (Common.EmptyFiels(txtUsername.Text) || Common.EmptyFiels(txtPassword.Text))
                 {
-                    Common.DisplayErrorMessage(Constraints.Required_All);
                     RequiredFields();
                     isValid = false;
                 }
 
+                if (Common.EmptyFiels(txtUsername.Text))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Email_Phone);
+                }
                 else if (txtUsername.Text.Contains("@") || txtUsername.Text.Contains("."))
                 {
                     if (!txtUsername.Text.IsValidEmail())
@@ -87,18 +90,31 @@ namespace aptdealzSellerMobile.Views.Accounts
                         isValid = true;
                     }
                 }
-                else if (!txtUsername.Text.IsValidPhone())
-                {
-                    Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
-                }
-                else if (Common.EmptyFiels(txtPassword.Text))
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_Password);
-                }
                 else
                 {
                     isEmail = false;
                     isValid = true;
+                }
+
+                if (isValid)
+                {
+                    if (!isEmail)
+                    {
+                        if (!txtUsername.Text.IsValidPhone())
+                        {
+                            isValid = false;
+                            Common.DisplayErrorMessage(Constraints.InValid_PhoneNumber);
+                        }
+                    }
+                    else if (Common.EmptyFiels(txtPassword.Text))
+                    {
+                        isValid = false;
+                        Common.DisplayErrorMessage(Constraints.Required_Password);
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
                 }
             }
             catch (Exception ex)

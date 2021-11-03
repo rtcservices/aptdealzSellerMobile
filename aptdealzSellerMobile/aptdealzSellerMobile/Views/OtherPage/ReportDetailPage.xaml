@@ -17,21 +17,10 @@
             <!--  Header(NavigationBar)  -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
-                <Image
-                    Grid.Column="0"
-                    Margin="20,0,0,0"
-                    HeightRequest="30"
-                    HorizontalOptions="StartAndExpand"
-                    Source="IconMenu.png"
-                    VerticalOptions="CenterAndExpand">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
-                    </Image.GestureRecognizers>
-                </Image>
 
                 <ImageButton
                     x:Name="BtnLogo"
@@ -42,7 +31,7 @@
                 <Grid
                     Grid.Column="2"
                     Margin="0,0,10,0"
-                    ColumnDefinitions="*,*"
+                    ColumnDefinitions="*,*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
                         <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
@@ -67,6 +56,19 @@
                         WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Grid.Column="2"
+                        Margin="0,0,0,0"
+                        HeightRequest="30"
+                        HorizontalOptions="StartAndExpand"
+                        Source="iconGear.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
                 </Grid>
@@ -153,6 +155,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.Column="0" Style="{StaticResource frmBlank}">
                             <Grid
@@ -201,13 +204,44 @@
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmFilterBy_Tapped" />
                             </Frame.GestureRecognizers>
                         </Frame>
+
+                        <Frame Grid.Column="2" Style="{StaticResource frmBlank}">
+                            <Grid
+                                Margin="5"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="2">
+                                <Image
+                                    Grid.Column="0"
+                                    Margin="0"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Source="iconStatus.png"
+                                    VerticalOptions="CenterAndExpand" />
+
+                                <Label
+                                    x:Name="lblStatus"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Style="{StaticResource lblLight}"
+                                    Text="Status" />
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmStatusBy_Tapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
                     </Grid>
                 </Grid>
 
                 <ListView
                     x:Name="lstReportDetails"
                     Grid.Row="2"
+                    IsPullToRefreshEnabled="True"
+                    ItemAppearing="lstReportDetails_ItemAppearing"
                     ItemSelected="lstReportDetails_ItemSelected"
+                    Refreshing="lstReportDetails_Refreshing"
                     Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -227,6 +261,8 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
@@ -240,65 +276,86 @@
                                                 Grid.Column="0"
                                                 FontSize="15"
                                                 Style="{StaticResource lblSemiBold}"
-                                                Text="{Binding InvoiceId}" />
+                                                Text="{Binding OrderNo}" />
 
                                             <!--  Status  -->
-                                            <!--<Label
-                                                Grid.Row="0"
-                                                Grid.Column="2"
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="3"
                                                 FontSize="15"
-                                                HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource lblMedium}"
-                                                Text="{Binding Status}"
-                                                TextColor="{Binding StatusColor}" />-->
+                                                Text="{Binding OrderStatusDescr}"
+                                                TextColor="{Binding StatusColor}" />
+
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="3"
+                                                FontSize="15"
+                                                Style="{StaticResource lblMedium}"
+                                                Text="{Binding Title}" />
 
                                             <!--  Order Amount  -->
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                FontSize="15"
-                                                HorizontalOptions="StartAndExpand"
-                                                Style="{StaticResource lblMedium}"
-                                                Text="Order Amount:" />
-
-                                            <!--  Amount  -->
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                FontSize="15"
-                                                HorizontalOptions="StartAndExpand"
-                                                Style="{StaticResource lblMedium}"
-                                                Text="{Binding Amount, StringFormat='Rs {0}'}" />
-
-
-                                            <!--  Earning  -->
-                                            <Label
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                FontSize="15"
-                                                HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Style="{StaticResource lblMedium}"
-                                                Text="Earning : " />
-
-                                            <!--  EarningAmount  -->
-                                            <Label
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                FontSize="15"
-                                                HorizontalOptions="StartAndExpand"
-                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Style="{StaticResource lblMedium}"
-                                                Text="{Binding EarningAmount, StringFormat='Rs {0}'}" />
-
-                                            <!--  InvoiceDate  -->
-                                            <Label
+                                            <StackLayout
                                                 Grid.Row="3"
                                                 Grid.Column="0"
-                                                FontSize="15"
-                                                IsVisible="{Binding MoreDetail, Mode=TwoWay}"
-                                                Style="{StaticResource lblMedium}"
-                                                Text="{Binding InvoiceDate}" />
+                                                Grid.ColumnSpan="3"
+                                                HorizontalOptions="FillAndExpand"
+                                                Orientation="Horizontal"
+                                                Spacing="5">
+                                                <Label
+                                                    FontSize="15"
+                                                    Style="{StaticResource lblMedium}"
+                                                    Text="Order Amount :" />
+
+                                                <!--  Amount  -->
+                                                <Label
+                                                    FontSize="15"
+                                                    Style="{StaticResource lblMedium}"
+                                                    Text="{Binding PaidAmount, StringFormat='Rs {0}'}" />
+
+                                            </StackLayout>
+
+                                            <StackLayout
+                                                Grid.Row="4"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="3">
+
+                                                <StackLayout
+                                                    Margin="0"
+                                                    Padding="0"
+                                                    Orientation="Horizontal"
+                                                    Spacing="0">
+                                                    <!--  Earning  -->
+                                                    <Label
+                                                        FontSize="15"
+                                                        IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                        Style="{StaticResource lblMedium}"
+                                                        Text="Earning : " />
+
+                                                    <!--  EarningAmount  -->
+                                                    <Label
+                                                        Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        FontSize="15"
+                                                        IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                        Style="{StaticResource lblMedium}"
+                                                        Text="{Binding SellerEarnings, StringFormat='Rs {0}'}" />
+
+                                                </StackLayout>
+
+                                                <!--  InvoiceDate  -->
+                                                <Label
+                                                    Grid.Row="3"
+                                                    Grid.Column="0"
+                                                    FontSize="15"
+                                                    IsVisible="{Binding MoreDetail, Mode=TwoWay}"
+                                                    Style="{StaticResource lblMedium}"
+                                                    Text="{Binding CreatedDate}" />
+                                            </StackLayout>
+
                                         </Grid>
 
                                         <!--  ArrowImage  -->

@@ -1,7 +1,10 @@
-﻿using aptdealzSellerMobile.Interfaces;
-using aptdealzSellerMobile.Model;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Interfaces;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Accounts;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +17,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WelcomePage : ContentPage
     {
-        #region [ Objecst ]
-        private List<CarousellImage> mCarousellImages = new List<CarousellImage>();
-        #endregion
-
-        #region [ Ctor ]
+        #region [ Constructor ]
         public WelcomePage()
         {
             InitializeComponent();
@@ -26,7 +25,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
         }
         #endregion
 
-        #region [ Methods ]
+        #region [ Methods ]  
         public void Dispose()
         {
             GC.Collect();
@@ -42,7 +41,50 @@ namespace aptdealzSellerMobile.Views.SplashScreen
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindCarousallData();
+            GetAppPromoBar();
+        }
+
+        private async void GetAppPromoBar()
+        {
+            try
+            {
+                Indicators.ItemsSource = null;
+
+                List<AppPromo> mAppPromos = new List<AppPromo>();
+                AppSettingsAPI appSettingsAPI = new AppSettingsAPI();
+                UserDialogs.Instance.ShowLoading("Loading...");
+                var mResponse = await appSettingsAPI.GetAppPromoBar();
+                UserDialogs.Instance.HideLoading();
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    JArray result = (JArray)mResponse.Data;
+                    if (result != null)
+                    {
+                        mAppPromos = result.ToObject<List<AppPromo>>();
+                        if (mAppPromos != null && mAppPromos.Count > 0)
+                        {
+                            Indicators.ItemsSource = cvWelcome.ItemsSource = mAppPromos.ToList();
+                            lblNoRecord.IsVisible = false;
+                        }
+                        else
+                        {
+                            lblNoRecord.IsVisible = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                        lblNoRecord.Text = mResponse.Message;
+                    else
+                        lblNoRecord.Text = Constraints.Something_Wrong;
+                }
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.HideLoading();
+                Common.DisplayErrorMessage("WelcomePage/GetAppPromoBar: " + ex.Message);
+            }
         }
 
         protected override bool OnBackButtonPressed()
@@ -69,27 +111,10 @@ namespace aptdealzSellerMobile.Views.SplashScreen
             return true;
         }
 
-        private void BindCarousallData()
-        {
-            try
-            {
-                mCarousellImages = new List<CarousellImage>()
-            {
-                new CarousellImage{ImageName="imgWelcomeOne.png"},
-                new CarousellImage{ImageName="imgWelcomeTwo.png"},
-                new CarousellImage{ImageName="imgWelcomeThree.png"},
-            };
-                Indicators.ItemsSource = cvWelcome.ItemsSource = mCarousellImages.ToList();
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("WelcomePage/BindCarousallData: " + ex.Message);
-            }
-        }
         #endregion
 
-        #region [ Events ]     
-        private void BtnLogin_Clicked(object sender, EventArgs e)
+        #region [ Events ]  
+        private async void BtnLogin_Clicked(object sender, EventArgs e)
         {
             var Tab = (Button)sender;
             if (Tab.IsEnabled)
@@ -98,7 +123,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
                 {
                     Tab.IsEnabled = false;
                     Common.BindAnimation(button: BtnLogin);
-                    App.Current.MainPage = new NavigationPage(new LoginPage());
+                    await Navigation.PushAsync(new LoginPage());
                 }
                 catch (Exception ex)
                 {

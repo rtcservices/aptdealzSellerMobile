@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,14 +31,17 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 mOrder = new Order();
                 mOrderStatusList = new List<string>();
 
-                txtEWayBillNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-                txtLRNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-                txtShippingNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-               
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    txtEWayBillNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                    txtLRNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                    txtShippingNumber.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                }
+
                 OrderId = orderId;
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount");
-                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -89,13 +93,264 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 mOrderStatusList.Add(OrderStatus.Shipped.ToString());
                 mOrderStatusList.Add(OrderStatus.Delivered.ToString());
                 mOrderStatusList.Add(OrderStatus.Completed.ToString());
-                mOrderStatusList.Add(OrderStatus.CancelledFromBuyer.ToString().ToCamelCase());
 
                 pckOrderStatus.ItemsSource = mOrderStatusList.ToList();
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("OrderDetailsPage/OrderStatusList: " + ex.Message);
+            }
+        }
+
+        private void BindSellerAddress(BuyerAddressDetails mBuyerAddress)
+        {
+            try
+            {
+                if (mBuyerAddress != null &&
+                       (!Common.EmptyFiels(mBuyerAddress.Building) || !Common.EmptyFiels(mBuyerAddress.Street) ||
+                        !Common.EmptyFiels(mBuyerAddress.City) || !Common.EmptyFiels(mBuyerAddress.State) ||
+                        !Common.EmptyFiels(mBuyerAddress.PinCode) || !Common.EmptyFiels(mBuyerAddress.Landmark) ||
+                        !Common.EmptyFiels(mBuyerAddress.Country)))
+                {
+                    FrmBuyerAddress.IsVisible = true;
+                    List<string> addresses = new List<string>();
+
+                    if (!Common.EmptyFiels(mBuyerAddress.Building))
+                    {
+                        addresses.Add(mBuyerAddress.Building);
+                    }
+
+                    if (!Common.EmptyFiels(mBuyerAddress.Street) && !Common.EmptyFiels(mBuyerAddress.City))
+                    {
+                        addresses.Add(mBuyerAddress.Street + ", " + mBuyerAddress.City);
+                    }
+                    else
+                    {
+                        if (!Common.EmptyFiels(mBuyerAddress.Street))
+                        {
+                            addresses.Add(mBuyerAddress.Street);
+                        }
+                        if (!Common.EmptyFiels(mBuyerAddress.City))
+                        {
+                            addresses.Add(mBuyerAddress.City);
+                        }
+                    }
+
+                    if (!Common.EmptyFiels(mBuyerAddress.State) && !Common.EmptyFiels(mBuyerAddress.PinCode))
+                    {
+                        addresses.Add(mBuyerAddress.State + " " + mBuyerAddress.PinCode);
+                    }
+                    else
+                    {
+                        if (!Common.EmptyFiels(mBuyerAddress.State))
+                        {
+                            addresses.Add(mBuyerAddress.State);
+                        }
+                        if (!Common.EmptyFiels(mBuyerAddress.PinCode))
+                        {
+                            addresses.Add(mBuyerAddress.PinCode);
+                        }
+                    }
+
+                    if (!Common.EmptyFiels(mBuyerAddress.Landmark))
+                    {
+                        addresses.Add(mBuyerAddress.Landmark + ", " + mBuyerAddress.Country);
+                    }
+                    else
+                    {
+                        if (!Common.EmptyFiels(mBuyerAddress.Landmark))
+                        {
+                            addresses.Add(mBuyerAddress.Landmark);
+                        }
+                        if (!Common.EmptyFiels(mBuyerAddress.Country))
+                        {
+                            addresses.Add(mBuyerAddress.Country);
+                        }
+                    }
+
+                    if (addresses != null && addresses.Count > 0)
+                    {
+                        lblBuyerAddress.Text = string.Join(Environment.NewLine, addresses);
+                    }
+                }
+                else
+                {
+                    //HideAddress
+                    FrmBuyerAddress.IsVisible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BindSellerAddress: " + ex.Message);
+            }
+        }
+
+        private void BindShippingAddress(ShippingAddressDetails mShippingAddress)
+        {
+            try
+            {
+                if (mShippingAddress != null && (mShippingAddress.Country > 0 ||
+                      !Common.EmptyFiels(mShippingAddress.Building) || !Common.EmptyFiels(mShippingAddress.Street) ||
+                      !Common.EmptyFiels(mShippingAddress.City) || !Common.EmptyFiels(mShippingAddress.PinCode) ||
+                      !Common.EmptyFiels(mShippingAddress.Landmark) || !Common.EmptyFiels(mShippingAddress.State)))
+                {
+                    FrmShippingAddress.IsVisible = true;
+                    List<string> addresses = new List<string>();
+
+                    if (!Common.EmptyFiels(mShippingAddress.Building))
+                    {
+                        addresses.Add(mShippingAddress.Building);
+                    }
+
+                    if (!Common.EmptyFiels(mShippingAddress.Street) && !Common.EmptyFiels(mShippingAddress.City))
+                    {
+                        addresses.Add(mShippingAddress.Street + ", " + mShippingAddress.City);
+                    }
+                    else
+                    {
+                        if (!Common.EmptyFiels(mShippingAddress.Street))
+                        {
+                            addresses.Add(mShippingAddress.Street);
+                        }
+                        if (!Common.EmptyFiels(mShippingAddress.City))
+                        {
+                            addresses.Add(mShippingAddress.City);
+                        }
+                    }
+
+                    if (!Common.EmptyFiels(mShippingAddress.State) && !Common.EmptyFiels(mShippingAddress.PinCode))
+                    {
+                        addresses.Add(mShippingAddress.State + " " + mShippingAddress.PinCode);
+                    }
+                    else
+                    {
+                        if (!Common.EmptyFiels(mShippingAddress.State))
+                        {
+                            addresses.Add(mShippingAddress.State);
+                        }
+                        if (!Common.EmptyFiels(mShippingAddress.PinCode))
+                        {
+                            addresses.Add(mShippingAddress.PinCode);
+                        }
+                    }
+
+                    if (!Common.EmptyFiels(mShippingAddress.Landmark))
+                    {
+                        addresses.Add(mShippingAddress.Landmark);
+                    }
+
+                    if (mShippingAddress.Country.HasValue)
+                    {
+                        addresses.Add(mShippingAddress.Country.Value.ToString());
+                    }
+
+                    if (addresses != null && addresses.Count > 0)
+                    {
+                        lblShippingAddress.Text = string.Join(Environment.NewLine, addresses);
+                    }
+                }
+                else
+                {
+                    //HideAddress
+                    FrmShippingAddress.IsVisible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BindShippingAddress: " + ex.Message);
+            }
+        }
+
+        private void BindOrderStatus(int Status, bool PickupProductDirectly, bool CancellationPeriod)
+        {
+            try
+            {
+                if (PickupProductDirectly)  //Pickup from seller
+                {
+                    BtnScanQRCode.IsVisible = true;
+                    BtnRaiseGrievance.IsVisible = true;
+                    BtnUpdate.IsVisible = false;
+                    GrdUpdateStatus.IsVisible = false;
+                    StkNoUpdation.IsVisible = false;
+                }
+
+                if (CancellationPeriod)
+                {
+                    if (Status == (int)OrderStatus.ReadyForPickup)
+                    {
+                        BtnScanQRCode.IsVisible = true;
+                        BtnRaiseGrievance.IsVisible = true;
+                        BtnUpdate.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
+                        StkNoUpdation.IsVisible = false;
+                    }
+                    else if (Status == (int)OrderStatus.Delivered)
+                    {
+                        GrdUpdateStatus.IsVisible = true;
+                        txtShippingNumber.IsReadOnly = true;
+                        txtLRNumber.IsReadOnly = true;
+                        txtEWayBillNumber.IsReadOnly = true;
+                        txtTrackingLink.IsReadOnly = true;
+                        GrdChargesAndEarnings.IsVisible = true;
+
+                        BtnRaiseGrievance.IsVisible = false;
+                        StkNoUpdation.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        BtnScanQRCode.IsVisible = false;
+                    }
+                    else if (Status == (int)OrderStatus.Completed)
+                    {
+                        StkNoUpdation.IsVisible = true;
+                        GrdChargesAndEarnings.IsVisible = true;
+
+                        BtnRaiseGrievance.IsVisible = false;
+                        BtnUpdate.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
+                        BtnScanQRCode.IsVisible = false;
+                    }
+                    else if (Status == (int)OrderStatus.CancelledFromBuyer)
+                    {
+                        BtnScanQRCode.IsVisible = false;
+                        BtnUpdate.IsVisible = false;
+                        GrdUpdateStatus.IsVisible = false;
+                        StkNoUpdation.IsVisible = false;
+                        BtnRaiseGrievance.IsVisible = false;
+                    }
+                    else if (Status == (int)OrderStatus.Shipped)
+                    {
+                        BtnRaiseGrievance.IsVisible = true;
+                        BtnScanQRCode.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        GrdUpdateStatus.IsVisible = true;
+                    }
+                    else if (Status == (int)OrderStatus.Shipped)
+                    {
+                        BtnRaiseGrievance.IsVisible = true;
+                        BtnScanQRCode.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        GrdUpdateStatus.IsVisible = true;
+                    }
+                    else //Update Status
+                    {
+                        BtnScanQRCode.IsVisible = false;
+                        BtnRaiseGrievance.IsVisible = false;
+                        BtnUpdate.IsVisible = true;
+                        GrdUpdateStatus.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    BtnScanQRCode.IsVisible = false;
+                    BtnRaiseGrievance.IsVisible = false;
+                    BtnUpdate.IsVisible = false;
+                    GrdUpdateStatus.IsVisible = false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BindOrderStatus: " + ex.Message);
             }
         }
 
@@ -116,9 +371,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     lblOrderRequirementId.Text = mOrder.RequirementNo;
                     lblRequirementTitle.Text = mOrder.Title;
                     lblOrderReferenceNo.Text = mOrder.QuoteNo;
-                    lblOrderBuyerName.Text = mOrder.BuyerContact.Name;
                     lblOrderSellerName.Text = mOrder.SellerContact.Name;
-                    lblOrderPinCode.Text = mOrder.ShippingPincode;
+
+
                     lblOrderQuntity.Text = "" + mOrder.RequestedQuantity + " " + mOrder.Unit;
                     lblOrderUnitPrice.Text = "Rs " + mOrder.UnitPrice;
                     lblOrderNetAmount.Text = "Rs " + mOrder.NetAmount;
@@ -128,38 +383,53 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     lblOrderCountry.Text = mOrder.Country;
                     lblInvoiceNo.Text = mOrder.OrderNo;
                     lblTotalAmount.Text = "Rs " + mOrder.TotalAmount;
-                    lblExpectedDate.Text = mOrder.ExpectedDelivery.ToString("dd/MM/yyyy");
+                    lblExpectedDate.Text = mOrder.ExpectedDelivery.ToString(Constraints.Str_DateFormate);
                     lblBuyerContact.Text = mOrder.SellerContact.PhoneNumber;
                     lblOrderStatus.Text = mOrder.OrderStatusDescr;
                     lblPaymentStatus.Text = mOrder.PaymentStatusDescr;
+
                     pckOrderStatus.SelectedIndex = Common.GetOrderIndex(mOrder.OrderStatus);
-                    #endregion
 
-                    #region [ Address ]
-                    lblBuyerAddress.Text = mOrder.BuyerAddressDetails.Building + "\n"
-                                                         + mOrder.BuyerAddressDetails.Street + "\n"
-                                                         + mOrder.BuyerAddressDetails.City + ", " + mOrder.BuyerAddressDetails.PinCode + "\n"
-                                                         + mOrder.BuyerAddressDetails.Landmark + ", " + mOrder.BuyerAddressDetails.Country;
-
-
-                    if (mOrder.ShippingAddressDetails != null &&
-                        (!Common.EmptyFiels(mOrder.ShippingAddressDetails.Building) ||
-                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.Street) ||
-                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.City) ||
-                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.PinCode) ||
-                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.Landmark) ||
-                        !Common.EmptyFiels(mOrder.ShippingAddressDetails.State) ||
-                        mOrder.ShippingAddressDetails.Country > 0))
+                    if (mOrder.BuyerContact != null && !Common.EmptyFiels(mOrder.BuyerContact.BuyerId) && !Common.EmptyFiels(mOrder.BuyerContact.UserId))
                     {
-                        lblShippingAddress.Text = mOrder.ShippingAddressDetails.Building + "\n"
-                                                          + mOrder.ShippingAddressDetails.Street + ", " + mOrder.ShippingAddressDetails.City + "\n"
-                                                          + mOrder.ShippingAddressDetails.State + " " + mOrder.ShippingAddressDetails.PinCode + "\n"
-                                                          + mOrder.ShippingAddressDetails.Landmark + ", " + mOrder.ShippingAddressDetails.Country;
+                        StkBuyerName.IsVisible = true;
+                        StkBuyerPhoneNo.IsVisible = true;
+                        StkBuyerEmail.IsVisible = true;
+                        lblBuyerContactLabel.IsVisible = true;
+                        lblBuyerContact.IsVisible = true;
+                        lblOrderBuyerName.Text = mOrder.BuyerContact.Name;
+                        lblBuyerPNumber.Text = mOrder.BuyerContact.PhoneNumber;
+                        lblBuyerEmail.Text = mOrder.BuyerContact.Email;
+                        lblBuyerContact.Text = mOrder.SellerContact.PhoneNumber;
                     }
                     else
                     {
-                        lblShippingAddress.Text = "No shipping address found";
+                        StkBuyerName.IsVisible = false;
+                        StkBuyerPhoneNo.IsVisible = false;
+                        StkBuyerEmail.IsVisible = false;
+                        lblBuyerContactLabel.IsVisible = false;
+                        lblBuyerContact.IsVisible = false;
+                        lblOrderBuyerName.Text = string.Empty;
+                        lblBuyerPNumber.Text = string.Empty;
+                        lblBuyerEmail.Text = string.Empty;
+                        lblBuyerContact.Text = string.Empty;
                     }
+
+                    if (!Common.EmptyFiels(mOrder.ShippingPincode))
+                    {
+                        StkShippingPINCode.IsVisible = true;
+                        lblOrderPinCode.Text = mOrder.ShippingPincode;
+                    }
+                    else
+                    {
+                        StkShippingPINCode.IsVisible = false;
+                        lblOrderPinCode.Text = string.Empty;
+                    }
+                    #endregion
+
+                    #region [ Address ]
+                    BindSellerAddress(mOrder.BuyerAddressDetails);
+                    BindShippingAddress(mOrder.ShippingAddressDetails);
                     #endregion
 
                     #region [ Shipping Details ]
@@ -179,71 +449,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     {
                         txtTrackingLink.Text = mOrder.TrackingLink;
                     }
-                    #endregion
+                    #endregion                  
 
-                    #region [ Status Buttons ]
-                    if (mOrder.PickupProductDirectly)  //Pickup from seller
-                    {
-                        BtnScanQRCode.IsVisible = true;
-                        BtnRaiseGrievance.IsVisible = true;
-                        BtnUpdate.IsVisible = false;
-                        GrdUpdateStatus.IsVisible = false;
-                        StkNoUpdation.IsVisible = false;
-                    }
-
-                    if (mOrder.OrderStatus == (int)OrderStatus.ReadyForPickup)
-                    {
-                        BtnScanQRCode.IsVisible = true;
-                        BtnRaiseGrievance.IsVisible = true;
-                        BtnUpdate.IsVisible = false;
-                        GrdUpdateStatus.IsVisible = false;
-                        StkNoUpdation.IsVisible = false;
-                    }
-                    else if (mOrder.OrderStatus == (int)OrderStatus.Delivered)
-                    {
-                        GrdUpdateStatus.IsVisible = true;
-                        txtShippingNumber.IsReadOnly = true;
-                        txtLRNumber.IsReadOnly = true;
-                        txtEWayBillNumber.IsReadOnly = true;
-                        txtTrackingLink.IsReadOnly = true;
-                        GrdChargesAndEarnings.IsVisible = true;
-
-                        BtnRaiseGrievance.IsVisible = false;
-                        StkNoUpdation.IsVisible = false;
-                        BtnUpdate.IsVisible = true;
-                        BtnScanQRCode.IsVisible = false;
-                    }
-                    else if (mOrder.OrderStatus == (int)OrderStatus.Completed)
-                    {
-                        StkNoUpdation.IsVisible = true;
-                        GrdChargesAndEarnings.IsVisible = true;
-
-                        BtnRaiseGrievance.IsVisible = false;
-                        BtnUpdate.IsVisible = false;
-                        GrdUpdateStatus.IsVisible = false;
-                        BtnScanQRCode.IsVisible = false;
-                    }
-                    else if (mOrder.OrderStatus == (int)OrderStatus.CancelledFromBuyer)
-                    {
-                        BtnScanQRCode.IsVisible = false;
-                        BtnUpdate.IsVisible = false;
-                        GrdUpdateStatus.IsVisible = false;
-                        StkNoUpdation.IsVisible = false;
-                        BtnRaiseGrievance.IsVisible = false;
-                    }
-                    else if (mOrder.OrderStatus == (int)OrderStatus.Shipped)
-                    {
-                        BtnRaiseGrievance.IsVisible = true;
-                        BtnScanQRCode.IsVisible = false;
-                        BtnUpdate.IsVisible = true;
-                        GrdUpdateStatus.IsVisible = true;
-                    }
-                    else //Update Status
-                    {
-                        BtnScanQRCode.IsVisible = false; BtnRaiseGrievance.IsVisible = false;
-                        BtnUpdate.IsVisible = true;
-                        GrdUpdateStatus.IsVisible = true;
-                    }
+                    #region [ Status ]
+                    BindOrderStatus(mOrder.OrderStatus, mOrder.PickupProductDirectly, mOrder.IsCancellationPeriodOver);
                     #endregion
                 }
             }
@@ -287,7 +496,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                     if (!Common.EmptyFiels(txtTrackingLink.Text))
                     {
-                        mOrderUpdate.TrackingLink = txtTrackingLink.Text;
+                        if (txtTrackingLink.Text.IsValidURL())
+                        {
+                            mOrderUpdate.TrackingLink = txtTrackingLink.Text;
+                        }
+                        else
+                        {
+                            Common.DisplayErrorMessage(Constraints.Invalid_Tracking_link);
+                            BtnUpdate.IsEnabled = true;
+                            return;
+                        }
                     }
 
                     if (!Common.EmptyFiels(txtShippingNumber.Text))
@@ -350,7 +568,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -406,10 +624,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 {
                     Common.DisplayErrorMessage("OrderDetailsPage/BtnUpdate_Tapped: " + ex.Message);
                 }
-                //finally
-                //{
-                //    Tab.IsEnabled = true;
-                //}
             }
         }
 

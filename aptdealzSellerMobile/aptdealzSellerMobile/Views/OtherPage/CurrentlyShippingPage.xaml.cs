@@ -37,7 +37,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 pageNo = 1;
                 GetShippedOrders(title, filterBy, isAssending);
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -221,7 +221,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -346,13 +346,16 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 var ButtonExp = (Button)sender;
                 var mOrder = ButtonExp.BindingContext as Order;
-                if (mOrder.TrackingLink != null && mOrder.TrackingLink.Length > 10)
+                if (mOrder != null && !Common.EmptyFiels(mOrder.TrackingLink))
                 {
-                    Xamarin.Essentials.Launcher.OpenAsync(new Uri(mOrder.TrackingLink));
+                    if (mOrder.TrackingLink.IsValidURL())
+                        Xamarin.Essentials.Launcher.OpenAsync(new Uri(mOrder.TrackingLink));
+                    else
+                        Common.DisplayErrorMessage(Constraints.Invalid_URL);
                 }
                 else
                 {
-                    Common.DisplayErrorMessage("Invalid tracking URL");
+                    Common.DisplayErrorMessage(Constraints.URL_Not_Available);
                 }
             }
             catch (Exception ex)

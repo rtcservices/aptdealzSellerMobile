@@ -110,11 +110,14 @@ namespace aptdealzSellerMobile.Utility
                     }
                     else
                     {
-                        SelectedXFImagePath.Source = ImageSource.FromStream(() =>
+                        if (SelectedXFImagePath != null)
+                        {
+                            SelectedXFImagePath.Source = ImageSource.FromStream(() =>
                         {
                             var stream = file.GetStream();
                             return stream;
                         });
+                        }
                     }
                 });
 

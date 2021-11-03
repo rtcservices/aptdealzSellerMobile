@@ -1,6 +1,7 @@
 ﻿using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -36,6 +37,27 @@ namespace aptdealzSellerMobile.Utility
             {
                 Common.DisplayErrorMessage("FileSelection/FilePickup: " + ex.Message);
             }
+        }
+
+        public static string DisplayImage(string RelativePath)
+        {
+            string extensionDoc = string.Empty;
+
+            if (!Common.EmptyFiels(RelativePath))
+            {
+                string extension = Path.GetExtension(RelativePath).ToLower();
+
+                if (extension == ".mp3" || extension == ".wma" || extension == ".acc")
+                    extensionDoc = "iconMusic.png";
+                else if (extension == ".jpg" || extension == ".jpeg" || extension == ".png")
+                    extensionDoc = RelativePath;
+                else if (extension == ".mp4" || extension == ".mov" || extension == ".wmv" || extension == ".qt" || extension == ".gif")
+                    extensionDoc = "iconVideo.png";
+                else
+                    extensionDoc = "iconFiles2.png";
+            }
+
+            return extensionDoc;
         }
     }
 }

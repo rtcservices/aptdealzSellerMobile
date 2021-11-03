@@ -29,6 +29,8 @@ namespace aptdealzSellerMobile.Model.Reponse
         [JsonProperty("createdDate")]
         public DateTime CreatedDate { get; set; }
 
+        [JsonProperty("createdDateStr")]
+        public string CreatedDateStr { get; set; }
 
         #region [ Extra ]     
         [JsonIgnore]

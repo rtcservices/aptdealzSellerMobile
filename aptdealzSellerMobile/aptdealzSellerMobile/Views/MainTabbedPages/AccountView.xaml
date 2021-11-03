@@ -21,21 +21,10 @@
             <!--  Header  -->
             <Grid Grid.Row="0" RowSpacing="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
-                <Image
-                    Grid.Column="0"
-                    Margin="20,0,0,0"
-                    HeightRequest="30"
-                    HorizontalOptions="StartAndExpand"
-                    Source="IconMenu.png"
-                    VerticalOptions="CenterAndExpand">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
-                    </Image.GestureRecognizers>
-                </Image>
 
                 <ImageButton
                     x:Name="BtnLogo"
@@ -46,7 +35,7 @@
                 <Grid
                     Grid.Column="2"
                     Margin="0,0,10,0"
-                    ColumnDefinitions="*,*"
+                    ColumnDefinitions="*,*,*"
                     HorizontalOptions="EndAndExpand">
                     <Grid>
                         <Image Source="iconNotification.png" Style="{StaticResource imgNotification}" />
@@ -71,6 +60,19 @@
                         WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgQuestion_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image
+                        Grid.Column="2"
+                        Margin="0,0,0,0"
+                        HeightRequest="30"
+                        HorizontalOptions="StartAndExpand"
+                        Source="iconGear.png"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ImgMenu_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
                 </Grid>
@@ -323,8 +325,8 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
+                                        <!--<RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />-->
                                     </Grid.RowDefinitions>
 
                                     <!--  Building Number  -->
@@ -447,7 +449,7 @@
                                     </StackLayout>
 
                                     <!--  Add more address button  -->
-                                    <Button
+                                    <!--<Button
                                         x:Name="BtnAddMore"
                                         Grid.Row="7"
                                         Margin="0,20,0,0"
@@ -457,10 +459,10 @@
                                         HeightRequest="45"
                                         HorizontalOptions="CenterAndExpand"
                                         Style="{StaticResource btnBorder}"
-                                        Text="Add More Address" />
+                                        Text="Add More Address" />-->
 
                                     <!--  List of Address  -->
-                                    <ListView
+                                    <!--<ListView
                                         x:Name="lstBilling"
                                         Grid.Row="8"
                                         IsVisible="false"
@@ -527,7 +529,7 @@
                                                 </ViewCell>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
-                                    </ListView>
+                                    </ListView>-->
                                 </Grid>
 
                                 <!--  Company Porfile Header  -->
@@ -930,13 +932,18 @@
                                                 </CollectionView.ItemsLayout>
                                                 <CollectionView.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Image
+                                                        <ImageButton
+                                                            x:Name="ImgDocument"
+                                                            Margin="0"
+                                                            Padding="0"
                                                             Aspect="AspectFit"
-                                                            HeightRequest="30"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="ImgDocument_Clicked"
+                                                            HeightRequest="40"
                                                             HorizontalOptions="StartAndExpand"
                                                             Source="iconFiles.png"
                                                             VerticalOptions="CenterAndExpand"
-                                                            WidthRequest="30" />
+                                                            WidthRequest="40" />
                                                     </DataTemplate>
                                                 </CollectionView.ItemTemplate>
                                             </CollectionView>
@@ -957,6 +964,7 @@
                             <!--  Update/Logout Button  -->
                             <Grid
                                 Grid.Row="2"
+                                Margin="0,0,0,10"
                                 Padding="20,0"
                                 RowSpacing="0"
                                 VerticalOptions="EndAndExpand">

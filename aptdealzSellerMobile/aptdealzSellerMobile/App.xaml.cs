@@ -3,6 +3,7 @@ using aptdealzSellerMobile.Services;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
 using Plugin.FirebasePushNotification;
+using Plugin.LocalNotification;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,6 +17,7 @@ namespace aptdealzSellerMobile
         public static int longitude = 0;
         public static StoppableTimer stoppableTimer;
         public static bool IsNotification = false;
+        public static StoppableTimer chatStoppableTimer;
         #endregion
 
         #region [ Ctor ]
@@ -82,6 +84,10 @@ namespace aptdealzSellerMobile
                 CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
                 {
                     System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+                    if (DeviceInfo.Platform == DevicePlatform.iOS)
+                    {
+                        Utility.Settings.fcm_token = p.Token;
+                    }
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
@@ -119,6 +125,28 @@ namespace aptdealzSellerMobile
             }
         }
 
+        public static void PushNotificationForiOS(string title, string message)
+        {
+            try
+            {
+                if (DeviceInfo.Platform == DevicePlatform.iOS)
+                {
+                    var notification = new NotificationRequest
+                    {
+                        NotificationId = 100,
+                        Title = title,
+                        Description = message,
+                        BadgeNumber = 1,
+                    };
+                    NotificationCenter.Current.Show(notification);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Common.DisplayErrorMessage("App/PushNotificationForiOS: " + ex.Message);
+            }
+        }
+
         protected override void OnStart()
         {
         }
@@ -131,6 +159,8 @@ namespace aptdealzSellerMobile
 
         protected override void OnResume()
         {
+            if (App.stoppableTimer != null)
+                stoppableTimer.Start();
         }
         #endregion
     }

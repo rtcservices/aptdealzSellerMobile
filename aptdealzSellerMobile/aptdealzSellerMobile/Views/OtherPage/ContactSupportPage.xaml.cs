@@ -6,8 +6,10 @@ using aptdealzSellerMobile.Views.Dashboard;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,10 +31,15 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 InitializeComponent();
                 supportChatAPI = new SupportChatAPI();
                 mMessageList = new List<ChatSupport>();
-                txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
-                MessagingCenter.Unsubscribe<string>(this, "NotificationCount"); 
-                MessagingCenter.Subscribe<string>(this, "NotificationCount", (count) =>
+                Binding binding = new Binding("mMessageList", mode: BindingMode.TwoWay, source: this);
+                lstChar.SetBinding(ListView.ItemsSourceProperty, binding);
+
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                    txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
@@ -45,6 +52,30 @@ namespace aptdealzSellerMobile.Views.OtherPage
                         lblNotificationCount.Text = string.Empty;
                     }
                 });
+
+                var backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += delegate
+                {
+                    if (App.chatStoppableTimer != null)
+                    {
+                        App.chatStoppableTimer.Stop();
+                        App.chatStoppableTimer = null;
+                    }
+
+                    if (App.chatStoppableTimer == null)
+                    {
+                        App.chatStoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(1), async () =>
+                        {
+                            if (Common.PreviousNotificationCount != Common.NotificationCount)
+                            {
+                                Common.PreviousNotificationCount = Common.NotificationCount;
+                                await GetMessages();
+                            }
+                        });
+                    }
+                    App.chatStoppableTimer.Start();
+                };
+                backgroundWorker.RunWorkerAsync();
             }
             catch (Exception ex)
             {
@@ -64,27 +95,33 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             base.OnDisappearing();
             Dispose();
+
+            if (App.chatStoppableTimer != null)
+            {
+                App.chatStoppableTimer.Stop();
+                App.chatStoppableTimer = null;
+            }
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
-            GetMessages();
+            UserDialogs.Instance.ShowLoading(Constraints.Loading);
+            await GetMessages();
+            UserDialogs.Instance.HideLoading();
         }
 
         private async Task GetMessages()
         {
             try
             {
-                UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var mResponse = await supportChatAPI.GetAllMyChat();
-
                 if (mResponse != null && mResponse.Succeeded)
                 {
                     JArray result = (JArray)mResponse.Data;
                     if (result != null)
                     {
-                        txtMessage.Text = string.Empty;
+                        //txtMessage.Text = string.Empty;
                         mMessageList = result.ToObject<List<ChatSupport>>();
                         if (mMessageList != null && mMessageList.Count > 0)
                         {
@@ -111,6 +148,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
                             lstChar.IsVisible = true;
                             lblNoRecord.IsVisible = false;
                             lstChar.ItemsSource = mMessageList.ToList();
+
+                            var mMessage = mMessageList.LastOrDefault();
+                            if (mMessage != null)
+                                lstChar.ScrollTo(mMessage, ScrollToPosition.End, false);
                         }
                         else
                         {
@@ -133,11 +174,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
             {
                 Common.DisplayErrorMessage("ContactSupportPage/GetMessages: " + ex.Message);
             }
-            finally
-            {
-                UserDialogs.Instance.HideLoading();
-            }
-
         }
 
         private async Task SentMessage()
@@ -178,7 +214,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
-
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
@@ -218,6 +254,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     Tab.IsEnabled = false;
                     Common.BindAnimation(imageButton: BtnSend);
                     await SentMessage();
+
                 }
                 catch (Exception ex)
                 {

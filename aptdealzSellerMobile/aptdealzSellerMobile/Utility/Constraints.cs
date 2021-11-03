@@ -2,12 +2,23 @@
 {
     public class Constraints
     {
+        #region [ String ]
+        public const string Str_DateFormate = "dd/MM/yyyy";
+        public const string Str_TokenExpired = "TokenExpired";
+        public const string Str_NotificationCount = "NotificationCount";
+        public const string Str_AccountDeactivated = "account is deactivated";
+        public const string Str_Duplicate = "duplicate";
+
         public const string Str_RevealContact = "Reveal Contact";
         public const string Str_NotRevealContact = "Contact was not revealed";
         public const string RP_UserName = "rzp_test_PUJtE9p3XLuGe8";
         public const string RP_Password = "42HIrjeUTXOHNC84Ldl3aDzL";
         public const string RP_RevealPayNow = "RevealPayNow";
         public const string RP_PaidRevealResponse = "PaidRevealResponse";
+
+        public const string Invalid_URL = "Invalid URL: The format of the URL could not be determined!";
+        public const string URL_Not_Available = "Tracking URL not available!";
+        #endregion
 
         #region [ Images ]
         public const string Password_Hide = "iconHidePass.png";
@@ -39,15 +50,12 @@
         public const string ImgQuoteActive = "iconQuotesActive.png";
         public const string ImgOrderActive = "iconOrdersActive.png";
         public const string ImgAccountActive = "iconAccountActive.png";
-        #endregion
 
-        #region [ Error Message ]
-        public static string Session_Expired = "Session expired, Please login again!";
-        public static string Something_Wrong = "Something went wrong!";
-        public static string Something_Wrong_Server = "Something went wrong from server!";
-        public static string ServiceUnavailable = "Service Unavailable, Try again later!";
-        public static string Number_was_null = "Number was null or white space";
-        public static string Phone_Dialer_Not_Support = "Phone Dialer is not supported on this device";
+        public const string Img_GreenArrowDown = "iconGreenDownArrow.png";
+        public const string Img_GreenArrowUp = "iconGreenUpArrow.png";
+
+        public const string Img_SwitchOff = "iconSwitchOff.png";
+        public const string Img_SwitchOn = "iconSwitchOn.png";
         #endregion
 
         #region [ Alert Title ]
@@ -65,13 +73,21 @@
         public const string Logout = "Logout";
         #endregion
 
+        #region [ Error Message ]
+        public static string Session_Expired = "Session expired, Please login again!";
+        public static string Something_Wrong = "Something went wrong!";
+        public static string Something_Wrong_Server = "Something went wrong from server!";
+        public static string ServiceUnavailable = "Service Unavailable, Try again later!";
+        public static string Number_was_null = "Number was null or white space";
+        public static string Phone_Dialer_Not_Support = "Phone Dialer is not supported on this device";
+        #endregion
+
         #region [ Alert Message ]   
         public const string CouldNotSentOTP = "Could not send Verification Code to the given number!";
         public const string DoYouWantToExit = "Do you really want to exit?";
         public const string AreYouSureWantDeactivateAccount = "Are you sure want to deactivate account?";
         public const string AreYouSureWantDelete = "Are you sure want to delete?";
         public const string AreYouSureWantLogout = "Are you sure want to logout?";
-        public const string AreYouSureWantDeleteNotification = "Are you sure you want to delete the notification?";
 
         public const string NoInternetConnection = "No internet connection!";
         public const string NoCameraAwailable = "No camera awailable!";
@@ -99,7 +115,6 @@
         public const string Agree_T_C = "Please check box for Terms & Conditions.";
         public const string ContactRevealed = "Buyer Contacts Revealed!";
 
-        public const string Required_All = "Selected fields are required!";
         public const string Required_BillingAddress = "Please enter billing address!";
         public const string Required_Email_Phone = "Please enter email address or phone number!";
         public const string Required_VerificationCode = "Please enter verification code!";
@@ -127,6 +142,9 @@
         public const string Required_Category = "Please enter category!";
         public const string Required_Subcategory = "Please enter sub category!";
 
+        public const string Required_Documents = "Please upload documents!";
+
+
         public const string Required_NewPassword = "Please enter new password!";
         public const string Required_ConfirmPassword = "Please enter confirm password!";
 
@@ -140,9 +158,13 @@
 
         public const string Required_Response = "Please enter your message!";
         public const string Required_ComplainType = "Please select complaint type!";
+        public const string Required_Reason = "Please enter the reason for rejection!";
+
+        public const string Invalid_Tracking_link = "Please enter valid Tracking link";
+
         #endregion
 
-        #region [ Success ]
+        #region [ Success Message ]
         public const string OTPSent = "OTP Verification Code Sent Successfully";
         public const string InstantVerification = "you don't get any code, it is instant verification. Please try to login with email address";
         #endregion
