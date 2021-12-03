@@ -151,23 +151,20 @@ namespace aptdealzSellerMobile.iOS
             {
                 if (options != null && options.ContainsKey(new NSString("aps")))
                 {
-                    NSDictionary aps = options.ObjectForKey(new NSString("aps")) as NSDictionary;
                     string body = string.Empty;
                     string title = AppInfo.Name;
-                    if (aps.ContainsKey(new NSString("alert")))
-                    {
-                        body = (aps[new NSString("alert")] as NSString).ToString();
-                    }
+                    body = (options[new NSString("Message")] as NSString).ToString();
 
                     if (!string.IsNullOrEmpty(body))
                     {
-                        App.PushNotificationForiOS(title, body);
+                        //  App.PushNotificationForiOS(title, body);
                     }
                 }
             }
             catch (System.Exception ex)
             {
-                App.Current.MainPage.DisplayAlert("ProcessNotification", ex.Message, "Ok");
+                if (!ex.Message.ToLower().Contains("object reference"))
+                    App.Current.MainPage.DisplayAlert("ProcessNotification", ex.Message, "Ok");
             }
         }
 

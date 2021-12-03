@@ -97,6 +97,11 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
+        private Color BindTextColor()
+        {
+            return (Application.Current.UserAppTheme == OSAppTheme.Light) ? (Color)App.Current.Resources["appColor4"] : (Color)App.Current.Resources["appColor6"];
+        }
+
         private void BindViews(string view)
         {
             try
@@ -168,15 +173,12 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             grdMain.Children.Clear();
 
-            imgHome.Source = Constraints.ImgHome;
-            imgQuotes.Source = Constraints.ImgQuote;
-            imgOrders.Source = Constraints.ImgOrder;
-            imgAccount.Source = Constraints.ImgAccount;
+            imgHome.Source = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.ImgHome : Constraints.ImgHomeDark;
+            imgQuotes.Source = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.ImgQuote : Constraints.ImgQuoteDark;
+            imgOrders.Source = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.ImgOrder : Constraints.ImgOrderDark;
+            imgAccount.Source = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.ImgAccount : Constraints.ImgAccountDark;
 
-            lblHome.TextColor = (Color)App.Current.Resources["appColor4"];
-            lblQuotes.TextColor = (Color)App.Current.Resources["appColor4"];
-            lblOrders.TextColor = (Color)App.Current.Resources["appColor4"];
-            lblAccount.TextColor = (Color)App.Current.Resources["appColor4"];
+            lblHome.TextColor = lblQuotes.TextColor = lblOrders.TextColor = lblAccount.TextColor = BindTextColor();
         }
         #endregion
 
@@ -184,54 +186,46 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private void Tab_Tapped(object sender, EventArgs e)
         {
             var grid = (Grid)sender;
-            if (grid.IsEnabled)
+            try
             {
-                try
+                if (!Common.EmptyFiels(grid.ClassId))
                 {
-                    grid.IsEnabled = false;
-                    if (!Common.EmptyFiels(grid.ClassId))
+                    if (grid.ClassId == "Home")
                     {
-                        if (grid.ClassId == "Home")
+                        if (selectedView != "Home")
                         {
-                            if (selectedView != "Home")
-                            {
-                                BindViews("Home");
-                            }
+                            BindViews("Home");
                         }
-                        else if (grid.ClassId == "Quotes")
+                    }
+                    else if (grid.ClassId == "Quotes")
+                    {
+                        if (selectedView != "Quotes")
                         {
-                            if (selectedView != "Quotes")
-                            {
-                                this.isNavigate = true;
-                                BindViews("Quotes");
-                            }
+                            this.isNavigate = true;
+                            BindViews("Quotes");
                         }
-                        else if (grid.ClassId == "Orders")
+                    }
+                    else if (grid.ClassId == "Orders")
+                    {
+                        if (selectedView != "Orders")
                         {
-                            if (selectedView != "Orders")
-                            {
-                                this.isNavigate = true;
-                                BindViews("Orders");
-                            }
+                            this.isNavigate = true;
+                            BindViews("Orders");
                         }
-                        else if (grid.ClassId == "Account")
+                    }
+                    else if (grid.ClassId == "Account")
+                    {
+                        if (selectedView != "Account")
                         {
-                            if (selectedView != "Account")
-                            {
-                                this.isNavigate = true;
-                                BindViews("Account");
-                            }
+                            this.isNavigate = true;
+                            BindViews("Account");
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("MainTabbedPage/Tab_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    grid.IsEnabled = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("MainTabbedPage/Tab_Tapped: " + ex.Message);
             }
         }
         #endregion

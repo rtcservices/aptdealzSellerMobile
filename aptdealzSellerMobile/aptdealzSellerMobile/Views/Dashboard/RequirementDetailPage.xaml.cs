@@ -92,7 +92,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     }
                     else
                     {
-                        imgProductImage.Source = "iconProductBanner.png";
+                        imgProductImage.Source = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.ImgProductBanner : Constraints.ImgProductBannerWhite;
                     }
 
                     lblTitle.Text = mRequirement.Title;
@@ -135,9 +135,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     {
                         lblPreferSeller.Text = "✓";
                         lblDeliveryDate.Text = "Expected Pickup Date";
+                        stkLocPinCode.IsVisible = false;
                     }
                     else
                     {
+                        stkLocPinCode.IsVisible = true;
                         lblPreferSeller.Text = "✕";
                         lblDeliveryDate.Text = "Expected Delivery Date";
                     }
@@ -328,29 +330,28 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementDetailPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -361,51 +362,33 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
         private async void BtnRevealContact_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnRevealContact);
-                    await RevealBuyerContact();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementDetailPage/BtnRevealContact_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnRevealContact);
+                await RevealBuyerContact();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/BtnRevealContact_Tapped: " + ex.Message);
             }
         }
 
         private async void BtnProvideQuote_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnProvideQoute);
-                    await Navigation.PushAsync(new ProvideQuotePage(mRequirement.RequirementId));
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementDetailPage/BtnProvideQuote_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnProvideQoute);
+                await Navigation.PushAsync(new ProvideQuotePage(mRequirement.RequirementId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/BtnProvideQuote_Tapped: " + ex.Message);
             }
         }
 
@@ -448,29 +431,20 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void FrmProductImage_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                if (!Common.EmptyFiels(ProductImageUrl))
                 {
-                    Tab.IsEnabled = false;
-                    if (!Common.EmptyFiels(ProductImageUrl))
-                    {
-                        var base64File = ImageConvertion.ConvertImageURLToBase64(ProductImageUrl);
-                        string extension = Path.GetExtension(ProductImageUrl).ToLower();
+                    var base64File = ImageConvertion.ConvertImageURLToBase64(ProductImageUrl);
+                    string extension = Path.GetExtension(ProductImageUrl).ToLower();
 
-                        var successPopup = new Popup.DisplayDocumentPopup(base64File, extension);
-                        await PopupNavigation.Instance.PushAsync(successPopup);
-                    }
+                    var successPopup = new Popup.DisplayDocumentPopup(base64File, extension);
+                    await PopupNavigation.Instance.PushAsync(successPopup);
                 }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementDetailPage/FrmProductImage_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementDetailPage/FrmProductImage_Tapped: " + ex.Message);
             }
         }
         #endregion

@@ -3,11 +3,11 @@
     x:Class="aptdealzSellerMobile.Views.Dashboard.RequirementDetailPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -62,6 +62,7 @@
                     </Image>
 
                     <Image
+                        x:Name="ImgMenu"
                         Grid.Column="2"
                         Margin="0,0,0,0"
                         HeightRequest="30"
@@ -97,7 +98,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         x:Name="lblTitle"
@@ -135,9 +135,11 @@
                                     Margin="0"
                                     Aspect="AspectFit"
                                     BackgroundColor="Transparent"
-                                    ErrorPlaceholder="iconProductBanner.png"
+                                    ErrorPlaceholder="{AppThemeBinding Dark=iconProductBannerWhite.png,
+                                                                       Light=iconProductBanner.png}"
                                     HorizontalOptions="FillAndExpand"
-                                    LoadingPlaceholder="iconProductBanner.png"
+                                    LoadingPlaceholder="{AppThemeBinding Dark=iconProductBannerWhite.png,
+                                                                         Light=iconProductBanner.png}"
                                     VerticalOptions="FillAndExpand" />
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmProductImage_Tapped" />
@@ -343,7 +345,7 @@
 
 
                                 <!--  LOC PIN Code  -->
-                                <StackLayout Grid.Row="8">
+                                <StackLayout x:Name="stkLocPinCode" Grid.Row="8">
                                     <StackLayout
                                         Margin="20,0"
                                         HorizontalOptions="FillAndExpand"
@@ -351,7 +353,7 @@
                                         <Label
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
-                                            Text="Loc PIN Code" />
+                                            Text="Shipping PIN Code" />
 
                                         <Label
                                             x:Name="lblLocPinCode"
@@ -414,7 +416,6 @@
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblLight}"
                                             Text="Pickup Product Directly From Seller"
-                                            TextColor="{StaticResource appColor4}"
                                             VerticalOptions="CenterAndExpand" />
 
                                         <Label
@@ -471,14 +472,6 @@
                                     HeightRequest="45"
                                     Style="{StaticResource btnBorder}"
                                     Text="Provide Quote" />
-                                <!--<Button
-                                x:Name="BtnReject"
-                                Grid.Column="1"
-                                BorderWidth="1"
-                                Clicked="BtnReject_Tapped"
-                                HeightRequest="45"
-                                Style="{StaticResource btnBorder}"
-                                Text="Reject" />-->
                             </Grid>
                         </Grid>
                     </ScrollView>

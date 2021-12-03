@@ -7,7 +7,8 @@
     xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
 
@@ -94,7 +95,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
@@ -150,7 +150,7 @@
                                         HorizontalOptions="StartAndExpand"
                                         LineBreakMode="WordWrap"
                                         Style="{StaticResource lblMedium}"
-                                        Text="Quote Reference No" />
+                                        Text="Quote Id" />
                                     <Label
                                         x:Name="lblQuoteNo"
                                         Grid.Column="1"
@@ -465,7 +465,8 @@
                                                 Title="Type"
                                                 Grid.Column="0"
                                                 Style="{StaticResource pkPrimary}"
-                                                TitleColor="{StaticResource appColor4}"
+                                                TitleColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                             Light={StaticResource appColor4}}"
                                                 Unfocused="Picker_Unfocused" />
 
                                             <ImageButton
@@ -484,13 +485,15 @@
 
                                 <Frame
                                     Grid.Row="2"
-                                    BackgroundColor="{StaticResource appColor8}"
+                                    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                                      Light={StaticResource appColor8}}"
                                     Style="{StaticResource frmBlank}">
                                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="0">
                                         <Frame
                                             Margin="5"
                                             Padding="5"
-                                            BackgroundColor="{StaticResource appColor8}"
+                                            BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                                              Light={StaticResource appColor8}}"
                                             CornerRadius="{OnPlatform Android=5,
                                                                       iOS=10}"
                                             HasShadow="False"
@@ -518,7 +521,8 @@
 
                                         <BoxView
                                             Grid.Column="2"
-                                            BackgroundColor="{StaticResource appColor6}"
+                                            BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                                                              Light={StaticResource appColor6}}"
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="FillAndExpand"
                                             WidthRequest="1" />

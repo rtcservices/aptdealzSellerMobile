@@ -7,7 +7,8 @@
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     x:Name="page1"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <ext:ExtKeyboard>
@@ -62,6 +63,7 @@
                         </Image>
 
                         <Image
+                            x:Name="ImgMenu"
                             Grid.Column="2"
                             Margin="0,0,0,0"
                             HeightRequest="30"
@@ -97,7 +99,6 @@
                                 x:Name="ImgBack"
                                 Grid.Column="0"
                                 Clicked="ImgBack_Tapped"
-                                Source="iconBackArrow.png"
                                 Style="{StaticResource ImgBtnPrimary}" />
                             <Label
                                 Grid.Column="1"
@@ -234,10 +235,19 @@
                                         Grid.Row="1"
                                         Spacing="{OnPlatform Android=0,
                                                              iOS=5}">
-                                        <Label
-                                            x:Name="lblPinCode"
-                                            Style="{StaticResource lblPrimary13}"
-                                            Text="Shipping PIN Code" />
+                                        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                            <Label
+                                                x:Name="lblPinCode"
+                                                Style="{StaticResource lblPrimary13}"
+                                                Text="Shipping PIN Code" />
+
+                                            <Label
+                                                x:Name="lblPinManditory"
+                                                IsVisible="False"
+                                                Text="*"
+                                                TextColor="{StaticResource appColor2}" />
+
+                                        </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtShippingPinCode"
                                             Keyboard="Numeric"
@@ -263,7 +273,8 @@
                                             Format="dd/MM/yyyy"
                                             HorizontalOptions="FillAndExpand"
                                             TabIndex="6"
-                                            TextColor="{StaticResource appColor4}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                        Light={StaticResource appColor4}}"
                                             Unfocused="dpValidityDate_Unfocused" />
                                         <BoxView x:Name="BoxValidityDate" Style="{StaticResource boxHorizontal}" />
                                         <StackLayout.GestureRecognizers>
@@ -274,7 +285,7 @@
                                     <!--  Country of origin  -->
                                     <StackLayout Grid.Row="3" Spacing="{OnPlatform Android=0, iOS=7}">
                                         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                            <Label Style="{StaticResource lblPrimary13}" Text="Country of Origin" />
+                                            <Label Style="{StaticResource lblPrimary13}" Text="Product Made In" />
                                             <Label Text="*" TextColor="{StaticResource appColor2}" />
                                         </StackLayout>
 
@@ -290,7 +301,8 @@
                                             TabIndex="8"
                                             Text="{Binding countryText, Source={x:Reference page1}}"
                                             TextChanged="AutoSuggestBox_TextChanged"
-                                            TextColor="{StaticResource appColor4}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                        Light={StaticResource appColor4}}"
                                             Unfocused="pckCountry_Unfocused" />
                                         <BoxView x:Name="BoxCountry" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>

@@ -1,7 +1,9 @@
-﻿using aptdealzSellerMobile.Utility;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.Utility;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,18 +24,22 @@ namespace aptdealzSellerMobile.Views.Popup
             Base64File = base64File;
             FileExtension = fileExtension;
         }
+
         protected override bool OnBackgroundClicked()
         {
             base.OnBackgroundClicked();
             return false;
         }
-        protected override void OnAppearing()
+
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
-            BindAttachmentOnUI();
+            UserDialogs.Instance.ShowLoading("Loading...");
+            await BindAttachmentOnUI();
+            UserDialogs.Instance.HideLoading();
         }
 
-        public async void BindAttachmentOnUI()
+        public async Task BindAttachmentOnUI()
         {
             try
             {
@@ -44,7 +50,7 @@ namespace aptdealzSellerMobile.Views.Popup
                         FileExtension.ToLower() == ".jpeg" ||
                         FileExtension.ToLower() == ".png")
                     {
-                        BindImageBase64(Base64File);
+                        await BindImageBase64(Base64File);
                     }
                     else if (FileExtension.ToLower() == ".mp4" ||
                              FileExtension.ToLower() == ".3gp" ||
@@ -53,7 +59,7 @@ namespace aptdealzSellerMobile.Views.Popup
                              FileExtension.ToLower() == ".flv" ||
                              FileExtension.ToLower() == ".webm")
                     {
-                        BindVideoBase64(Base64File);
+                        await BindVideoBase64(Base64File);
                     }
                     else if (FileExtension.ToLower() == ".mp3" ||
                              FileExtension.ToLower() == ".wav" ||
@@ -61,11 +67,11 @@ namespace aptdealzSellerMobile.Views.Popup
                              FileExtension.ToLower() == ".acc" ||
                              FileExtension.ToLower() == ".ogg")
                     {
-                        BindAudioBase64(Base64File);
+                        await BindAudioBase64(Base64File);
                     }
                     else if (FileExtension.ToLower() == ".txt")
                     {
-                        BindTextBase64(Base64File);
+                        await BindTextBase64(Base64File);
                     }
                     else
                     {
@@ -83,7 +89,7 @@ namespace aptdealzSellerMobile.Views.Popup
             }
         }
 
-        private void BindImageBase64(string base64)
+        private async Task BindImageBase64(string base64)
         {
             try
             {
@@ -99,7 +105,7 @@ namespace aptdealzSellerMobile.Views.Popup
             }
         }
 
-        private void BindVideoBase64(string base64)
+        private async Task BindVideoBase64(string base64)
         {
             try
             {
@@ -115,7 +121,7 @@ namespace aptdealzSellerMobile.Views.Popup
             }
         }
 
-        private void BindAudioBase64(string base64)
+        private async Task BindAudioBase64(string base64)
         {
             try
             {
@@ -131,7 +137,7 @@ namespace aptdealzSellerMobile.Views.Popup
             }
         }
 
-        private void BindTextBase64(string base64)
+        private async Task BindTextBase64(string base64)
         {
             try
             {
@@ -146,6 +152,7 @@ namespace aptdealzSellerMobile.Views.Popup
                 throw;
             }
         }
+
         private void ImgClose_Clicked(object sender, EventArgs e)
         {
             try

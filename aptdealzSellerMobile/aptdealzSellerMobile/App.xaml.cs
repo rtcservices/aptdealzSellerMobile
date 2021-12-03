@@ -4,6 +4,8 @@ using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.SplashScreen;
 using Plugin.FirebasePushNotification;
 using Plugin.LocalNotification;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -30,7 +32,14 @@ namespace aptdealzSellerMobile
             });
 
             InitializeComponent();
-            Application.Current.UserAppTheme = OSAppTheme.Light;
+            if (Settings.IsDarkMode)
+            {
+                Application.Current.UserAppTheme = OSAppTheme.Dark;
+            }
+            else
+            {
+                Application.Current.UserAppTheme = OSAppTheme.Light;
+            }
 
             RegisterDependencies();
             GetCurrentLocation();
@@ -73,7 +82,10 @@ namespace aptdealzSellerMobile
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("App/GetCurrentLocation: " + ex.Message);
+                if (!ex.Message.Contains("Denied"))
+                {
+                    Common.DisplayErrorMessage("App/GetCurrentLocation: " + ex.Message);
+                }
             }
         }
 
@@ -93,6 +105,7 @@ namespace aptdealzSellerMobile
                 CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
                 {
                     System.Diagnostics.Debug.WriteLine("Received");
+                    MainPage = new Views.MasterData.MasterDataPage(true);
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>

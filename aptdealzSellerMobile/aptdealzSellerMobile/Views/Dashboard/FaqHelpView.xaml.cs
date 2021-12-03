@@ -85,29 +85,28 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(image: ImgMenu);
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FaqHelpView/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("FaqHelpView/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("FaqHelpView/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -116,9 +115,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 

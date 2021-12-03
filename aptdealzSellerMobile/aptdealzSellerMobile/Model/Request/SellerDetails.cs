@@ -117,5 +117,8 @@ namespace aptdealzSellerMobile.Model.Request
 
         [JsonProperty("ifsc")]
         public string Ifsc { get; set; }
+
+        [JsonProperty("isNotificationMute")]
+        public bool IsNotificationMute { get; set; }
     }
 }

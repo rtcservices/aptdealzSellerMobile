@@ -133,60 +133,34 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ImgBack_Tapped(object sender, EventArgs e)
-        {
-            Common.BindAnimation(imageButton: ImgBack);
-            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
-        }
-
-        private void FrmSortBy_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
             try
             {
-                if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
-                {
-                    ImgSort.Source = Constraints.Sort_DSC;
-                    isAssending = false;
-                }
-                else
-                {
-                    ImgSort.Source = Constraints.Sort_ASC;
-                    isAssending = true;
-                }
-
-                pageNo = 1;
-                mQuote.Clear();
-                GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("QuoteView/FrmSortBy_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("QuoteView/ImgMenu_Tapped: " + ex.Message);
             }
+        }
+
+        private async void ImgBack_Tapped(object sender, EventArgs e)
+        {
+            await Common.BindAnimation(imageButton: ImgBack);
+            Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteView/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -195,104 +169,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
-        private void BtnQuotes_Tapped(object sender, EventArgs e)
+        private void BtnLogo_Clicked(object sender, EventArgs e)
         {
-            try
-            {
-                var selectGrid = (ImageButton)sender;
-                var setHight = (ViewCell)selectGrid.Parent.Parent.Parent;
-                if (setHight != null)
-                {
-                    setHight.ForceUpdateSize();
-                }
-
-                var response = (Quote)selectGrid.BindingContext;
-                if (response != null)
-                {
-                    foreach (var selectedImage in mQuote)
-                    {
-                        if (selectedImage.ArrowImage == Constraints.Arrow_Right)
-                        {
-                            selectedImage.ArrowImage = Constraints.Arrow_Right;
-                            selectedImage.GridBg = Color.Transparent;
-                            selectedImage.MoreDetail = false;
-                            selectedImage.OldDetail = true;
-                        }
-                        else
-                        {
-                            selectedImage.ArrowImage = Constraints.Arrow_Down;
-                            selectedImage.GridBg = (Color)App.Current.Resources["appColor8"];
-                            selectedImage.MoreDetail = true;
-                            selectedImage.OldDetail = false;
-                        }
-                    }
-                    if (response.ArrowImage == Constraints.Arrow_Right)
-                    {
-                        response.ArrowImage = Constraints.Arrow_Down;
-                        response.GridBg = (Color)App.Current.Resources["appColor8"];
-                        response.MoreDetail = true;
-                        response.OldDetail = false;
-                    }
-                    else
-                    {
-                        response.ArrowImage = Constraints.Arrow_Right;
-                        response.GridBg = Color.Transparent;
-                        response.MoreDetail = false;
-                        response.OldDetail = true;
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("QuoteView/BtnQuotes_Tapped: " + ex.Message);
-            }
-        }
-
-        private void lstQuotesDetails_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            lstQuotesDetails.SelectedItem = null;
-        }
-
-        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
-        {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
-            {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    var sortby = new FilterPopup(filterBy, "Quote");
-                    sortby.isRefresh += (s1, e1) =>
-                    {
-                        string result = s1.ToString();
-                        if (!Common.EmptyFiels(result))
-                        {
-                            filterBy = result;
-                            if (filterBy == SortByField.ID.ToString())
-                            {
-                                lblFilterBy.Text = filterBy;
-                            }
-                            else
-                            {
-                                lblFilterBy.Text = filterBy.ToCamelCase();
-                            }
-                            pageNo = 1;
-                            mQuote.Clear();
-                            GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
-                        }
-                    };
-                    await PopupNavigation.Instance.PushAsync(sortby);
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteView/FrmFilterBy_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
-            }
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
         }
 
         private void entrSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -330,37 +209,120 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var ImgASC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_ASC : Constraints.Sort_ASC_Dark;
+                var ImgDSC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_DSC : Constraints.Sort_DSC_Dark;
+
+                if (ImgSort.Source.ToString().Replace("File: ", "") == ImgASC)
+                {
+                    ImgSort.Source = ImgDSC;
+                    isAssending = false;
+                }
+                else
+                {
+                    ImgSort.Source = ImgASC;
+                    isAssending = true;
+                }
+                pageNo = 1;
+                mQuote.Clear();
+                GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/FrmSortBy_Tapped: " + ex.Message);
+            }
+        }
+
+        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var sortby = new FilterPopup(filterBy, "Quote");
+                sortby.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        filterBy = result;
+                        if (filterBy == SortByField.ID.ToString())
+                        {
+                            lblFilterBy.Text = filterBy;
+                        }
+                        else
+                        {
+                            lblFilterBy.Text = filterBy.ToCamelCase();
+                        }
+                        pageNo = 1;
+                        mQuote.Clear();
+                        GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
+                    }
+                };
+                await PopupNavigation.Instance.PushAsync(sortby);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/FrmFilterBy_Tapped: " + ex.Message);
+            }
+        }
+
         private async void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                var statusPopup = new StatusPopup(statusBy);
+                statusPopup.isRefresh += (s1, e1) =>
                 {
-                    Tab.IsEnabled = false;
-                    var statusPopup = new StatusPopup(statusBy);
-                    statusPopup.isRefresh += (s1, e1) =>
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
                     {
-                        string result = s1.ToString();
-                        if (!Common.EmptyFiels(result))
-                        {
-                            lblStatus.Text = result;
-                            statusBy = Common.GetQuoteStatus(result);
-                            pageNo = 1;
-                            mQuote.Clear();
-                            GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
-                        }
-                    };
-                    await PopupNavigation.Instance.PushAsync(statusPopup);
-                }
-                catch (Exception ex)
+                        lblStatus.Text = result;
+                        statusBy = Common.GetQuoteStatus(result);
+                        pageNo = 1;
+                        mQuote.Clear();
+                        GetSubmittedQuotes(statusBy, title, filterBy, isAssending);
+                    }
+                };
+                await PopupNavigation.Instance.PushAsync(statusPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/FrmStatusBy_Tapped: " + ex.Message);
+            }
+        }
+
+        private void BtnQuotes_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectGrid = (ImageButton)sender;
+                var setHight = (ViewCell)selectGrid.Parent.Parent.Parent;
+                if (setHight != null)
                 {
-                    Common.DisplayErrorMessage("QuoteView/FrmStatusBy_Tapped: " + ex.Message);
+                    setHight.ForceUpdateSize();
                 }
-                finally
+
+                var mQuote = (Quote)selectGrid.BindingContext;
+                if (mQuote != null && mQuote.ArrowImage == Constraints.Arrow_Right)
                 {
-                    Tab.IsEnabled = true;
+                    mQuote.ArrowImage = Constraints.Arrow_Down;
+                    mQuote.GridBg = (Application.Current.UserAppTheme == OSAppTheme.Light) ? (Color)App.Current.Resources["appColor8"] : Color.Transparent;
+                    mQuote.MoreDetail = true;
+                    mQuote.OldDetail = false;
                 }
+                else
+                {
+                    mQuote.ArrowImage = Constraints.Arrow_Right;
+                    mQuote.GridBg = Color.Transparent;
+                    mQuote.MoreDetail = false;
+                    mQuote.OldDetail = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/BtnQuotes_Tapped: " + ex.Message);
             }
         }
 
@@ -420,30 +382,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void BtnLogo_Clicked(object sender, EventArgs e)
-        {
-            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
-        }
-
         private async void GrdList_Tapped(object sender, EventArgs e)
         {
             var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    var mQuote = Tab.BindingContext as Quote;
-                    await Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mQuote.QuoteId));
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteView/GrdList_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                var mQuote = Tab.BindingContext as Quote;
+                await Navigation.PushAsync(new Dashboard.QuoteDetailsPage(mQuote.QuoteId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteView/GrdList_Tapped: " + ex.Message);
             }
         }
         #endregion

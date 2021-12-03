@@ -21,6 +21,6 @@ namespace aptdealzSellerMobile.Model.Reponse
         public string AreaOfSupply { get; set; }
 
         [JsonProperty("commissionRate")]
-        public int CommissionRate { get; set; }
+        public decimal CommissionRate { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -21,7 +21,6 @@
                     x:Name="ImgBack"
                     Clicked="ImgBack_Tapped"
                     HorizontalOptions="StartAndExpand"
-                    Source="iconBackArrow.png"
                     Style="{StaticResource ImgBtnPrimary}"
                     VerticalOptions="StartAndExpand" />
             </StackLayout>
@@ -58,13 +57,15 @@
                 <StackLayout
                     Grid.Row="1"
                     Margin="20,40"
-                    BackgroundColor="{StaticResource appColor6}"
+                    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                                      Light={StaticResource appColor6}}"
                     HorizontalOptions="CenterAndExpand"
                     Orientation="Horizontal"
                     Spacing="15"
                     VerticalOptions="CenterAndExpand">
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -78,14 +79,15 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpOne_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -99,14 +101,15 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpTwo_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -120,14 +123,15 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpThree_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -141,14 +145,15 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpFour_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -162,14 +167,15 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpFive_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
 
                     </Frame>
 
                     <Frame
-                        BackgroundColor="{StaticResource appColor8}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                          Light={StaticResource appColor8}}"
                         HeightRequest="45"
                         Style="{StaticResource frmBlank}"
                         WidthRequest="45">
@@ -183,7 +189,7 @@
                             MaxLength="1"
                             ReturnType="Next"
                             TextChanged="TxtOtpSix_TextChanged"
-                            TextColor="{StaticResource appColor4}"
+                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                             VerticalOptions="FillAndExpand"
                             VerticalTextAlignment="Center" />
                     </Frame>
@@ -205,7 +211,7 @@
                     Clicked="BtnResentOtp_Tapped"
                     Style="{StaticResource btnPrimary}"
                     Text="Resend OTP"
-                    TextColor="{StaticResource appColor4}" />
+                    TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}" />
             </Grid>
 
         </Grid>

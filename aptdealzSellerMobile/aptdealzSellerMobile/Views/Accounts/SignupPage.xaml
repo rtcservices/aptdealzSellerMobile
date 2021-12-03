@@ -8,7 +8,7 @@
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     x:Name="page1"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+      BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <ext:ExtKeyboard>
@@ -24,7 +24,7 @@
                         x:Name="ImgBack"
                         Clicked="ImgBack_Tapped"
                         HorizontalOptions="StartAndExpand"
-                        Source="iconBackArrow.png"
+                        
                         Style="{StaticResource ImgBtnPrimary}"
                         VerticalOptions="StartAndExpand" />
                 </StackLayout>
@@ -288,7 +288,7 @@
                                                 TabIndex="12"
                                                 Text="{Binding countryText, Source={x:Reference page1}}"
                                                 TextChanged="AutoSuggestBox_TextChanged"
-                                                TextColor="{StaticResource appColor4}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                                                 Unfocused="AutoSuggestBox_Unfocused" />
                                             <BoxView x:Name="BoxNationality" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
@@ -506,7 +506,7 @@
                                                                                 FontFamily="Poppins"
                                                                                 HorizontalOptions="End"
                                                                                 Text="X"
-                                                                                TextColor="{StaticResource appColor4}"
+                                                                                TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                                                                                 VerticalOptions="CenterAndExpand"
                                                                                 WidthRequest="40" />
                                                                         </Grid>

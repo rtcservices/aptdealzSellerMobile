@@ -48,6 +48,11 @@ namespace aptdealzSellerMobile.Droid.DependencService
         {
             try
             {
+                if (!aptdealzSellerMobile.Utility.Settings.IsMuteMode)
+                {
+                    return 0;
+                }
+
                 if (!channelInitialized)
                 {
                     CreateNotificationChannel();
@@ -111,6 +116,9 @@ namespace aptdealzSellerMobile.Droid.DependencService
                 {
                     Description = channelDescription,
                 };
+
+                //channel.SetSound(null, null);
+                channel.LockscreenVisibility = NotificationVisibility.Public;
                 manager.CreateNotificationChannel(channel);
             }
 

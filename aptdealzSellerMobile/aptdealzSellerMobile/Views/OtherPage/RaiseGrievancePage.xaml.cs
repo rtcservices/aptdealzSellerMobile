@@ -199,45 +199,36 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
-                if (Common.EmptyFiels(txtDescription.Text))
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_Description);
-                }
-                else if (documentList == null || (documentList != null && documentList.Count == 0))
-                {
-                    Common.DisplayErrorMessage(Constraints.Required_Documents);
-                }
-                else
-                {
-                    GrievanceAPI grievanceAPI = new GrievanceAPI();
-                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
 
-                    var mRaiseGrievance = FillGrievance();
-                    if (mRaiseGrievance != null)
+                GrievanceAPI grievanceAPI = new GrievanceAPI();
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+
+                var mRaiseGrievance = FillGrievance();
+                if (mRaiseGrievance != null)
+                {
+                    var mResponse = await grievanceAPI.CreateGrievanceFromSeller(mRaiseGrievance);
+                    if (mResponse != null && mResponse.Succeeded)
                     {
-                        var mResponse = await grievanceAPI.CreateGrievanceFromSeller(mRaiseGrievance);
-                        if (mResponse != null && mResponse.Succeeded)
-                        {
-                            Common.DisplaySuccessMessage(mResponse.Message);
-                            Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
-                        }
-                        else
-                        {
-                            if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
-                                Common.DisplayErrorMessage(mResponse.Message);
-                            else
-                                Common.DisplayErrorMessage(Constraints.Something_Wrong);
-                        }
+                        Common.DisplaySuccessMessage(mResponse.Message);
+                        Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
                     }
                     else
                     {
-                        if (ErrorMessage == null)
-                        {
-                            ErrorMessage = Constraints.Something_Wrong;
-                        }
-                        Common.DisplayErrorMessage(ErrorMessage);
+                        if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                            Common.DisplayErrorMessage(mResponse.Message);
+                        else
+                            Common.DisplayErrorMessage(Constraints.Something_Wrong);
                     }
                 }
+                else
+                {
+                    if (ErrorMessage == null)
+                    {
+                        ErrorMessage = Constraints.Something_Wrong;
+                    }
+                    Common.DisplayErrorMessage(ErrorMessage);
+                }
+
             }
             catch (Exception ex)
             {
@@ -251,30 +242,28 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #endregion
 
         #region [ Events ]     
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(image: ImgMenu);
-            //Common.OpenMenu();
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RaiseGrievancePage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RaiseGrievancePage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RaiseGrievancePage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -285,7 +274,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
@@ -296,23 +285,28 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void BtnSubmit_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                await Common.BindAnimation(button: BtnSubmit);
+                if (Common.EmptyFiels(txtDescription.Text))
                 {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnSubmit);
+                    Common.DisplayErrorMessage(Constraints.Required_Description);
+                }
+                else if (documentList == null || (documentList != null && documentList.Count == 0))
+                {
+                    Common.DisplayErrorMessage(Constraints.Required_Documents);
+                }
+                else
+                {
+                    BtnSubmit.IsEnabled = false;
                     await CreateGrievance();
+                    BtnSubmit.IsEnabled = true;
                 }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RaiseGrievancePage/BtnSubmit_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                BtnSubmit.IsEnabled = true;
+                Common.DisplayErrorMessage("RaiseGrievancePage/BtnSubmit_Clicked: " + ex.Message);
             }
         }
 
@@ -320,7 +314,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             try
             {
-                Common.BindAnimation(imageButton: ImgUplode);
+                await Common.BindAnimation(imageButton: ImgUplode);
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var result = await App.Current.MainPage.DisplayActionSheet(Constraints.UploadPicture, Constraints.Cancel, "", new string[] { Constraints.TakePhoto, Constraints.ChooseFromLibrary });
 

@@ -153,29 +153,20 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region [ Events ]
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
         private async void BtnSubmit_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnSubmit);
-                    await ResetPassword();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ResetPasswordPage/BtnSubmit_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnSubmit);
+                await ResetPassword();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ResetPasswordPage/BtnSubmit_Clicked: " + ex.Message);
             }
         }
 

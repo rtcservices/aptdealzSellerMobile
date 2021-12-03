@@ -53,7 +53,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app needs access to the photo gallery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>AptDealz need to access your location for better application experience</string>
+	<string>AptDealz Bidder need to access your location for better application experience</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts</string>
 	<key>UIBackgroundModes</key>
@@ -61,8 +61,8 @@
 		<string>remote-notification</string>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-  <false/>
-  <key>CFBundleShortVersionString</key>
+	<true/>
+	<key>CFBundleShortVersionString</key>
 	<string>1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
@@ -76,16 +76,16 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 		</dict>
-    <dict>
-      <key>CFBundleURLName</key>
-      <string>FCM</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>com.google.fcm</string>
-      </array>
-      <key>CFBundleTypeRole</key>
-      <string>Editor</string>
-    </dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>FCM</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.google.fcm</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
 	</array>
 </dict>
 </plist>

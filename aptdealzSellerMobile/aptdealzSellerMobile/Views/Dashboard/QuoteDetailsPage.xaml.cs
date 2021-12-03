@@ -208,11 +208,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 {
                     lblComments.Text = mQuote.Comments;
                 }
-
-                if (mQuote.Status == QuoteStatus.Accepted.ToString() && mQuote.PaymentStatus == PaymentStatus.Success.ToString())
-                    BtnEditSubmit.IsEnabled = false;
+                //mQuote.Status == QuoteStatus.Accepted.ToString() && mQuote.PaymentStatus == PaymentStatus.Success.ToString()
+                if (mQuote.Status == QuoteStatus.Accepted.ToString())
+                {
+                    BtnEditSubmit.IsVisible = false;
+                }
                 else
-                    BtnEditSubmit.IsEnabled = true;
+                {
+                    BtnEditSubmit.IsVisible = true;
+                }
+
             }
             catch (Exception ex)
             {
@@ -433,14 +438,22 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
@@ -451,89 +464,52 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
         private async void EditSubmit_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnEditSubmit);
-                    await Navigation.PushAsync(new Dashboard.ProvideQuotePage(mQuote));
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnEditSubmit);
+                await Navigation.PushAsync(new Dashboard.ProvideQuotePage(mQuote));
             }
-
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/ImgNotification_Tapped: " + ex.Message);
+            }
         }
 
         private async void BackQuote_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnBackQuote);
-                    await Navigation.PopAsync();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteDetailsPage/BackQuote_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnBackQuote);
+                await Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/BackQuote_Tapped: " + ex.Message);
             }
         }
 
         private async void BtnRevealContact_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnRevealContact);
-                    await RevealBuyerContact();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("QuoteDetailsPage/BtnRevealContact_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnRevealContact);
+                await RevealBuyerContact();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("QuoteDetailsPage/BtnRevealContact_Tapped: " + ex.Message);
             }
         }
 

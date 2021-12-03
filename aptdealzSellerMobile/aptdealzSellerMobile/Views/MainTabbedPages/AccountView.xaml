@@ -9,7 +9,8 @@
     xmlns:ffImageTranformer="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
     xmlns:panCake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     x:Name="page1"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -64,6 +65,7 @@
                     </Image>
 
                     <Image
+                        x:Name="ImgMenu"
                         Grid.Column="2"
                         Margin="0,0,0,0"
                         HeightRequest="30"
@@ -97,7 +99,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
@@ -144,15 +145,6 @@
                                                 <ffImageTranformer:CircleTransformation BorderHexColor="#006027" BorderSize="20" />
                                             </ffImage:CachedImage.Transformations>
                                         </ffImage:CachedImage>
-
-                                        <!--<Image
-                                            x:Name="imgUser"
-                                            Margin="0"
-                                            Aspect="Fill"
-                                            HeightRequest="100"
-                                            HorizontalOptions="CenterAndExpand"
-                                            VerticalOptions="CenterAndExpand"
-                                            WidthRequest="100" />-->
 
                                         <Image
                                             x:Name="ImgCamera"
@@ -249,7 +241,6 @@
                                         </StackLayout>
                                         <ext:ExtEntry
                                             x:Name="txtEmail"
-                                            IsEnabled="False"
                                             IsReadOnly="True"
                                             Style="{StaticResource entrPrimary}"
                                             TabIndex="2" />
@@ -427,7 +418,8 @@
                                             TabIndex="10"
                                             Text="{Binding countryText, Source={x:Reference page1}}"
                                             TextChanged="AutoSuggestBox_TextChanged"
-                                            TextColor="{StaticResource appColor4}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                        Light={StaticResource appColor4}}"
                                             Unfocused="AutoSuggestBox_Unfocused" />
                                         <BoxView x:Name="BoxNationality" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
@@ -521,7 +513,7 @@
                                                                     FontSize="15"
                                                                     HeightRequest="40"
                                                                     Text="X"
-                                                                    TextColor="{StaticResource appColor4}"
+                                                                    TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                                                                     WidthRequest="40" />
                                                             </StackLayout>
                                                         </Grid>
@@ -680,7 +672,8 @@
                                                                 Grid.Column="0"
                                                                 Margin="0"
                                                                 Padding="15,0,0,0"
-                                                                BackgroundColor="{StaticResource appColor8}"
+                                                                BackgroundColor="{AppThemeBinding Dark={StaticResource appColor7},
+                                                                                                  Light={StaticResource appColor8}}"
                                                                 BorderColor="Transparent"
                                                                 CornerRadius="5"
                                                                 HasShadow="False"
@@ -708,7 +701,7 @@
                                                                         FontFamily="Poppins"
                                                                         HorizontalOptions="End"
                                                                         Text="X"
-                                                                        TextColor="{StaticResource appColor4}"
+                                                                        TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                                                                         VerticalOptions="CenterAndExpand"
                                                                         WidthRequest="40" />
                                                                 </Grid>
@@ -779,11 +772,14 @@
                                         <BoxView x:Name="BoxSupplyArea" Style="{StaticResource boxHorizontal}" />
                                     </StackLayout>
 
-                                    <Label
+                                    <StackLayout
                                         Grid.Row="6"
                                         HorizontalOptions="StartAndExpand"
-                                        Style="{StaticResource lblLight}"
-                                        Text="Seller Commission : 3%" />
+                                        Orientation="Horizontal">
+                                        <Label Style="{StaticResource lblLight}" Text="Seller Commission : " />
+                                        <Label x:Name="lblSellerCommission" Style="{StaticResource lblLight}" />
+                                    </StackLayout>
+
                                 </Grid>
 
                                 <!--  Bank Information Header  -->
@@ -990,7 +986,8 @@
                                     HorizontalOptions="CenterAndExpand"
                                     Style="{StaticResource btnNormal}"
                                     Text="Logout"
-                                    TextColor="{StaticResource appColor4}" />
+                                    TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                Light={StaticResource appColor4}}" />
                                 <Button
                                     x:Name="BtnDeactivateAccount"
                                     Grid.Row="2"
@@ -1001,13 +998,12 @@
                                     HorizontalOptions="CenterAndExpand"
                                     Style="{StaticResource btnNormal}"
                                     Text="Deactivate Account"
-                                    TextColor="{StaticResource appColor4}" />
+                                    TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                Light={StaticResource appColor4}}" />
                             </Grid>
                         </Grid>
                     </ScrollView>
                 </RefreshView>
-
-
             </Grid>
         </Grid>
     </ContentView.Content>

@@ -8,7 +8,11 @@ using System.Collections.Generic;
 
 namespace aptdealzSellerMobile.Droid
 { //You can specify additional application information in this attribute
-    [Application]
+#if DEBUG
+    [Application(Debuggable = true)]
+#else
+[Application(Debuggable = false)]
+#endif
     public class MainApplication : Application
     {
         public MainApplication(IntPtr handle, JniHandleOwnership transer)

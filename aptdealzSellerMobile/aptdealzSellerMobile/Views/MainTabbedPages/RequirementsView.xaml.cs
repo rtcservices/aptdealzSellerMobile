@@ -129,29 +129,28 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         #region [ Events ]
         #region [ Header Navigation ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementsView/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementsView/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementsView/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -160,9 +159,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
@@ -175,42 +174,33 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         #region [ Filtering ]
         private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                var sortby = new FilterPopup(filterBy, "Active");
+                sortby.isRefresh += (s1, e1) =>
                 {
-                    Tab.IsEnabled = false;
-                    var sortby = new FilterPopup(filterBy, "Active");
-                    sortby.isRefresh += (s1, e1) =>
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
                     {
-                        string result = s1.ToString();
-                        if (!Common.EmptyFiels(result))
+                        filterBy = result;
+                        if (filterBy == SortByField.ID.ToString())
                         {
-                            filterBy = result;
-                            if (filterBy == SortByField.ID.ToString())
-                            {
-                                lblFilterBy.Text = filterBy;
-                            }
-                            else
-                            {
-                                lblFilterBy.Text = filterBy.ToCamelCase();
-                            }
-                            pageNo = 1;
-                            mRequirements.Clear();
-                            GetActiveRequirements(filterBy, title, isAssending);
+                            lblFilterBy.Text = filterBy;
                         }
-                    };
-                    await PopupNavigation.Instance.PushAsync(sortby);
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementsView/CustomEntry_Unfocused: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                        else
+                        {
+                            lblFilterBy.Text = filterBy.ToCamelCase();
+                        }
+                        pageNo = 1;
+                        mRequirements.Clear();
+                        GetActiveRequirements(filterBy, title, isAssending);
+                    }
+                };
+                await PopupNavigation.Instance.PushAsync(sortby);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementsView/CustomEntry_Unfocused: " + ex.Message);
             }
         }
 
@@ -218,14 +208,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
+                var ImgASC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_ASC : Constraints.Sort_ASC_Dark;
+                var ImgDSC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_DSC : Constraints.Sort_DSC_Dark;
+
+                if (ImgSort.Source.ToString().Replace("File: ", "") == ImgASC)
                 {
-                    ImgSort.Source = Constraints.Sort_DSC;
+                    ImgSort.Source = ImgDSC;
                     isAssending = false;
                 }
                 else
                 {
-                    ImgSort.Source = Constraints.Sort_ASC;
+                    ImgSort.Source = ImgASC;
                     isAssending = true;
                 }
                 pageNo = 1;
@@ -283,7 +276,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 if (mRequirement != null && mRequirement.ArrowImage == Constraints.Arrow_Right)
                 {
                     mRequirement.ArrowImage = Constraints.Arrow_Down;
-                    mRequirement.GridBg = (Color)App.Current.Resources["appColor8"];
+                    mRequirement.GridBg = (Application.Current.UserAppTheme == OSAppTheme.Light) ? (Color)App.Current.Resources["appColor8"] : Color.Transparent;
                     mRequirement.MoreDetail = true;
                     mRequirement.HideDetail = false;
                     mRequirement.NameFont = 15;
@@ -359,30 +352,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void lstRequirements_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            lstRequirements.SelectedItem = null;
-        }
-
         private async void GrdRequirements_Tapped(object sender, EventArgs e)
         {
             var GridExp = (Grid)sender;
-            if (GridExp.IsEnabled)
+            try
             {
-                try
-                {
-                    GridExp.IsEnabled = false;
-                    var mRequirement = GridExp.BindingContext as Requirement;
-                    await Navigation.PushAsync(new RequirementDetailPage(mRequirement.RequirementId));
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("RequirementsView/GrdRequirements_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    GridExp.IsEnabled = true;
-                }
+                var mRequirement = GridExp.BindingContext as Requirement;
+                await Navigation.PushAsync(new RequirementDetailPage(mRequirement.RequirementId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("RequirementsView/GrdRequirements_Tapped: " + ex.Message);
             }
         }
         #endregion

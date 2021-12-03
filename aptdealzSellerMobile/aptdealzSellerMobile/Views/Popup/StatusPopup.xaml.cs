@@ -43,7 +43,8 @@ namespace aptdealzSellerMobile.Views.Popup
                 lblFirstType.Text = GrievancesStatus.Pending.ToString();
                 lblSecondType.Text = GrievancesStatus.Open.ToString();
                 lblThirdType.Text = GrievancesStatus.Closed.ToString();
-                lblFourType.Text = GrievancesStatus.All.ToString();
+                lblFourType.Text = GrievancesStatus.ReOpened.ToString();
+                lblfiveType.Text = GrievancesStatus.All.ToString();
             }
             else
             {
@@ -80,6 +81,7 @@ namespace aptdealzSellerMobile.Views.Popup
                     {
                         imgFourType.Source = Constraints.Redio_Selected;
                     }
+                   
                     else
                     {
                         imgFirstType.Source = Constraints.Redio_Selected;
@@ -99,9 +101,13 @@ namespace aptdealzSellerMobile.Views.Popup
                     {
                         imgThirdType.Source = Constraints.Redio_Selected;
                     }
-                    else if (viewSource == (int)GrievancesStatus.All)
+                    else if (viewSource == (int)GrievancesStatus.ReOpened)
                     {
                         imgFourType.Source = Constraints.Redio_Selected;
+                    }
+                    else if (viewSource == (int)GrievancesStatus.All)
+                    {
+                        imgfiveType.Source = Constraints.Redio_Selected;
                     }
                     else
                     {
@@ -121,6 +127,7 @@ namespace aptdealzSellerMobile.Views.Popup
             imgSecondType.Source = Constraints.Redio_UnSelected;
             imgThirdType.Source = Constraints.Redio_UnSelected;
             imgFourType.Source = Constraints.Redio_UnSelected;
+            imgfiveType.Source = Constraints.Redio_UnSelected;
         }
         #endregion
 
@@ -198,8 +205,8 @@ namespace aptdealzSellerMobile.Views.Popup
             {
                 if (PageName == "Grievances")
                 {
-                    BindSource((int)GrievancesStatus.All);
-                    isRefresh?.Invoke(GrievancesStatus.All.ToString(), null);
+                    BindSource((int)GrievancesStatus.ReOpened);
+                    isRefresh?.Invoke(GrievancesStatus.ReOpened.ToString(), null);
                 }
                 else
                 {
@@ -211,6 +218,20 @@ namespace aptdealzSellerMobile.Views.Popup
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("StatusPopup/StkFourType: " + ex.Message);
+            }
+        }
+
+        private void StkFiveType_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                BindSource((int)GrievancesStatus.All);
+                isRefresh?.Invoke(GrievancesStatus.All.ToString(), null);
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("StatusPopup/StkFiveType_Tapped: " + ex.Message);
             }
         }
         #endregion

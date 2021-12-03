@@ -29,7 +29,9 @@
         public const string Arrow_Down = "iconDownArrow.png";
 
         public const string Sort_ASC = "iconSortASC.png";
+        public const string Sort_ASC_Dark = "iconSortASCWhite.png";
         public const string Sort_DSC = "iconSortDSC.png";
+        public const string Sort_DSC_Dark = "iconSortDSCWhite.png";
 
         public const string CheckBox_UnChecked = "iconUncheck.png";
         public const string CheckBox_Checked = "iconCheck.png";
@@ -42,14 +44,25 @@
         public const string Img_Sad = "iconSad.png";
         public const string Img_Smile = "iconSmile.png";
         public const string Img_Contact = "imgContact.jpg";
+
         public const string ImgHome = "iconHome.png";
-        public const string ImgQuote = "iconQuotes.png";
-        public const string ImgOrder = "iconOrders.png";
-        public const string ImgAccount = "iconAccount.png";
+        public const string ImgHomeDark = "iconHomeWhite.png";
         public const string ImgHomeActive = "iconHomeActive.png";
+
+        public const string ImgQuote = "iconQuotes.png";
+        public const string ImgQuoteDark = "iconQuotesWhite.png";
         public const string ImgQuoteActive = "iconQuotesActive.png";
+
+        public const string ImgOrder = "iconOrders.png";
+        public const string ImgOrderDark = "iconOrdersWhite.png";
         public const string ImgOrderActive = "iconOrdersActive.png";
+
+        public const string ImgAccount = "iconAccount.png";
+        public const string ImgAccountDark = "iconAccountWhite.png";
         public const string ImgAccountActive = "iconAccountActive.png";
+
+        public const string ImgProductBanner = "iconProductBanner.png";
+        public const string ImgProductBannerWhite = "iconProductBannerWhite.png";
 
         public const string Img_GreenArrowDown = "iconGreenDownArrow.png";
         public const string Img_GreenArrowUp = "iconGreenUpArrow.png";
@@ -105,7 +118,7 @@
         public const string InValid_ConfirmPassword = "Please enter valid confirm password!";
         public const string InValid_Pincode = "Please enter valid pincode!";
         public const string InValid_Nationality = "Please enter valid nationality!";
-        public const string InValid_CountryOfOrigin = "Please enter valid country of origin!";
+        public const string InValid_CountryOfOrigin = "Please enter valid Product Made In!";
         public const string InValid_GST = "Please enter valid GST number!";
         public const string InValid_PAN = "Please enter valid PAN number!";
         public const string InValid_PAN_GSTIN = "Please enter valid GST number or PAN number!";
@@ -128,7 +141,7 @@
         public const string Required_City = "Please enter city!";
         public const string Required_State = "Please enter state!";
         public const string Required_Nationality = "Please enter nationality!";
-        public const string Required_CountryofOrigin = "Please enter country of origin!";
+        public const string Required_CountryofOrigin = "Please enter Product Made In!";
         public const string Required_PinCode = "Please enter pincode!";
         public const string Required_Landmark = "Please enter landmark!";
         public const string Required_Description = "Please enter description!";
@@ -155,6 +168,7 @@
         public const string Required_LRNumber = "Please enter LR number!";
         public const string Required_EWayBillNumber = "Please enter EWay bill number!";
         public const string Required_TrackingLink = "Please enter tracking link!";
+        public const string Required_PickUp_Product = "Please enter Product Pickup PIN Code!";
 
         public const string Required_Response = "Please enter your message!";
         public const string Required_ComplainType = "Please select complaint type!";
@@ -174,7 +188,7 @@
         public const string CopiedSellerId = "Copied Seller Id!";
         public const string CopiedRequirementId = "Copied Requirement ID!";
         public const string CopiedOrderId = "Copied Order Id!";
-        public const string CopiedQuoteRefNo = "Copied Quote Reference No!";
+        public const string CopiedQuoteRefNo = "Copied Quote Id!";
         public const string CopiedGrievanceId = "Copied Grievance Id!";
         #endregion
     }

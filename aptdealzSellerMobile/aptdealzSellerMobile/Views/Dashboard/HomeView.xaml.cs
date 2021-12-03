@@ -74,84 +74,74 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new SettingsPage());
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                Navigation.PushAsync(new SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("HomeView/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("HomeView/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("HomeView/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
         {
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
-
         }
 
         private async void DashboardMenu_Tapped(object sender, EventArgs e)
         {
             var MenuTab = (Frame)sender;
-            if (MenuTab.IsEnabled)
+            try
             {
-                try
+                var mHomeMenu = MenuTab.BindingContext as HomeMenu;
+                if (mHomeMenu != null && mHomeMenu.MenuName == "Notifications")
                 {
-                    MenuTab.IsEnabled = false;
-                    var mHomeMenu = MenuTab.BindingContext as HomeMenu;
-                    if (mHomeMenu != null && mHomeMenu.MenuName == "Notifications")
-                    {
-                        await Navigation.PushAsync(new NotificationPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName == "Grievances")
-                    {
-                        await Navigation.PushAsync(new GrievancesPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName == "Support")
-                    {
-                        await Navigation.PushAsync(new ContactSupportPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName == "Shipping")
-                    {
-                        await Navigation.PushAsync(new CurrentlyShippingPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName == "Reports")
-                    {
-                        await Navigation.PushAsync(new ReportDetailPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName == "WeSupport")
-                    {
-                        await Navigation.PushAsync(new WeSupportPage());
-                    }
-                    else if (mHomeMenu != null && mHomeMenu.MenuName != null)
-                    {
-                        Common.MasterData.Detail = new NavigationPage(new MainTabbedPage(mHomeMenu.MenuName, true));
-                    }
+                    await Navigation.PushAsync(new NotificationPage());
                 }
-                catch (Exception ex)
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Grievances")
                 {
-                    Common.DisplayErrorMessage("HomeView/DashboardMenu_Tapped: " + ex.Message);
+                    await Navigation.PushAsync(new GrievancesPage());
                 }
-                finally
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Support")
                 {
-                    MenuTab.IsEnabled = true;
+                    await Navigation.PushAsync(new ContactSupportPage());
                 }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Shipping")
+                {
+                    await Navigation.PushAsync(new CurrentlyShippingPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "Reports")
+                {
+                    await Navigation.PushAsync(new ReportDetailPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName == "WeSupport")
+                {
+                    await Navigation.PushAsync(new WeSupportPage());
+                }
+                else if (mHomeMenu != null && mHomeMenu.MenuName != null)
+                {
+                    Common.MasterData.Detail = new NavigationPage(new MainTabbedPage(mHomeMenu.MenuName, true));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("HomeView/DashboardMenu_Tapped: " + ex.Message);
             }
         }
         #endregion

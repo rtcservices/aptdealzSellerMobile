@@ -1,6 +1,5 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.API;
-using aptdealzSellerMobile.Model;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
@@ -106,29 +105,28 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WeSupportPage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("WeSupportPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("WeSupportPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -139,7 +137,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 

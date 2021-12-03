@@ -174,83 +174,33 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #endregion
 
         #region [ Events ]
-        private void ImgExpand_Tapped(object sender, EventArgs e)
+        private void BtnLogo_Clicked(object sender, EventArgs e)
+        {
+            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+        }
+
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
             try
             {
-                var selectGrid = (ImageButton)sender;
-                var setHight = (ViewCell)selectGrid.Parent.Parent.Parent;
-                if (setHight != null)
-                {
-                    setHight.ForceUpdateSize();
-                }
-
-                var response = (Order)selectGrid.BindingContext;
-                if (response != null)
-                {
-                    foreach (var selectedImage in mOrders)
-                    {
-                        if (selectedImage.ArrowImage == Constraints.Arrow_Right)
-                        {
-                            selectedImage.ArrowImage = Constraints.Arrow_Right;
-                            selectedImage.GridBg = Color.Transparent;
-                            selectedImage.MoreDetail = false;
-                            selectedImage.OldDetail = true;
-                        }
-                        else
-                        {
-                            selectedImage.ArrowImage = Constraints.Arrow_Down;
-                            selectedImage.GridBg = (Color)App.Current.Resources["appColor8"];
-                            selectedImage.MoreDetail = true;
-                            selectedImage.OldDetail = false;
-                        }
-                    }
-                    if (response.ArrowImage == Constraints.Arrow_Right)
-                    {
-                        response.ArrowImage = Constraints.Arrow_Down;
-                        response.GridBg = (Color)App.Current.Resources["appColor8"];
-                        response.MoreDetail = true;
-                        response.OldDetail = false;
-                    }
-                    else
-                    {
-                        response.ArrowImage = Constraints.Arrow_Right;
-                        response.GridBg = Color.Transparent;
-                        response.MoreDetail = false;
-                        response.OldDetail = true;
-                    }
-
-                }
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("ReportDetailPage/ImgExpand_Tapped: " + ex.Message);
+                Common.DisplayErrorMessage("ReportDetailPage/ImgMenu_Tapped: " + ex.Message);
             }
-        }
-
-        private void ImgMenu_Tapped(object sender, EventArgs e)
-        {
-
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ReportDetailPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -259,76 +209,10 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
-        }
-
-        private void FrmSortBy_Tapped(object sender, EventArgs e)
-        {
-            try
-            {
-                if (ImgSort.Source.ToString().Replace("File: ", "") == Constraints.Sort_ASC)
-                {
-                    ImgSort.Source = Constraints.Sort_DSC;
-                    isAssending = false;
-                }
-                else
-                {
-                    ImgSort.Source = Constraints.Sort_ASC;
-                    isAssending = true;
-                }
-
-                pageNo = 1;
-                mOrders.Clear();
-                BindShippingData(statusBy, title, filterBy, isAssending);
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("ReportDetailPage/FrmSortBy_Tapped: " + ex.Message);
-            }
-        }
-
-        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
-        {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
-            {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    FilterPopup sortByPopup = new FilterPopup(filterBy, "Order");
-                    sortByPopup.isRefresh += (s1, e1) =>
-                    {
-                        string result = s1.ToString();
-                        if (!Common.EmptyFiels(result))
-                        {
-                            filterBy = result;
-                            if (filterBy == SortByField.ID.ToString())
-                            {
-                                lblFilterBy.Text = filterBy;
-                            }
-                            else
-                            {
-                                lblFilterBy.Text = filterBy.ToCamelCase();
-                            }
-                            pageNo = 1;
-                            mOrders.Clear();
-                            BindShippingData(statusBy, title, filterBy, isAssending);
-                        }
-                    };
-                    await PopupNavigation.Instance.PushAsync(sortByPopup);
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ReportDetailPage/FrmFilterBy_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
-            }
         }
 
         private void BtnClose_Clicked(object sender, EventArgs e)
@@ -366,47 +250,121 @@ namespace aptdealzSellerMobile.Views.OtherPage
             }
         }
 
-        private void BtnLogo_Clicked(object sender, EventArgs e)
+        private void FrmSortBy_Tapped(object sender, EventArgs e)
         {
-            Utility.Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("Home"));
+            try
+            {
+                var ImgASC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_ASC : Constraints.Sort_ASC_Dark;
+                var ImgDSC = (Application.Current.UserAppTheme == OSAppTheme.Light) ? Constraints.Sort_DSC : Constraints.Sort_DSC_Dark;
+
+                if (ImgSort.Source.ToString().Replace("File: ", "") == ImgASC)
+                {
+                    ImgSort.Source = ImgDSC;
+                    isAssending = false;
+                }
+                else
+                {
+                    ImgSort.Source = ImgASC;
+                    isAssending = true;
+                }
+
+                pageNo = 1;
+                mOrders.Clear();
+                BindShippingData(statusBy, title, filterBy, isAssending);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/FrmSortBy_Tapped: " + ex.Message);
+            }
         }
 
-        private void lstReportDetails_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void FrmFilterBy_Tapped(object sender, EventArgs e)
         {
-            lstReportDetails.SelectedItem = null;
+            try
+            {
+                FilterPopup sortByPopup = new FilterPopup(filterBy, "Order");
+                sortByPopup.isRefresh += (s1, e1) =>
+                {
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
+                    {
+                        filterBy = result;
+                        if (filterBy == SortByField.ID.ToString())
+                        {
+                            lblFilterBy.Text = filterBy;
+                        }
+                        else
+                        {
+                            lblFilterBy.Text = filterBy.ToCamelCase();
+                        }
+                        pageNo = 1;
+                        mOrders.Clear();
+                        BindShippingData(statusBy, title, filterBy, isAssending);
+                    }
+                };
+                await PopupNavigation.Instance.PushAsync(sortByPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/FrmFilterBy_Tapped: " + ex.Message);
+            }
         }
 
         private async void FrmStatusBy_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Frame)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                var statusPopup = new OrderStatusPopup(statusBy);
+                statusPopup.isRefresh += (s1, e1) =>
                 {
-                    Tab.IsEnabled = false;
-                    var statusPopup = new OrderStatusPopup(statusBy);
-                    statusPopup.isRefresh += (s1, e1) =>
+                    string result = s1.ToString();
+                    if (!Common.EmptyFiels(result))
                     {
-                        string result = s1.ToString();
-                        if (!Common.EmptyFiels(result))
-                        {
-                            lblStatus.Text = result.ToCamelCase();
-                            statusBy = Common.GetOrderStatus(result);
-                            pageNo = 1;
-                            mOrders.Clear();
-                            BindShippingData(statusBy, title, filterBy, isAssending);
-                        }
-                    };
-                    await PopupNavigation.Instance.PushAsync(statusPopup);
-                }
-                catch (Exception ex)
+                        lblStatus.Text = result.ToCamelCase();
+                        statusBy = Common.GetOrderStatus(result);
+                        pageNo = 1;
+                        mOrders.Clear();
+                        BindShippingData(statusBy, title, filterBy, isAssending);
+                    }
+                };
+                await PopupNavigation.Instance.PushAsync(statusPopup);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/FrmStatusBy_Tapped: " + ex.Message);
+            }
+        }
+
+        private void ImgExpand_Tapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectGrid = (ImageButton)sender;
+                var setHight = (ViewCell)selectGrid.Parent.Parent.Parent;
+                if (setHight != null)
                 {
-                    Common.DisplayErrorMessage("ReportDetailPage/FrmStatusBy_Tapped: " + ex.Message);
+                    setHight.ForceUpdateSize();
                 }
-                finally
+
+                var mOrder = (Order)selectGrid.BindingContext;
+                if (mOrder != null && mOrder.ArrowImage == Constraints.Arrow_Right)
                 {
-                    Tab.IsEnabled = true;
+                    mOrder.ArrowImage = Constraints.Arrow_Down;
+                    mOrder.GridBg = (Application.Current.UserAppTheme == OSAppTheme.Light) ? (Color)App.Current.Resources["appColor8"] : Color.Transparent;
+                    mOrder.MoreDetail = true;
+                    mOrder.OldDetail = false;
                 }
+                else
+                {
+                    mOrder.ArrowImage = Constraints.Arrow_Right;
+                    mOrder.GridBg = Color.Transparent;
+                    mOrder.MoreDetail = false;
+                    mOrder.OldDetail = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ReportDetailPage/ImgExpand_Tapped: " + ex.Message);
             }
         }
 

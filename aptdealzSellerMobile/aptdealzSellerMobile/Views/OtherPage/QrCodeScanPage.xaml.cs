@@ -1,4 +1,5 @@
-﻿using aptdealzSellerMobile.Repository;
+﻿using aptdealzSellerMobile.Model.Reponse;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
@@ -15,12 +16,14 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #region [ Objects ]
         private ZXingScannerView zxing;
         private ZXingDefaultOverlay overlay;
+        Order mOrder = new Order();
         #endregion
 
         #region [ Ctor ]
-        public QrCodeScanPage()
+        public QrCodeScanPage(Order morder)
         {
             InitializeComponent();
+            this.mOrder = morder;
             StartScanning();
         }
         #endregion
@@ -39,13 +42,24 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 zxing.OnScanResult += (result) =>
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    zxing.IsAnalyzing = false;
-                    //isRefresh?.Invoke(result.Text, EventArgs.Empty);
-                    if (result != null && !Common.EmptyFiels(result.Text))
+                    try
                     {
-                        await DependencyService.Get<IOrderRepository>().ScanQRCodeAndUpdateOrder(result.Text);
+                        zxing.IsAnalyzing = false;
+                        //isRefresh?.Invoke(result.Text, EventArgs.Empty);
+                        if (result != null && !Common.EmptyFiels(result.Text) && result.Text == mOrder.OrderId)
+                        {
+                            await DependencyService.Get<IOrderRepository>().ScanQRCodeAndUpdateOrder(result.Text);
+                        }
+                        else
+                        {
+                            Common.DisplayErrorMessage("Invalid QRCode");
+                        }
+                        await Navigation.PopAsync();
                     }
-                    await Navigation.PopAsync();
+                    catch (Exception ex)
+                    {
+                        Common.DisplayErrorMessage("StartScanning-BeginInvokeOnMainThread : " + ex.Message);
+                    }
                 });
 
                 overlay = new ZXingDefaultOverlay

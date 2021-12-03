@@ -165,6 +165,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                     StkShippingCharge.IsVisible = false;
                     lblPinCode.Text = "Product Pickup PIN Code";
+                    lblPinManditory.IsVisible = true;
                 }
                 else
                 {
@@ -269,7 +270,14 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 }
                 else
                 {
-                    isValid = true;
+                    if (mRequirement.PickupProductDirectly && Common.EmptyFiels(txtShippingPinCode.Text))
+                    {
+                        Common.DisplayErrorMessage(Constraints.Required_PickUp_Product);
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -294,6 +302,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 if (Common.EmptyFiels(pckCountry.Text))
                 {
                     BoxCountry.BackgroundColor = (Color)App.Current.Resources["appColor3"];
+                }
+                if (mRequirement.PickupProductDirectly && Common.EmptyFiels(txtShippingPinCode.Text))
+                {
+                    BoxPinCode.BackgroundColor = (Color)App.Current.Resources["appColor3"];
                 }
             }
             catch (Exception ex)
@@ -588,29 +600,28 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ProvideQuotePage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProvideQuotePage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -621,29 +632,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
         private async void BtnSubmitQuote_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnSubmitQuote);
-                    await SaveQuote();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ProvideQuotePage/Submit_QuoteTapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnSubmitQuote);
+                BtnSubmitQuote.IsEnabled = false;
+                await SaveQuote();
+                BtnSubmitQuote.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                BtnSubmitQuote.IsEnabled = true;
+                Common.DisplayErrorMessage("ProvideQuotePage/Submit_QuoteTapped: " + ex.Message);
             }
         }
 

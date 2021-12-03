@@ -8,7 +8,8 @@
     <Frame
         Margin="30"
         Padding="0"
-        BackgroundColor="{StaticResource appColor6}"
+        BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                          Light={StaticResource appColor6}}"
         CornerRadius="10"
         HasShadow="False"
         HorizontalOptions="FillAndExpand"
@@ -30,6 +31,8 @@
                 x:Name="WbView"
                 Grid.Row="1"
                 Margin="20,0,20,20"
+                BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                                  Light={StaticResource appColor6}}"
                 VerticalOptions="FillAndExpand" />
         </Grid>
     </Frame>

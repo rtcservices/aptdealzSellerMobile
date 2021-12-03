@@ -1,5 +1,4 @@
 ﻿using Acr.UserDialogs;
-using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Views.MasterData;
 using System;
@@ -28,8 +27,10 @@ namespace aptdealzSellerMobile.Utility
         private static Regex RegexPincode { get; set; } = new Regex(@"^[0-9]{6}$");
         private static Regex RegexGST { get; set; } = new Regex(@"[0-9]{2}[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}");
         private static Regex RegexPAN { get; set; } = new Regex("([A-Z]){5}([0-9]){4}([A-Z]){1}$");
-        private static Regex RegexURL { get; set; } = new Regex("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
-        #endregion       
+        private static Regex RegexURL { get; set; } = new Regex(@"(http(s)?://)?([\w-]+\.)+[\w-]+(/[\w- ;,./?%&=]*)?");
+
+        //private static Regex RegexURL { get; set; } = new Regex("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+        #endregion
 
         #region [ Display Messages ]
         public static void DisplayErrorMessage(string errormessage)
@@ -56,7 +57,7 @@ namespace aptdealzSellerMobile.Utility
         #endregion
 
         #region [ Methods ]
-        public static async void BindAnimation(ImageButton imageButton = null, Button button = null, Grid grid = null, StackLayout stackLayout = null, Label label = null, Image image = null, Frame frame = null)
+        public static async Task BindAnimation(ImageButton imageButton = null, Button button = null, Grid grid = null, StackLayout stackLayout = null, Label label = null, Image image = null, Frame frame = null)
         {
             try
             {
@@ -238,20 +239,41 @@ namespace aptdealzSellerMobile.Utility
                     return 1;
                 case (int)OrderStatus.ReadyForPickup:
                     return 2;
-                case (int)OrderStatus.Shipped:
-                    return 3;
-                case (int)OrderStatus.Delivered:
-                    return 4;
                 case (int)OrderStatus.Completed:
-                    return 5;
+                    return 3;
                 case (int)OrderStatus.CancelledFromBuyer:
-                    return 6;
+                    return 4;
                 case (int)OrderStatus.All:
-                    return 7;
+                    return 5;
                 default:
                     return 0;
             }
         }
+
+        public static int GetOrderIndexWithoutRP(int orderStatus)
+        {
+
+            switch (orderStatus)
+            {
+                case (int)OrderStatus.Pending:
+                    return 0;
+                case (int)OrderStatus.Accepted:
+                    return 1;
+                case (int)OrderStatus.Shipped:
+                    return 2;
+                case (int)OrderStatus.Delivered:
+                    return 3;
+                case (int)OrderStatus.Completed:
+                    return 4;
+                case (int)OrderStatus.CancelledFromBuyer:
+                    return 5;
+                case (int)OrderStatus.All:
+                    return 6;
+                default:
+                    return 0;
+            }
+        }
+
 
         public static int GetQuoteStatus(string quoteStatus)
         {
@@ -280,6 +302,8 @@ namespace aptdealzSellerMobile.Utility
                     return (int)GrievancesStatus.Open;
                 case "Closed":
                     return (int)GrievancesStatus.Closed;
+                case "ReOpened":
+                    return (int)GrievancesStatus.ReOpened; 
                 case "All":
                     return (int)GrievancesStatus.All;
                 default:
@@ -287,14 +311,14 @@ namespace aptdealzSellerMobile.Utility
             }
         }
 
-        public static void CopyText(Label copyLabel, string message)
+        public async static Task CopyText(Label copyLabel, string message)
         {
             try
             {
-                Clipboard.SetTextAsync(copyLabel.Text);
+                await Clipboard.SetTextAsync(copyLabel.Text);
                 if (Clipboard.HasText)
                 {
-                    Common.BindAnimation(label: copyLabel);
+                    await Common.BindAnimation(label: copyLabel);
                     UserDialogs.Instance.Toast(message);
                 }
             }
@@ -385,7 +409,8 @@ namespace aptdealzSellerMobile.Utility
         Pending = 0,
         Open = 1,
         Closed = 2,
-        All = 3
+        ReOpened = 3,
+        All = 4
     }
 
     public enum GrievancesType

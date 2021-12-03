@@ -6,7 +6,8 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -118,7 +119,8 @@
                                 HorizontalOptions="EndAndExpand"
                                 Style="{StaticResource btnBorder}"
                                 Text="Forgot Password"
-                                TextColor="{StaticResource appColor4}" />
+                                TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                            Light={StaticResource appColor4}}" />
                         </Grid>
 
                         <!--  Login Button  -->

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(aptdealzSellerMobile.iOS.DependencService.FirebaseAuthenticator))]
-
 namespace aptdealzSellerMobile.iOS.DependencService
 {
     public class FirebaseAuthenticator : IFirebaseAuthenticator
@@ -43,13 +42,12 @@ namespace aptdealzSellerMobile.iOS.DependencService
             try
             {
                 phoneNumber = (string)App.Current.Resources["CountryCode"] + phoneNumber;
-
                 keyValuePairs = new TaskCompletionSource<Dictionary<bool, string>>();
+
                 PhoneAuthProvider.DefaultInstance.VerifyPhoneNumber(
                     phoneNumber,
                     null,
                     new VerificationResultHandler(OnVerificationResult));
-
 
                 return keyValuePairs.Task;
             }
@@ -68,6 +66,8 @@ namespace aptdealzSellerMobile.iOS.DependencService
 
                 if (error != null)
                 {
+                    App.Current.MainPage.DisplayAlert("OnVerificationResult-Error:", error.ToString(), "Ok");
+
                     keyValues.Add(false, Constraints.CouldNotSentOTP);
                     keyValuePairs?.TrySetResult(keyValues);
                     return;

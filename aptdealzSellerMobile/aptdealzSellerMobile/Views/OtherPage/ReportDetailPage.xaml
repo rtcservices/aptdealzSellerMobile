@@ -6,7 +6,8 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -60,6 +61,7 @@
                     </Image>
 
                     <Image
+                        x:Name="ImgMenu"
                         Grid.Column="2"
                         Margin="0,0,0,0"
                         HeightRequest="30"
@@ -91,7 +93,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
 
                     <!--  Report Detail  -->
@@ -165,7 +166,8 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Source="iconSortDSC.png"
+                                    Source="{AppThemeBinding Dark=iconSortDSCWhite.png,
+                                                             Light=iconSortDSC.png}"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -188,7 +190,8 @@
                                 ColumnSpacing="0">
                                 <Image
                                     Grid.Column="0"
-                                    Source="iconFilter.png"
+                                    Source="{AppThemeBinding Dark=iconFilterWhite.png,
+                                                             Light=iconFilter.png}"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -216,7 +219,8 @@
                                     Aspect="AspectFit"
                                     HeightRequest="20"
                                     HorizontalOptions="CenterAndExpand"
-                                    Source="iconStatus.png"
+                                    Source="{AppThemeBinding Dark=iconStatusWhite.png,
+                                                             Light=iconStatus.png}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
@@ -240,7 +244,6 @@
                     Grid.Row="2"
                     IsPullToRefreshEnabled="True"
                     ItemAppearing="lstReportDetails_ItemAppearing"
-                    ItemSelected="lstReportDetails_ItemSelected"
                     Refreshing="lstReportDetails_Refreshing"
                     Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>

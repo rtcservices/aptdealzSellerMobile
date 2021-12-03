@@ -242,65 +242,38 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region [ Events ]
         private async void StkSignup_Tapped(object sender, EventArgs e)
         {
-            var Tab = (StackLayout)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new SignupPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("LoginPage/StkSignup_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new SignupPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/StkSignup_Tapped: " + ex.Message);
             }
         }
 
         private async void ForgotPassword_Click(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new ForgotPasswordPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("LoginPage/ForgotPassword_Click: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new ForgotPasswordPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/ForgotPassword_Click: " + ex.Message);
             }
         }
 
         private async void BtnLogin_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnLogin);
-                    await AuthenticateUser();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("LoginPage/BtnLogin_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnLogin);
+                await AuthenticateUser();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("LoginPage/BtnLogin_Tapped: " + ex.Message);
             }
         }
 

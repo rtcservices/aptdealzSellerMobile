@@ -247,7 +247,7 @@ namespace aptdealzSellerMobile.Model.Reponse
                 }
                 else
                 {
-                    return (Color)App.Current.Resources["appColor4"];
+                    return (Application.Current.UserAppTheme == OSAppTheme.Light) ? (Color)App.Current.Resources["appColor4"] : (Color)App.Current.Resources["appColor6"];
                 }
             }
         }

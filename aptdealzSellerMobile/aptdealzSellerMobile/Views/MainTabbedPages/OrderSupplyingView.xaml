@@ -4,7 +4,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid>
@@ -59,6 +60,7 @@
                     </Image>
 
                     <Image
+                        x:Name="ImgMenu"
                         Grid.Column="2"
                         Margin="0,0,0,0"
                         HeightRequest="30"
@@ -93,7 +95,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         x:Name="lblHeader"
@@ -172,7 +173,8 @@
                                 <Image
                                     x:Name="ImgSort"
                                     Grid.Column="0"
-                                    Source="iconSortDSC.png"
+                                    Source="{AppThemeBinding Dark=iconSortDSCWhite.png,
+                                                             Light=iconSortDSC.png}"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -195,7 +197,8 @@
                                 ColumnSpacing="0">
                                 <Image
                                     Grid.Column="0"
-                                    Source="iconFilter.png"
+                                    Source="{AppThemeBinding Dark=iconFilterWhite.png,
+                                                             Light=iconFilter.png}"
                                     Style="{StaticResource imgSorting}" />
 
                                 <Label
@@ -223,7 +226,8 @@
                                     Aspect="AspectFit"
                                     HeightRequest="20"
                                     HorizontalOptions="CenterAndExpand"
-                                    Source="iconStatus.png"
+                                    Source="{AppThemeBinding Dark=iconStatusWhite.png,
+                                                             Light=iconStatus.png}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label

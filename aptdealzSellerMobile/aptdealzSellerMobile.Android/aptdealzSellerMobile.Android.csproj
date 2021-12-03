@@ -39,7 +39,17 @@
     <BundleAssemblies>false</BundleAssemblies>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidSigningKeyStore>..\aptdealzSellerMobile.Android\KeyStore\aptdealzSellerMobile.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>aptdealzSellerMobile</AndroidSigningKeyAlias>
+    <AndroidSigningStorePass>test123</AndroidSigningStorePass>
+    <AndroidSigningKeyPass>test123</AndroidSigningKeyPass>
+    <AndroidSupportedAbis />
+    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -122,7 +132,7 @@
       <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
+      <Version>4.1.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading">
       <Version>2.4.11.982</Version>
@@ -142,10 +152,10 @@
     <PackageReference Include="Xamarin.Firebase.Firestore">
       <Version>71.1705.4</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2244" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="Xamarin.Forms.PancakeView">
-      <Version>2.3.0.759</Version>
+      <Version>2.3.0.763-beta</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Base">
       <Version>71.1610.0</Version>
@@ -165,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomRenderers\CustomRenderer.cs" />
+    <Compile Include="DependencService\CameraPermissionService.cs" />
     <Compile Include="DependencService\CloseAppOnBackButton.cs" />
     <Compile Include="DependencService\FirebaseAuthenticator.cs" />
     <Compile Include="DependencService\HtmlToPDFService.cs" />
@@ -411,6 +422,22 @@
     <AndroidResource Include="Resources\drawable\iconGreenDownArrow.png" />
     <AndroidResource Include="Resources\drawable\iconSwitchOn.png" />
     <AndroidResource Include="Resources\drawable\iconSwitchOff.png" />
+    <AndroidResource Include="Resources\drawable\iconSortDSCWhite.png" />
+    <AndroidResource Include="Resources\drawable\imgContactWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconAccountWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconAddSellerOrangeWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconAddSellerWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconBackArrowWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconEditBlackWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconFilterWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconHomeWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconManageSellerWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconOrdersWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconSortASCWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconProductBannerWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconAddWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconQuotesWhite.png" />
+    <AndroidResource Include="Resources\drawable\iconStatusWhite.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\aptdealzSellerMobile\aptdealzSellerMobile.csproj">
@@ -421,7 +448,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

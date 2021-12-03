@@ -3,8 +3,8 @@
     x:Class="aptdealzSellerMobile.Views.Dashboard.FaqHelpView"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
 
 
@@ -80,7 +80,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
@@ -139,7 +138,8 @@
                                         <StackLayout
                                             Grid.Row="1"
                                             Margin="0"
-                                            BackgroundColor="#CAF3DB"
+                                            BackgroundColor="{AppThemeBinding Dark={StaticResource appColor10},
+                                                                              Light={StaticResource appColor12}}"
                                             HorizontalOptions="FillAndExpand"
                                             IsVisible="{Binding ShowFaqDesc, Mode=TwoWay}"
                                             VerticalOptions="FillAndExpand">

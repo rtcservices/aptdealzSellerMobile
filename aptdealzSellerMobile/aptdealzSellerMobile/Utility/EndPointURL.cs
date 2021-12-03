@@ -26,6 +26,8 @@
         public const string GetMyProfileData = "api/v{0}/SellerManagement/GetMyProfileData";
         public const string SaveProfile = "api/v{0}/SellerManagement/Update";
         public const string GetPincodeInfo = "api/IndianPincode/GetPincodeInfo/{0}";
+       
+        public const string UpdateUserMuteNotification = "api/Account/UpdateUserMuteNotification/{0}";
         #endregion
 
         #region [ Category API ]

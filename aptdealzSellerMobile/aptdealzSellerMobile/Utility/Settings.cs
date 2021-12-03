@@ -92,6 +92,30 @@ namespace aptdealzSellerMobile.Utility
                 PropertyChanged(this, new PropertyChangedEventArgs("IsViewWelcomeScreen"));
             }
         }
+
+        public bool isDarkMode = false;
+        public bool IsDarkMode
+        {
+            get { return IsDarkMode; }
+            set
+            {
+                isDarkMode = value;
+                Settings.IsDarkMode = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsDarkMode"));
+            }
+        }
+
+        public bool isMuteMode = false;
+        public bool IsMuteMode
+        {
+            get { return isMuteMode; }
+            set
+            {
+                isMuteMode = value;
+                Settings.IsMuteMode = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsMuteMode"));
+            }
+        }
         #endregion
     }
 
@@ -110,10 +134,13 @@ namespace aptdealzSellerMobile.Utility
         private const string RefreshTokenKey = "refreshToken_key";
         private const string LoginTrackingKey_Key = "loginTrackingKey_key";
         private const string IsViewWelcomeScreen_Key = "IsViewWelcomeScreen_Key";
+        private const string IsDarkMode_Key = "IsDarkModen_Key";
+        private const string IsMuteMode_Key = "IsMuteModen_Key";
         #endregion
 
         private static readonly string SettingsDefault = string.Empty;
         private static readonly bool SettingsBoolDefault = true;
+        private static readonly bool SettingsBoolDefault1 = false;
 
         public static string EmailAddress
         {
@@ -155,6 +182,17 @@ namespace aptdealzSellerMobile.Utility
         {
             get { return AppSettings.GetValueOrDefault(IsViewWelcomeScreen_Key, SettingsBoolDefault); }
             set { AppSettings.AddOrUpdateValue(IsViewWelcomeScreen_Key, value); }
+        }
+
+        public static bool IsDarkMode
+        {
+            get { return AppSettings.GetValueOrDefault(IsDarkMode_Key, SettingsBoolDefault1); }
+            set { AppSettings.AddOrUpdateValue(IsDarkMode_Key, value); }
+        }
+        public static bool IsMuteMode
+        {
+            get { return AppSettings.GetValueOrDefault(IsMuteMode_Key, SettingsBoolDefault1); }
+            set { AppSettings.AddOrUpdateValue(IsMuteMode_Key, value); }
         }
     }
 }

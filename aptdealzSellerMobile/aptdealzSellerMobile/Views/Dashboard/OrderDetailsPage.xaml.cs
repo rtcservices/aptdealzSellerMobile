@@ -1,8 +1,11 @@
-﻿using aptdealzSellerMobile.Model.Reponse;
+﻿using aptdealzSellerMobile.Interfaces;
+using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.OtherPage;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +23,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private Order mOrder;
         private List<string> mOrderStatusList;
         private string OrderId;
+        bool isFirstLoad = true;
         #endregion
 
         #region [ Constructor ]
@@ -75,23 +79,30 @@ namespace aptdealzSellerMobile.Views.Dashboard
             Dispose();
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
-            OrderStatusList();
-            GetOrderDetails();
+            await GetOrderDetails();
         }
 
-        private void OrderStatusList()
+        private void OrderStatusList(bool pickupProductDirectly)
         {
             try
             {
                 mOrderStatusList.Clear();
                 mOrderStatusList.Add(OrderStatus.Pending.ToString());
                 mOrderStatusList.Add(OrderStatus.Accepted.ToString());
-                mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
-                mOrderStatusList.Add(OrderStatus.Shipped.ToString());
-                mOrderStatusList.Add(OrderStatus.Delivered.ToString());
+
+                if (pickupProductDirectly)
+                {
+                    mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
+                }
+                else
+                {
+                    mOrderStatusList.Add(OrderStatus.Shipped.ToString());
+                    mOrderStatusList.Add(OrderStatus.Delivered.ToString());
+                }
+
                 mOrderStatusList.Add(OrderStatus.Completed.ToString());
 
                 pckOrderStatus.ItemsSource = mOrderStatusList.ToList();
@@ -265,7 +276,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
-                if (PickupProductDirectly)  //Pickup from seller
+                if (PickupProductDirectly && Status == (int)OrderStatus.ReadyForPickup)  //Pickup from seller
                 {
                     BtnScanQRCode.IsVisible = true;
                     BtnRaiseGrievance.IsVisible = true;
@@ -276,7 +287,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                 if (CancellationPeriod)
                 {
-                    if (Status == (int)OrderStatus.ReadyForPickup)
+                    if (PickupProductDirectly && Status == (int)OrderStatus.ReadyForPickup)
                     {
                         BtnScanQRCode.IsVisible = true;
                         BtnRaiseGrievance.IsVisible = true;
@@ -323,13 +334,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         BtnUpdate.IsVisible = true;
                         GrdUpdateStatus.IsVisible = true;
                     }
-                    else if (Status == (int)OrderStatus.Shipped)
-                    {
-                        BtnRaiseGrievance.IsVisible = true;
-                        BtnScanQRCode.IsVisible = false;
-                        BtnUpdate.IsVisible = true;
-                        GrdUpdateStatus.IsVisible = true;
-                    }
                     else //Update Status
                     {
                         BtnScanQRCode.IsVisible = false;
@@ -345,8 +349,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     BtnUpdate.IsVisible = false;
                     GrdUpdateStatus.IsVisible = false;
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -358,21 +360,28 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
+                isFirstLoad = true;
+
                 mOrder = await DependencyService.Get<IOrderRepository>().GetOrderDetails(OrderId);
                 if (mOrder != null)
                 {
                     #region [ Details ]
                     if (mOrder.PickupProductDirectly)
+                    {
                         lblPinCodeTitle.Text = "Product Pickup PIN Code";
+                        lblExpected.Text = "Expected Pickup Date";
+                    }
                     else
+                    {
                         lblPinCodeTitle.Text = "Shipping PIN Code";
+                        lblExpected.Text = "Expected Delivery Date";
+                    }
 
                     lblOrderId.Text = mOrder.OrderNo;
                     lblOrderRequirementId.Text = mOrder.RequirementNo;
                     lblRequirementTitle.Text = mOrder.Title;
                     lblOrderReferenceNo.Text = mOrder.QuoteNo;
                     lblOrderSellerName.Text = mOrder.SellerContact.Name;
-
 
                     lblOrderQuntity.Text = "" + mOrder.RequestedQuantity + " " + mOrder.Unit;
                     lblOrderUnitPrice.Text = "Rs " + mOrder.UnitPrice;
@@ -383,12 +392,32 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     lblOrderCountry.Text = mOrder.Country;
                     lblInvoiceNo.Text = mOrder.OrderNo;
                     lblTotalAmount.Text = "Rs " + mOrder.TotalAmount;
-                    lblExpectedDate.Text = mOrder.ExpectedDelivery.ToString(Constraints.Str_DateFormate);
-                    lblBuyerContact.Text = mOrder.SellerContact.PhoneNumber;
+
+                    if (mOrder.ExpectedDelivery == null || mOrder.ExpectedDelivery.Date == DateTime.MinValue.Date)
+                    {
+                        lblExpectedDate.IsVisible = false;
+                        lblExpected.IsVisible = false;
+                    }
+                    else
+                    {
+                        lblExpectedDate.Text = mOrder.ExpectedDelivery.ToString(Constraints.Str_DateFormate);
+                        lblExpectedDate.IsVisible = true;
+                        lblExpected.IsVisible = true;
+                    }
+
+                    lblBuyerContact.Text = mOrder.BuyerContact.PhoneNumber;
+
                     lblOrderStatus.Text = mOrder.OrderStatusDescr;
                     lblPaymentStatus.Text = mOrder.PaymentStatusDescr;
+                    lblPlatformCharges.Text = "Rs " + mOrder.PlatFormCharges.ToString();
+                    lblSellerEarnings.Text = "Rs " + mOrder.SellerEarnings.ToString();
 
-                    pckOrderStatus.SelectedIndex = Common.GetOrderIndex(mOrder.OrderStatus);
+                    OrderStatusList(mOrder.PickupProductDirectly);
+
+                    if (mOrder.PickupProductDirectly)
+                        pckOrderStatus.SelectedIndex = Common.GetOrderIndex(mOrder.OrderStatus);
+                    else
+                        pckOrderStatus.SelectedIndex = Common.GetOrderIndexWithoutRP(mOrder.OrderStatus);
 
                     if (mOrder.BuyerContact != null && !Common.EmptyFiels(mOrder.BuyerContact.BuyerId) && !Common.EmptyFiels(mOrder.BuyerContact.UserId))
                     {
@@ -400,7 +429,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         lblOrderBuyerName.Text = mOrder.BuyerContact.Name;
                         lblBuyerPNumber.Text = mOrder.BuyerContact.PhoneNumber;
                         lblBuyerEmail.Text = mOrder.BuyerContact.Email;
-                        lblBuyerContact.Text = mOrder.SellerContact.PhoneNumber;
+                        lblBuyerContact.Text = mOrder.BuyerContact.PhoneNumber;
                     }
                     else
                     {
@@ -455,10 +484,15 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     BindOrderStatus(mOrder.OrderStatus, mOrder.PickupProductDirectly, mOrder.IsCancellationPeriodOver);
                     #endregion
                 }
+
             }
             catch (Exception ex)
             {
                 Common.DisplayErrorMessage("OrderDetailsPage/GetOrderDetails: " + ex.Message);
+            }
+            finally
+            {
+                isFirstLoad = false;
             }
         }
 
@@ -525,10 +559,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                     await DependencyService.Get<IOrderRepository>().UpdateOrder(mOrderUpdate);
                     BtnUpdate.IsEnabled = false;
-                    txtShippingNumber.Text = string.Empty;
-                    txtLRNumber.Text = string.Empty;
-                    txtEWayBillNumber.Text = string.Empty;
-                    txtTrackingLink.Text = string.Empty;
+                    //txtShippingNumber.Text = string.Empty;
+                    //txtLRNumber.Text = string.Empty;
+                    //txtEWayBillNumber.Text = string.Empty;
+                    //txtTrackingLink.Text = string.Empty;
                     await GetOrderDetails();
                 }
             }
@@ -540,29 +574,28 @@ namespace aptdealzSellerMobile.Views.Dashboard
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(image: ImgMenu);
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("OrderDetailsPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -573,7 +606,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
@@ -589,41 +622,39 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void BtnScanQRCode_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
+                await Common.BindAnimation(button: BtnScanQRCode);
+
+                var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+                if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
                 {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnScanQRCode);
-                    await Navigation.PushAsync(new QrCodeScanPage());
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera });
+                    cameraStatus = results[Permission.Camera];
+                    DependencyService.Get<ICameraPermission>().CameraPermission();
                 }
-                catch (Exception ex)
+
+                if (cameraStatus == Plugin.Permissions.Abstractions.PermissionStatus.Granted)
                 {
-                    Common.DisplayErrorMessage("OrderDetailsPage/BtnScanQRCode_Clicked: " + ex.Message);
+                    await Navigation.PushAsync(new QrCodeScanPage(mOrder));
                 }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BtnScanQRCode_Clicked: " + ex.Message);
             }
         }
 
         private async void BtnUpdate_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnUpdate);
-                    await UpdateOrder();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("OrderDetailsPage/BtnUpdate_Tapped: " + ex.Message);
-                }
+                await Common.BindAnimation(button: BtnUpdate);
+                await UpdateOrder();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BtnUpdate_Tapped: " + ex.Message);
             }
         }
 
@@ -659,46 +690,38 @@ namespace aptdealzSellerMobile.Views.Dashboard
         private async void CopyString_Tapped(object sender, EventArgs e)
         {
             var stackLayoutTab = (StackLayout)sender;
-            if (stackLayoutTab.IsEnabled)
+            try
             {
-                try
+                if (!Common.EmptyFiels(stackLayoutTab.ClassId))
                 {
-                    stackLayoutTab.IsEnabled = false;
-                    if (!Common.EmptyFiels(stackLayoutTab.ClassId))
+                    if (stackLayoutTab.ClassId == "OrderId")
                     {
-                        if (stackLayoutTab.ClassId == "OrderId")
+                        string message = Constraints.CopiedOrderId;
+                        Common.CopyText(lblOrderId, message);
+                    }
+                    else if (stackLayoutTab.ClassId == "RequirementId")
+                    {
+                        if (!Common.EmptyFiels(mOrder.RequirementId))
                         {
-                            string message = Constraints.CopiedOrderId;
-                            Common.CopyText(lblOrderId, message);
+                            string message = Constraints.CopiedRequirementId;
+                            Common.CopyText(lblOrderRequirementId, message);
+                            await Navigation.PushAsync(new RequirementDetailPage(mOrder.RequirementId));
                         }
-                        else if (stackLayoutTab.ClassId == "RequirementId")
+                    }
+                    else if (stackLayoutTab.ClassId == "QuoteRefeNo")
+                    {
+                        if (!Common.EmptyFiels(mOrder.QuoteId))
                         {
-                            if (!Common.EmptyFiels(mOrder.RequirementId))
-                            {
-                                string message = Constraints.CopiedRequirementId;
-                                Common.CopyText(lblOrderRequirementId, message);
-                                await Navigation.PushAsync(new RequirementDetailPage(mOrder.RequirementId));
-                            }
-                        }
-                        else if (stackLayoutTab.ClassId == "QuoteRefeNo")
-                        {
-                            if (!Common.EmptyFiels(mOrder.QuoteId))
-                            {
-                                string message = Constraints.CopiedQuoteRefNo;
-                                Common.CopyText(lblOrderReferenceNo, message);
-                                await Navigation.PushAsync(new QuoteDetailsPage(mOrder.QuoteId));
-                            }
+                            string message = Constraints.CopiedQuoteRefNo;
+                            Common.CopyText(lblOrderReferenceNo, message);
+                            await Navigation.PushAsync(new QuoteDetailsPage(mOrder.QuoteId));
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("OrderDetailsPage/CopyString_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    stackLayoutTab.IsEnabled = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/CopyString_Tapped: " + ex.Message);
             }
         }
 
@@ -718,7 +741,14 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     GrdShippingDetails.IsVisible = false;
                 }
 
-                if (pckOrderStatus.SelectedIndex != Common.GetOrderIndex(mOrder.OrderStatus))
+                int idx = -1;
+
+                if (mOrder.PickupProductDirectly)
+                    idx = Common.GetOrderIndex(mOrder.OrderStatus);
+                else
+                    idx = Common.GetOrderIndexWithoutRP(mOrder.OrderStatus);
+
+                if (pckOrderStatus.SelectedIndex != idx)
                 {
                     BtnUpdate.IsEnabled = true;
                 }
@@ -735,25 +765,52 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
         private async void BtnRaiseGrievance_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnRaiseGrievance);
-                    await Navigation.PushAsync(new RaiseGrievancePage(OrderId));
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("OrderDetailsPage/BtnRaiseGrievance_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnRaiseGrievance);
+                await Navigation.PushAsync(new RaiseGrievancePage(OrderId));
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("OrderDetailsPage/BtnRaiseGrievance_Tapped: " + ex.Message);
             }
         }
         #endregion
+
+        private void txtShippingNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isFirstLoad)
+                return;
+
+            if (e.OldTextValue != txtShippingNumber.Text)
+                BtnUpdate.IsEnabled = true;
+        }
+
+        private void txtLRNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isFirstLoad)
+                return;
+
+            if (e.OldTextValue != txtLRNumber.Text)
+                BtnUpdate.IsEnabled = true;
+        }
+
+        private void txtEWayBillNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isFirstLoad)
+                return;
+
+            if (e.OldTextValue != txtEWayBillNumber.Text)
+                BtnUpdate.IsEnabled = true;
+        }
+
+        private void txtTrackingLink_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isFirstLoad)
+                return;
+
+            if (e.OldTextValue != txtTrackingLink.Text)
+                BtnUpdate.IsEnabled = true;
+        }
     }
 }

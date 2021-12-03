@@ -4,7 +4,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentView.Content>
         <Grid RowSpacing="0">
@@ -59,6 +60,7 @@
                     </Image>
 
                     <Image
+                        x:Name="ImgMenu"
                         Grid.Column="2"
                         Margin="0,0,0,0"
                         HeightRequest="30"
@@ -93,7 +95,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
@@ -182,7 +183,8 @@
                                     Margin="0"
                                     HeightRequest="20"
                                     HorizontalOptions="CenterAndExpand"
-                                    Source="iconSortDSC.png"
+                                    Source="{AppThemeBinding Dark=iconSortDSCWhite.png,
+                                                             Light=iconSortDSC.png}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
@@ -218,7 +220,8 @@
                                     Margin="0"
                                     HeightRequest="20"
                                     HorizontalOptions="CenterAndExpand"
-                                    Source="iconFilter.png"
+                                    Source="{AppThemeBinding Dark=iconFilterWhite.png,
+                                                             Light=iconFilter.png}"
                                     VerticalOptions="CenterAndExpand" />
 
                                 <Label
@@ -242,7 +245,6 @@
                     Grid.Row="2"
                     IsPullToRefreshEnabled="True"
                     ItemAppearing="lstRequirements_ItemAppearing"
-                    ItemTapped="lstRequirements_ItemTapped"
                     Refreshing="lstRequirements_Refreshing"
                     Style="{StaticResource lstPrimary}">
                     <ListView.ItemTemplate>

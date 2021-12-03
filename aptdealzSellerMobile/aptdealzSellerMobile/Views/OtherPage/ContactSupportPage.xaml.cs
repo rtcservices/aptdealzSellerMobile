@@ -207,9 +207,17 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #endregion
 
         #region [ Events ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ContactSupportPage/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private void ImgQuestion_Tapped(object sender, EventArgs e)
@@ -219,51 +227,32 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ContactSupportPage/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ContactSupportPage/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
         private async void BtnSend_Clicked(object sender, EventArgs e)
         {
-            var Tab = (ImageButton)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(imageButton: BtnSend);
-                    await SentMessage();
-
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("ContactSupportPage/BtnSend_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(imageButton: BtnSend);
+                await SentMessage();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ContactSupportPage/BtnSend_Clicked: " + ex.Message);
             }
         }
 

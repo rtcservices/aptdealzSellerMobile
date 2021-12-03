@@ -6,7 +6,8 @@
     xmlns:ext="clr-namespace:aptdealzSellerMobile.Extention"
     xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     iOS:Page.UseSafeArea="True"
-    BackgroundColor="{StaticResource appColor6}"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource appColor4},
+                                      Light={StaticResource appColor6}}"
     NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid RowSpacing="0">
@@ -92,7 +93,6 @@
                         x:Name="ImgBack"
                         Grid.Column="0"
                         Clicked="ImgBack_Tapped"
-                        Source="iconBackArrow.png"
                         Style="{StaticResource ImgBtnPrimary}" />
                     <Label
                         Grid.Column="1"
@@ -204,7 +204,7 @@
                                             <Label
                                                 HorizontalOptions="StartAndExpand"
                                                 Style="{StaticResource lblLight}"
-                                                Text="Quote Reference No" />
+                                                Text="Quote Id" />
                                             <Label
                                                 x:Name="lblOrderReferenceNo"
                                                 FontSize="15"
@@ -324,7 +324,7 @@
                                             <Label
                                                 x:Name="lblPinCodeTitle"
                                                 HorizontalOptions="StartAndExpand"
-                                                Style="{StaticResource lblLight}"
+                                                Style="{StaticResource lblSemiBold}"
                                                 Text="Shipping PIN Code" />
 
                                             <Label
@@ -500,7 +500,7 @@
                                             <Label
                                                 HorizontalOptions="StartAndExpand"
                                                 Style="{StaticResource lblLight}"
-                                                Text="Country of Origin" />
+                                                Text="Product Made In" />
 
                                             <Label
                                                 x:Name="lblOrderCountry"
@@ -535,7 +535,7 @@
                                         Grid.Row="0"
                                         Margin="0,0,0,15"
                                         Padding="15,10"
-                                        BackgroundColor="{StaticResource appColor8}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource appColor8}}"
                                         Style="{StaticResource frmBlank}">
                                         <StackLayout Orientation="Vertical">
                                             <Label
@@ -557,7 +557,7 @@
                                         x:Name="FrmShippingAddress"
                                         Grid.Row="1"
                                         Padding="15,10"
-                                        BackgroundColor="{StaticResource appColor8}"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource appColor8}}"
                                         Style="{StaticResource frmBlank}">
                                         <StackLayout Orientation="Vertical">
                                             <Label
@@ -579,7 +579,7 @@
                                 <!--  Accepted Frame  -->
                                 <Frame
                                     Grid.Row="1"
-                                    Padding="15,10"
+                                    Padding="7,10"
                                     Style="{StaticResource frmBlank}">
 
                                     <Grid
@@ -591,7 +591,7 @@
                                         <Label
                                             Grid.Row="0"
                                             Grid.Column="0"
-                                            FontSize="15"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Invoice Number" />
@@ -599,7 +599,7 @@
                                             x:Name="lblInvoiceNo"
                                             Grid.Row="0"
                                             Grid.Column="1"
-                                            FontSize="14"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}" />
 
@@ -607,7 +607,7 @@
                                         <Label
                                             Grid.Row="1"
                                             Grid.Column="0"
-                                            FontSize="15"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Total Amount" />
@@ -615,23 +615,25 @@
                                             x:Name="lblTotalAmount"
                                             Grid.Row="1"
                                             Grid.Column="1"
-                                            FontSize="14"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}" />
 
                                         <!--  Expected Delivery  -->
                                         <Label
+                                            x:Name="lblExpected"
                                             Grid.Row="2"
                                             Grid.Column="0"
-                                            FontSize="15"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Expected Delivery" />
+
                                         <Label
                                             x:Name="lblExpectedDate"
                                             Grid.Row="2"
                                             Grid.Column="1"
-                                            FontSize="14"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}" />
 
@@ -641,7 +643,7 @@
                                             x:Name="lblBuyerContactLabel"
                                             Grid.Row="3"
                                             Grid.Column="0"
-                                            FontSize="15"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}"
                                             Text="Contact Buyer" />
@@ -650,7 +652,7 @@
                                             x:Name="lblBuyerContact"
                                             Grid.Row="3"
                                             Grid.Column="1"
-                                            FontSize="14"
+                                            FontSize="12"
                                             HorizontalOptions="StartAndExpand"
                                             Style="{StaticResource lblMedium}" />
 
@@ -740,7 +742,8 @@
                                                 ClassId="ShippingNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
-                                                TabIndex="2" />
+                                                TabIndex="2"
+                                                TextChanged="txtShippingNumber_TextChanged" />
                                             <BoxView Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
@@ -752,7 +755,8 @@
                                                 x:Name="txtLRNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
-                                                TabIndex="3" />
+                                                TabIndex="3"
+                                                TextChanged="txtLRNumber_TextChanged" />
                                             <BoxView Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
@@ -763,7 +767,8 @@
                                                 x:Name="txtEWayBillNumber"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
-                                                TabIndex="4" />
+                                                TabIndex="4"
+                                                TextChanged="txtEWayBillNumber_TextChanged" />
                                             <BoxView Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
@@ -775,7 +780,8 @@
                                                 x:Name="txtTrackingLink"
                                                 Keyboard="Text"
                                                 Style="{StaticResource entrPrimary}"
-                                                TabIndex="5" />
+                                                TabIndex="5"
+                                                TextChanged="txtTrackingLink_TextChanged" />
                                             <BoxView Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
                                     </Grid>
@@ -802,7 +808,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             HorizontalOptions="StartAndExpand"
-                                            Style="{StaticResource lblLight}"
+                                            Style="{StaticResource lblMedium}"
                                             Text="Platform Charges" />
 
                                         <Label
@@ -810,7 +816,7 @@
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             HorizontalOptions="StartAndExpand"
-                                            Style="{StaticResource lblLight}" />
+                                            Style="{StaticResource lblMedium}" />
 
                                         <!--  Seller Earnings  -->
                                         <Label

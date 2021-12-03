@@ -895,7 +895,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         #region [ Events ]
         private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             await Navigation.PopAsync();
         }
 
@@ -969,7 +969,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             try
             {
-                Common.BindAnimation(imageButton: ImgUplodeDocument);
+                await Common.BindAnimation(imageButton: ImgUplodeDocument);
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 await FileSelection.FilePickup();
                 relativePath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfileDocuments);
@@ -1012,66 +1012,41 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private void StkLogin_Tapped(object sender, EventArgs e)
         {
-            var Tab = (StackLayout)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    App.Current.MainPage = new NavigationPage(new LoginPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("SignupPage/StkSignup_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                App.Current.MainPage = new NavigationPage(new LoginPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/StkSignup_Tapped: " + ex.Message);
             }
         }
 
         private async void BtnSubmit_Clicked(object sender, EventArgs e)
         {
             var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnSubmit);
-                    await RegisterUser();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("SignupPage/BtnSubmit_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnSubmit);
+                await RegisterUser();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/BtnSubmit_Clicked: " + ex.Message);
             }
         }
 
         private async void ImgDocument_Clicked(object sender, EventArgs e)
         {
             var imgButton = (ImageButton)sender;
-            if (imgButton.IsEnabled)
+            try
             {
-                try
-                {
-                    imgButton.IsEnabled = false;
-                    var url = imgButton.BindingContext as string;
-                    await GenerateWebView.GenerateView(url);
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("SignupPage/ImgDocument_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    imgButton.IsEnabled = true;
-                }
+                var url = imgButton.BindingContext as string;
+                await GenerateWebView.GenerateView(url);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SignupPage/ImgDocument_Clicked: " + ex.Message);
             }
         }
 

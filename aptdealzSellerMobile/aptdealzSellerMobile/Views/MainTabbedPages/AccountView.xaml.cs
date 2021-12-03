@@ -351,6 +351,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     txtDescription.Text = mSellerDetail.CompanyProfile.Description;
                     txtExperience.Text = mSellerDetail.CompanyProfile.Experience;
                     txtSupplyArea.Text = mSellerDetail.CompanyProfile.AreaOfSupply;
+                    lblSellerCommission.Text = "" + mSellerDetail.CompanyProfile.CommissionRate + "%";
                     #endregion
 
                     #region Bank Information
@@ -1114,29 +1115,28 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         #region [ Events ]    
         #region [ Header Navigation ]
-        private void ImgMenu_Tapped(object sender, EventArgs e)
+        private async void ImgMenu_Tapped(object sender, EventArgs e)
         {
-
+            try
+            {
+                await Common.BindAnimation(image: ImgMenu);
+                await Navigation.PushAsync(new OtherPage.SettingsPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/ImgMenu_Tapped: " + ex.Message);
+            }
         }
 
         private async void ImgNotification_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Grid)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    await Navigation.PushAsync(new NotificationPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("AccountView/ImgNotification_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Navigation.PushAsync(new NotificationPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/ImgNotification_Tapped: " + ex.Message);
             }
         }
 
@@ -1145,9 +1145,9 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPages.MainTabbedPage("FAQHelp"));
         }
 
-        private void ImgBack_Tapped(object sender, EventArgs e)
+        private async void ImgBack_Tapped(object sender, EventArgs e)
         {
-            Common.BindAnimation(imageButton: ImgBack);
+            await Common.BindAnimation(imageButton: ImgBack);
             Common.MasterData.Detail = new NavigationPage(new MainTabbedPage("Home"));
         }
 
@@ -1162,7 +1162,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                Common.BindAnimation(image: ImgCamera);
+                await Common.BindAnimation(image: ImgCamera);
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 ImageConvertion.SelectedImagePath = imgUser;
                 //ImageConvertion.SelectedXFImagePath = imgUser;
@@ -1190,7 +1190,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         {
             try
             {
-                Common.BindAnimation(imageButton: ImgUplodeDocument);
+                await Common.BindAnimation(imageButton: ImgUplodeDocument);
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 await FileSelection.FilePickup();
                 relativeDocumentPath = await DependencyService.Get<IFileUploadRepository>().UploadFile((int)FileUploadCategory.ProfileDocuments);
@@ -1494,31 +1494,22 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
             }
         }
 
-        private void BtnUpdate_Clicked(object sender, EventArgs e)
+        private async void BtnUpdate_Clicked(object sender, EventArgs e)
         {
-            Common.BindAnimation(button: BtnUpdate);
+            await Common.BindAnimation(button: BtnUpdate);
             UpdateProfile();
         }
 
         private async void Logout_Tapped(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnLogout);
-                    await DependencyService.Get<IAuthenticationRepository>().DoLogout();
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("AccountView/Logout_Tapped: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnLogout);
+                await DependencyService.Get<IAuthenticationRepository>().DoLogout();
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/Logout_Tapped: " + ex.Message);
             }
         }
 
@@ -1531,23 +1522,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private async void BtnDeactivateAccount_Clicked(object sender, EventArgs e)
         {
-            var Tab = (Button)sender;
-            if (Tab.IsEnabled)
+            try
             {
-                try
-                {
-                    Tab.IsEnabled = false;
-                    Common.BindAnimation(button: BtnDeactivateAccount);
-                    await Navigation.PushAsync(new OtherPage.DeactivateAccountPage());
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("AccountView/BtnDeactivateAccount: " + ex.Message);
-                }
-                finally
-                {
-                    Tab.IsEnabled = true;
-                }
+                await Common.BindAnimation(button: BtnDeactivateAccount);
+                await Navigation.PushAsync(new OtherPage.DeactivateAccountPage());
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/BtnDeactivateAccount: " + ex.Message);
             }
         }
 
@@ -1567,22 +1549,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         private async void ImgDocument_Clicked(object sender, EventArgs e)
         {
             var imgButton = (ImageButton)sender;
-            if (imgButton.IsEnabled)
+            try
             {
-                try
-                {
-                    imgButton.IsEnabled = false;
-                    var url = imgButton.BindingContext as string;
-                    await GenerateWebView.GenerateView(url);
-                }
-                catch (Exception ex)
-                {
-                    Common.DisplayErrorMessage("AccountView/ImgDocument_Clicked: " + ex.Message);
-                }
-                finally
-                {
-                    imgButton.IsEnabled = true;
-                }
+                var url = imgButton.BindingContext as string;
+                await GenerateWebView.GenerateView(url);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("AccountView/ImgDocument_Clicked: " + ex.Message);
             }
         }
         #endregion

@@ -18,13 +18,13 @@ using FFImageLoading.Forms.Platform;
 using Firebase;
 using Newtonsoft.Json;
 using Org.Json;
+using Plugin.CurrentActivity;
 using Plugin.FirebasePushNotification;
 using Plugin.Permissions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -42,6 +42,7 @@ namespace aptdealzSellerMobile.Droid
         {
             base.OnCreate(savedInstanceState);
             AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             FirebaseApp.InitializeApp(this);
 
@@ -58,7 +59,7 @@ namespace aptdealzSellerMobile.Droid
             Rg.Plugins.Popup.Popup.Init(this);
 
             CameraPermission();
-           // GetPermission();
+            // GetPermission();
 
             LoadApplication(new App());
             //CreateNotificationFromIntent(Intent);
@@ -212,24 +213,16 @@ namespace aptdealzSellerMobile.Droid
         #endregion
 
         #region [ Permissions ]
-        public async Task CameraPermission()
+        public void CameraPermission()
         {
             try
             {
-                string version = Android.OS.Build.VERSION.Release; //Android Version No like 4.4.4 etc... 
-                var mver = string.Format("{0:0.00}", version.Substring(0, 3));
-                double ver = Convert.ToDouble(mver);
-                if (ver >= 5.0)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
                 {
-                    var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Camera);
-                    if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+                    const string Camerapermission = Manifest.Permission.Camera;
+                    if (CheckSelfPermission(Camerapermission) != (int)Android.Content.PM.Permission.Granted)
                     {
-                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Plugin.Permissions.Abstractions.Permission.Camera);
-                        //Best practice to always check that the key exists
-                        if (results.ContainsKey(Plugin.Permissions.Abstractions.Permission.Camera))
-                        {
-                            status = results[Plugin.Permissions.Abstractions.Permission.Camera];
-                        }
+                        RequestPermissions(new string[] { Manifest.Permission.Camera }, 101);
                     }
                 }
             }
