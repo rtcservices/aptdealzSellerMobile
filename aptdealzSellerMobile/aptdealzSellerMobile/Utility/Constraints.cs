@@ -11,8 +11,8 @@
 
         public const string Str_RevealContact = "Reveal Contact";
         public const string Str_NotRevealContact = "Contact was not revealed";
-        public const string RP_UserName = "rzp_test_PUJtE9p3XLuGe8";
-        public const string RP_Password = "42HIrjeUTXOHNC84Ldl3aDzL";
+        public const string RP_UserName = "rzp_test_JRsla5mkRABqyk";
+        public const string RP_Password = "Z5tRUkYSvUwHYIHsUyR2KaSx";
         public const string RP_RevealPayNow = "RevealPayNow";
         public const string RP_PaidRevealResponse = "PaidRevealResponse";
 

@@ -1017,6 +1017,10 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 {
                     mSellerDetail.SubCategories = selectedSubCategory;
                 }
+                if (!Common.EmptyFiels(pkNationality.Text))
+                {
+                    mSellerDetail.CountryId = (Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault()?.CountryId ?? 0);
+                }
                 #endregion
 
                 #region Bank Information
