@@ -42,6 +42,7 @@
         public const string GetRequirementById = "api/v{0}/Requirement/Get/{1}";
         public const string GetRequirementDetailsWithoutQuoteDetails = "api/v{0}/Requirement/GetRequirementDetailsWithoutQuoteDetails/{1}";
         public const string RevealBuyerContact = "api/v{0}/Requirement/RevealBuyerContact";
+        public const string GetAmountToBePaidToRevealSellerContact = "api​/v{0}​/Requirement​/GetAmountToBePaidToRevealSellerContact";
         #endregion
 
         #region [ Quote API ]
@@ -77,6 +78,7 @@
         public const string GetNotificationsCountForUser = "api/v{0}/Notifications/GetNotificationsCountForUser";
         public const string SetUserNoficiationAsRead = "api/v{0}/Notifications/SetUserNoficiationAsRead/{1}";
         public const string SetUserNoficiationAsReadAndDelete = "/api/v{0}/Notifications/SetUserNoficiationAsReadAndDelete/{1}";
+        public const string SendTestPushNotification = "api/v{0}/Notifications/SendTestPushNotification";
         #endregion
 
         #region [ SupportChat API ]
@@ -88,8 +90,7 @@
         public const string GetAllAffiliations = "api/v{0}/Affiliations/GetAllAffiliations";
         #endregion
 
-        #region MyRegion
-        public const string GetAmountToBePaidToRevealSellerContact = "api​/v{0}​/Requirement​/GetAmountToBePaidToRevealSellerContact";
+        #region [ AppSettings ]
         public const string GetPrivacyPolicyTermsAndConditions = "api/v{0}/AppSettings/GetPrivacyPolicyTermsAndConditions";
         public const string GetFAQ = "api/v{0}/AppSettings/GetFAQ";
         public const string GetAppPromoBar = "api/v{0}/AppSettings/GetAppPromoBar";

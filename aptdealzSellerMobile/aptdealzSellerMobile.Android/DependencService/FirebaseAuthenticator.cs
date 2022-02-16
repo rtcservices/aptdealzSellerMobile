@@ -1,5 +1,4 @@
-﻿using Android.Views;
-using aptdealzSellerMobile.Interfaces;
+﻿using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Utility;
 using Firebase;

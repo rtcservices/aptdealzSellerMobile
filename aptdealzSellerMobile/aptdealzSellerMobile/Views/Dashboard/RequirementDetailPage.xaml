@@ -79,8 +79,6 @@
                 <BoxView Grid.ColumnSpan="3" Style="{StaticResource boxHorizontal}" />
             </Grid>
 
-
-
             <Grid Grid.Row="1" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -88,7 +86,6 @@
                 </Grid.RowDefinitions>
 
                 <!--  Back Button  -->
-
                 <Grid
                     Grid.Row="0"
                     Margin="5,5,5,0"
@@ -159,6 +156,8 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="0" RowSpacing="10">
@@ -200,7 +199,6 @@
                                     </StackLayout>
                                 </Grid>
 
-
                                 <!--  Buyer ID  -->
                                 <StackLayout Grid.Row="1" ClassId="BuyerId">
                                     <StackLayout Margin="20,0" Orientation="Horizontal">
@@ -222,7 +220,6 @@
                                     </StackLayout.GestureRecognizers>
                                 </StackLayout>
 
-
                                 <!--  Category  -->
                                 <StackLayout Grid.Row="2">
                                     <StackLayout
@@ -243,6 +240,7 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
+                                <!--  Sub-Category  -->
                                 <StackLayout Grid.Row="3">
                                     <StackLayout
                                         Margin="20,0"
@@ -264,6 +262,7 @@
 
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
+
                                 <!--  Quantity  -->
                                 <StackLayout Grid.Row="4">
                                     <StackLayout
@@ -282,7 +281,6 @@
                                     </StackLayout>
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
-
 
                                 <!--  Total Price Estimation  -->
                                 <StackLayout Grid.Row="5">
@@ -303,7 +301,6 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
-
                                 <!--  Preferred Source  -->
                                 <StackLayout Grid.Row="6">
                                     <StackLayout
@@ -322,7 +319,6 @@
                                     </StackLayout>
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
-
 
                                 <!--  Expected Delivery Date  -->
                                 <StackLayout Grid.Row="7">
@@ -343,7 +339,6 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
-
                                 <!--  LOC PIN Code  -->
                                 <StackLayout x:Name="stkLocPinCode" Grid.Row="8">
                                     <StackLayout
@@ -362,7 +357,6 @@
                                     </StackLayout>
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
-
 
                                 <!--  Need Insurance  -->
                                 <StackLayout Grid.Row="9">
@@ -385,7 +379,6 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
-
                                 <!--  Prefer Make In India Product  -->
                                 <StackLayout Grid.Row="10">
                                     <StackLayout
@@ -406,6 +399,7 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
+                                <!--  Pickup Product Directly From Seller  -->
                                 <StackLayout Grid.Row="11">
                                     <StackLayout
                                         Margin="20,0"
@@ -429,6 +423,29 @@
                                     <BoxView Style="{StaticResource boxHorizontal}" />
                                 </StackLayout>
 
+                                <!--  Is Seller  -->
+                                <StackLayout Grid.Row="12">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Is Reseller"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                        <Label
+                                            x:Name="lblIsReseller"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource lblMedium}"
+                                            TextColor="{StaticResource appColor1}" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
                             </Grid>
 
                             <!--  Buyer Contact Detail  -->
@@ -454,7 +471,7 @@
 
                             <BoxView Grid.Row="3" Style="{StaticResource boxHorizontal}" />
 
-                            <!--  Button  -->
+                            <!--  Provide Quote Button  -->
                             <Grid
                                 Grid.Row="4"
                                 Padding="20"

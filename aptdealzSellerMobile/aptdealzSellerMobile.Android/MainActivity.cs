@@ -6,7 +6,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Widget;
-using AndroidX.AppCompat.App;
+
 using aptdealzSellerMobile.Constants;
 using aptdealzSellerMobile.Droid.DependencService;
 using aptdealzSellerMobile.Interfaces;
@@ -24,52 +24,82 @@ using Plugin.Permissions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using AndroidApp = Android.App.Application;
 
 namespace aptdealzSellerMobile.Droid
 {
     [Activity(Label = "Aptdealz Bidder", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IPaymentResultWithDataListener
     {
+
         #region [ Properties ]
+        public static Android.Net.Uri DefaultNotificationSoundURI { get; set; }
         public string MerchantName = "AptDealz";
         public string paymentColor = "#006027";
         #endregion
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
-
-            FirebaseApp.InitializeApp(this);
-
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-
-            FirebasePushNotificationManager.ProcessIntent(this, Intent);
-            Xamarin.Forms.DependencyService.Register<IFirebaseAuthenticator, FirebaseAuthenticator>();
-
-            CachedImageRenderer.Init(true);
-            FlowListView.Init();
-            UserDialogs.Init(this);
-            ZXing.Net.Mobile.Forms.Android.Platform.Init();
-            Rg.Plugins.Popup.Popup.Init(this);
-
-            CameraPermission();
-            // GetPermission();
-
-            LoadApplication(new App());
-            //CreateNotificationFromIntent(Intent);
-
-            MessagingCenter.Subscribe<RazorPayload>(this, Constraints.RP_RevealPayNow, (payload) =>
+            try
             {
-                string username = Constraints.RP_UserName;
-                string password = Constraints.RP_Password;
-                PayViaRazor(payload, username, password);
-            });
+                base.OnCreate(savedInstanceState);
+                AndroidX.AppCompat.App.AppCompatDelegate.DefaultNightMode = AndroidX.AppCompat.App.AppCompatDelegate.ModeNightNo;
+                CrossCurrentActivity.Current.Init(this, savedInstanceState);
+
+                FirebaseApp.InitializeApp(this);
+
+                Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+                global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+                FirebasePushNotificationManager.ProcessIntent(this, Intent);
+                Xamarin.Forms.DependencyService.Register<IFirebaseAuthenticator, FirebaseAuthenticator>();
+
+                CachedImageRenderer.Init(true);
+                FlowListView.Init();
+                UserDialogs.Init(this);
+                ZXing.Net.Mobile.Forms.Android.Platform.Init();
+                Rg.Plugins.Popup.Popup.Init(this);
+
+                CameraPermission();
+                //GetPermission();
+
+                #region [ Get Notification Tone Name ]
+                var notificationManager = (NotificationManager)AndroidApp.Context.GetSystemService(AndroidApp.NotificationService);
+                var activeChannel = notificationManager.GetNotificationChannel("fcm_fallback_notification_channel");
+                if (activeChannel != null && activeChannel.Sound != null)
+                {
+                    if (!Common.EmptyFiels(activeChannel.Sound.Query))
+                    {
+                        Settings.NotificationToneName = activeChannel.Sound.Query.Split('&')[0].Replace("title=", "");
+                    }
+                }
+                else
+                {
+                    activeChannel = notificationManager.GetNotificationChannel("default");
+                    if (activeChannel != null && activeChannel.Sound != null)
+                    {
+                        if (!Common.EmptyFiels(activeChannel.Sound.Query))
+                        {
+                            Settings.NotificationToneName = activeChannel.Sound.Query.Split('&')[0].Replace("title=", "");
+                        }
+                    }
+                }
+                #endregion
+
+                LoadApplication(new App());
+
+                MessagingCenter.Subscribe<RazorPayload>(this, Constraints.RP_RevealPayNow, (payload) =>
+                {
+                    string username = Constraints.RP_UserName;
+                    string password = Constraints.RP_Password;
+                    PayViaRazor(payload, username, password);
+                });
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -147,7 +177,7 @@ namespace aptdealzSellerMobile.Droid
                 {
                     using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.razorpay.com/v1/orders"))
                     {
-                        var plainTextBytes = Encoding.UTF8.GetBytes($"{username}:{password}");
+                        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{username}:{password}");
                         var basicAuthKey = Convert.ToBase64String(plainTextBytes);
 
                         request.Headers.TryAddWithoutValidation("Authorization", $"Basic {basicAuthKey}");
@@ -177,7 +207,7 @@ namespace aptdealzSellerMobile.Droid
             }
             catch (Exception ex)
             {
-
+                Toast.MakeText(this, "Exception-Payment: " + ex.Message, ToastLength.Short).Show();
             }
 
         }
@@ -222,7 +252,7 @@ namespace aptdealzSellerMobile.Droid
                     const string Camerapermission = Manifest.Permission.Camera;
                     if (CheckSelfPermission(Camerapermission) != (int)Android.Content.PM.Permission.Granted)
                     {
-                        RequestPermissions(new string[] { Manifest.Permission.Camera }, 101);
+                        RequestPermissions(new string[] { Manifest.Permission.Camera, }, 101);
                     }
                 }
             }
@@ -253,6 +283,9 @@ namespace aptdealzSellerMobile.Droid
                 const string ReadContactspermission = Manifest.Permission.ReadContacts;
                 const string WriteContactspermission = Manifest.Permission.WriteContacts;
                 const string ReadCallLogpermission = Manifest.Permission.ReadCallLog;
+                //const string WriteSettingspermission = Manifest.Permission.WriteSettings;
+                //const string ChangeConfigurationpermission = Manifest.Permission.ChangeConfiguration;
+                //const string ModifyAudioSettingspermission = Manifest.Permission.ModifyAudioSettings;
 
                 if (CheckSelfPermission(AccessFineLocationpermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(AccessCoarseLocationpermission) != (int)Android.Content.PM.Permission.Granted
@@ -268,6 +301,9 @@ namespace aptdealzSellerMobile.Droid
                    || CheckSelfPermission(ReadContactspermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(WriteContactspermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(ReadCallLogpermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| CheckSelfPermission(WriteSettingspermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| CheckSelfPermission(ChangeConfigurationpermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| CheckSelfPermission(ModifyAudioSettingspermission) != (int)Android.Content.PM.Permission.Granted
                    )
                 {
                     RequestPermissions(new string[]  {
@@ -285,6 +321,9 @@ namespace aptdealzSellerMobile.Droid
                         Manifest.Permission.ReadContacts,
                         Manifest.Permission.WriteContacts,
                         Manifest.Permission.ReadCallLog,
+                        //Manifest.Permission.WriteSettings,
+                        //Manifest.Permission.ChangeConfiguration,
+                        //Manifest.Permission.ModifyAudioSettings,
                     },
                 101);
                 }

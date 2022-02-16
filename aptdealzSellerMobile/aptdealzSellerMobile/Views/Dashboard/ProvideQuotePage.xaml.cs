@@ -164,14 +164,14 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         StkInsuranceCharge.IsVisible = false;
 
                     StkShippingCharge.IsVisible = false;
-                    lblPinCode.Text = "Product Pickup PIN Code";
+                    lblPinCode.Text = Constraints.Str_PickupPINCode;
                     lblPinManditory.IsVisible = true;
                 }
                 else
                 {
                     StkShippingCharge.IsVisible = true;
                     StkInsuranceCharge.IsVisible = true;
-                    lblPinCode.Text = "Shipping PIN Code";
+                    lblPinCode.Text = Constraints.Str_ShippingPINCode;
                 }
             }
             catch (Exception ex)

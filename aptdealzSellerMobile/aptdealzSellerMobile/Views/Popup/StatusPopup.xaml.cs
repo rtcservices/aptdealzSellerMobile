@@ -40,14 +40,16 @@ namespace aptdealzSellerMobile.Views.Popup
         {
             if (PageName == "Grievances")
             {
+                StkFiveType.IsVisible = true;
                 lblFirstType.Text = GrievancesStatus.Pending.ToString();
                 lblSecondType.Text = GrievancesStatus.Open.ToString();
                 lblThirdType.Text = GrievancesStatus.Closed.ToString();
                 lblFourType.Text = GrievancesStatus.ReOpened.ToString();
-                lblfiveType.Text = GrievancesStatus.All.ToString();
+                lblFiveType.Text = GrievancesStatus.All.ToString();
             }
             else
             {
+                StkFiveType.IsVisible = false;
                 lblFirstType.Text = QuoteStatus.Submitted.ToString();
                 lblSecondType.Text = QuoteStatus.Accepted.ToString();
                 lblThirdType.Text = QuoteStatus.Rejected.ToString();
@@ -81,7 +83,7 @@ namespace aptdealzSellerMobile.Views.Popup
                     {
                         imgFourType.Source = Constraints.Redio_Selected;
                     }
-                   
+
                     else
                     {
                         imgFirstType.Source = Constraints.Redio_Selected;
@@ -107,7 +109,7 @@ namespace aptdealzSellerMobile.Views.Popup
                     }
                     else if (viewSource == (int)GrievancesStatus.All)
                     {
-                        imgfiveType.Source = Constraints.Redio_Selected;
+                        imgFiveType.Source = Constraints.Redio_Selected;
                     }
                     else
                     {
@@ -127,7 +129,7 @@ namespace aptdealzSellerMobile.Views.Popup
             imgSecondType.Source = Constraints.Redio_UnSelected;
             imgThirdType.Source = Constraints.Redio_UnSelected;
             imgFourType.Source = Constraints.Redio_UnSelected;
-            imgfiveType.Source = Constraints.Redio_UnSelected;
+            imgFiveType.Source = Constraints.Redio_UnSelected;
         }
         #endregion
 

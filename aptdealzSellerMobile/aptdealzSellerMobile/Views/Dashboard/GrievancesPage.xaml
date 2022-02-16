@@ -105,7 +105,7 @@
                         <Label Style="{StaticResource lblHeader}" Text="Grievances" />
                     </StackLayout>
 
-                    <Frame
+                    <!--<Frame
                         Grid.Column="1"
                         Padding="7"
                         HorizontalOptions="EndAndExpand"
@@ -127,7 +127,7 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FrmAdd_Tapped" />
                         </Frame.GestureRecognizers>
-                    </Frame>
+                    </Frame>-->
                 </Grid>
 
                 <!--  Filtering  -->

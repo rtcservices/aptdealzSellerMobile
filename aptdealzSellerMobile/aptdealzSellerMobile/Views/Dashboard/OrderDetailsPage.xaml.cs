@@ -279,7 +279,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 if (PickupProductDirectly && Status == (int)OrderStatus.ReadyForPickup)  //Pickup from seller
                 {
                     BtnScanQRCode.IsVisible = true;
-                    BtnRaiseGrievance.IsVisible = true;
+                    //BtnRaiseGrievance.IsVisible = true;
                     BtnUpdate.IsVisible = false;
                     GrdUpdateStatus.IsVisible = false;
                     StkNoUpdation.IsVisible = false;
@@ -290,7 +290,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     if (PickupProductDirectly && Status == (int)OrderStatus.ReadyForPickup)
                     {
                         BtnScanQRCode.IsVisible = true;
-                        BtnRaiseGrievance.IsVisible = true;
+                        //BtnRaiseGrievance.IsVisible = true;
                         BtnUpdate.IsVisible = false;
                         GrdUpdateStatus.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
@@ -304,7 +304,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         txtTrackingLink.IsReadOnly = true;
                         GrdChargesAndEarnings.IsVisible = true;
 
-                        BtnRaiseGrievance.IsVisible = false;
+                        //BtnRaiseGrievance.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
                         BtnUpdate.IsVisible = true;
                         BtnScanQRCode.IsVisible = false;
@@ -314,7 +314,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         StkNoUpdation.IsVisible = true;
                         GrdChargesAndEarnings.IsVisible = true;
 
-                        BtnRaiseGrievance.IsVisible = false;
+                        //BtnRaiseGrievance.IsVisible = false;
                         BtnUpdate.IsVisible = false;
                         GrdUpdateStatus.IsVisible = false;
                         BtnScanQRCode.IsVisible = false;
@@ -325,11 +325,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         BtnUpdate.IsVisible = false;
                         GrdUpdateStatus.IsVisible = false;
                         StkNoUpdation.IsVisible = false;
-                        BtnRaiseGrievance.IsVisible = false;
+                        //BtnRaiseGrievance.IsVisible = false;
                     }
                     else if (Status == (int)OrderStatus.Shipped)
                     {
-                        BtnRaiseGrievance.IsVisible = true;
+                        //BtnRaiseGrievance.IsVisible = true;
                         BtnScanQRCode.IsVisible = false;
                         BtnUpdate.IsVisible = true;
                         GrdUpdateStatus.IsVisible = true;
@@ -337,7 +337,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     else //Update Status
                     {
                         BtnScanQRCode.IsVisible = false;
-                        BtnRaiseGrievance.IsVisible = false;
+                        //BtnRaiseGrievance.IsVisible = false;
                         BtnUpdate.IsVisible = true;
                         GrdUpdateStatus.IsVisible = true;
                     }
@@ -345,7 +345,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 else
                 {
                     BtnScanQRCode.IsVisible = false;
-                    BtnRaiseGrievance.IsVisible = false;
+                    //BtnRaiseGrievance.IsVisible = false;
                     BtnUpdate.IsVisible = false;
                     GrdUpdateStatus.IsVisible = false;
                 }
@@ -368,13 +368,13 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     #region [ Details ]
                     if (mOrder.PickupProductDirectly)
                     {
-                        lblPinCodeTitle.Text = "Product Pickup PIN Code";
-                        lblExpected.Text = "Expected Pickup Date";
+                        lblPinCodeTitle.Text = Constraints.Str_PickupPINCode;
+                        lblExpected.Text = Constraints.Str_ExpectedPickupDate;
                     }
                     else
                     {
-                        lblPinCodeTitle.Text = "Shipping PIN Code";
-                        lblExpected.Text = "Expected Delivery Date";
+                        lblPinCodeTitle.Text = Constraints.Str_ShippingPINCode;
+                        lblExpected.Text = Constraints.Str_ExpectedDeliveryDate;
                     }
 
                     lblOrderId.Text = mOrder.OrderNo;
@@ -411,6 +411,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     lblPaymentStatus.Text = mOrder.PaymentStatusDescr;
                     lblPlatformCharges.Text = "Rs " + mOrder.PlatFormCharges.ToString();
                     lblSellerEarnings.Text = "Rs " + mOrder.SellerEarnings.ToString();
+                    lblIsReseller.Text = mOrder.IsReseller ? Constraints.Str_Right : Constraints.Str_Wrong;
+                    if (!Common.EmptyFiels(mOrder.Gstin))
+                    {
+                        StkGSTNumber.IsVisible = true;
+                        lblGstNumber.Text = mOrder.Gstin;
+                    }
+                    else
+                    {
+                        StkGSTNumber.IsVisible = false;
+                    }
 
                     OrderStatusList(mOrder.PickupProductDirectly);
 
@@ -763,18 +773,18 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
         }
 
-        private async void BtnRaiseGrievance_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                await Common.BindAnimation(button: BtnRaiseGrievance);
-                await Navigation.PushAsync(new RaiseGrievancePage(OrderId));
-            }
-            catch (Exception ex)
-            {
-                Common.DisplayErrorMessage("OrderDetailsPage/BtnRaiseGrievance_Tapped: " + ex.Message);
-            }
-        }
+        //private async void BtnRaiseGrievance_Clicked(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        await Common.BindAnimation(button: BtnRaiseGrievance);
+        //        await Navigation.PushAsync(new RaiseGrievancePage(OrderId));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.DisplayErrorMessage("OrderDetailsPage/BtnRaiseGrievance_Tapped: " + ex.Message);
+        //    }
+        //}
         #endregion
 
         private void txtShippingNumber_TextChanged(object sender, TextChangedEventArgs e)

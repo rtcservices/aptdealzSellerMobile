@@ -99,7 +99,7 @@ namespace aptdealzSellerMobile.Views.SplashScreen
                         var result = await DisplayAlert(Constraints.Alert, Constraints.DoYouWantToExit, Constraints.Yes, Constraints.No);
                         if (result)
                         {
-                            Xamarin.Forms.DependencyService.Get<ICloseAppOnBackButton>().CloseApp();
+                            Xamarin.Forms.DependencyService.Get<ICloseAppOnBackButton>().CloseApp("WelcomePage");
                         }
                     });
                 }

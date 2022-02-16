@@ -145,9 +145,15 @@ namespace aptdealzSellerMobile.Model.Reponse
 
         [JsonProperty("isCancellationPeriodOver")]
         public bool IsCancellationPeriodOver { get; set; }
+
         [JsonProperty("createdDate")]
         public string CreatedDate { get; set; }
 
+        [JsonProperty("isReseller")]
+        public bool IsReseller { get; set; }
+
+        [JsonProperty("gstin")]
+        public string Gstin { get; set; }
 
         #region [ Extra Properties ]
         [JsonIgnore]

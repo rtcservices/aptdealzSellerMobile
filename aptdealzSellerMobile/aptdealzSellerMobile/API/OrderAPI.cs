@@ -137,7 +137,9 @@ namespace aptdealzSellerMobile.API
                     {
                         //string url = string.Format(EndPointURL.GetCompletedOrdersAgainstSeller + "?PageNumber={1}&PageSize={2}", (int)App.Current.Resources["Version"], PageNumber, PageSize);
 
-                        string url = string.Format("https://aptdealzapidev.azurewebsites.net/api/v{0}/Order/GetCompletedOrdersAgainstSeller?PageNumber={1}&PageSize={2}", (int)App.Current.Resources["Version"], PageNumber, PageSize);
+                        var BaseURL = (string)App.Current.Resources["BaseURL"];
+
+                        string url = string.Format("{0}api/v{1}/Order/GetCompletedOrdersAgainstSeller?PageNumber={2}&PageSize={3}", BaseURL, (int)App.Current.Resources["Version"], PageNumber, PageSize);
 
                         if (Status > 0)
                             url += "&Status=" + Status;
@@ -213,7 +215,8 @@ namespace aptdealzSellerMobile.API
                     string requestJson = "{\n \"orderId\":\"" + orderId + "\"\n}";
                     using (var hcf = new HttpClientFactory(token: Common.Token))
                     {
-                        string url = "https://aptdealzapidev.azurewebsites.net/api/v1/Order/ScanQRCodeAndUpdateOrder";
+                        var BaseURL = (string)App.Current.Resources["BaseURL"];
+                        string url = BaseURL + "api/v1/Order/ScanQRCodeAndUpdateOrder";
                         var response = await hcf.client.PutAsync(url, new StringContent(requestJson, Encoding.UTF8, "application/json"));
                         mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
                     }

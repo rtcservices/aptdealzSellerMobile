@@ -123,6 +123,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!--#region Requirment ID-->
@@ -428,8 +429,31 @@
                                 </StackLayout>
                                 <!--#endregion-->
 
-                                <!--#region Comments-->
+                                <!--  Is Seller  -->
                                 <StackLayout Grid.Row="12">
+                                    <StackLayout
+                                        Margin="20,0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Orientation="Horizontal">
+
+                                        <Label
+                                            HorizontalOptions="StartAndExpand"
+                                            Style="{StaticResource lblLight}"
+                                            Text="Is Reseller"
+                                            VerticalOptions="CenterAndExpand" />
+
+                                        <Label
+                                            x:Name="lblIsReseller"
+                                            FontSize="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource lblMedium}" />
+                                    </StackLayout>
+
+                                    <BoxView Style="{StaticResource boxHorizontal}" />
+                                </StackLayout>
+
+                                <!--#region Comments-->
+                                <StackLayout Grid.Row="13">
                                     <Grid
                                         Margin="20,0"
                                         ColumnDefinitions="Auto,*"

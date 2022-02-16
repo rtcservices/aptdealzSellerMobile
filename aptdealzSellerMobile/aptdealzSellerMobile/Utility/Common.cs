@@ -335,6 +335,11 @@ namespace aptdealzSellerMobile.Utility
             Settings.RefreshToken = string.Empty;
             Settings.UserId = string.Empty;
             Settings.LoginTrackingKey = string.Empty;
+            Settings.IsNotification = false;
+            mSellerDetails = null;
+            Token = string.Empty;
+            mCountries = null;  
+            
             //Settings.fcm_token = string.Empty; don't empty this token
             App.Current.MainPage = new NavigationPage(new Views.Accounts.LoginPage());
             if (App.stoppableTimer != null)

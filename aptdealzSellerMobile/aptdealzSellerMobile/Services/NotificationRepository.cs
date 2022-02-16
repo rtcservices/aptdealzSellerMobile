@@ -82,5 +82,24 @@ namespace aptdealzSellerMobile.Services
             }
             return hasReaded;
         }
+
+        //public async Task<bool> SendTestPushNotification(string SoundName, string Message)
+        //{
+        //    bool hasUpdated = false;
+        //    try
+        //    {
+        //        var mResponse = await notificationAPI.SendTestPushNotification(SoundName,Message);
+        //        if (mResponse != null && mResponse.Succeeded)
+        //        {
+        //            hasUpdated = (bool)mResponse.Data;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.DisplayErrorMessage("NavigationRepository/SendTestPushNotification: " + ex.Message);
+        //    }
+        //    return hasUpdated;
+        //}
+
     }
 }

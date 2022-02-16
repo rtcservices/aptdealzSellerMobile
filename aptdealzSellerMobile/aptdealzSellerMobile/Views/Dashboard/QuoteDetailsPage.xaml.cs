@@ -146,6 +146,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 lblQuoteShippingCharge.Text = "Rs " + mQuote.ShippingCharges;
                 lblQuoteInsuranceCharge.Text = "Rs " + mQuote.InsuranceCharges;
                 lblTotalAmount.Text = "Rs " + mQuote.TotalQuoteAmount;
+                lblIsReseller.Text = mQuote.IsReseller ? Constraints.Str_Right : Constraints.Str_Wrong;
 
                 string countryName = "";
                 if (Common.mCountries == null || Common.mCountries.Count == 0)
@@ -409,11 +410,11 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         {
                             if (mRequirement.PickupProductDirectly)
                             {
-                                lblPinCode.Text = "Product Pickup PIN Code";
+                                lblPinCode.Text = Constraints.Str_PickupPINCode;
                             }
                             else
                             {
-                                lblPinCode.Text = "Shipping PIN Code";
+                                lblPinCode.Text = Constraints.Str_ShippingPINCode;
                             }
                         }
                     }
@@ -543,6 +544,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     {
                         string message = Constraints.CopiedRequirementId;
                         Common.CopyText(lblQuoteRequirementId, message);
+
+                        Navigation.PushAsync(new RequirementDetailPage(mQuote.RequirementId));
                     }
                     else if (stackLayout.ClassId == "QuoteRefNo")
                     {

@@ -7,7 +7,8 @@ using System;
 using System.Collections.Generic;
 
 namespace aptdealzSellerMobile.Droid
-{ //You can specify additional application information in this attribute
+{
+    //You can specify additional application information in this attribute
 #if DEBUG
     [Application(Debuggable = true)]
 #else

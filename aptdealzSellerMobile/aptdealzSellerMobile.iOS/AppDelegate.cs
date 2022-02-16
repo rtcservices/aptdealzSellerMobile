@@ -2,6 +2,7 @@
 using aptdealzSellerMobile.iOS.DependencService;
 using DLToolkit.Forms.Controls;
 using FFImageLoading.Forms.Platform;
+using Firebase.CloudMessaging;
 using Foundation;
 using Plugin.FirebasePushNotification;
 using System;
@@ -49,8 +50,10 @@ namespace aptdealzSellerMobile.iOS
             DependencyService.Register<IFirebaseAuthenticator, FirebaseAuthenticator>();
 
             // Added by BK 10-14-2021
-            FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge;
-            UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
+            //FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge | UNNotificationPresentationOptions.Sound; 
+
+            // updated by BK 01-17-2022
+            RegisterForNotificationFCM();
 
             return base.FinishedLaunching(app, options);
         }
@@ -152,13 +155,23 @@ namespace aptdealzSellerMobile.iOS
                 if (options != null && options.ContainsKey(new NSString("aps")))
                 {
                     string body = string.Empty;
+                    string sound = string.Empty;
                     string title = AppInfo.Name;
                     body = (options[new NSString("Message")] as NSString).ToString();
+                    //sound = (options[new NSString("Sound")] as NSString).ToString();
 
                     if (!string.IsNullOrEmpty(body))
                     {
+
+                       // var notification = new UILocalNotification();
+                       // notification.SoundName = sound;
                         //  App.PushNotificationForiOS(title, body);
                     }
+
+                    //if (!string.IsNullOrEmpty(sound))
+                    //{
+                    //    App.Current.MainPage.DisplayAlert("sound", sound, "Ok");
+                    //}
                 }
             }
             catch (System.Exception ex)
@@ -177,5 +190,37 @@ namespace aptdealzSellerMobile.iOS
             Plugin.LocalNotification.NotificationCenter.ResetApplicationIconBadgeNumber(uiApplication);
         }
 
+        private void RegisterForNotificationFCM()
+        {
+            try
+            {
+                //Firebase Cloud Messaging Configuration
+                //Get permission for notification
+                if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+                {
+                    // iOS 10
+                    var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+                    UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) =>
+                    {
+                        Console.WriteLine(granted);
+                    });
+
+                    // For iOS 10 display notification (sent via APNS)
+                    UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
+                }
+                else
+                {
+                    // iOS 9 <=
+                    var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+                    var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+                    UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+                }
+                UIApplication.SharedApplication.RegisterForRemoteNotifications();
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Exception-RegisterForNotificationFCM", ex.Message, "Ok");
+            }
+        }
     }
 }

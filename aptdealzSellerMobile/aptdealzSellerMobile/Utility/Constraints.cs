@@ -11,8 +11,27 @@
 
         public const string Str_RevealContact = "Reveal Contact";
         public const string Str_NotRevealContact = "Contact was not revealed";
-        public const string RP_UserName = "rzp_test_JRsla5mkRABqyk";
-        public const string RP_Password = "Z5tRUkYSvUwHYIHsUyR2KaSx";
+
+        public const string Str_Right = "✓";
+        public const string Str_Wrong = "✕";
+
+        public const string Str_ExpectedPickupDate = "Expected Pickup Date";
+        public const string Str_ExpectedDeliveryDate = "Expected Delivery Date";
+
+        public const string Str_PickupPINCode = "Product Pickup PIN Code";
+        public const string Str_ShippingPINCode = "Shipping PIN Code";
+
+        #region [ Dev RazorPay ]
+        //public const string RP_UserName = "rzp_test_PUJtE9p3XLuGe8";
+        //public const string RP_Password = "42HIrjeUTXOHNC84Ldl3aDzL";
+        #endregion
+
+        #region [ Production RazorPay ]
+        public const string RP_MerchantId = "HbW0qOiAlCsSMi";
+        public const string RP_UserName = "rzp_test_vo5zGl2YTwdLjk";
+        public const string RP_Password = "bXvtQZ4HdiVjwtMc3b7z8Zoe";
+        #endregion
+
         public const string RP_RevealPayNow = "RevealPayNow";
         public const string RP_PaidRevealResponse = "PaidRevealResponse";
 
@@ -156,7 +175,6 @@
         public const string Required_Subcategory = "Please enter sub category!";
 
         public const string Required_Documents = "Please upload documents!";
-
 
         public const string Required_NewPassword = "Please enter new password!";
         public const string Required_ConfirmPassword = "Please enter confirm password!";

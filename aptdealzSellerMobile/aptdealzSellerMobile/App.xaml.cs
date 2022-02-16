@@ -1,11 +1,10 @@
 ﻿using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Services;
 using aptdealzSellerMobile.Utility;
+using aptdealzSellerMobile.Views.MasterData;
 using aptdealzSellerMobile.Views.SplashScreen;
 using Plugin.FirebasePushNotification;
 using Plugin.LocalNotification;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -18,8 +17,8 @@ namespace aptdealzSellerMobile
         public static int latitude = 0;
         public static int longitude = 0;
         public static StoppableTimer stoppableTimer;
-        public static bool IsNotification = false;
         public static StoppableTimer chatStoppableTimer;
+        //public static bool IsNotification = false;
         #endregion
 
         #region [ Ctor ]
@@ -28,7 +27,9 @@ namespace aptdealzSellerMobile
             Device.SetFlags(new string[]
             {
                 "MediaElement_Experimental",
-                "AppTheme_Experimental"
+                "AppTheme_Experimental",
+                "FastRenderers_Experimental",
+                "CollectionView_Experimental"
             });
 
             InitializeComponent();
@@ -45,14 +46,13 @@ namespace aptdealzSellerMobile
             GetCurrentLocation();
             BindCrossFirebasePushNotification();
 
-            if (!IsNotification)
+            if (!Settings.IsNotification)
             {
                 MainPage = new SplashScreen();
             }
             else
             {
-                MainPage = new Views.MasterData.MasterDataPage(true);
-                IsNotification = false;
+                MainPage = new MasterDataPage();
             }
         }
         #endregion
@@ -96,7 +96,7 @@ namespace aptdealzSellerMobile
                 CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
                 {
                     System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
-                    if (DeviceInfo.Platform == DevicePlatform.iOS)
+                    if (DeviceInfo.Platform == DevicePlatform.iOS && !Common.EmptyFiels(p.Token))
                     {
                         Utility.Settings.fcm_token = p.Token;
                     }
@@ -104,13 +104,24 @@ namespace aptdealzSellerMobile
 
                 CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
                 {
+                    //work when platform is iOS
                     System.Diagnostics.Debug.WriteLine("Received");
-                    MainPage = new Views.MasterData.MasterDataPage(true);
+                    if (Settings.IsNotification)
+                    {
+                        if (Common.mSellerDetails != null && !Common.EmptyFiels(Common.Token))
+                        {
+                            MainPage = new MasterDataPage();
+                        }
+                        else
+                        {
+                            MainPage = new SplashScreen();
+                        }
+                    }
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
                 {
-                    IsNotification = true;
+                    Settings.IsNotification = true;
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationAction += (s, p) =>

@@ -1,7 +1,11 @@
 ﻿using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Interfaces;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,33 +14,49 @@ namespace aptdealzSellerMobile.Views.OtherPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
+        Dictionary<int, string> mRingtones = new Dictionary<int, string>();
+
         #region [ Ctor ]
         public SettingsPage()
         {
-            InitializeComponent(); MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-            MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+            try
             {
-                if (!Common.EmptyFiels(Common.NotificationCount))
+                InitializeComponent();
+
+                if (DeviceInfo.Platform == DevicePlatform.Android)
                 {
-                    lblNotificationCount.Text = count;
-                    frmNotification.IsVisible = true;
+                    DependencyService.Get<IOpenWriteSettings>().GrantWriteSettings();
+                }
+
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                {
+                    if (!Common.EmptyFiels(Common.NotificationCount))
+                    {
+                        lblNotificationCount.Text = count;
+                        frmNotification.IsVisible = true;
+                    }
+                    else
+                    {
+                        frmNotification.IsVisible = false;
+                        lblNotificationCount.Text = string.Empty;
+                    }
+                });
+
+                if (Common.mSellerDetails != null && Common.mSellerDetails.IsNotificationMute)
+                {
+                    BtnMuteNotifications.Source = Constraints.Img_SwitchOn;
+                    lblmute.Text = "On";
                 }
                 else
                 {
-                    frmNotification.IsVisible = false;
-                    lblNotificationCount.Text = string.Empty;
+                    BtnMuteNotifications.Source = Constraints.Img_SwitchOff;
+                    lblmute.Text = "Off";
                 }
-            });
-
-            if (Common.mSellerDetails.IsNotificationMute)
-            {
-                BtnMuteNotifications.Source = Constraints.Img_SwitchOn;
-                lblmute.Text = "On";
             }
-            else
+            catch (Exception ex)
             {
-                BtnMuteNotifications.Source = Constraints.Img_SwitchOff;
-                lblmute.Text = "Off";
+                Common.DisplayErrorMessage("SettingsPage/Ctor: " + ex.Message);
             }
         }
         #endregion
@@ -61,6 +81,46 @@ namespace aptdealzSellerMobile.Views.OtherPage
             return true;
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            try
+            {
+                mRingtones = Xamarin.Forms.DependencyService.Get<IRingtoneManager>().GetRingtones();
+                if (mRingtones != null && mRingtones.Count > 0)
+                {
+                    pkAlertTone.ItemsSource = mRingtones.Select(x => x.Value).OrderBy(x => x).ToList();
+                    if (!Common.EmptyFiels(Settings.NotificationToneName))
+                    {
+                        pkAlertTone.SelectedItem = Settings.NotificationToneName;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SettingsPage/OnAppearing: " + ex.Message);
+            }
+        }
+
+        //private async Task SendTestPushNotification()
+        //{
+        //    try
+        //    {
+        //        if (!Common.EmptyFiels(Settings.NotificationToneName))
+        //        {
+        //            var isReded = await DependencyService.Get<INotificationRepository>().SendTestPushNotification(Settings.NotificationToneName, "Test");
+        //            if (isReded)
+        //            {
+
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.DisplayErrorMessage("SettingsPage/SendTestPushNotification: " + ex.Message);
+        //    }
+        //}
         #endregion
 
         #region [ Events ]
@@ -104,14 +164,9 @@ namespace aptdealzSellerMobile.Views.OtherPage
             Application.Current.UserAppTheme = OSAppTheme.Dark;
         }
 
-        private void pkAlertTone_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnAlertTone_Clicked(object sender, EventArgs e)
         {
-            //pkAlertTone.Focus();
+            pkAlertTone.Focus();
         }
 
         private async void BtnMuteNotifications_Clicked(object sender, EventArgs e)
@@ -153,7 +208,35 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
         private void Picker_Unfocused(object sender, FocusEventArgs e)
         {
+            try
+            {
+                if (!Common.EmptyFiels(pkAlertTone.SelectedItem as string))
+                {
+                    var tone = pkAlertTone.SelectedItem as string;
+                    var selectedToneId = mRingtones.Where(x => x.Value == tone).FirstOrDefault().Key;
 
+                    Xamarin.Forms.DependencyService.Get<IRingtoneManager>().PlayRingTone(selectedToneId);
+                    Xamarin.Forms.DependencyService.Get<IRingtoneManager>().SaveRingTone(selectedToneId);
+
+                    if (DeviceInfo.Platform == DevicePlatform.Android)
+                    {
+                        if (!Common.EmptyFiels(Settings.NotificationToneName))
+                        {
+                            pkAlertTone.SelectedItem = Settings.NotificationToneName;
+                        }
+                    }
+                    else
+                    {
+                        Settings.NotificationToneName = pkAlertTone.SelectedItem as string;
+                    }
+
+                    //await SendTestPushNotification();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("SettingsPage/Picker_Unfocused: " + ex.Message);
+            }
         }
         #endregion
     }

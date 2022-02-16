@@ -116,6 +116,30 @@ namespace aptdealzSellerMobile.Utility
                 PropertyChanged(this, new PropertyChangedEventArgs("IsMuteMode"));
             }
         }
+
+        public bool isNotification = false;
+        public bool IsNotification
+        {
+            get { return IsNotification; }
+            set
+            {
+                isNotification = value;
+                Settings.IsNotification = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsNotification"));
+            }
+        }
+
+        public string notificationToneName;
+        public string NotificationToneName
+        {
+            get { return NotificationToneName; }
+            set
+            {
+                notificationToneName = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("NotificationToneName"));
+                Settings.NotificationToneName = value;
+            }
+        }
         #endregion
     }
 
@@ -136,6 +160,8 @@ namespace aptdealzSellerMobile.Utility
         private const string IsViewWelcomeScreen_Key = "IsViewWelcomeScreen_Key";
         private const string IsDarkMode_Key = "IsDarkModen_Key";
         private const string IsMuteMode_Key = "IsMuteModen_Key";
+        private const string IsNotification_Key = "IsNotification_Key"; 
+        private const string NotificationToneName_Key = "NotificationToneName_Key";
         #endregion
 
         private static readonly string SettingsDefault = string.Empty;
@@ -189,10 +215,23 @@ namespace aptdealzSellerMobile.Utility
             get { return AppSettings.GetValueOrDefault(IsDarkMode_Key, SettingsBoolDefault1); }
             set { AppSettings.AddOrUpdateValue(IsDarkMode_Key, value); }
         }
+
         public static bool IsMuteMode
         {
             get { return AppSettings.GetValueOrDefault(IsMuteMode_Key, SettingsBoolDefault1); }
             set { AppSettings.AddOrUpdateValue(IsMuteMode_Key, value); }
+        }
+
+        public static bool IsNotification
+        {
+            get { return AppSettings.GetValueOrDefault(IsNotification_Key, SettingsBoolDefault1); }
+            set { AppSettings.AddOrUpdateValue(IsNotification_Key, value); }
+        }
+
+        public static string NotificationToneName
+        {
+            get { return AppSettings.GetValueOrDefault(NotificationToneName_Key, SettingsDefault); }
+            set { AppSettings.AddOrUpdateValue(NotificationToneName_Key, value); }
         }
     }
 }

@@ -76,6 +76,7 @@
     <Compile Include="DependencService\FirebaseAuthenticator.cs" />
     <Compile Include="DependencService\HtmlToPDFService.cs" />
     <Compile Include="DependencService\PhoneDialer.cs" />
+    <Compile Include="DependencService\RingtoneManagerService.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="UserNotificationCenterDelegate.cs" />
@@ -86,6 +87,8 @@
     <BundleResource Include="Resources\Poppins.ttf" />
     <BundleResource Include="Resources\Poppins-Medium.ttf" />
     <BundleResource Include="Resources\Poppins-SemiBold.ttf" />
+    <BundleResource Include="Resources\notification.caf" />
+    <BundleResource Include="Resources\notification1.caf" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png">

@@ -2,6 +2,6 @@
 {
     public interface ICloseAppOnBackButton
     {
-        void CloseApp();
+        void CloseApp(string PageName);
     }
 }

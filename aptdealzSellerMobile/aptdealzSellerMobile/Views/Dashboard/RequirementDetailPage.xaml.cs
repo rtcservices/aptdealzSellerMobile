@@ -113,35 +113,22 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         lblSubCategory.Text = string.Join(",", subcaregories);
                     }
 
-                    if (mRequirement.NeedInsuranceCoverage)
-                    {
-                        lblNeedInsurance.Text = "✓";
-                    }
-                    else
-                    {
-                        lblNeedInsurance.Text = "✕";
-                    }
+                    lblNeedInsurance.Text = mRequirement.NeedInsuranceCoverage ? Constraints.Str_Right : Constraints.Str_Wrong;
+                    lblPreferInIndiaProducts.Text = mRequirement.PreferInIndiaProducts ? Constraints.Str_Right : Constraints.Str_Wrong;
+                    lblIsReseller.Text = mRequirement.IsReseller ? Constraints.Str_Right : Constraints.Str_Wrong;
 
-                    if (mRequirement.PreferInIndiaProducts)
-                    {
-                        lblPreferInIndiaProducts.Text = "✓";
-                    }
-                    else
-                    {
-                        lblPreferInIndiaProducts.Text = "✕";
-                    }
 
                     if (mRequirement.PickupProductDirectly)
                     {
-                        lblPreferSeller.Text = "✓";
-                        lblDeliveryDate.Text = "Expected Pickup Date";
+                        lblPreferSeller.Text = Constraints.Str_Right;
+                        lblDeliveryDate.Text = Constraints.Str_ExpectedPickupDate;
                         stkLocPinCode.IsVisible = false;
                     }
                     else
                     {
                         stkLocPinCode.IsVisible = true;
-                        lblPreferSeller.Text = "✕";
-                        lblDeliveryDate.Text = "Expected Delivery Date";
+                        lblPreferSeller.Text = Constraints.Str_Wrong;
+                        lblDeliveryDate.Text = Constraints.Str_ExpectedDeliveryDate;
                     }
 
                     if (mRequirement.IsBuyerContactRevealed)

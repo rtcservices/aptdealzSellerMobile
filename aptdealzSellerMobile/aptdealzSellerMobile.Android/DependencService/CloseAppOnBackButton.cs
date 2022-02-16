@@ -10,16 +10,17 @@ namespace aptdealzSellerMobile.Droid.DependencService
 #pragma warning disable CS0618 // Type or member is obsolete
     public class CloseAppOnBackButton : ICloseAppOnBackButton, IDisposable
     {
-        public void CloseApp()
+        public void CloseApp(string PageName)
         {
             try
             {
                 var activity = (Activity)Xamarin.Forms.Forms.Context;
+                activity.SetResult(Result.Canceled);
                 activity.FinishAffinity();
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("CloseAppOnBackButton/CloseApp: " + ex.Message);
+                Common.DisplayErrorMessage(PageName + "/CloseAppOnBackButton/CloseApp: " + ex.Message);
             }
         }
 
@@ -27,6 +28,7 @@ namespace aptdealzSellerMobile.Droid.DependencService
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
+
     }
 #pragma warning restore CS0618 // Type or member is obsolete
 }

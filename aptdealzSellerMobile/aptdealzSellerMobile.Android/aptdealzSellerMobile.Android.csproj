@@ -180,7 +180,9 @@
     <Compile Include="DependencService\FirebaseAuthenticator.cs" />
     <Compile Include="DependencService\HtmlToPDFService.cs" />
     <Compile Include="DependencService\NotificationHelper.cs" />
+    <Compile Include="DependencService\OpenWriteSettings.cs" />
     <Compile Include="DependencService\PhoneDialer.cs" />
+    <Compile Include="DependencService\RingtoneManagerService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="MyFirebaseIIDService.cs" />
@@ -438,6 +440,12 @@
     <AndroidResource Include="Resources\drawable\iconAddWhite.png" />
     <AndroidResource Include="Resources\drawable\iconQuotesWhite.png" />
     <AndroidResource Include="Resources\drawable\iconStatusWhite.png" />
+    <AndroidResource Include="Resources\raw\notification.mp3" />
+    <AndroidResource Include="Resources\raw\notification1.mp3" />
+    <AndroidResource Include="Resources\raw\notification2.mp3" />
+    <AndroidResource Include="Resources\raw\notification3.mp3" />
+    <AndroidResource Include="Resources\raw\notification4.mp3" />
+    <AndroidResource Include="Resources\raw\notification5.mp3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\aptdealzSellerMobile\aptdealzSellerMobile.csproj">
@@ -445,10 +453,11 @@
       <Name>aptdealzSellerMobile</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
