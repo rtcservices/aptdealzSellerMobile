@@ -42,7 +42,7 @@
                                 Style="{StaticResource lblBoldHeader}"
                                 Text="Welcome Back" />
 
-                            <Label Style="{StaticResource lblLight}" Text="Login to your AptDealz Seller Account" />
+                            <Label Style="{StaticResource lblLight}" Text="Login to your Quotesouk Seller Account" />
                         </StackLayout>
 
                         <!--  Entry  -->

@@ -52,7 +52,7 @@
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
@@ -69,6 +69,9 @@
     <AndroidSigningKeyAlias>aptdealzSellerMobile</AndroidSigningKeyAlias>
     <AndroidSigningStorePass>test123</AndroidSigningStorePass>
     <AndroidSigningKeyPass>test123</AndroidSigningKeyPass>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -457,7 +460,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

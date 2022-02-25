@@ -52,7 +52,7 @@
                                     FontSize="24"
                                     HorizontalTextAlignment="Center"
                                     Style="{StaticResource lblBoldHeader}"
-                                    Text="Create a Seller account &#10; with AptDealz" />
+                                    Text="Create a Seller account &#10; with Quotesouk" />
                             </StackLayout>
 
                             <Grid Grid.Row="1" RowSpacing="20">

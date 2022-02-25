@@ -142,7 +142,7 @@
                                             VerticalOptions="CenterAndExpand"
                                             WidthRequest="100">
                                             <ffImage:CachedImage.Transformations>
-                                                <ffImageTranformer:CircleTransformation BorderHexColor="#006027" BorderSize="20" />
+                                                <ffImageTranformer:CircleTransformation BorderHexColor="{StaticResource GreenColorCode}" BorderSize="20" />
                                             </ffImage:CachedImage.Transformations>
                                         </ffImage:CachedImage>
 
