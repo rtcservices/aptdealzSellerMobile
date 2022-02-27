@@ -27,9 +27,9 @@
         #endregion
 
         #region [ Production RazorPay ]
-        public const string RP_MerchantId = "HbW0qOiAlCsSMi";
-        public const string RP_UserName = "rzp_test_vo5zGl2YTwdLjk";
-        public const string RP_Password = "bXvtQZ4HdiVjwtMc3b7z8Zoe";
+        public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
+        public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
         #endregion
 
         public const string RP_RevealPayNow = "RevealPayNow";

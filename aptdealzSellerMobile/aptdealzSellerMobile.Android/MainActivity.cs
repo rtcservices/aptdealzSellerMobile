@@ -37,7 +37,7 @@ namespace aptdealzSellerMobile.Droid
         #region [ Properties ]
         public static Android.Net.Uri DefaultNotificationSoundURI { get; set; }
         public string MerchantName = "Quotesouk Bidder";
-        public string paymentColor = "#5d0060";
+        public string paymentColor = "#5D0060";
         #endregion
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -225,7 +225,7 @@ namespace aptdealzSellerMobile.Droid
 
                 options.Put("name", MerchantName); //Merchant Name
                 options.Put("description", $"Order Id. {payload.receipt}");
-                options.Put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+                //options.Put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
                 options.Put("order_id", orderId); //from response of step 3.
                 options.Put("theme.color", paymentColor);
                 options.Put("currency", payload.currency);

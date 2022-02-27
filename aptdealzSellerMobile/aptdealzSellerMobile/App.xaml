@@ -27,7 +27,7 @@
 
         <!--#region [ Colors ]-->
         <Color x:Key="ErrorBackground">#ff4d4f</Color>
-        <Color x:Key="SuccessBackground">#52c41a</Color>
+        <Color x:Key="SuccessBackground">#5d0060</Color>
 
         <Color x:Key="appColor1">#7f017e</Color>
         <Color x:Key="appColor2">#E50019</Color>
@@ -165,8 +165,8 @@
         </Style>
 
         <Style x:Key="imgLogo" TargetType="ImageButton">
-            <Setter Property="HeightRequest" Value="47" />
-            <Setter Property="WidthRequest" Value="47" />
+            <Setter Property="HeightRequest" Value="55" />
+            <Setter Property="WidthRequest" Value="55" />
             <Setter Property="Aspect" Value="AspectFit" />
             <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
             <Setter Property="VerticalOptions" Value="CenterAndExpand" />

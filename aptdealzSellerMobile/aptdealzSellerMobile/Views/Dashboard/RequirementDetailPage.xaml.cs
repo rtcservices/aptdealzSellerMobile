@@ -420,6 +420,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             try
             {
+                if (IsBusy) return;
+                IsBusy = true;
                 if (!Common.EmptyFiels(ProductImageUrl))
                 {
                     var base64File = ImageConvertion.ConvertImageURLToBase64(ProductImageUrl);
@@ -433,6 +435,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             {
                 Common.DisplayErrorMessage("RequirementDetailPage/FrmProductImage_Tapped: " + ex.Message);
             }
+            IsBusy = false;
         }
         #endregion
     }
