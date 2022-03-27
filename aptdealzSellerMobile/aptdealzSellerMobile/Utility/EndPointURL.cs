@@ -22,6 +22,7 @@
         #region [ Profile API ]       
         public const string DeactivateUser = "api/Account/DeactivateUser";
         public const string Country = "api/v{0}/Country/Get";
+        public const string State = "api/v{0}/Country/GetAllStatesByCountryId?CountryId={1}";
         public const string FileUpload = "api/FileUpload";
         public const string GetMyProfileData = "api/v{0}/SellerManagement/GetMyProfileData";
         public const string SaveProfile = "api/v{0}/SellerManagement/Update";

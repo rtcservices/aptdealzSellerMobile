@@ -15,7 +15,19 @@ namespace aptdealzSellerMobile.Services
     {
         ProfileAPI profileAPI = new ProfileAPI();
         CategoryAPI categoryAPI = new CategoryAPI();
-
+        public async Task<List<State>> GetStateByCountryId(int CountryId)
+        {
+            List<State> mState = new List<State>();
+            try
+            {
+                mState = await profileAPI.GetStateByCountryId(CountryId);
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("ProfileRepository/GetStateByCountryId: " + ex.Message);
+            }
+            return mState;
+        }
         public async Task<List<Country>> GetCountry()
         {
             List<Country> mCountry = new List<Country>();

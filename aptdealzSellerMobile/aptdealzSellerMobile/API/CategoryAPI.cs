@@ -45,12 +45,13 @@ namespace aptdealzSellerMobile.API
                         {
                             mCategory = null;
                             MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-                            Common.ClearAllData();
                         }
                         else
                         {
                             mCategory = null;
                         }
+                        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                            Common.ClearAllData();
                     }
                 }
                 else
@@ -100,12 +101,15 @@ namespace aptdealzSellerMobile.API
                                 || responseJson.Contains(Constraints.Str_AccountDeactivated) && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                         {
                             mSubCategory = null;
-                            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-                            Common.ClearAllData();
                         }
                         else
                         {
                             mSubCategory = null;
+                        }
+                        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        {
+                            Common.ClearAllData();
+                            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
                         }
                     }
                 }

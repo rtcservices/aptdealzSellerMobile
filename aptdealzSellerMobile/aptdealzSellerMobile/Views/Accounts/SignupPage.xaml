@@ -226,7 +226,7 @@
                                             <BoxView x:Name="BoxCity" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
-                                        <StackLayout Grid.Row="8" Spacing="{OnPlatform Android=0, iOS=7}">
+                                        <!--<StackLayout Grid.Row="8" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="State" />
                                                 <Label Text="*" TextColor="{StaticResource appColor2}" />
@@ -239,9 +239,9 @@
                                                 TabIndex="9"
                                                 Unfocused="Entry_Unfocused" />
                                             <BoxView x:Name="BoxState" Style="{StaticResource boxHorizontal}" />
-                                        </StackLayout>
+                                        </StackLayout>-->
 
-                                        <StackLayout Grid.Row="9" Spacing="{OnPlatform Android=0, iOS=7}">
+                                        <StackLayout Grid.Row="8" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="PIN Code" />
                                                 <Label Text="*" TextColor="{StaticResource appColor2}" />
@@ -256,7 +256,7 @@
                                             <BoxView x:Name="BoxPinCode" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
-                                        <StackLayout Grid.Row="10" Spacing="{OnPlatform Android=0, iOS=7}">
+                                        <StackLayout Grid.Row="9" Spacing="{OnPlatform Android=0, iOS=7}">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="Landmark" />
                                                 <Label Text="*" TextColor="{StaticResource appColor2}" />
@@ -271,7 +271,7 @@
                                             <BoxView x:Name="BoxLandmark" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
 
-                                        <StackLayout Grid.Row="11" Spacing="5">
+                                        <StackLayout Grid.Row="10" Spacing="5">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                                                 <Label Style="{StaticResource lblPrimary13}" Text="Nationality" />
                                                 <Label Text="*" TextColor="{StaticResource appColor2}" />
@@ -286,11 +286,34 @@
                                                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                                                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                                                 TabIndex="12"
-                                                Text="{Binding countryText, Source={x:Reference page1}}"
                                                 TextChanged="AutoSuggestBox_TextChanged"
                                                 TextColor="{AppThemeBinding Dark={StaticResource appColor6},Light={StaticResource appColor4}}"
                                                 Unfocused="AutoSuggestBox_Unfocused" />
                                             <BoxView x:Name="BoxNationality" Style="{StaticResource boxHorizontal}" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="11" Spacing="{OnPlatform Android=0, iOS=7}">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                                <Label Style="{StaticResource lblPrimary13}" Text="State" />
+                                                <Label Text="*" TextColor="{StaticResource appColor2}" />
+                                            </StackLayout>
+
+                                            <ext:ExtAutoSuggestBox
+                                                x:Name="pkState"
+                                                Margin="0,0"
+                                                ClassId="BAState"
+                                                HorizontalOptions="FillAndExpand"
+                                                ItemsSource="{Binding mStatesData, Mode=TwoWay, Source={x:Reference page1}}"
+                                                PlaceholderTextColor="{StaticResource appColor7}"
+                                                QuerySubmitted="AutoSuggestBox_StateQuerySubmitted"
+                                                SuggestionChosen="AutoSuggestBox_StateSuggestionChosen"
+                                                TabIndex="10"
+                                                TextChanged="AutoSuggestBox_StateTextChanged"
+                                                TextColor="{AppThemeBinding Dark={StaticResource appColor6},
+                                                                            Light={StaticResource appColor4}}"
+                                                Unfocused="AutoSuggestBox_Unfocused" />
+
+                                            <BoxView x:Name="BoxState" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
                                     </Grid>
                                     <!--#endregion-->

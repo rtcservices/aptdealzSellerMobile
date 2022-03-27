@@ -269,8 +269,8 @@ namespace aptdealzSellerMobile.Droid
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
             {
-                const string AccessFineLocationpermission = Manifest.Permission.AccessFineLocation;
-                const string AccessCoarseLocationpermission = Manifest.Permission.AccessCoarseLocation;
+                //const string AccessFineLocationpermission = Manifest.Permission.AccessFineLocation;
+                //const string AccessCoarseLocationpermission = Manifest.Permission.AccessCoarseLocation;
                 const string AccessLocationExtraCommandspermission = Manifest.Permission.AccessLocationExtraCommands;
                 const string AccessMockLocationpermission = Manifest.Permission.AccessMockLocation;
                 const string AccessNetworkStatepermission = Manifest.Permission.AccessNetworkState;
@@ -282,14 +282,16 @@ namespace aptdealzSellerMobile.Droid
                 const string CallPhonepermission = Manifest.Permission.CallPhone;
                 const string ReadContactspermission = Manifest.Permission.ReadContacts;
                 const string WriteContactspermission = Manifest.Permission.WriteContacts;
-                const string ReadCallLogpermission = Manifest.Permission.ReadCallLog;
+                //const string ReadCallLogpermission = Manifest.Permission.ReadCallLog;
                 //const string WriteSettingspermission = Manifest.Permission.WriteSettings;
                 //const string ChangeConfigurationpermission = Manifest.Permission.ChangeConfiguration;
                 //const string ModifyAudioSettingspermission = Manifest.Permission.ModifyAudioSettings;
 
-                if (CheckSelfPermission(AccessFineLocationpermission) != (int)Android.Content.PM.Permission.Granted
-                   || CheckSelfPermission(AccessCoarseLocationpermission) != (int)Android.Content.PM.Permission.Granted
-                   || CheckSelfPermission(AccessLocationExtraCommandspermission) != (int)Android.Content.PM.Permission.Granted
+                if (
+                   // CheckSelfPermission(AccessFineLocationpermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| CheckSelfPermission(AccessCoarseLocationpermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| 
+                   CheckSelfPermission(AccessLocationExtraCommandspermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(AccessMockLocationpermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(AccessNetworkStatepermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(ChangeWifiStatepermission) != (int)Android.Content.PM.Permission.Granted
@@ -300,15 +302,15 @@ namespace aptdealzSellerMobile.Droid
                    || CheckSelfPermission(CallPhonepermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(ReadContactspermission) != (int)Android.Content.PM.Permission.Granted
                    || CheckSelfPermission(WriteContactspermission) != (int)Android.Content.PM.Permission.Granted
-                   || CheckSelfPermission(ReadCallLogpermission) != (int)Android.Content.PM.Permission.Granted
+                   //|| CheckSelfPermission(ReadCallLogpermission) != (int)Android.Content.PM.Permission.Granted
                    //|| CheckSelfPermission(WriteSettingspermission) != (int)Android.Content.PM.Permission.Granted
                    //|| CheckSelfPermission(ChangeConfigurationpermission) != (int)Android.Content.PM.Permission.Granted
                    //|| CheckSelfPermission(ModifyAudioSettingspermission) != (int)Android.Content.PM.Permission.Granted
                    )
                 {
                     RequestPermissions(new string[]  {
-                        Manifest.Permission.AccessFineLocation,
-                        Manifest.Permission.AccessCoarseLocation,
+                        //Manifest.Permission.AccessFineLocation,
+                        //Manifest.Permission.AccessCoarseLocation,
                         Manifest.Permission.AccessLocationExtraCommands,
                         Manifest.Permission.AccessMockLocation,
                         Manifest.Permission.AccessNetworkState,
@@ -320,7 +322,7 @@ namespace aptdealzSellerMobile.Droid
                         Manifest.Permission.CallPhone,
                         Manifest.Permission.ReadContacts,
                         Manifest.Permission.WriteContacts,
-                        Manifest.Permission.ReadCallLog,
+                        //Manifest.Permission.ReadCallLog,
                         //Manifest.Permission.WriteSettings,
                         //Manifest.Permission.ChangeConfiguration,
                         //Manifest.Permission.ModifyAudioSettings,

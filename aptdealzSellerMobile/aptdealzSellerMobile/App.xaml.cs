@@ -43,7 +43,7 @@ namespace aptdealzSellerMobile
             }
 
             RegisterDependencies();
-            GetCurrentLocation();
+            //GetCurrentLocation();
             BindCrossFirebasePushNotification();
 
             if (!Settings.IsNotification)

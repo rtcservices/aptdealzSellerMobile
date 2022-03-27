@@ -85,27 +85,67 @@ namespace aptdealzSellerMobile.Views.Dashboard
             await GetOrderDetails();
         }
 
-        private void OrderStatusList(bool pickupProductDirectly)
+        //private void OrderStatusList(bool pickupProductDirectly)
+        //{
+        //    try
+        //    {
+        //        mOrderStatusList.Clear();
+        //        mOrderStatusList.Add(OrderStatus.Pending.ToString());
+        //        mOrderStatusList.Add(OrderStatus.Accepted.ToString());
+
+        //        if (pickupProductDirectly)
+        //        {
+        //            mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
+        //        }
+        //        else
+        //        {
+        //            mOrderStatusList.Add(OrderStatus.Shipped.ToString());
+        //            mOrderStatusList.Add(OrderStatus.Delivered.ToString());
+        //        }
+
+        //        mOrderStatusList.Add(OrderStatus.Completed.ToString());
+
+        //        pckOrderStatus.ItemsSource = mOrderStatusList.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.DisplayErrorMessage("OrderDetailsPage/OrderStatusList: " + ex.Message);
+        //    }
+        //}
+
+        private void OrderStatusList(bool pickupProductDirectly, int OrderStatusData)
         {
             try
             {
+                var orderStatusList = new List<int>();
+                foreach (int item in Enum.GetValues(typeof(OrderStatus)))
+                {
+                    orderStatusList.Add(item);
+                }
+                orderStatusList = orderStatusList.Where(u => u >= OrderStatusData &&  u <= OrderStatusData + 1).ToList();
                 mOrderStatusList.Clear();
-                mOrderStatusList.Add(OrderStatus.Pending.ToString());
-                mOrderStatusList.Add(OrderStatus.Accepted.ToString());
 
-                if (pickupProductDirectly)
+                foreach (int item in orderStatusList)
                 {
-                    mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
-                }
-                else
-                {
-                    mOrderStatusList.Add(OrderStatus.Shipped.ToString());
-                    mOrderStatusList.Add(OrderStatus.Delivered.ToString());
+                    mOrderStatusList.Add(Common.GetOrderStatusString(item));
                 }
 
-                mOrderStatusList.Add(OrderStatus.Completed.ToString());
+                //mOrderStatusList.Add(OrderStatus.Pending.ToString());
+                //mOrderStatusList.Add(OrderStatus.Accepted.ToString());
 
+                //if (pickupProductDirectly)
+                //{
+                //    mOrderStatusList.Add(OrderStatus.ReadyForPickup.ToString().ToCamelCase());
+                //}
+                //else
+                //{
+                //    mOrderStatusList.Add(OrderStatus.Shipped.ToString());
+                //    mOrderStatusList.Add(OrderStatus.Delivered.ToString());
+                //}
+                //mOrderStatusList.Add(OrderStatus.Completed.ToString());
                 pckOrderStatus.ItemsSource = mOrderStatusList.ToList();
+
+                pckOrderStatus.SelectedIndex = orderStatusList.IndexOf(OrderStatusData);
             }
             catch (Exception ex)
             {
@@ -422,12 +462,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         StkGSTNumber.IsVisible = false;
                     }
 
-                    OrderStatusList(mOrder.PickupProductDirectly);
+                    OrderStatusList(mOrder.PickupProductDirectly, mOrder.OrderStatus);
 
-                    if (mOrder.PickupProductDirectly)
-                        pckOrderStatus.SelectedIndex = Common.GetOrderIndex(mOrder.OrderStatus);
-                    else
-                        pckOrderStatus.SelectedIndex = Common.GetOrderIndexWithoutRP(mOrder.OrderStatus);
+                    //if (mOrder.PickupProductDirectly)
+                    //    pckOrderStatus.SelectedIndex = Common.GetOrderIndex(mOrder.OrderStatus);
+                    //else
+                    //    pckOrderStatus.SelectedIndex = Common.GetOrderIndexWithoutRP(mOrder.OrderStatus);
 
                     if (mOrder.BuyerContact != null && !Common.EmptyFiels(mOrder.BuyerContact.BuyerId) && !Common.EmptyFiels(mOrder.BuyerContact.UserId))
                     {
@@ -758,7 +798,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 else
                     idx = Common.GetOrderIndexWithoutRP(mOrder.OrderStatus);
 
-                if (pckOrderStatus.SelectedIndex != idx)
+                //if (pckOrderStatus.SelectedIndex != idx)
+                if (pckOrderStatus.SelectedIndex != 0)
                 {
                     BtnUpdate.IsEnabled = true;
                 }

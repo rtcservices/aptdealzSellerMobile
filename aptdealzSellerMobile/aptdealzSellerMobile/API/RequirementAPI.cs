@@ -147,41 +147,6 @@ namespace aptdealzSellerMobile.API
             return mResponse;
         }
 
-        public async Task<Response> GetAmountToBePaidToRevealSellerContact(string quoteId)
-        {
-            Response mResponse = new Response();
-            try
-            {
-                if (CrossConnectivity.Current.IsConnected)
-                {
-                    string requestJson = "{\"quoteId\":\"" + quoteId + "\"}";
-                    using (var hcf = new HttpClientFactory(token: Common.Token))
-                    {
-                        //string url = string.Format(EndPointURL.GetAmountToBePaidToRevealBuyerContact, (int)App.Current.Resources["Version"]);
-
-                        var BaseURL = (string)App.Current.Resources["BaseURL"];
-                        string url = BaseURL + "api/v1/Quote/GetAmountToBePaidToRevealSellerContact";
-                        var response = await hcf.PostAsync(url, requestJson);
-                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
-                    }
-                }
-                else
-                {
-                    if (await Common.InternetConnection())
-                    {
-                        await GetAmountToBePaidToRevealSellerContact(quoteId);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                mResponse.Succeeded = false;
-                mResponse.Message = ex.Message;
-                Common.DisplayErrorMessage("RequirementAPI/GetAmountToBePaidToRevealSellerContact: " + ex.Message);
-            }
-            return mResponse;
-        }
-
         public async Task<Response> GetAmountToBePaidToRevealBuyerContact(string requirementId)
         {
             Response mResponse = new Response();

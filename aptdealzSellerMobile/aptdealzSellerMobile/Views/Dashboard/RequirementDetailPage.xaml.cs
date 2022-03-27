@@ -171,7 +171,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                         revealRs = (long)App.Current.Resources["RevealContact"];
                         long.TryParse(amount.ToString(), out revealRs);
-                        string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
+                        string message = "You need to pay Rs " + revealRs + " to reveal the Buyer contact information. Do you wish to continue making payment?";
 
                         var contactPopup = new Popup.PaymentPopup(message);
                         contactPopup.isRefresh += async (s1, e1) =>

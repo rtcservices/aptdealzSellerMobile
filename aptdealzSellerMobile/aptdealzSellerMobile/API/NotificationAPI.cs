@@ -48,6 +48,8 @@ namespace aptdealzSellerMobile.API
             Response mResponse = new Response();
             try
             {
+                if (string.IsNullOrWhiteSpace(Common.Token))
+                    return mResponse;
                 if (CrossConnectivity.Current.IsConnected)
                 {
                     using (var hcf = new HttpClientFactory(token: Common.Token))
@@ -76,8 +78,8 @@ namespace aptdealzSellerMobile.API
                                 else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                                 {
                                     mResponse.Message = Constraints.ServiceUnavailable;
-                                    MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-                                    Common.ClearAllData();
+                                    //MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                                    //Common.ClearAllData();
                                 }
                                 else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                                 {
@@ -88,8 +90,8 @@ namespace aptdealzSellerMobile.API
                                     else
                                     {
                                         mResponse.Message = Constraints.Something_Wrong_Server;
-                                        MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-                                        Common.ClearAllData();
+                                        //MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                                        //Common.ClearAllData();
                                     }
                                 }
                                 else if (responseJson.Contains(Constraints.Str_AccountDeactivated) && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)

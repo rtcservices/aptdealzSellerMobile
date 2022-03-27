@@ -209,6 +209,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 {
                     lblComments.Text = mQuote.Comments;
                 }
+
                 //mQuote.Status == QuoteStatus.Accepted.ToString() && mQuote.PaymentStatus == PaymentStatus.Success.ToString()
                 if (mQuote.Status == QuoteStatus.Accepted.ToString())
                 {
@@ -236,7 +237,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     decimal amount = 0;
 
                     RequirementAPI requirementAPI = new RequirementAPI();
-                    var mResponse = await requirementAPI.GetAmountToBePaidToRevealSellerContact(mQuote.QuoteId);
+                    var mResponse = await requirementAPI.GetAmountToBePaidToRevealBuyerContact(mQuote.RequirementId);
                     if (mResponse != null && mResponse.Succeeded)
                     {
                         var jObject = (JObject)mResponse.Data;
@@ -249,7 +250,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                         revealRs = (long)App.Current.Resources["RevealContact"];
                         long.TryParse(amount.ToString(), out revealRs);
-                        string message = "You need to pay Rs " + revealRs + " to reveal the Seller contact information. Do you wish to continue making payment?";
+                        string message = "You need to pay Rs " + revealRs + " to reveal the Buyer contact information. Do you wish to continue making payment?";
 
                         var contactPopup = new Popup.PaymentPopup(message);
                         contactPopup.isRefresh += async (s1, e1) =>

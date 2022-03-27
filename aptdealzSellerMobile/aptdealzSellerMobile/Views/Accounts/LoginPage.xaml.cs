@@ -35,6 +35,7 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         protected override void OnDisappearing()
         {
+            UserDialogs.Instance.HideLoading();
             base.OnDisappearing();
             Dispose();
         }

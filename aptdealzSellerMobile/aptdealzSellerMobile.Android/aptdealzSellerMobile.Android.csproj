@@ -65,13 +65,15 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidKeyStore>true</AndroidKeyStore>
-    <AndroidSigningKeyStore>..\aptdealzSellerMobile.Android\KeyStore\aptdealzSellerMobile.keystore</AndroidSigningKeyStore>
-    <AndroidSigningKeyAlias>aptdealzSellerMobile</AndroidSigningKeyAlias>
-    <AndroidSigningStorePass>test123</AndroidSigningStorePass>
-    <AndroidSigningKeyPass>test123</AndroidSigningKeyPass>
+    <AndroidSigningKeyStore>..\aptdealzSellerMobile.Android\KeyStore\Quotesouk_bidder_zar.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>Quotesouk_bidder_zar</AndroidSigningKeyAlias>
+    <AndroidSigningStorePass>zarTek@896$</AndroidSigningStorePass>
+    <AndroidSigningKeyPass>zarTek@896$</AndroidSigningKeyPass>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -202,6 +204,8 @@
     <AndroidAsset Include="Assets\Poppins-SemiBold.otf" />
     <GoogleServicesJson Include="google-services.json" />
     <None Include="KeyStore\aptdealzSellerMobile.keystore" />
+    <None Include="KeyStore\Quotesouk_Bidder.keystore" />
+    <None Include="KeyStore\Quotesouk_bidder_zar.keystore" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -460,7 +464,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

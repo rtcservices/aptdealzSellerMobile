@@ -137,6 +137,7 @@
         public const string InValid_ConfirmPassword = "Please enter valid confirm password!";
         public const string InValid_Pincode = "Please enter valid pincode!";
         public const string InValid_Nationality = "Please enter valid nationality!";
+        public const string InValid_State = "Please enter valid state!";
         public const string InValid_CountryOfOrigin = "Please enter valid Product Made In!";
         public const string InValid_GST = "Please enter valid GST number!";
         public const string InValid_PAN = "Please enter valid PAN number!";

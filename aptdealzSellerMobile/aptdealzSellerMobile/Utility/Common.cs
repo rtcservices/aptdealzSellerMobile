@@ -227,7 +227,30 @@ namespace aptdealzSellerMobile.Utility
                     return 0;
             }
         }
-
+        public static string GetOrderStatusString(int orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case 1:
+                    return "Pending";
+                case 2:
+                    return "Accepted";
+                case 3:
+                    return "ReadyForPickup";
+                case 4:
+                    return "Shipped";
+                case 5:
+                    return "Delivered";
+                case 6:
+                    return "Completed";
+                case 7:
+                    return "CancelledFromBuyer";
+                case 8:
+                    return "All";
+                default:
+                    return "";
+            }
+        }
         public static int GetOrderIndex(int orderStatus)
         {
 

@@ -8,6 +8,7 @@ namespace aptdealzSellerMobile.Repository
     public interface IProfileRepository
     {
         Task<List<Country>> GetCountry();
+        Task<List<State>> GetStateByCountryId(int CountryId);
 
         Task<List<Category>> GetCategory();
 
