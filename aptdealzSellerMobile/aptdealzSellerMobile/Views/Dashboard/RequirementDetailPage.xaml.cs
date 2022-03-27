@@ -268,6 +268,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         var url = urls.FirstOrDefault();
                         var orderId = urls.LastOrDefault();
                         var checkoutPage = new CheckOutPage(url);
+                        var isPaid = false;
                         checkoutPage.PaidEvent += async (s1, e1) =>
                         {
                             MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
@@ -291,6 +292,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                             mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                             mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+                            if (isPaid) return;
+                            isPaid = true;
                             BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
                         };
                         await Navigation.PushAsync(checkoutPage);
