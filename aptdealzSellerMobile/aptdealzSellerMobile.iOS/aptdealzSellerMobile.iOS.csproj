@@ -60,13 +60,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Distribution: SyamKumar Thundiyil Sasidharan (Z5A8L9L245)</CodesignKey>
+    <CodesignKey>iPhone Distribution: APTDEALZ BUYER HUB AND E-TRADING PRIVATE LIMITED (5Y89QMBS2T)</CodesignKey>
     <BuildIpa>true</BuildIpa>
     <CodesignEntitlements>
     </CodesignEntitlements>
     <MtouchFloat32>false</MtouchFloat32>
     <MtouchExtraArgs>--optimize=experimental-xforms-product-type</MtouchExtraArgs>
-    <CodesignProvision>Seller_AdHoc_10-12-2021</CodesignProvision>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
