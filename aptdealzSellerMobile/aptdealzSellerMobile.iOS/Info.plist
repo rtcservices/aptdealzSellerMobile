@@ -23,15 +23,15 @@
 	<key>MinimumOSVersion</key>
 	<string>13.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Aptdealz Bidder</string>
+	<string>Quotesouk Bidder</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.zartek.aptdealz.seller</string>
+	<string>com.zartek.quotesouk.bidder</string>
 	<key>CFBundleVersion</key>
 	<string>2.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
-	<string>Aptdealz Bidder</string>
+	<string>Quotesouk Bidder</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UIAppFonts</key>
@@ -53,7 +53,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app needs access to the photo gallery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>AptDealz Bidder need to access your location for better application experience</string>
+	<string>Quotesouk Bidder need to access your location for better application experience</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts</string>
 	<key>UIBackgroundModes</key>

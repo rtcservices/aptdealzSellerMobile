@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>50126607707-3rbmaosadgm2m8dje348ti1tlnlhco2f.apps.googleusercontent.com</string>
+	<string>266079060342-ikau2p9a83ovvd7u7ojlje9oc4770o00.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.50126607707-3rbmaosadgm2m8dje348ti1tlnlhco2f</string>
+	<string>com.googleusercontent.apps.266079060342-ikau2p9a83ovvd7u7ojlje9oc4770o00</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>50126607707-e8uksupct4jqaj8kbfcdne23uqvj7qr2.apps.googleusercontent.com</string>
+	<string>266079060342-1rkr89g95kttst1kvcalgmj2meu7j3a0.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCX_rltFyqZBYkJyxedn5lx3CaiKQHFBB8</string>
+	<string>AIzaSyCsvEOXmr0o1GGbdYNvocMOAbftprP_Rsc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>50126607707</string>
+	<string>266079060342</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.zartek.aptdealz.seller</string>
+	<string>com.zartek.quotesouk.bidder</string>
 	<key>PROJECT_ID</key>
-	<string>aptdelaz</string>
+	<string>quotesouk</string>
 	<key>STORAGE_BUCKET</key>
-	<string>aptdelaz.appspot.com</string>
+	<string>quotesouk.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:50126607707:ios:7e94f85ca68f77a68bb67e</string>
-	<key>DATABASE_URL</key>
-	<string>https://aptdelaz.firebaseio.com</string>
+	<string>1:266079060342:ios:4526d9da401fb0b30a3a57</string>
 </dict>
 </plist>
