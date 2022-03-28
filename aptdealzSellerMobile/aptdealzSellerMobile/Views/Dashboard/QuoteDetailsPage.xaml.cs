@@ -338,6 +338,14 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             email = Common.mSellerDetails.Email,
                             name = Common.mSellerDetails.FullName
                         },
+                        prefill = new Customer()
+                        {
+                            contact = Common.mSellerDetails.PhoneNumber,
+                            email = Common.mSellerDetails.Email,
+                            name = Common.mSellerDetails.FullName
+                        },
+                        email = Common.mSellerDetails.Email,
+                        contact = Common.mSellerDetails.PhoneNumber,
                         callback_method = "get",
                         callback_url = "https://purple-field-04c774300.azurestaticapps.net/login",
                     };

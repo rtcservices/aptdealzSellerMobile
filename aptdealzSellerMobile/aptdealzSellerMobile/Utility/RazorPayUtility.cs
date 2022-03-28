@@ -116,11 +116,16 @@ namespace aptdealzSellerMobile.Utility
         public string reference_id { get; set; }
         public string description { get; set; }
         public Customer customer { get; set; }
+        public Customer prefill { get; set; }
         public Notify notify { get; set; }
         public bool reminder_enable { get; set; }
         public Notes notes { get; set; }
         public string callback_url { get; set; }
         public string callback_method { get; set; }
+        [JsonIgnore]
+        public string email { get; set; }
+        [JsonIgnore]
+        public string contact { get; set; }
     }
 
     public class ResponsePayLoad
