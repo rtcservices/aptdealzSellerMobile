@@ -292,8 +292,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                             mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                             mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
-                            if (isPaid) return;
-                            isPaid = true;
+                                if (isPaid) return;
+                                isPaid = true;
                             BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
                         };
                         await Navigation.PushAsync(checkoutPage);

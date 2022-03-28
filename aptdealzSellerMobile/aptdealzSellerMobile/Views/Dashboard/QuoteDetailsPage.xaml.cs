@@ -338,14 +338,6 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             email = Common.mSellerDetails.Email,
                             name = Common.mSellerDetails.FullName
                         },
-                        prefill = new Customer()
-                        {
-                            contact = Common.mSellerDetails.PhoneNumber,
-                            email = Common.mSellerDetails.Email,
-                            name = Common.mSellerDetails.FullName
-                        },
-                        email = Common.mSellerDetails.Email,
-                        contact = Common.mSellerDetails.PhoneNumber,
                         callback_method = "get",
                         callback_url = "https://purple-field-04c774300.azurestaticapps.net/login",
                     };
@@ -356,6 +348,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                         var url = urls.FirstOrDefault();
                         var orderId = urls.LastOrDefault();
                         var checkoutPage = new CheckOutPage(url);
+                        var isPaid = false;
                         checkoutPage.PaidEvent += async (s1, e1) =>
                         {
                             MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
@@ -379,6 +372,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                             mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                             mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+                            if (isPaid) return;
+                            isPaid = true;
                             BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
                         };
                         await Navigation.PushAsync(checkoutPage);
