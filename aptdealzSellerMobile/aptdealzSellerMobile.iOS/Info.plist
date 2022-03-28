@@ -27,7 +27,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.zartek.quotesouk.bidder</string>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>2.1</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -56,6 +56,8 @@
 	<string>Quotesouk Bidder need to access your location for better application experience</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Quotesouk need to access calendar for better application experience.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
