@@ -21,6 +21,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         public ResetPasswordPage(string Email)
         {
             InitializeComponent();
+            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
             EmailAddress = Email;
         }
         #endregion

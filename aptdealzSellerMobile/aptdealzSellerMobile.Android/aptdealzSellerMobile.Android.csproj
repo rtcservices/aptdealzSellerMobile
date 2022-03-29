@@ -49,7 +49,7 @@
     <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <MandroidI18n />
-    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -464,7 +464,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerExceptionaptdealzSellerMobileAndroidHideInfoBar="True" TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionaptdealzSellerMobileAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionaptdealzSellerMobileAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
