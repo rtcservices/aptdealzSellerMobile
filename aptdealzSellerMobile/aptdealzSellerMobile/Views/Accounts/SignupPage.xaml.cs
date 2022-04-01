@@ -70,6 +70,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         public SignupPage()
         {
             InitializeComponent();
+            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
             CapitalizeWord();
             BindObjects();
         }

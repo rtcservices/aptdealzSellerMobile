@@ -171,6 +171,7 @@
                                                 Keyboard="Numeric"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="1"
+                                                MaxLength="6"
                                                 Unfocused="Entry_Unfocused" />
                                             <BoxView x:Name="BoxUnitPrice" Style="{StaticResource boxHorizontal}" />
                                         </StackLayout>
@@ -186,6 +187,7 @@
                                                 x:Name="txtHandlingCharge"
                                                 ClassId="HandlingCharge"
                                                 Keyboard="Numeric"
+                                                MaxLength="6"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="2"
                                                 Unfocused="Entry_Unfocused" />
@@ -203,6 +205,7 @@
                                             <ext:ExtEntry
                                                 x:Name="txtShippingCharge"
                                                 ClassId="ShippingCharge"
+                                                MaxLength="6"
                                                 Keyboard="Numeric"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="3"
@@ -222,6 +225,7 @@
                                                 x:Name="txtInsuranceCharge"
                                                 ClassId="InsuranceCharge"
                                                 Keyboard="Numeric"
+                                                MaxLength="6"
                                                 Style="{StaticResource entrPrimary}"
                                                 TabIndex="4"
                                                 Unfocused="Entry_Unfocused" />

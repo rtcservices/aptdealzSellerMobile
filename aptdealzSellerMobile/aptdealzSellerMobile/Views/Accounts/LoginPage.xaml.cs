@@ -23,6 +23,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         public LoginPage()
         {
             InitializeComponent();
+            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
         }
         #endregion
 

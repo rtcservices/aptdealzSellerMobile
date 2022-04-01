@@ -15,6 +15,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         public ForgotPasswordPage()
         {
             InitializeComponent();
+            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
         }
         #endregion
 

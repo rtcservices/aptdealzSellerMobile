@@ -155,20 +155,32 @@ namespace aptdealzSellerMobile.Utility
             return PhoneNumber.IsMatch(value);
         }
 
+        //public static bool IsValidEmail(this string value)
+        //{
+        //    try
+        //    {
+        //        value = value.Trim();
+        //        var addr = new System.Net.Mail.MailAddress($"{value}");
+        //        return addr.Address == $"{value}";
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
         public static bool IsValidEmail(this string value)
         {
             try
             {
-                value = value.Trim();
-                var addr = new System.Net.Mail.MailAddress($"{value}");
-                return addr.Address == $"{value}";
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(value);
+                return match.Success;
             }
             catch
             {
                 return false;
             }
         }
-
         public static bool IsValidPassword(this string value)
         {
             value = value.Trim();

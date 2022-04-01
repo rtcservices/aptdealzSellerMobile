@@ -73,10 +73,10 @@ namespace aptdealzSellerMobile.Model.Request
         public string Password { get; set; }
 
         [JsonProperty("latitude")]
-        public int Latitude { get; set; }
+        public int? Latitude { get; set; }
 
         [JsonProperty("longitude")]
-        public int Longitude { get; set; }
+        public int? Longitude { get; set; }
 
         //Update-Get Data
         [JsonProperty("profilePhoto")]

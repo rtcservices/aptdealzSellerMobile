@@ -132,7 +132,8 @@ namespace aptdealzSellerMobile.Views.Dashboard
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            dpValidityDate.MinimumDate = DateTime.Today;
+            dpValidityDate.MinimumDate = DateTime.Today.AddDays(1);
+            dpValidityDate.MaximumDate = DateTime.Today.AddDays(15);
             if (mQuote.ValidityDate == DateTime.MinValue)
             {
                 dpValidityDate.NullableDate = null;
