@@ -220,7 +220,6 @@ namespace aptdealzSellerMobile.Droid
                 Checkout checkout = new Checkout();
                 checkout.SetImage(0);
                 checkout.SetKeyID(username);
-
                 JSONObject options = new JSONObject();
 
                 options.Put("name", MerchantName); //Merchant Name

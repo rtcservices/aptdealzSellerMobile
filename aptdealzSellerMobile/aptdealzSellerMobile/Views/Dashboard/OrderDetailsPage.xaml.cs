@@ -122,7 +122,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 {
                     orderStatusList.Add(item);
                 }
-                orderStatusList = orderStatusList.Where(u => u >= OrderStatusData &&  u <= OrderStatusData + 1).ToList();
+                if (!pickupProductDirectly)
+                {
+                    orderStatusList = orderStatusList.ToList();
+                    orderStatusList.Remove((int)OrderStatus.ReadyForPickup);
+                    orderStatusList = orderStatusList.Where(u => u >= OrderStatusData && u <= OrderStatusData + 2).ToList();
+                }
+                else
+                {
+                    orderStatusList = orderStatusList.Where(u => u >= OrderStatusData && u <= OrderStatusData + 1).ToList();
+                }
                 mOrderStatusList.Clear();
 
                 foreach (int item in orderStatusList)

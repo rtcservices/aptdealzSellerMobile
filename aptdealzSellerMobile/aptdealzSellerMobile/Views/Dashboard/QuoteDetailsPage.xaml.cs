@@ -298,6 +298,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     MessagingCenter.Send<RazorPayload>(payload, Constraints.RP_RevealPayNow);
                     MessagingCenter.Subscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse, async (razorResponse) =>
                      {
+                         MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
                          if (razorResponse != null && !razorResponse.isPaid)
                          {
                              string message = "Payment failed ";
@@ -310,18 +311,16 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                              if (message != null)
                                  Common.DisplayErrorMessage(message);
+                             return;
                          }
 
                          UserDialogs.Instance.ShowLoading(Constraints.Loading);
-
                          RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
                          mRevealBuyerContact.RequirementId = RequirementId;
                          mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                          mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                          mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
-
                          BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
-                         MessagingCenter.Unsubscribe<RazorResponse>(this, Constraints.RP_PaidRevealResponse);
                      });
                 }
                 else
