@@ -122,7 +122,7 @@ namespace aptdealzSellerMobile.API
             catch (Exception ex)
             {
                 mCountries = null;
-                Common.DisplayErrorMessage("ProfileAPI/GetCountry: " + ex.Message);
+                //Common.DisplayErrorMessage("ProfileAPI/GetCountry: " + ex.Message);
             }
             return mCountries;
         }

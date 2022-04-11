@@ -59,7 +59,13 @@ namespace aptdealzSellerMobile.Services
             string PhoneNumber = Constraints.Str_RevealContact;
             try
             {
-                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                try
+                {
+                    UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                }
+                catch (Exception ex)
+                {
+                }
                 var mResponse = await requirementAPI.RevealBuyerContact(mRevealBuyerContact);
                 if (mResponse != null && mResponse.Succeeded)
                 {

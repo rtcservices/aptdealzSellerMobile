@@ -273,7 +273,7 @@
 
                                         <StackLayout Grid.Row="10" Spacing="5">
                                             <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-                                                <Label Style="{StaticResource lblPrimary13}" Text="Nationality" />
+                                                <Label Style="{StaticResource lblPrimary13}" Text="Country" />
                                                 <Label Text="*" TextColor="{StaticResource appColor2}" />
                                             </StackLayout>
                                             <ext:ExtAutoSuggestBox

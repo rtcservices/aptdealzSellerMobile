@@ -305,12 +305,10 @@ namespace aptdealzSellerMobile.Views.Dashboard
 
                              if (!Common.EmptyFiels(razorResponse.OrderId))
                                  message += "OrderId: " + razorResponse.OrderId + " ";
-
                              if (!Common.EmptyFiels(razorResponse.PaymentId))
                                  message += "PaymentId: " + razorResponse.PaymentId + " ";
-
-                             if (message != null)
-                                 Common.DisplayErrorMessage(message);
+                             var contactPopup = new Views.Popup.SuccessPopup(message, false);
+                             await PopupNavigation.Instance.PushAsync(contactPopup);
                              return;
                          }
 
@@ -320,7 +318,9 @@ namespace aptdealzSellerMobile.Views.Dashboard
                          mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                          mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                          mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+                         //if (razorResponse.isPaid)
                          BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                         GetQuotesDetails();
                      });
                 }
                 else
@@ -338,7 +338,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             name = Common.mSellerDetails.FullName
                         },
                         callback_method = "get",
-                        callback_url = "https://purple-field-04c774300.azurestaticapps.net/login",
+                        callback_url = "https://quotesouk.azurewebsites.net/login",
                     };
                     RazorPayUtility razorPayUtility = new RazorPayUtility();
                     var urls = await razorPayUtility.PayViaRazor(payload, mPayLoad, Constraints.RP_UserName, Constraints.RP_Password);
@@ -365,15 +365,23 @@ namespace aptdealzSellerMobile.Views.Dashboard
                             {
                                 razorResponse.isPaid = false;
                                 razorResponse.OrderId = orderId;
+                                var contactPopup = new Views.Popup.SuccessPopup("Payment failed ", false);
+                                await PopupNavigation.Instance.PushAsync(contactPopup);
                             }
                             RevealBuyerContact mRevealBuyerContact = new RevealBuyerContact();
                             mRevealBuyerContact.RequirementId = RequirementId;
                             mRevealBuyerContact.PaymentStatus = razorResponse.isPaid ? (int)RevealContactStatus.Success : (int)RevealContactStatus.Failure;
                             mRevealBuyerContact.RazorPayOrderId = razorResponse.OrderId;
                             mRevealBuyerContact.RazorPayPaymentId = razorResponse.PaymentId;
+                            
                             if (isPaid) return;
-                            isPaid = true;
-                            BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                                isPaid = true;
+
+                            if (razorResponse.isPaid)
+                            {
+                                BtnRevealContact.Text = await DependencyService.Get<IRequirementRepository>().RevealContact(mRevealBuyerContact);
+                                GetQuotesDetails();
+                            }
                         };
                         await Navigation.PushAsync(checkoutPage);
                     }

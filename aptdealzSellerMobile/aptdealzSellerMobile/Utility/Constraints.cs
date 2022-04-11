@@ -21,24 +21,29 @@
         public const string Str_PickupPINCode = "Product Pickup PIN Code";
         public const string Str_ShippingPINCode = "Shipping PIN Code";
 
+        //public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        //public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
+        //public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
+
+        //public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        //public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
+        //public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
+
+
+
+        //#if RELEASE
+        //        #region [ Production RazorPay ]
+        //        public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        //        public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
+        //        public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
+        //        #endregion
+        //#else
+        //        #region [ Dev RazorPay ]
         public const string RP_MerchantId = "It5hmU5HcU7hvf";
-        public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
-        public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
-
-
-//#if RELEASE
-//        #region [ Production RazorPay ]
-//        public const string RP_MerchantId = "It5hmU5HcU7hvf";
-//        public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
-//        public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
-//        #endregion
-//#else
-//        #region [ Dev RazorPay ]
-//        public const string RP_MerchantId = "It5hmU5HcU7hvf";
-//        public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
-//        public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
-//        #endregion
-//#endif
+        public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
+        public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
+        //        #endregion
+        //#endif
 
         public const string RP_RevealPayNow = "RevealPayNow";
         public const string RP_PaidRevealResponse = "PaidRevealResponse";
@@ -144,7 +149,7 @@
         public const string InValid_NewPassword = "Please enter valid new password!";
         public const string InValid_ConfirmPassword = "Please enter valid confirm password!";
         public const string InValid_Pincode = "Please enter valid pincode!";
-        public const string InValid_Nationality = "Please enter valid nationality!";
+        public const string InValid_Nationality = "Please enter valid country!";
         public const string InValid_State = "Please enter valid state!";
         public const string InValid_CountryOfOrigin = "Please enter valid Product Made In!";
         public const string InValid_GST = "Please enter valid GST number!";
@@ -168,7 +173,7 @@
         public const string Required_Street = "Please enter street!";
         public const string Required_City = "Please enter city!";
         public const string Required_State = "Please enter state!";
-        public const string Required_Nationality = "Please enter nationality!";
+        public const string Required_Nationality = "Please enter country!";
         public const string Required_CountryofOrigin = "Please enter Product Made In!";
         public const string Required_PinCode = "Please enter pincode!";
         public const string Required_Landmark = "Please enter landmark!";

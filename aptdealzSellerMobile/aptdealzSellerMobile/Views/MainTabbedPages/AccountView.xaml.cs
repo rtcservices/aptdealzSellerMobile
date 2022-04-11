@@ -1320,11 +1320,17 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void AutoSuggestBox_SuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
         {
-            pkNationality.Text = e.SelectedItem.ToString();
-            var Country = Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
-            if (Country != null)
+            try
             {
-                GetStateByCountryId(Country.CountryId).ConfigureAwait(false);
+                pkNationality.Text = e.SelectedItem.ToString();
+                var Country = Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
+                if (Country != null)
+                {
+                    GetStateByCountryId(Country.CountryId).ConfigureAwait(false);
+                }
+            }catch(Exception ex)
+            {
+
             }
         }
         #endregion
@@ -1381,7 +1387,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     pkState.Unfocus();
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 //Common.DisplayErrorMessage("AddSellerView/AutoSuggestBox_QuerySubmitted: " + ex.Message);
             }
@@ -1389,7 +1395,14 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
 
         private void AutoSuggestBox_StateSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
         {
-            pkState.Text = e.SelectedItem.ToString();
+            try
+            {
+                pkState.Text = e.SelectedItem.ToString();
+            }
+            catch
+            {
+
+            }
         }
         #endregion
 

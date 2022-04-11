@@ -219,6 +219,7 @@ namespace aptdealzSellerMobile.Droid
             {
                 Checkout checkout = new Checkout();
                 checkout.SetImage(0);
+                Activity activity = this;
                 checkout.SetKeyID(username);
                 JSONObject options = new JSONObject();
 
@@ -226,13 +227,13 @@ namespace aptdealzSellerMobile.Droid
                 options.Put("description", $"Order Id. {payload.receipt}");
                 //options.Put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
                 options.Put("order_id", orderId); //from response of step 3.
-                options.Put("theme.color", paymentColor);
+                //options.Put("theme.color", paymentColor);
                 options.Put("currency", payload.currency);
                 options.Put("amount", payload.amount);
                 options.Put("prefill.email", payload.email);
                 options.Put("prefill.contact", payload.contact);
 
-                checkout.Open(this, options);
+                checkout.Open(activity, options);
             }
             catch (Exception ex)
             {

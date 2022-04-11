@@ -37,7 +37,7 @@ namespace aptdealzSellerMobile.Services
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("ProfileRepository/GetCountry: " + ex.Message);
+                //Common.DisplayErrorMessage("ProfileRepository/GetCountry: " + ex.Message);
             }
             return mCountry;
         }

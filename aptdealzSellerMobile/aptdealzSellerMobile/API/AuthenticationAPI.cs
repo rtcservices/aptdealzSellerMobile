@@ -267,6 +267,7 @@ namespace aptdealzSellerMobile.API
                 mResponse.Message = ex.Message;
                 Common.DisplayErrorMessage("AuthenticationAPI/Logout: " + ex.Message);
             }
+            Common.ClearAllData();
             return mResponse;
         }
         #endregion

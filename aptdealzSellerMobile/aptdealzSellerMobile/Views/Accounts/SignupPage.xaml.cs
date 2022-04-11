@@ -92,6 +92,7 @@ namespace aptdealzSellerMobile.Views.Accounts
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            GetCountries();
             if (isChecked)
                 imgCheck.Source = Constraints.CheckBox_Checked;
             else
@@ -109,7 +110,6 @@ namespace aptdealzSellerMobile.Views.Accounts
 
             UserDialogs.Instance.ShowLoading(Constraints.Loading);
             await BindCategoriesList();
-            await GetCountries();
             UserDialogs.Instance.HideLoading();
         }
 
@@ -1213,7 +1213,7 @@ namespace aptdealzSellerMobile.Views.Accounts
                 if (e.ChosenSuggestion != null)
                 {
                     pkNationality.Text = e.ChosenSuggestion.ToString();
-                    var Country = Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
+                    var Country = mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
                     if (Country != null)
                     {
                         GetStateByCountryId(Country.CountryId).ConfigureAwait(false);
@@ -1233,11 +1233,18 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         private void AutoSuggestBox_SuggestionChosen(object sender, dotMorten.Xamarin.Forms.AutoSuggestBoxSuggestionChosenEventArgs e)
         {
-            pkNationality.Text = e.SelectedItem.ToString();
-            var Country = Common.mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
-            if (Country != null)
+            try
             {
-                GetStateByCountryId(Country.CountryId).ConfigureAwait(false);
+                pkNationality.Text = e.SelectedItem.ToString();
+                var Country = mCountries.Where(x => x.Name.ToLower() == pkNationality.Text.ToLower().ToString()).FirstOrDefault();
+                if (Country != null)
+                {
+                    GetStateByCountryId(Country.CountryId).ConfigureAwait(false);
+                }
+            }
+            catch
+            {
+
             }
         }
         #endregion
