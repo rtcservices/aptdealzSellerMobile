@@ -21,9 +21,9 @@
         public const string Str_PickupPINCode = "Product Pickup PIN Code";
         public const string Str_ShippingPINCode = "Shipping PIN Code";
 
-        public const string RP_MerchantId = "It5hmU5HcU7hvf";
-        public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
-        public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
+        //public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        //public const string RP_UserName = "rzp_live_2qVFfyxWrnY5My";
+        //public const string RP_Password = "2HQUZcva71BDl5GciQP3boJ2";
 
         //public const string RP_MerchantId = "It5hmU5HcU7hvf";
         //public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
@@ -39,9 +39,9 @@
         //        #endregion
         //#else
         //        #region [ Dev RazorPay ]
-        //public const string RP_MerchantId = "It5hmU5HcU7hvf";
-        //public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
-        //public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
+        public const string RP_MerchantId = "It5hmU5HcU7hvf";
+        public const string RP_UserName = "rzp_test_gcFbU9S9mYhR8c";
+        public const string RP_Password = "mlyzbMv2eEuS2xhmdOWypFBm";
         //        #endregion
         //#endif
 
@@ -76,6 +76,7 @@
         public const string Img_Sad = "iconSad.png";
         public const string Img_Smile = "iconSmile.png";
         public const string Img_Contact = "imgContact.jpg";
+        public const string Img_UserAccount = "iconUserAccount.jpg";
 
         public const string ImgHome = "iconHome.png";
         public const string ImgHomeDark = "iconHomeWhite.png";
@@ -223,5 +224,7 @@
         public const string CopiedQuoteRefNo = "Copied Quote Id!";
         public const string CopiedGrievanceId = "Copied Grievance Id!";
         #endregion
+        public const string NotificationReceived = "NotificationReceived";
+
     }
 }

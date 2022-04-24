@@ -93,6 +93,7 @@
 
         #region [ AppSettings ]
         public const string GetPrivacyPolicyTermsAndConditions = "api/v{0}/AppSettings/GetPrivacyPolicyTermsAndConditions";
+        public const string GetDeactivateTermsSellerApp = "api/v{0}/AppSettings/GetDeactivateTermsSellerApp";
         public const string GetFAQ = "api/v{0}/AppSettings/GetFAQ";
         public const string GetAppPromoBar = "api/v{0}/AppSettings/GetAppPromoBar";
         public const string AboutAptdealzSellerApp = "api/v{0}/AppSettings/AboutAptdealzSellerApp";

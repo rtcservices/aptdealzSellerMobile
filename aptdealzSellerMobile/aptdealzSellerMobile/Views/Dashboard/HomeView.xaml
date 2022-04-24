@@ -91,6 +91,7 @@
                     Padding="20,17,20,15"
                     VerticalOptions="CenterAndExpand">
                     <Label Style="{StaticResource lblHeader}" Text="Dashboard" />
+                    <Label x:Name="lblStag" IsVisible="false" Style="{StaticResource lblHeader}" Text="Stagging" />
                 </StackLayout>
 
                 <flv:FlowListView

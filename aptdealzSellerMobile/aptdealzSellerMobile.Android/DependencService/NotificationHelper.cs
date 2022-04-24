@@ -74,7 +74,7 @@ namespace aptdealzSellerMobile.Droid.DependencService
                     .SetContentIntent(pendingIntent)
                     .SetContentTitle(title)
                     .SetContentText(message)                    
-                    .SetSmallIcon(Resource.Drawable.iconLogo);
+                    .SetSmallIcon(Resource.Drawable.icon);
 
                 var notificationsound = MainActivity.DefaultNotificationSoundURI;
                 if (notificationsound != null)

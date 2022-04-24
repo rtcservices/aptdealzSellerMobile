@@ -21,11 +21,12 @@ namespace aptdealzSellerMobile.Views.Dashboard
                 InitializeComponent();
                 BindMenus();
 
-                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); 
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        lblNotificationCount.Text = count;
+                        lblNotificationCount.Text = Common.NotificationCount;
                         frmNotification.IsVisible = true;
                     }
                     else
@@ -63,7 +64,31 @@ namespace aptdealzSellerMobile.Views.Dashboard
                     new HomeMenu() { MenuImage = "iconReports.png", UiName = "Reports", MenuName = "Reports"},
                     new HomeMenu() { MenuImage = "imgWeSupport.png", UiName = "We Support", MenuName = "WeSupport"},
                 };
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = Common.NotificationCount;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
 
+                if (App.Current.Resources["BaseURL"].ToString().Contains("https://aptdealzstaging1api.azurewebsites.net"))
+                {
+                    lblStag.IsVisible = true;
+                    lblStag.Text = "Stagging";
+                }
+                else if (App.Current.Resources["BaseURL"].ToString().Contains("https://aptdealzapidev.azurewebsites.net"))
+                {
+                    lblStag.IsVisible = true;
+                    lblStag.Text = "Dev";
+                }
+                else
+                {
+                    lblStag.IsVisible = false;
+                }
                 flvMenus.FlowItemsSource = HomeMenus.ToList();
             }
             catch (Exception ex)
@@ -141,7 +166,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
-                Common.DisplayErrorMessage("HomeView/DashboardMenu_Tapped: " + ex.Message);
+                //Common.DisplayErrorMessage("HomeView/DashboardMenu_Tapped: " + ex.Message);
             }
         }
         #endregion

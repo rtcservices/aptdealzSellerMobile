@@ -133,7 +133,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
         {
             base.OnAppearing();
             dpValidityDate.MinimumDate = DateTime.Today.AddDays(1);
-            dpValidityDate.MaximumDate = DateTime.Today.AddDays(15);
+            dpValidityDate.MaximumDate = DateTime.Today.AddDays(7);
             if (mQuote.ValidityDate == DateTime.MinValue)
             {
                 dpValidityDate.NullableDate = null;

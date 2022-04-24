@@ -114,6 +114,7 @@
                                 LineBreakMode="WordWrap"
                                 Style="{StaticResource lblLight}"
                                 Text=""
+                                x:Name="lblDeactivateText"
                                 VerticalOptions="FillAndExpand" />
 
                             <StackLayout Grid.Row="1">

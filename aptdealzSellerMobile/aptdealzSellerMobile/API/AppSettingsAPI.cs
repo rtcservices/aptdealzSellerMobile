@@ -14,6 +14,36 @@ namespace aptdealzSellerMobile.API
     public class AppSettingsAPI
     {
         #region [ GET ]
+        public async Task<Response> GetDeactivateTerms()
+        {
+            Response mResponse = new Response();
+            try
+            {
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    using (var hcf = new HttpClientFactory(token: Common.Token))
+                    {
+                        string url = string.Format(EndPointURL.GetDeactivateTermsSellerApp, (int)App.Current.Resources["Version"]);
+                        var response = await hcf.GetAsync(url);
+                        mResponse = await DependencyService.Get<IAuthenticationRepository>().APIResponse(response);
+                    }
+                }
+                else
+                {
+                    if (await Common.InternetConnection())
+                    {
+                        await GetDeactivateTerms();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mResponse.Succeeded = false;
+                mResponse.Message = ex.Message;
+                Common.DisplayErrorMessage("AppSettingsAPI/GetDeactivateTermsBuyerApp: " + ex.Message);
+            }
+            return mResponse;
+        }
         public async Task<Response> GetPrivacyPolicyTermsAndConditions()
         {
             Response mResponse = new Response();

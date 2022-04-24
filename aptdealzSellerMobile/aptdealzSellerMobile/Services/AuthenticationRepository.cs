@@ -80,6 +80,7 @@ namespace aptdealzSellerMobile.Services
                     }
 
                     MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                    MessagingCenter.Unsubscribe<string>(this, Constraints.NotificationReceived);
                     Common.ClearAllData();
                 }
             }

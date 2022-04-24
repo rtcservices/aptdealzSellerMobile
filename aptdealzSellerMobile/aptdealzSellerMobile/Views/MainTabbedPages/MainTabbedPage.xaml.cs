@@ -39,6 +39,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+            MessagingCenter.Send<string>(Common.NotificationCount, Constraints.Str_NotificationCount);
             Dispose();
         }
 
@@ -162,6 +163,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                     grdMain.Children.Add(new HomeView());
                 }
                 selectedView = view;
+                MessagingCenter.Send<string>(string.IsNullOrWhiteSpace(Common.NotificationCount) ? "" : Common.NotificationCount, Constraints.Str_NotificationCount);
             }
             catch (Exception ex)
             {

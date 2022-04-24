@@ -48,11 +48,22 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 BindComplaintType();
                 GetOrderDetails();
 
-                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = Common.NotificationCount;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        lblNotificationCount.Text = count;
+                        lblNotificationCount.Text = Common.NotificationCount;
                         frmNotification.IsVisible = true;
                     }
                     else
@@ -72,6 +83,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #region [ Methods ]
         public void Dispose()
         {
+            MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
             GC.Collect();
             GC.SuppressFinalize(this);
         }

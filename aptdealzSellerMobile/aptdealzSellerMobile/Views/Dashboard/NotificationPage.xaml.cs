@@ -67,7 +67,22 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             return true;
         }
-
+        private async void GetNotificationCount()
+        {
+            try
+            {
+                var notificationCount = await DependencyService.Get<INotificationRepository>().GetNotificationCount();
+                if (!Common.EmptyFiels(notificationCount))
+                {
+                    Common.NotificationCount = notificationCount;
+                    MessagingCenter.Send<string>(Common.NotificationCount, Constraints.Str_NotificationCount);
+                }
+            }
+            catch (Exception ex)
+            {
+                //  Common.DisplayErrorMessage("MasterDataPage/GetNotificationCount: " + ex.Message);
+            }
+        }
         private async Task GetNotification()
         {
             NotificationAPI notificationAPI = new NotificationAPI();
@@ -80,6 +95,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             try
             {
+                GetNotificationCount();
                 UserDialogs.Instance.ShowLoading(Constraints.Loading);
                 var mResponse = await notificationAPI.GetAllNotificationsForUser();
                 if (mResponse != null && mResponse.Succeeded)

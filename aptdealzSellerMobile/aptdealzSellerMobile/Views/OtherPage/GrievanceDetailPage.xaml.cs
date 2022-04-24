@@ -32,12 +32,22 @@ namespace aptdealzSellerMobile.Views.OtherPage
                 if (DeviceInfo.Platform == DevicePlatform.Android)
                     txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
 
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = Common.NotificationCount;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
                 MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
                 MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        lblNotificationCount.Text = count;
+                        lblNotificationCount.Text = Common.NotificationCount;
                         frmNotification.IsVisible = true;
                     }
                     else

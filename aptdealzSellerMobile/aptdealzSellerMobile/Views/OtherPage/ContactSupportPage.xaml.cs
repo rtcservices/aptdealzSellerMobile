@@ -16,11 +16,26 @@ using Xamarin.Forms.Xaml;
 namespace aptdealzSellerMobile.Views.OtherPage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ContactSupportPage : ContentPage
+    public partial class ContactSupportPage : ContentPage, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         #region [ Objects ]
         SupportChatAPI supportChatAPI;
-        private List<ChatSupport> mMessageList;
+        private List<ChatSupport> _mMessageList;
+        public List<ChatSupport> mMessageList
+        {
+            get { return _mMessageList; }
+            set
+            {
+                _mMessageList = value;
+                OnPropertyChanged("mMessageList");
+            }
+        }
         #endregion
 
         #region [ Constructor ]
@@ -37,13 +52,28 @@ namespace aptdealzSellerMobile.Views.OtherPage
 
                 if (DeviceInfo.Platform == DevicePlatform.Android)
                     txtMessage.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = Common.NotificationCount;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+                var backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += async delegate
+                {
+                    await GetMessages();
+                };
 
-                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
-                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.NotificationReceived);
+                MessagingCenter.Subscribe<string>(this, Constraints.NotificationReceived, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        lblNotificationCount.Text = count;
+                        lblNotificationCount.Text = Common.NotificationCount;
                         frmNotification.IsVisible = true;
                     }
                     else
@@ -51,31 +81,8 @@ namespace aptdealzSellerMobile.Views.OtherPage
                         frmNotification.IsVisible = false;
                         lblNotificationCount.Text = string.Empty;
                     }
+                    backgroundWorker.RunWorkerAsync();
                 });
-
-                var backgroundWorker = new BackgroundWorker();
-                backgroundWorker.DoWork += delegate
-                {
-                    if (App.chatStoppableTimer != null)
-                    {
-                        App.chatStoppableTimer.Stop();
-                        App.chatStoppableTimer = null;
-                    }
-
-                    if (App.chatStoppableTimer == null)
-                    {
-                        App.chatStoppableTimer = new StoppableTimer(TimeSpan.FromSeconds(1), async () =>
-                        {
-                            if (Common.PreviousNotificationCount != Common.NotificationCount)
-                            {
-                                Common.PreviousNotificationCount = Common.NotificationCount;
-                                await GetMessages();
-                            }
-                        });
-                    }
-                    App.chatStoppableTimer.Start();
-                };
-                backgroundWorker.RunWorkerAsync();
             }
             catch (Exception ex)
             {
@@ -87,6 +94,7 @@ namespace aptdealzSellerMobile.Views.OtherPage
         #region [ Method ]
         public void Dispose()
         {
+            MessagingCenter.Unsubscribe<string>(this, Constraints.NotificationReceived);
             GC.Collect();
             GC.SuppressFinalize(this);
         }
@@ -95,12 +103,11 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             base.OnDisappearing();
             Dispose();
-
-            if (App.chatStoppableTimer != null)
-            {
-                App.chatStoppableTimer.Stop();
-                App.chatStoppableTimer = null;
-            }
+            //if (App.chatStoppableTimer != null)
+            //{
+            //    App.chatStoppableTimer.Stop();
+            //    App.chatStoppableTimer = null;
+            //}
         }
 
         protected async override void OnAppearing()
@@ -110,7 +117,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
             await GetMessages();
             UserDialogs.Instance.HideLoading();
         }
-
         private async Task GetMessages()
         {
             try
@@ -121,7 +127,6 @@ namespace aptdealzSellerMobile.Views.OtherPage
                     JArray result = (JArray)mResponse.Data;
                     if (result != null)
                     {
-                        //txtMessage.Text = string.Empty;
                         mMessageList = result.ToObject<List<ChatSupport>>();
                         if (mMessageList != null && mMessageList.Count > 0)
                         {
@@ -137,37 +142,47 @@ namespace aptdealzSellerMobile.Views.OtherPage
                                 {
                                     if (message.IsMessageFromSupportTeam)
                                     {
-                                        message.ChatMessageFromUserProfileImage = "imgContact.jpg";
+                                        message.ChatMessageFromUserProfileImage = Constraints.Img_Contact;
                                     }
                                     else
                                     {
-                                        message.ChatMessageFromUserProfileImage = "iconUserAccount.png";
+                                        message.ChatMessageFromUserProfileImage = Constraints.Img_UserAccount;
                                     }
                                 }
                             }
-                            lstChar.IsVisible = true;
-                            lblNoRecord.IsVisible = false;
-                            lstChar.ItemsSource = mMessageList.ToList();
 
-                            var mMessage = mMessageList.LastOrDefault();
-                            if (mMessage != null)
-                                lstChar.ScrollTo(mMessage, ScrollToPosition.End, false);
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                lstChar.IsVisible = true;
+                                lblNoRecord.IsVisible = false;
+                                //lstChar.ItemsSource = mMessageList.ToList();
+
+                                var mMessage = mMessageList.LastOrDefault();
+                                if (mMessage != null)
+                                    lstChar.ScrollTo(mMessage, ScrollToPosition.End, false);
+                            });
                         }
                         else
                         {
-                            lstChar.IsVisible = false;
-                            lblNoRecord.IsVisible = true;
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                lstChar.IsVisible = false;
+                                lblNoRecord.IsVisible = true;
+                            });
                         }
                     }
                 }
                 else
                 {
-                    lstChar.IsVisible = false;
-                    lblNoRecord.IsVisible = true;
-                    if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
-                        lblNoRecord.Text = mResponse.Message;
-                    else
-                        lblNoRecord.Text = Constraints.Something_Wrong;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        lstChar.IsVisible = false;
+                        lblNoRecord.IsVisible = true;
+                        if (mResponse != null && !Common.EmptyFiels(mResponse.Message))
+                            lblNoRecord.Text = mResponse.Message;
+                        else
+                            lblNoRecord.Text = Constraints.Something_Wrong;
+                    });
                 }
             }
             catch (Exception ex)

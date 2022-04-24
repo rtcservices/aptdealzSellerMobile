@@ -1,4 +1,6 @@
-﻿using aptdealzSellerMobile.Repository;
+﻿using Acr.UserDialogs;
+using aptdealzSellerMobile.API;
+using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using System;
@@ -16,12 +18,23 @@ namespace aptdealzSellerMobile.Views.OtherPage
             try
             {
                 InitializeComponent();
-
-                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                GetDeactivateTerms();
+                if (!Common.EmptyFiels(Common.NotificationCount))
+                {
+                    lblNotificationCount.Text = Common.NotificationCount;
+                    frmNotification.IsVisible = true;
+                }
+                else
+                {
+                    frmNotification.IsVisible = false;
+                    lblNotificationCount.Text = string.Empty;
+                }
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); 
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
-                        lblNotificationCount.Text = count;
+                        lblNotificationCount.Text = Common.NotificationCount;
                         frmNotification.IsVisible = true;
                     }
                     else
@@ -49,6 +62,30 @@ namespace aptdealzSellerMobile.Views.OtherPage
         {
             base.OnDisappearing();
             Dispose();
+        }
+
+        private async void GetDeactivateTerms()
+        {
+            try
+            {
+                UserDialogs.Instance.ShowLoading(Constraints.Loading);
+                AppSettingsAPI appSettingsAPI = new AppSettingsAPI();
+                var mResponse = await appSettingsAPI.GetDeactivateTerms();
+                UserDialogs.Instance.HideLoading();
+
+                if (mResponse != null && mResponse.Succeeded)
+                {
+                    var deactivateTerms = (string)mResponse.Data;
+                    if (deactivateTerms != null)
+                    {
+                        lblDeactivateText.Text = deactivateTerms;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.DisplayErrorMessage("Deactivate Terms: " + ex.Message);
+            }
         }
         #endregion
 
