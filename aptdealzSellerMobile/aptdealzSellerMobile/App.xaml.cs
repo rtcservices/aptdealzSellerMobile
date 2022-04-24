@@ -104,24 +104,25 @@ namespace aptdealzSellerMobile
 
                 CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
                 {
-                    //work when platform is iOS
                     System.Diagnostics.Debug.WriteLine("Received");
-                    if (Settings.IsNotification)
-                    {
-                        if (Common.mSellerDetails != null && !Common.EmptyFiels(Common.Token))
-                        {
-                            MainPage = new MasterDataPage();
-                        }
-                        else
-                        {
-                            MainPage = new SplashScreen();
-                        }
-                    }
+                    MessagingCenter.Send<string>(string.Empty, Constraints.NotificationReceived);
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
                 {
                     Settings.IsNotification = true;
+                    if (Settings.IsNotification)
+                    {
+                        if (Common.mSellerDetails != null && !Common.EmptyFiels(Common.mSellerDetails.SellerId) && !Common.EmptyFiels(Common.Token))
+                        {
+                            MainPage = new MasterDataPage();
+                        }
+                        else
+                        {
+                            MainPage = new Views.SplashScreen.SplashScreen();
+                        }
+                    }
+                    Settings.IsNotification = false;
                 };
 
                 CrossFirebasePushNotification.Current.OnNotificationAction += (s, p) =>

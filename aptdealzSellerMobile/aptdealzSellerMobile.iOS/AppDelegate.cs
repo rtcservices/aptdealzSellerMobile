@@ -15,7 +15,7 @@ using Xamarin.Forms;
 namespace aptdealzSellerMobile.iOS
 {
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
@@ -27,12 +27,19 @@ namespace aptdealzSellerMobile.iOS
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             Rg.Plugins.Popup.Popup.Init();
             CarouselView.FormsPlugin.iOS.CarouselViewRenderer.Init();
-            Firebase.Core.App.Configure();
 
             Plugin.LocalNotification.NotificationCenter.AskPermission();
 
             LoadApplication(new App());
+            RegisterForNotificationFCM();
 
+            // Messaging.SharedInstance.Delegate = this;
+            if (UNUserNotificationCenter.Current != null)
+            {
+                UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
+            }
+
+            Firebase.Core.App.Configure();
             FirebasePushNotificationManager.Initialize(options, new NotificationUserCategory[]
             {
                      new NotificationUserCategory("message",new List<NotificationUserAction>
@@ -46,14 +53,11 @@ namespace aptdealzSellerMobile.iOS
                      })
             });
 
-            FirebasePushNotificationManager.Initialize(options, true);
+            //FirebasePushNotificationManager.Initialize(options, true);
             DependencyService.Register<IFirebaseAuthenticator, FirebaseAuthenticator>();
 
-            // Added by BK 10-14-2021
-            //FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge | UNNotificationPresentationOptions.Sound; 
-
-            // updated by BK 01-17-2022
-            RegisterForNotificationFCM();
+            // Added by Jino 10-14-2021
+            FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge | UNNotificationPresentationOptions.Sound;
 
             return base.FinishedLaunching(app, options);
         }
@@ -78,7 +82,7 @@ namespace aptdealzSellerMobile.iOS
             => Xamarin.Essentials.Platform.PerformActionForShortcutItem(application, shortcutItem, completionHandler);
 
         /// <summary>
-        /// Code Added By BK 10-13-2021
+        /// Code Added By Jino 10-13-2021
         /// </summary>
         /// <param name="application"></param>
         /// <param name="deviceToken"></param>
@@ -95,7 +99,7 @@ namespace aptdealzSellerMobile.iOS
         }
 
         /// <summary>
-        /// Code Added By BK 10-13-2021
+        /// Code Added By Jino 10-13-2021
         /// </summary>
         /// <param name="application"></param>
         /// <param name="error"></param>
@@ -112,7 +116,7 @@ namespace aptdealzSellerMobile.iOS
         }
 
         /// <summary>
-        /// Code Added By BK 10-13-2021
+        /// Code Added By Jino 10-13-2021
         /// </summary>
         /// <param name="application"></param>
         /// <param name="userInfo"></param>
@@ -132,7 +136,7 @@ namespace aptdealzSellerMobile.iOS
         }
 
         /// <summary>
-        /// Code Added By BK 10-14-2021
+        /// Code Added By Jino 10-14-2021
         /// </summary>
         /// <param name="application"></param>
         /// <param name="userInfo"></param>
@@ -145,7 +149,7 @@ namespace aptdealzSellerMobile.iOS
         }
 
         /// <summary>
-        /// Code Added By BK 10-14-2021
+        /// Code Added By Jino 10-14-2021
         /// </summary>
         /// <param name="options"></param>
         void ProcessNotification(NSDictionary options)
@@ -182,7 +186,7 @@ namespace aptdealzSellerMobile.iOS
         }
 
         /// <summary>
-        /// Code Added By BK 10-14-2021
+        /// Code Added By Jino 10-14-2021
         /// </summary>
         /// <param name="uiApplication"></param>
         public override void WillEnterForeground(UIApplication uiApplication)
@@ -194,28 +198,39 @@ namespace aptdealzSellerMobile.iOS
         {
             try
             {
-                //Firebase Cloud Messaging Configuration
-                //Get permission for notification
+                // Register your app for remote notifications.
+
                 if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
                 {
-                    // iOS 10
-                    var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
-                    UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) =>
-                    {
-                        Console.WriteLine(granted);
-                    });
 
                     // For iOS 10 display notification (sent via APNS)
-                    UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
+
+                    UNUserNotificationCenter.Current.Delegate = this;
+
+                    var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+
+                    UNUserNotificationCenter.Current.RequestAuthorization(authOptions, async (granted, error) =>
+
+                    {
+                        Console.WriteLine($"Permission  {granted}");
+                        await System.Threading.Tasks.Task.Delay(500);
+                    });
+
                 }
+
                 else
                 {
-                    // iOS 9 <=
+
+                    // iOS 9 or before
                     var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+
                     var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+
                     UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
                 }
+
                 UIApplication.SharedApplication.RegisterForRemoteNotifications();
+
             }
             catch (Exception ex)
             {
