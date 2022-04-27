@@ -24,6 +24,20 @@ namespace aptdealzSellerMobile.Views.Accounts
         {
             InitializeComponent();
             MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount);
+            if (App.Current.Resources["BaseURL"].ToString().Contains("https://aptdealzstaging1api.azurewebsites.net"))
+            {
+                lblStag.IsVisible = true;
+                lblStag.Text = "Stagging";
+            }
+            else if (App.Current.Resources["BaseURL"].ToString().Contains("https://aptdealzapidev.azurewebsites.net"))
+            {
+                lblStag.IsVisible = true;
+                lblStag.Text = "Dev";
+            }
+            else
+            {
+                lblStag.IsVisible = false;
+            }
         }
         #endregion
 

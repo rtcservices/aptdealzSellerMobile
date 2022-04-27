@@ -43,6 +43,7 @@
                                 Text="Welcome Back" />
 
                             <Label Style="{StaticResource lblLight}" Text="Login to your Quotesouk Seller Account" />
+                            <Label x:Name="lblStag" IsVisible="false" HorizontalOptions="CenterAndExpand" TextColor="Red" Style="{StaticResource lblHeader}" Text="Stagging" />
                         </StackLayout>
 
                         <!--  Entry  -->
