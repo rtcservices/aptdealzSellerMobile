@@ -11,8 +11,13 @@ namespace aptdealzSellerMobile.Droid
         const string TAG = "MyFirebaseIIDService";
         public override void OnTokenRefresh()
         {
-            Utility.Settings.fcm_token = FirebaseInstanceId.Instance.Token;
+            try
+            {
+                Utility.Settings.fcm_token = FirebaseInstanceId.Instance.Token;
+            }catch
+            {
 
+            }
         }
 
         void SendRegistrationToServer(string token)

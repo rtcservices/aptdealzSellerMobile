@@ -36,7 +36,8 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
                 pageNo = 1;
                 GetActiveRequirements(filterBy, title, isAssending);
 
-                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
+                MessagingCenter.Unsubscribe<string>(this, Constraints.Str_NotificationCount); 
+                MessagingCenter.Subscribe<string>(this, Constraints.Str_NotificationCount, (count) =>
                 {
                     if (!Common.EmptyFiels(Common.NotificationCount))
                     {
