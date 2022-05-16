@@ -3,9 +3,14 @@ using aptdealzSellerMobile.Services;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.MasterData;
 using aptdealzSellerMobile.Views.SplashScreen;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Plugin.FirebasePushNotification;
 using Plugin.LocalNotification;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -19,19 +24,23 @@ namespace aptdealzSellerMobile
         //public static StoppableTimer stoppableTimer;
         //public static StoppableTimer chatStoppableTimer;
         //public static bool IsNotification = false;
+        const string androidKey = "85e79628-3808-4af7-ac74-a0c3c08e5fb6";
+        const string LogTag = "AppCenterQuotesoukBidder";
         #endregion
 
         #region [ Ctor ]
         public App()
         {
-            Device.SetFlags(new string[]
+            Xamarin.Forms.Device.SetFlags(new string[]
             {
                 "MediaElement_Experimental",
                 "AppTheme_Experimental",
                 "FastRenderers_Experimental",
                 "CollectionView_Experimental"
             });
-
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
             InitializeComponent();
             if (Settings.IsDarkMode)
             {
@@ -171,9 +180,130 @@ namespace aptdealzSellerMobile
                 Common.DisplayErrorMessage("App/PushNotificationForiOS: " + ex.Message);
             }
         }
+        static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
+        {
+            AppCenterLog.Info(LogTag, "Sending error report");
 
+            var args = e as SendingErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.StackTrace != null)
+            {
+                AppCenterLog.Info(LogTag, report.StackTrace.ToString());
+            }
+            else if (report.AndroidDetails != null)
+            {
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+        }
+
+        static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
+        {
+            AppCenterLog.Info(LogTag, "Sent error report");
+
+            var args = e as SentErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.StackTrace != null)
+            {
+                AppCenterLog.Info(LogTag, report.StackTrace.ToString());
+            }
+            else
+            {
+                AppCenterLog.Info(LogTag, "No system exception was found");
+            }
+
+            if (report.AndroidDetails != null)
+            {
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+        }
+
+        static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
+        {
+            AppCenterLog.Info(LogTag, "Failed to send error report");
+
+            var args = e as FailedToSendErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.StackTrace != null)
+            {
+                AppCenterLog.Info(LogTag, report.StackTrace.ToString());
+            }
+            else if (report.AndroidDetails != null)
+            {
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+
+            if (e.Exception != null)
+            {
+                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
+            }
+        }
         protected override void OnStart()
         {
+            AppCenter.LogLevel = LogLevel.Verbose;
+            Crashes.ShouldProcessErrorReport = ShouldProcess;
+            //Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
+            //Crashes.GetErrorAttachments = GetErrorAttachments;
+            AppCenter.Start($"android={androidKey}", typeof(Analytics), typeof(Crashes));
+
+            AppCenter.GetInstallIdAsync().ContinueWith(installId =>
+            {
+                AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
+            });
+            Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
+            {
+                AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+            });
+            Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
+            {
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + report.Result?.StackTrace);
+            });
+        }
+        bool ShouldProcess(ErrorReport report)
+        {
+            AppCenterLog.Info(LogTag, "Determining whether to process error report");
+            return true;
+        }
+        bool ConfirmationHandler()
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                Current.MainPage.DisplayActionSheet("Crash detected. Send anonymous crash report?", null, null, "Send", "Always Send", "Don't Send").ContinueWith((arg) =>
+                {
+                    var answer = arg.Result;
+                    UserConfirmation userConfirmationSelection;
+                    if (answer == "Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.Send;
+                    }
+                    else if (answer == "Always Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.AlwaysSend;
+                    }
+                    else
+                    {
+                        userConfirmationSelection = UserConfirmation.DontSend;
+                    }
+                    AppCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
+                    Crashes.NotifyUserConfirmation(userConfirmationSelection);
+                });
+            });
+
+            return true;
+        }
+
+        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        {
+            return new ErrorAttachmentLog[]
+            {
+                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
+            };
         }
 
         protected override void OnSleep()

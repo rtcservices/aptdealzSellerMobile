@@ -4,6 +4,7 @@ using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.Dashboard;
 using aptdealzSellerMobile.Views.Popup;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;

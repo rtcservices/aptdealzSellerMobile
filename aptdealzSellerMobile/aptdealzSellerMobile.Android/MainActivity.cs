@@ -16,6 +16,9 @@ using Com.Razorpay;
 using DLToolkit.Forms.Controls;
 using FFImageLoading.Forms.Platform;
 using Firebase;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Org.Json;
 using Plugin.CurrentActivity;
@@ -44,6 +47,9 @@ namespace aptdealzSellerMobile.Droid
             try
             {
                 base.OnCreate(savedInstanceState);
+
+                //AppCenter.Start("85e79628-3808-4af7-ac74-a0c3c08e5fb6", typeof(Analytics), typeof(Crashes));
+
                 AndroidX.AppCompat.App.AppCompatDelegate.DefaultNightMode = AndroidX.AppCompat.App.AppCompatDelegate.ModeNightNo;
                 CrossCurrentActivity.Current.Init(this, savedInstanceState);
 

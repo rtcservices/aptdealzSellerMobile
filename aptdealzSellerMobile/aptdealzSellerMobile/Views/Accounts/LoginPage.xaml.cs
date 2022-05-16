@@ -57,7 +57,6 @@ namespace aptdealzSellerMobile.Views.Accounts
 
         protected override bool OnBackButtonPressed()
         {
-            base.OnBackButtonPressed();
             try
             {
                 if (DeviceInfo.Platform == DevicePlatform.Android)

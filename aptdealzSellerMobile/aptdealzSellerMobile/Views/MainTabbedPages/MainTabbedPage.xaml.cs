@@ -39,7 +39,7 @@ namespace aptdealzSellerMobile.Views.MainTabbedPages
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            MessagingCenter.Send<string>(Common.NotificationCount, Constraints.Str_NotificationCount);
+            MessagingCenter.Send<string>(Common.NotificationCount ?? "", Constraints.Str_NotificationCount);
             Dispose();
         }
 

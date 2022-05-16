@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using aptdealzSellerMobile.Model.Reponse;
 using aptdealzSellerMobile.Views.MasterData;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -17,7 +18,7 @@ namespace aptdealzSellerMobile.Utility
         public static Model.Request.SellerDetails mSellerDetails { get; set; }
         public static List<Country> mCountries { get; set; }
         public static string Token { get; set; }
-        public static string NotificationCount { get; set; }
+        public static string NotificationCount { get; set; } = "0";
         public static string PreviousNotificationCount { get; set; }
         #endregion
 

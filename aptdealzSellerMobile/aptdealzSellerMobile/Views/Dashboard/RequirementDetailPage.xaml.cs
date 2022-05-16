@@ -7,6 +7,7 @@ using aptdealzSellerMobile.Model.Request;
 using aptdealzSellerMobile.Repository;
 using aptdealzSellerMobile.Utility;
 using aptdealzSellerMobile.Views.OtherPage;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -54,6 +55,7 @@ namespace aptdealzSellerMobile.Views.Dashboard
             }
             catch (Exception ex)
             {
+                Crashes.TrackError(ex);
                 Common.DisplayErrorMessage("RequirementDetailPage/Ctor: " + ex.Message);
             }
         }
