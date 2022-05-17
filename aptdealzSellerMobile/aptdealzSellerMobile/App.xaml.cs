@@ -25,6 +25,7 @@ namespace aptdealzSellerMobile
         //public static StoppableTimer chatStoppableTimer;
         //public static bool IsNotification = false;
         const string androidKey = "85e79628-3808-4af7-ac74-a0c3c08e5fb6";
+        const string iosKey = "553853ad-1410-4022-b865-8d7d2298cc46";
         const string LogTag = "AppCenterQuotesoukBidder";
         #endregion
 
@@ -249,7 +250,7 @@ namespace aptdealzSellerMobile
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             //Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             //Crashes.GetErrorAttachments = GetErrorAttachments;
-            AppCenter.Start($"android={androidKey}", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start($"android={androidKey};ios={iosKey}", typeof(Analytics), typeof(Crashes));
 
             AppCenter.GetInstallIdAsync().ContinueWith(installId =>
             {
